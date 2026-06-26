@@ -22,11 +22,9 @@ Zielort der globalen Config: `~/.claude/`.
 claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin marketplace add openai/codex-plugin-cc
 claude plugin marketplace add JuliusBrussee/caveman
-# thebrain ist ein lokales Verzeichnis — nur wenn ~/code/thebrain existiert:
-claude plugin marketplace add ~/code/thebrain
 ```
 
-**Verify:** `claude plugin marketplace list` zeigt alle vier.
+**Verify:** `claude plugin marketplace list` zeigt alle drei.
 
 ---
 
@@ -36,7 +34,6 @@ claude plugin marketplace add ~/code/thebrain
 claude plugin install frontend-design@claude-plugins-official
 claude plugin install codex@openai-codex
 claude plugin install caveman@caveman
-claude plugin install thebrain@thebrain        # nur wenn Marketplace vorhanden
 ```
 
 **Verify:** `claude plugin list` zeigt die Plugins als enabled.
@@ -106,7 +103,6 @@ Folgende Top-Level-Keys setzen (mit bestehenden mergen):
   "tui": "fullscreen",
   "theme": "dark-ansi",
   "voice": { "enabled": true, "mode": "hold" },
-  "enabledMcpjsonServers": ["thebrain"],
   "skipDangerousModePermissionPrompt": true,
   "skipAutoPermissionPrompt": true
 }
@@ -124,7 +120,7 @@ aus diesem Repo übernehmen, sondern auf der Zielmaschine organisch wachsen lass
 Die portablen Anweisungen liegen geschichtet in [`instructions/`](instructions/):
 - `instructions/AGENTS.md` — client-neutrale Basis (Arbeitsweise, Testing,
   Konventionen).
-- `instructions/CLAUDE.md` — Claude-Delta (TheBrain, GSD, caveman, Skills),
+- `instructions/CLAUDE.md` — Claude-Delta (GSD, caveman, Skills),
   importiert die Basis via `@AGENTS.md`.
 
 Deployment (Details + andere Clients: `instructions/README.md`):
@@ -162,10 +158,8 @@ Zielmaschine, aus `SKILLS.md` rekonstruieren.
 
 ## 8. Abschluss-Verifikation
 
-- `claude plugin list` → caveman, codex, frontend-design, (thebrain) enabled.
+- `claude plugin list` → caveman, codex, frontend-design enabled.
 - Neue Session: caveman-Mode aktiv, GSD-Statusline sichtbar.
 - In einem `.planning/`-Projekt: Statusline zeigt GSD-State.
-- TheBrain-MCP (falls genutzt): `get_context` liefert Kontext, nicht "leer".
 
-Bei Abweichungen oder fehlenden Quellen (z. B. `~/code/thebrain` nicht vorhanden):
-melden statt raten.
+Bei Abweichungen oder fehlenden Quellen melden statt raten.

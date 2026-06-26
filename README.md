@@ -74,7 +74,6 @@ Claude Code wird zu einem strukturierten Entwicklungs-Agenten erweitert:
 - **GSD (get-shit-done)** als Single-Source-of-Truth für Projektarbeit
   (Phasen, Roadmap, State-Tracking, atomare Commits).
 - **caveman** komprimiert die Kommunikation (~75 % weniger Tokens).
-- **TheBrain** als persistentes Gedächtnis über Sessions hinweg.
 - **codex** als zweite Implementierungs-/Diagnose-Instanz.
 - **frontend-design** für UI-Arbeit.
 - Globale Arbeitsregeln, cross-client geschichtet ([`instructions/`](instructions/)):
@@ -112,7 +111,6 @@ Eigenschaften:
 | **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra |
 | **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Zweite Implementierungs-/Diagnose-Instanz (Codex CLI) |
 | **frontend-design** | `anthropics/claude-plugins-official` | Plugin (Marketplace) | UI-/Frontend-Design |
-| **thebrain** | lokales Verzeichnis `~/code/thebrain` | Plugin + MCP-Server | Persistentes Session-Gedächtnis |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
 

@@ -46,10 +46,19 @@ GSD ist **kein** Marketplace-Plugin, sondern ein eigener Installer.
 Liegt unter `~/.claude/get-shit-done/` und liefert Hooks (`gsd-*`),
 Skills/Commands (`gsd-*`, `gsd:*`) und die Statusline.
 
-- Wenn `~/.claude/get-shit-done/` schon existiert: `gsd-update`-Skill bzw.
-  den Repo-Installer laufen lassen.
-- Sonst: GSD-Installer von dessen offizieller Quelle ausführen
-  (siehe `~/.claude/gsd-install-state.json` für die verwendete Version/Quelle).
+Installer ausführen:
+```bash
+npx @opengsd/gsd-core@latest
+```
+Der Installer fragt Runtime (Claude Code, Codex, Gemini, Cursor …) und global vs.
+lokal ab. Dateien **nicht** von Hand aus `agents/`/`commands/` kopieren — der
+Installer ist für Cross-Runtime-Kompatibilität nötig.
+
+Hinweis: Das frühere Upstream-Repo `gsd-build/get-shit-done` ist archiviert;
+Nachfolger ist `open-gsd/gsd-core` (npm `@opengsd/gsd-core`). Eine bestehende
+Installation aktualisiert der `gsd-update`-Skill. Versions-Lineage: ältere
+Installationen tragen `1.42.x` (altes `get-shit-done`), aktueller Upstream nutzt
+ein eigenes Schema — funktional gleichwertig, nicht byte-identisch.
 
 **Verify:**
 - `~/.claude/hooks/gsd-statusline.js` existiert.
@@ -87,6 +96,14 @@ Alle Hook-Skripte liegen in `~/.claude/hooks/`. In `settings.json` registrieren
 
 Die `gsd-*`-Hooks kommen aus dem GSD-Installer (Schritt 3), die `caveman-*`-Hooks
 aus dem caveman-Plugin (Schritt 2) bzw. werden vom Plugin selbst registriert.
+`audit-log.js` ist ein lokaler Eigenbau-Hook (PostToolUse-Audit-Trail nach
+`~/.claude/audit.log.jsonl`) — auf einer frischen Maschine entweder mitbringen
+oder den Eintrag weglassen, kein GSD/caveman-Bestandteil.
+
+Node-Pfad: Die GSD-Hooks tragen real den absoluten Pfad `/opt/homebrew/bin/node`
+(vom Installer gesetzt), die caveman-/Statusline-Hooks bloßes `node`. Auf der
+Zielmaschine den absoluten Node-Pfad einsetzen, wenn Hooks ohne PATH laufen.
+
 **Verify:** Neue Session zeigt caveman-Aktivierung und GSD-Update-Check.
 
 ---
@@ -111,6 +128,9 @@ Folgende Top-Level-Keys setzen (mit bestehenden mergen):
 `permissions.allow` ist maschinen-/projektspezifisch (Tool-Allowlist) — **nicht**
 aus diesem Repo übernehmen, sondern auf der Zielmaschine organisch wachsen lassen.
 
+Hinweis: Ein real evtl. zusätzlich vorhandenes `voiceEnabled: true` ist
+Legacy/redundant zu `voice` — nicht doppelt pflegen.
+
 **Verify:** `claude` startet auf Deutsch, Thinking aktiv, dark-ansi-Theme.
 
 ---
@@ -130,8 +150,13 @@ Deployment (Details + andere Clients: `instructions/README.md`):
 - **Codex CLI:** `instructions/AGENTS.md` nach `~/.codex/AGENTS.md` kopieren/symlinken.
 - **Gemini CLI:** bei Bedarf `~/.gemini/GEMINI.md` aus der Basis ableiten.
 
-**Verify:** `~/.claude/CLAUDE.md` existiert, importiert `AGENTS.md`, und der
-Inhalt deckt Arbeitsweise + Claude-Spezifika ab.
+Der `@AGENTS.md`-Import funktioniert nur, wenn **beide** Dateien im selben
+Verzeichnis liegen (`~/.claude/AGENTS.md` + `~/.claude/CLAUDE.md`). Dies ist der
+Soll-Zustand — eine bestehende Maschine kann eine ältere, nicht-geschichtete
+`CLAUDE.md` ohne `AGENTS.md` haben; beim Anwenden mergen statt überschreiben.
+
+**Verify:** `~/.claude/AGENTS.md` **und** `~/.claude/CLAUDE.md` existieren,
+`CLAUDE.md` importiert `AGENTS.md`, Inhalt deckt Arbeitsweise + Claude-Spezifika ab.
 
 ---
 
@@ -141,15 +166,22 @@ Vollständiges Inventar mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 Diese Skills werden über einen Skill-Manager verwaltet (Lockfile
 `~/.agents/.skill-lock.json`, Version 3) und nach `~/.claude/skills/` verlinkt.
 
-Reihenfolge:
-1. Skill-Manager bereitstellen (siehe `vercel-labs/skills` / `find-skills`).
-2. Skills aus dem Lockfile wiederherstellen, **oder** die in `SKILLS.md` als
-   "Kern" markierten einzeln aus ihren Repos installieren.
-3. Situative/überlappende Skills bewusst weglassen (siehe Priorisierung in
-   `SKILLS.md` → "Bewertung").
+Skill-Manager ist die `skills`-CLI (`vercel-labs/skills`, Registry
+[skills.sh](https://skills.sh)) — kein Setup nötig, läuft via `npx`.
 
-`~/.agents/.skill-lock.json` ist die Sync-Quelle der Wahrheit — fehlt sie auf der
-Zielmaschine, aus `SKILLS.md` rekonstruieren.
+Skills einzeln aus ihrer Quelle installieren (global), Quell-Repo je Skill aus
+`SKILLS.md`:
+```bash
+npx skills add <owner/repo> -g            # ganzes Repo
+npx skills add <owner/repo> -g -s <name>  # nur einen bestimmten Skill
+```
+
+Reihenfolge:
+1. Die in `SKILLS.md` als **"Kern"** markierten Skills aus ihren Repos installieren.
+2. Situative bei Bedarf nachziehen; überlappende/seltene bewusst weglassen (siehe
+   `SKILLS.md` → "Bewertung").
+3. `~/.agents/.skill-lock.json` ist die Referenz, welche Skills aus welcher Quelle
+   stammen — fehlt sie, aus `SKILLS.md` rekonstruieren.
 
 **Verify:** `ls ~/.claude/skills/` zeigt die gewünschten Nicht-GSD-Skills;
 `/find-skills` o. ä. ist aufrufbar.

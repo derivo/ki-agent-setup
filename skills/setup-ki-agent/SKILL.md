@@ -67,6 +67,34 @@ Kurzer Report: Was installiert/konfiguriert wurde, welche Verify-Checks grün si
 was übersprungen/abweichend war. Bei rotem Verify: Ursache nennen, nicht
 "fertig" melden.
 
+## Repo-Pflege: Pre-Commit-Konsistenzcheck (Pflicht)
+
+Vor **jedem** Commit in diesem Repo läuft ein Dry-Run-Konsistenzcheck — nichts
+installieren/ändern, nur prüfen. Ziel: das Repo beschreibt weiterhin ein
+reproduzierbares, stimmiges Setup, bevor etwas eingecheckt wird.
+
+Prüfpunkte:
+1. **APPLY.md noch gültig** — Befehle syntaktisch ok; Marketplace-/Quell-Repos
+   erreichbar (z. B. `gh api repos/<owner>/<repo>`); keine toten Links; GSD- und
+   Skill-Install-Quellen existieren noch (nicht archiviert/umgezogen).
+2. **instructions/ kohärent** — `CLAUDE.md` importiert `@AGENTS.md`; kein
+   Widerspruch/Duplikat zwischen Basis und Delta.
+3. **SKILLS.md** — Inventar vs. `~/.agents/.skill-lock.json`; genannte Quell-Repos
+   existieren.
+4. **Statusline-Doku vs. reales Script** — die in README beschriebene Struktur
+   deckt sich mit `~/.claude/hooks/gsd-statusline.js`.
+5. **Diagramme rendern** — Mermaid-Blöcke parsen (z. B. `mermaid-cli` lokal).
+6. **Querverweise** — interne Markdown-Links zeigen auf existierende Dateien.
+
+Ablauf:
+- Check ausführen, **Abweichungen/Findings dem User anzeigen** (priorisiert:
+  Blocker / Lücke / Abweichung), bevor committet wird.
+- **Freigabe einholen.** Erst nach explizitem OK committen — nie automatisch
+  (siehe Freigabe-Regel in `../../instructions/AGENTS.md`).
+- Provenance-Pflicht: jede im Commit enthaltene URL in derselben Session auflösen,
+  nicht aus Erinnerung. Findings vor Übernahme gegenprüfen (kein blindes Vertrauen
+  in einen Audit-Report).
+
 ## Installation des Skills selbst
 Damit der Skill per Name aufrufbar ist, muss er in einem von Claude Code
 gescannten Skill-Verzeichnis liegen:

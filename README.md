@@ -78,8 +78,6 @@ Claude Code wird zu einem strukturierten Entwicklungs-Agenten erweitert:
 - **GSD (get-shit-done)** als Single-Source-of-Truth für Projektarbeit
   (Phasen, Roadmap, State-Tracking, atomare Commits).
 - **caveman** komprimiert die Kommunikation (~75 % weniger Tokens).
-- **codex** als zweite Implementierungs-/Diagnose-Instanz.
-- **frontend-design** für UI-Arbeit.
 - Globale Arbeitsregeln, cross-client geschichtet ([`instructions/`](instructions/)):
   neutrale Basis (`AGENTS.md`) + Claude-Delta (`CLAUDE.md`) — Deutsch,
   Think-before-Coding, Simplicity-First, Surgical-Changes, Edge-Case-Testpflicht.
@@ -126,8 +124,6 @@ Eigenschaften:
 |---|---|---|---|
 | **GSD (get-shit-done)** | eigener Installer → `~/.claude/get-shit-done` | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
 | **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra |
-| **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Zweite Implementierungs-/Diagnose-Instanz (Codex CLI) |
-| **frontend-design** | `anthropics/claude-plugins-official` | Plugin (Marketplace) | UI-/Frontend-Design |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
 
@@ -167,9 +163,7 @@ Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
 ### Tools & Plugins
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install `npx @opengsd/gsd-core@latest` (Vorgänger `gsd-build/get-shit-done` archiviert)
 - caveman: https://github.com/JuliusBrussee/caveman
-- codex (Plugin): https://github.com/openai/codex-plugin-cc
-- Claude Plugins (offiziell, u. a. frontend-design): https://github.com/anthropics/claude-plugins-official
-- Anthropic Skills (frontend-design, webapp-testing): https://github.com/anthropics/skills
+- Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 
 ### Skill-Quellen (siehe `SKILLS.md`)
 - **skills.sh** — Skill-Registry & CLI (`npx skills add <owner/repo>`): https://skills.sh

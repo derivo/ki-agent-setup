@@ -37,8 +37,10 @@ Pro Abschnitt (nicht alles auf einmal):
    (Regel 1/2).
 3. Gate laufen lassen ([VERIFY.md](VERIFY.md)).
 4. Bei Rot: Ursache beheben. Wenn ein wiederkehrender Fehler zeigt, dass eine
-   Regel fehlt → DOC_GUARDRAILS.md ergänzen (Harness Correction).
-5. Erst wenn grün: nächster Abschnitt.
+   Regel fehlt → DOC_GUARDRAILS.md ergänzen (Harness Correction, Details in
+   [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)).
+5. Erst wenn grün: nächster Abschnitt. Wiederholen bis das Gate vollständig grün
+   ist — mehrere Runden sind normal.
 
 ## Sonderfall: Doku aktualisieren (nicht neu schreiben)
 Der häufigere Fall. Zusätzlich:

@@ -31,7 +31,10 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
    mit Response- UND DB-Assertion).
 6. **[AGENT_LOOP.md](AGENT_LOOP.md)** — der Ablauf, der alles verbindet:
    Spec → Test → Code → Gate → Korrektur.
-7. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+7. **[SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)** — das Herz: die prüfende
+   Schleife (wiederholen bis verifiziert) und wie das Harness aus jedem Fehler
+   schärfer wird (Harness Correction).
+8. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
 ---
 

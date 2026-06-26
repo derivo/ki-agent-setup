@@ -70,8 +70,12 @@ Phase 5, und GUARDRAILS.md, Abschnitt D).
 - Die Test-MariaDB ist lokal erreichbar (via Docker), damit Integrations- und
   API-Tests gegen eine echte DB laufen.
 
-## Harness Correction Development
-Wenn das Gate einen Fehler fängt, den eine Regel hätte verhindern können, fixe
-nicht nur den Code — ergänze die fehlende Regel in GUARDRAILS.md oder der
-projektnächsten `CLAUDE.md`. So wird das Harness mit jedem Lauf schärfer, statt
-denselben Fehler wieder zuzulassen.
+## Selbst-Optimierung & die prüfende Schleife
+Der Loop oben ist nur die Mechanik. Wie er sich wiederholt, bis verifiziert ist,
+und wie das Harness aus jedem gefangenen Fehler schärfer wird (Harness
+Correction), steht ausführlich in [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) —
+der wichtigste Teil, wenn der Agent autonom laufen soll.
+
+Kurzform: Gate fängt einen Fehler, den eine Regel hätte verhindern können → nicht
+nur den Code fixen, sondern die fehlende Regel in GUARDRAILS.md (oder der
+projektnächsten `CLAUDE.md`) ergänzen. So wird das Harness mit jedem Lauf schärfer.

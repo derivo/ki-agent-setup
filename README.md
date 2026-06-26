@@ -21,8 +21,9 @@ Claude Code wird zu einem strukturierten Entwicklungs-Agenten erweitert:
 - **TheBrain** als persistentes Gedächtnis über Sessions hinweg.
 - **codex** als zweite Implementierungs-/Diagnose-Instanz.
 - **frontend-design** für UI-Arbeit.
-- Globale Arbeitsregeln (`CLAUDE.md`): Deutsch, Think-before-Coding,
-  Simplicity-First, Surgical-Changes, Edge-Case-Testpflicht.
+- Globale Arbeitsregeln, cross-client geschichtet ([`instructions/`](instructions/)):
+  neutrale Basis (`AGENTS.md`) + Claude-Delta (`CLAUDE.md`) — Deutsch,
+  Think-before-Coding, Simplicity-First, Surgical-Changes, Edge-Case-Testpflicht.
 
 ---
 
@@ -111,8 +112,10 @@ Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
 - Remotion: https://github.com/remotion-dev/skills
 - Ecommerce SEO: https://github.com/affilino/ecommerce-seo-audit-skill
 
-### Referenz / Inspiration
+### Standards / Referenz
+- **AGENTS.md** — Cross-Client-Instruction-Standard (Linux Foundation / Agentic AI Foundation): https://agents.md
 - Claude Code Docs: https://docs.claude.com/en/docs/claude-code
+- Claude Code Memory (CLAUDE.md, Imports): https://docs.claude.com/en/docs/claude-code/memory
 - Agent Skills (Anthropic): https://docs.claude.com/en/docs/claude-code/skills
 - Andrej Karpathy — Guidelines (LLM-Coding-Pitfalls): https://github.com/multica-ai/andrej-karpathy-skills
   · Original-Tweet: https://x.com/karpathy/status/2015883857489522876

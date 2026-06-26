@@ -119,27 +119,23 @@ aus diesem Repo übernehmen, sondern auf der Zielmaschine organisch wachsen lass
 
 ---
 
-## 7. Globale Arbeitsregeln (`~/.claude/CLAUDE.md`)
+## 7. Globale Arbeitsregeln (Cross-Client)
 
-Globale CLAUDE.md sicherstellen mit diesen Prinzipien (Volltext siehe bestehende
-`~/.claude/CLAUDE.md`, falls vorhanden — sonst neu anlegen):
+Die portablen Anweisungen liegen geschichtet in [`instructions/`](instructions/):
+- `instructions/AGENTS.md` — client-neutrale Basis (Arbeitsweise, Testing,
+  Konventionen).
+- `instructions/CLAUDE.md` — Claude-Delta (TheBrain, GSD, caveman, Skills),
+  importiert die Basis via `@AGENTS.md`.
 
-- **Sprache:** Antworten auf Deutsch. Analogien nur in Chat, nicht in `.md`.
-- **Think before Coding:** Annahmen nennen, bei Unsicherheit fragen, einfachere
-  Wege vorschlagen.
-- **Simplicity First:** Minimum-Code, keine spekulativen Features/Abstraktionen.
-- **Surgical Changes:** nur Nötiges anfassen, Bestands-Style matchen, fremden
-  Dead-Code nur erwähnen.
-- **Goal-Driven Execution:** verifizierbare Ziele, Multi-Step → kurzer Plan.
-- **Testing:** UI-Formulare → vollständige Edge-Case-Matrix (genau ein Feld falsch,
-  Happy Path zuletzt, Keyboard-Submit eigener Pfad).
-- **Konventionen:** Secrets in `.env`, schlanke Controller, Migrations mit Rollback,
-  versionierte API-Routen, Commits/Kommentare auf Englisch.
-- **TheBrain:** bei verbundenem MCP — Session-Start `get_context`, während der
-  Arbeit `save_memory`/`use_item`, Session-Ende `save_summary`.
-- **GSD:** Projekte mit `.planning/` nutzen GSD als Single-Source-of-Truth.
+Deployment (Details + andere Clients: `instructions/README.md`):
+- **Claude Code:** beide Dateien nach `~/.claude/` kopieren (`AGENTS.md` +
+  `CLAUDE.md`). Bestehende `~/.claude/CLAUDE.md` mergen, nicht blind
+  überschreiben.
+- **Codex CLI:** `instructions/AGENTS.md` nach `~/.codex/AGENTS.md` kopieren/symlinken.
+- **Gemini CLI:** bei Bedarf `~/.gemini/GEMINI.md` aus der Basis ableiten.
 
-**Verify:** `~/.claude/CLAUDE.md` existiert und enthält die Abschnitte oben.
+**Verify:** `~/.claude/CLAUDE.md` existiert, importiert `AGENTS.md`, und der
+Inhalt deckt Arbeitsweise + Claude-Spezifika ab.
 
 ---
 

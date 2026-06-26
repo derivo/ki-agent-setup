@@ -28,6 +28,9 @@ jede Faktenbehauptung wird in derselben Session gegen die echte Quelle geprüft
    Fertig-Kriterien, bevor geschrieben wird.
 4. **[VERIFY.md](VERIFY.md)** — das Gate: mechanische Checks (Lint, Links,
    Mermaid, Terminologie) **plus** Claims-gegen-Quelle.
+5. **[SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)** — das Herz: die prüfende
+   Schleife (wiederholen bis verifiziert, Update-Reflex) und wie das Harness aus
+   jedem Fehler schärfer wird (Harness Correction).
 
 ## Reifegrade (schlank)
 

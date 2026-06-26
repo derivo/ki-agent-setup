@@ -16,27 +16,23 @@ Zielort der globalen Config: `~/.claude/`.
 
 ---
 
-## 1. Plugin-Marketplaces registrieren
+## 1. Plugin-Marketplace registrieren
 
 ```bash
-claude plugin marketplace add anthropics/claude-plugins-official
-claude plugin marketplace add openai/codex-plugin-cc
 claude plugin marketplace add JuliusBrussee/caveman
 ```
 
-**Verify:** `claude plugin marketplace list` zeigt alle drei.
+**Verify:** `claude plugin marketplace list` zeigt `caveman`.
 
 ---
 
 ## 2. Plugins installieren
 
 ```bash
-claude plugin install frontend-design@claude-plugins-official
-claude plugin install codex@openai-codex
 claude plugin install caveman@caveman
 ```
 
-**Verify:** `claude plugin list` zeigt die Plugins als enabled.
+**Verify:** `claude plugin list` zeigt `caveman` als enabled.
 
 ---
 
@@ -190,7 +186,7 @@ Reihenfolge:
 
 ## 8. Abschluss-Verifikation
 
-- `claude plugin list` → caveman, codex, frontend-design enabled.
+- `claude plugin list` → caveman enabled.
 - Neue Session: caveman-Mode aktiv, GSD-Statusline sichtbar.
 - In einem `.planning/`-Projekt: Statusline zeigt GSD-State.
 

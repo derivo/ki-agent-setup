@@ -78,8 +78,6 @@ Claude Code is extended into a structured development agent:
 - **GSD (get-shit-done)** as single source of truth for project work
   (phases, roadmap, state tracking, atomic commits).
 - **caveman** compresses communication (~75 % fewer tokens).
-- **codex** as a second implementation/diagnosis instance.
-- **frontend-design** for UI work.
 - Global working rules, layered cross-client ([`instructions/`](instructions/)):
   neutral base (`AGENTS.md`) + Claude delta (`CLAUDE.md`) — German output,
   think-before-coding, simplicity-first, surgical changes, mandatory edge-case
@@ -127,8 +125,6 @@ Properties:
 |---|---|---|---|
 | **GSD (get-shit-done)** | own installer → `~/.claude/get-shit-done` | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
 | **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra |
-| **codex** | `openai/codex-plugin-cc` | plugin (marketplace) | second implementation/diagnosis instance (Codex CLI) |
-| **frontend-design** | `anthropics/claude-plugins-official` | plugin (marketplace) | UI/frontend design |
 
 Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
 
@@ -167,9 +163,7 @@ Change the setup → edit `APPLY.md`, commit, pull on other machines.
 ### Tools & plugins
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, install `npx @opengsd/gsd-core@latest` (predecessor `gsd-build/get-shit-done` archived)
 - caveman: https://github.com/JuliusBrussee/caveman
-- codex (plugin): https://github.com/openai/codex-plugin-cc
-- Claude Plugins (official, incl. frontend-design): https://github.com/anthropics/claude-plugins-official
-- Anthropic Skills (frontend-design, webapp-testing): https://github.com/anthropics/skills
+- Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 
 ### Skill sources (see `SKILLS.md`)
 - **skills.sh** — skill registry & CLI (`npx skills add <owner/repo>`): https://skills.sh

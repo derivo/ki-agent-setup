@@ -9,8 +9,8 @@ Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 > Setup neu aufbaut, stellt die Skills aus diesem Lockfile wieder her oder
 > installiert sie einzeln aus den unten genannten Repos.
 
-Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer), caveman
-(`caveman:*`, Plugin), sowie die Plugin-Skills von codex.
+Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) und caveman
+(`caveman:*`, Plugin).
 
 ---
 
@@ -19,7 +19,6 @@ Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer), caveman
 | Skill | Quelle (GitHub) | Zweck |
 |---|---|---|
 | `ui-ux-pro-max` | `nextlevelbuilder/ui-ux-pro-max-skill` | UI/UX-Design-Intelligenz (Styles, Paletten, Fonts) |
-| `frontend-design` | `anthropics/skills` | Distinktive, produktionsreife Frontends (auch als Plugin) |
 | `web-design-guidelines` | `vercel-labs/agent-skills` | UI-Code gegen Web Interface Guidelines prüfen |
 | `web-quality-audit` | `addyosmani/web-quality-skills` | Audit: Performance, A11y, SEO, Best Practices |
 | `accessibility` | `addyosmani/web-quality-skills` | WCAG 2.2 Audit & Verbesserung |

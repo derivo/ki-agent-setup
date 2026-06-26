@@ -10,7 +10,7 @@ Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 > installiert sie einzeln aus den unten genannten Repos.
 
 Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer), caveman
-(`caveman:*`, Plugin), sowie die Plugin-Skills von codex und thebrain.
+(`caveman:*`, Plugin), sowie die Plugin-Skills von codex.
 
 ---
 

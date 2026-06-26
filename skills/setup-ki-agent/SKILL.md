@@ -33,7 +33,7 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
 Verify-Kriterium, bevor du weitergehst:
 1. Marketplaces registrieren.
-2. Plugins installieren (frontend-design, codex, caveman, thebrain).
+2. Plugins installieren (frontend-design, codex, caveman).
 3. GSD installieren (eigener Installer, kein Marketplace-Plugin).
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
 5. Hooks eintragen (GSD-Guards, caveman-Aktivierung).
@@ -46,8 +46,8 @@ organisch (steht so in APPLY.md).
 
 ### 3. Sicherheits- und Konfliktregeln
 - Pfade mit `<USER>` / absolute Pfade auf das reale `$HOME` der Maschine setzen.
-- Quelle fehlt (z. B. `~/code/thebrain` nicht vorhanden) → diesen Teil
-  überspringen und **melden**, nicht raten.
+- Quelle/Marketplace fehlt auf der Zielmaschine → diesen Teil überspringen und
+  **melden**, nicht raten.
 - Bestehende User-Werte abweichend vom Repo → Abweichung melden, nicht still
   überschreiben.
 - Schritte, die etwas installieren oder `~/.claude` ändern, vor Ausführung kurz

@@ -5,7 +5,7 @@ Client-Deltas.** So gibt es eine Quelle der Wahrheit statt N kopierter Regelsät
 
 ```
 AGENTS.md   ← gemeinsame Basis (client-neutral). Standard, lesen alle Tools.
-CLAUDE.md   ← Claude-only-Delta (TheBrain, GSD, caveman, Skills) + importiert AGENTS.md
+CLAUDE.md   ← Claude-only-Delta (GSD, caveman, Skills) + importiert AGENTS.md
 ```
 
 `CLAUDE.md` bindet die Basis über die Claude-Code-Import-Syntax `@AGENTS.md` ein —

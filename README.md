@@ -59,6 +59,12 @@ Eigenschaften:
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
 
+### Zusätzliche Skills (nicht aus GSD/caveman)
+
+Separat installierte Skills (Web, Testing, PHP, Security …), verwaltet über einen
+Skill-Manager mit Lockfile `~/.agents/.skill-lock.json`. Vollständiges Inventar
+mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
+
 ---
 
 ## Nutzung
@@ -81,3 +87,31 @@ ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
 ```
 
 Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
+
+---
+
+## Quellen
+
+### Tools & Plugins
+- GSD (get-shit-done): https://github.com/gsd-build/get-shit-done
+- caveman: https://github.com/JuliusBrussee/caveman
+- codex (Plugin): https://github.com/openai/codex-plugin-cc
+- Claude Plugins (offiziell, u. a. frontend-design): https://github.com/anthropics/claude-plugins-official
+- Anthropic Skills (frontend-design, webapp-testing): https://github.com/anthropics/skills
+
+### Skill-Quellen (siehe `SKILLS.md`)
+- Skill-Manager / find-skills: https://github.com/vercel-labs/skills
+- Web Quality (web-quality-audit, accessibility, performance): https://github.com/addyosmani/web-quality-skills
+- Web Design Guidelines: https://github.com/vercel-labs/agent-skills
+- UI/UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- Dev Essentials (e2e-testing, code-review): https://github.com/wshobson/agents
+- Agentic QE (compatibility-, chaos-testing): https://github.com/proffesor-for-testing/agentic-qe
+- browser-use: https://github.com/browser-use/browser-use
+- Remotion: https://github.com/remotion-dev/skills
+- Ecommerce SEO: https://github.com/affilino/ecommerce-seo-audit-skill
+
+### Referenz / Inspiration
+- Claude Code Docs: https://docs.claude.com/en/docs/claude-code
+- Agent Skills (Anthropic): https://docs.claude.com/en/docs/claude-code/skills
+- Andrej Karpathy — Guidelines (LLM-Coding-Pitfalls): https://github.com/multica-ai/andrej-karpathy-skills
+  · Original-Tweet: https://x.com/karpathy/status/2015883857489522876

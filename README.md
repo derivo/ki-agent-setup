@@ -89,21 +89,34 @@ Claude Code wird zu einem strukturierten Entwicklungs-Agenten erweitert:
 ## Statusline-Aufbau
 
 Eigene Statusline via `~/.claude/hooks/gsd-statusline.js` (GSD Edition).
-Layout, von oben nach unten:
+Layout, von oben nach unten (Soll-Struktur, an der realen Ausgabe ausgerichtet):
 
 ```
-[GSD-Update-Warnung]                                  (optional, nur wenn Update/stale Hooks)
-[Context-Meter-Grid mit eingebettetem Model-Namen]    (Fallback: Model-Name dim, wenn keine Context-Daten)
-[voller Pfad │ git-branch]                            (dim)
-[Task / GSD-State] │ [dirname]  [│ last: /command]    (last-command nur wenn in config aktiviert)
+[GSD-Update-Warnung]                                       (optional, nur bei Update/stale Hooks)
+Model (Context-Fenster) │ [Context-Meter] <used>%  │  <N> cached
+[5h-Limit] <used>% - HH:MM  │  [Wochen-Limit] <used>% - Tag HH:MM  │  $<Session-Kosten>
+voller Pfad │ git-branch                                   (dim)
+<GSD-Version> [Milestone-Bar] <used>% · <GSD-State/Phase> │ dirname  [│ last: /command]
+```
+
+Beispiel (Projekt `grouphero`):
+```
+Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
+[▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Di 21:00  │  $225
+/Users/dennis/code/grouphero │ main
+v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ grouphero
 ```
 
 Eigenschaften:
-- Liest `.planning/STATE.md` (GSD-Phase) und `.planning/config.json` hoch durch
-  die Verzeichnis-Hierarchie.
-- Git-Branch direkt aus `.git/HEAD` (kein Subprozess), Worktree-fähig.
-- Context-Usage aus `cache_read_input_tokens` der Transcript-Tail (256 KiB).
+- Zeile 1: Model + Context-Meter (genutzter Anteil, farbkodiert) + gecachte Tokens.
+- Zeile 2: 5h-Rate-Limit und Wochen-Limit (je `used% - Reset`) + Session-Kosten in `$`.
+- Zeile 3: voller Pfad + git-Branch (direkt aus `.git/HEAD`, kein Subprozess, Worktree-fähig).
+- Zeile 4: GSD-Milestone-Version + Fortschrittsbalken + GSD-State/Phase + dirname;
+  liest `.planning/STATE.md` + `.planning/config.json` hoch durch die Hierarchie.
+  Optionaler `last: /command`-Suffix, wenn in der config aktiviert.
 - Fällt bei jedem Fehler still zurück — bricht die Statusline nie.
+- Die unterste Terminalzeile (`bypass permissions on …`) ist **Claude-Code-nativ**,
+  nicht Teil dieses Scripts.
 
 ---
 
@@ -152,7 +165,7 @@ Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
 ## Quellen
 
 ### Tools & Plugins
-- GSD (get-shit-done): https://github.com/gsd-build/get-shit-done
+- GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install `npx @opengsd/gsd-core@latest` (Vorgänger `gsd-build/get-shit-done` archiviert)
 - caveman: https://github.com/JuliusBrussee/caveman
 - codex (Plugin): https://github.com/openai/codex-plugin-cc
 - Claude Plugins (offiziell, u. a. frontend-design): https://github.com/anthropics/claude-plugins-official

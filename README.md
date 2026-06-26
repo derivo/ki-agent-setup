@@ -100,7 +100,8 @@ Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
 - Anthropic Skills (frontend-design, webapp-testing): https://github.com/anthropics/skills
 
 ### Skill-Quellen (siehe `SKILLS.md`)
-- Skill-Manager / find-skills: https://github.com/vercel-labs/skills
+- **skills.sh** — Skill-Registry & CLI (`npx skills add <owner/repo>`): https://skills.sh
+- Skill-Manager / `find-skills`-Skill: https://github.com/vercel-labs/skills
 - Web Quality (web-quality-audit, accessibility, performance): https://github.com/addyosmani/web-quality-skills
 - Web Design Guidelines: https://github.com/vercel-labs/agent-skills
 - UI/UX Pro Max: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill

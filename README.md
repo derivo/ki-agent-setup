@@ -62,8 +62,10 @@ flowchart TD
 
 `APPLY.md` ist die Drehscheibe: Der Bootstrap-Skill liest sie, sie deployt die
 `instructions/`, installiert die Tools nach `~/.claude` und stellt die Skills
-wieder her. Das `harness/` ist davon unabhängig — es wird bei Bedarf in ein
-Entwicklungsprojekt übernommen.
+wieder her. Davon unabhängig sind zwei optionale, projektbezogene Doku-Sets, die
+bei Bedarf in ein Zielprojekt übernommen werden: [`harness/`](harness/README.md)
+(Workflow für **Code**-Projekte, PHP/Slim) und
+[`doc-harness/`](doc-harness/README.md) (Workflow für **Doku**-Projekte).
 
 ---
 

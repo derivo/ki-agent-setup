@@ -20,13 +20,13 @@ flowchart TD
     subgraph SETUP[" Setup-Reproduktion "]
         SKILL["skills/setup-ki-agent<br/>autonomer Bootstrap"]:::skill
         APPLY["APPLY.md<br/>8 Setup-Schritte + Verify"]:::core
-        SKILL -->|liest & führt aus| APPLY
+        SKILL -->|liest und führt aus| APPLY
     end
 
     subgraph INSTR[" instructions/ — Cross-Client-Regeln "]
         AGENTS["AGENTS.md<br/>neutrale Basis"]:::doc
         CLAUDE["CLAUDE.md<br/>Claude-Delta"]:::doc
-        CLAUDE -->|@import| AGENTS
+        CLAUDE -->|importiert| AGENTS
     end
 
     SKILLS["SKILLS.md<br/>Skill-Inventar + Quellen"]:::doc
@@ -47,12 +47,12 @@ flowchart TD
         FEAT --> LOOP & FEATT & TESTS
     end
 
-    README -.Einstieg.-> SKILL
+    README -. Einstieg .-> SKILL
     APPLY -->|deployt| INSTR
     APPLY -->|installiert| TOOLS
     APPLY -->|stellt wieder her| SKILLS
-    APPLY -.optional ins Projekt.-> HREADME
-    SKILL -.optional.-> HREADME
+    APPLY -. optional ins Projekt .-> HREADME
+    SKILL -. optional .-> HREADME
 
     classDef core fill:#1f6feb,stroke:#0d419d,color:#fff;
     classDef skill fill:#8957e5,stroke:#6e40c9,color:#fff;

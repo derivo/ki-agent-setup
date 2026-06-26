@@ -71,4 +71,13 @@ Dann im KI-Client:
 
 > Lies `APPLY.md` und wende das Setup auf diese Maschine an.
 
+Oder den autonomen Bootstrap-Skill nutzen
+([`skills/setup-ki-agent/SKILL.md`](skills/setup-ki-agent/SKILL.md)) — er
+orchestriert das ganze Setup aus `APPLY.md` selbstständig. Einmalig verfügbar
+machen:
+
+```bash
+ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
+```
+
 Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.

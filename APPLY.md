@@ -143,6 +143,27 @@ Globale CLAUDE.md sicherstellen mit diesen Prinzipien (Volltext siehe bestehende
 
 ---
 
+## 7b. Zusätzliche Skills (nicht aus GSD/caveman)
+
+Vollständiges Inventar mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
+Diese Skills werden über einen Skill-Manager verwaltet (Lockfile
+`~/.agents/.skill-lock.json`, Version 3) und nach `~/.claude/skills/` verlinkt.
+
+Reihenfolge:
+1. Skill-Manager bereitstellen (siehe `vercel-labs/skills` / `find-skills`).
+2. Skills aus dem Lockfile wiederherstellen, **oder** die in `SKILLS.md` als
+   "Kern" markierten einzeln aus ihren Repos installieren.
+3. Situative/überlappende Skills bewusst weglassen (siehe Priorisierung in
+   `SKILLS.md` → "Bewertung").
+
+`~/.agents/.skill-lock.json` ist die Sync-Quelle der Wahrheit — fehlt sie auf der
+Zielmaschine, aus `SKILLS.md` rekonstruieren.
+
+**Verify:** `ls ~/.claude/skills/` zeigt die gewünschten Nicht-GSD-Skills;
+`/find-skills` o. ä. ist aufrufbar.
+
+---
+
 ## 8. Abschluss-Verifikation
 
 - `claude plugin list` → caveman, codex, frontend-design, (thebrain) enabled.

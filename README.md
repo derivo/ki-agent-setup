@@ -1,5 +1,7 @@
 # ki-agents
 
+🇩🇪 Deutsch | [🇬🇧 English](README.en.md)
+
 Portable Beschreibung meines lokalen KI-Agent-Setups (Claude Code).
 
 Ziel: Auf einer neuen Maschine dieses Repo auschecken, dem KI-Client sagen

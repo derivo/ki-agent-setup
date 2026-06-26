@@ -11,6 +11,62 @@ die Konfiguration anhand von [`APPLY.md`](APPLY.md) selbst auf.
 
 ---
 
+## Wie die Dateien zusammenarbeiten
+
+```mermaid
+flowchart TD
+    README["README.md<br/>Überblick + Quellen"]:::doc
+
+    subgraph SETUP[" Setup-Reproduktion "]
+        SKILL["skills/setup-ki-agent<br/>autonomer Bootstrap"]:::skill
+        APPLY["APPLY.md<br/>8 Setup-Schritte + Verify"]:::core
+        SKILL -->|liest & führt aus| APPLY
+    end
+
+    subgraph INSTR[" instructions/ — Cross-Client-Regeln "]
+        AGENTS["AGENTS.md<br/>neutrale Basis"]:::doc
+        CLAUDE["CLAUDE.md<br/>Claude-Delta"]:::doc
+        CLAUDE -->|@import| AGENTS
+    end
+
+    SKILLS["SKILLS.md<br/>Skill-Inventar + Quellen"]:::doc
+    TOOLS(["~/.claude<br/>Plugins · GSD · caveman · Hooks · Statusline"]):::target
+
+    subgraph HARN[" harness/ — Dev-Workflow (PHP/Slim) "]
+        HREADME["README.md"]:::doc
+        ROADMAP["ROADMAP.md<br/>5 Phasen"]:::doc
+        GUARD["GUARDRAILS.md<br/>harte Regeln"]:::doc
+        SPECW["SPEC_WORKFLOW.md"]:::doc
+        FEATT["FEATURE_TEMPLATE.md"]:::doc
+        TESTS["TESTS.md"]:::doc
+        LOOP["AGENT_LOOP.md"]:::doc
+        FEAT["feature.md<br/>Runbook"]:::doc
+        HREADME --> ROADMAP & GUARD & SPECW
+        SPECW --> FEATT
+        LOOP --> GUARD & TESTS & SPECW
+        FEAT --> LOOP & FEATT & TESTS
+    end
+
+    README -.Einstieg.-> SKILL
+    APPLY -->|deployt| INSTR
+    APPLY -->|installiert| TOOLS
+    APPLY -->|stellt wieder her| SKILLS
+    APPLY -.optional ins Projekt.-> HREADME
+    SKILL -.optional.-> HREADME
+
+    classDef core fill:#1f6feb,stroke:#0d419d,color:#fff;
+    classDef skill fill:#8957e5,stroke:#6e40c9,color:#fff;
+    classDef doc fill:#21262d,stroke:#8b949e,color:#e6edf3;
+    classDef target fill:#238636,stroke:#196c2e,color:#fff;
+```
+
+`APPLY.md` ist die Drehscheibe: Der Bootstrap-Skill liest sie, sie deployt die
+`instructions/`, installiert die Tools nach `~/.claude` und stellt die Skills
+wieder her. Das `harness/` ist davon unabhängig — es wird bei Bedarf in ein
+Entwicklungsprojekt übernommen.
+
+---
+
 ## Was das Setup macht
 
 Claude Code wird zu einem strukturierten Entwicklungs-Agenten erweitert:

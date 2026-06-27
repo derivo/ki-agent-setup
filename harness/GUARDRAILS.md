@@ -78,3 +78,28 @@ Menschen.** Der Agent bereitet vor, der Mensch gibt frei. Wie weit Autonomie
 reicht, ist risikoabhängig: je sensibler Daten/Domäne, desto später der Punkt, an
 dem ohne Mitlesen freigegeben wird (siehe [ROADMAP.md](ROADMAP.md), Phase 5).
 Deploy-Ziele/-Besonderheiten: Stack-Adapter.
+
+---
+
+## E. Security-Pass (vor jeder Fertig-Meldung)
+
+LLM-generierter Code ist überdurchschnittlich oft verwundbar. Das mechanische Gate
+(Abschnitt C) fängt das **nicht** zuverlässig — deshalb ist ein bewusster
+Security-Pass Pflicht, bevor "fertig" gilt. Bei nicht-trivialen Änderungen als
+eigene Lens im [Review-Panel](REVIEW_PANEL.md), mindestens aber als Selbstcheck.
+
+### Regel 4 — Geprüfte Mindest-Checkliste
+- **Injection:** Jede Nutzereingabe, die in SQL/Shell/Pfad/HTML/Template fließt,
+  ist parametrisiert/escaped — nie per String-Konkatenation.
+- **Secrets:** Keine Credentials/Keys/Tokens im Code, in Logs oder im Diff —
+  nur aus `.env`/Secret-Store (deckt sich mit Regel 3).
+- **Authz/Authn:** Jeder Einstiegspunkt, der geschützte Daten/Aktionen berührt,
+  prüft Berechtigung explizit — keine impliziten "ist eh eingeloggt".
+- **Unsichere Defaults:** Keine deaktivierte Zertifikatsprüfung, kein `eval`/
+  dynamische Deserialisierung auf Nutzerdaten, keine offenen CORS-/Debug-Flags in
+  Produktionspfaden.
+- **Abhängigkeiten:** Neue Dependency bewusst gewählt (Zweck, Pflege, Herkunft) —
+  nicht blind hinzugefügt.
+
+Findet der Pass etwas, gilt dieselbe Regel wie beim Gate: Ursache fixen, nicht
+verstecken. Stack-spezifische Tools (SAST, Secret-Scanner) nennt der Adapter.

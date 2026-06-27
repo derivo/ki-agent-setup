@@ -24,5 +24,6 @@ komprimieren.
 
 ## Skills
 
-Nicht-GSD/caveman-Skills (Web, Testing, PHP, Security …) sind installiert; siehe
-`../SKILLS.md`. Bei passender Aufgabe den jeweiligen Skill nutzen.
+Nicht-GSD/caveman-Skills (Web, Testing, PHP, Security …) sind installiert.
+Quelle der Wahrheit ist `~/.agents/.skill-lock.json`; das Repo-Inventar heißt
+`SKILLS.md`. Bei passender Aufgabe den jeweiligen Skill nutzen.

@@ -25,5 +25,5 @@ richtige Ziel. Kein neues Silo: pro Erkenntnis genau **ein** Ziel.
 
 5. **Kurzbericht**: was gesichert wurde + wohin, und was bewusst verworfen wurde.
 
-Verwandt: `/hot-reload` (Memory sichern vor `/clear`) — `/retro` ist die
+Verwandt: `/hx:hot-reload` (Memory sichern vor `/clear`) — `/hx:retro` ist die
 reflektierte, routende Variante.

@@ -61,6 +61,6 @@ parallel:  [Korrektheit]  [Security]  [Performance]   ◄─ je 1 Subagent, isol
   Regel offenlegt, wird sie ergänzt (Harness Correction).
 
 ## Aufruf
-Per [`commands/review.md`](commands/README.md) (`/review`) oder direkt im Loop vor
+Per [`commands/review.md`](commands/README.md) (`/hx:review`) oder direkt im Loop vor
 der Fertig-Meldung. Bei großen Batch-Änderungen können die Lens-Agents in
 isolierten Worktrees laufen, jeder testet E2E vor dem Zusammenführen.

@@ -175,8 +175,9 @@ flowchart TD
 ```
 
 `APPLY.md` is the hub: the bootstrap skill reads it, it deploys the
-`instructions/` **and** the [`harness/`](harness/README.md) globally into
-`~/.claude/`, installs the tools, and restores the skills. The `harness/` is the
+`instructions/` **and** the [`harness/`](harness/README.md) globally into the
+client config directories (`~/.claude/`, `~/.codex/`, `~/.gemini/`), installs the
+tools, and restores the skills. The `harness/` is the
 **general** software-development workflow (stack-agnostic); concrete stack details
 live as adapters under `harness/stacks/` (e.g.
 [`stacks/php`](harness/stacks/php/README.md) for PHP web + DB). Alongside it,
@@ -188,7 +189,7 @@ projects.
 ## Sources
 
 ### Tools & plugins
-- GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, install `npx @opengsd/gsd-core@latest` (predecessor `gsd-build/get-shit-done` archived)
+- GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, install pin in `APPLY.md` (predecessor `gsd-build/get-shit-done` archived)
 - caveman: https://github.com/JuliusBrussee/caveman
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 
@@ -211,4 +212,3 @@ projects.
 - Agent Skills (Anthropic): https://docs.claude.com/en/docs/claude-code/skills
 - Andrej Karpathy — guidelines (LLM coding pitfalls): https://github.com/multica-ai/andrej-karpathy-skills
   · original tweet: https://x.com/karpathy/status/2015883857489522876
-

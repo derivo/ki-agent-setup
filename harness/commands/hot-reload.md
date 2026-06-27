@@ -1,7 +1,7 @@
 Hot-Reload der Session — erst Lehren routen, dann Zustand sichern, dann sauber neu
 starten. Strikt in dieser Reihenfolge:
 
-1. **Lehren routen** — zuerst `/retro` ausführen: Erkenntnisse dieser Session
+1. **Lehren routen** — zuerst `/hx:retro` ausführen: Erkenntnisse dieser Session
    klassifizieren und ans richtige Ziel routen (Harness-Regel / Projekt-Memory /
    Referenz / TheBrain). Verhindert, dass „wie-wir-arbeiten"-Wissen beim Reset
    verloren geht.
@@ -13,5 +13,5 @@ starten. Strikt in dieser Reihenfolge:
 4. **Hinweis** — dem User sagen, jetzt `/clear` auszuführen. Settings werden frisch
    eingelesen, alle Memory-Einträge sind in der neuen Session verfügbar.
 
-Unterschied zu `/retro`: `/retro` extrahiert nur die Lehren (Wissen sichern).
-`/hot-reload` macht das **plus** Zustand sichern und Reset vorbereiten (Continuity).
+Unterschied zu `/hx:retro`: `/hx:retro` extrahiert nur die Lehren (Wissen sichern).
+`/hx:hot-reload` macht das **plus** Zustand sichern und Reset vorbereiten (Continuity).

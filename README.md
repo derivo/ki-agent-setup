@@ -176,8 +176,9 @@ flowchart TD
 ```
 
 `APPLY.md` ist die Drehscheibe: Der Bootstrap-Skill liest sie, sie deployt die
-`instructions/` **und** das [`harness/`](harness/README.md) global nach
-`~/.claude/`, installiert die Tools und stellt die Skills wieder her. Das
+`instructions/` **und** das [`harness/`](harness/README.md) global in die
+Client-Config-Verzeichnisse (`~/.claude/`, `~/.codex/`, `~/.gemini/`), installiert
+die Tools und stellt die Skills wieder her. Das
 `harness/` ist der **generelle** Software-Entwicklungs-Workflow (stack-agnostisch);
 konkrete Stack-Details liegen als Adapter unter `harness/stacks/` (z. B.
 [`stacks/php`](harness/stacks/php/README.md) für PHP-Web + DB). Daneben gibt es
@@ -188,7 +189,7 @@ das [`doc-harness/`](doc-harness/README.md) als Workflow für **Doku**-Projekte.
 ## Quellen
 
 ### Tools & Plugins
-- GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install `npx @opengsd/gsd-core@latest` (Vorgänger `gsd-build/get-shit-done` archiviert)
+- GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install-Pin siehe `APPLY.md` (Vorgänger `gsd-build/get-shit-done` archiviert)
 - caveman: https://github.com/JuliusBrussee/caveman
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 

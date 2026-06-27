@@ -12,26 +12,27 @@ Commands müssen in einem von Claude Code gescannten Verzeichnis liegen:
 - **Global:** `~/.claude/commands/` → überall aufrufbar.
 - **Projekt:** `<repo>/.claude/commands/` → nur im Projekt.
 
-Aufruf als `/<name>`. Bei Namenskollision mit bestehenden Commands (z. B. `review`,
-`verify` existieren ggf. schon) entweder umbenennen oder in einen Unterordner
-legen (`commands/hx/commit.md` → `/hx:commit`).
+Aufruf als `/<name>`. Empfohlen ist ein Namespace, weil `review`/`verify` mit
+Built-ins kollidieren können: `commands/hx/commit.md` → `/hx:commit`.
 
 ```bash
-# global deployen (Beispiel)
-cp harness/commands/*.md ~/.claude/commands/
+# global deployen (empfohlen)
+mkdir -p ~/.claude/commands/hx
+rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
+rm -f ~/.claude/commands/hx/README.md
 ```
 
 ## Commands
 
 | Command | Zweck | Bindet an |
 |---|---|---|
-| [`/spec`](spec.md) | Idee → geschärfte, testbare Feature-Spec | SPEC_WORKFLOW, FEATURE_TEMPLATE |
-| [`/review`](review.md) | Multi-Agent-Review-Panel über den Diff | REVIEW_PANEL |
-| [`/verify`](verify.md) | App wirklich starten, Verhalten end-to-end beobachten | TESTS, GUARDRAILS C |
-| [`/commit`](commit.md) | Pre-Commit-Check + atomarer, konventioneller Commit | GUARDRAILS, Pre-Commit-Check |
-| [`/pr`](pr.md) | PR vorbereiten: Gate grün, AC-Abdeckung, Branch/PR | AGENT_LOOP, feature.md |
-| [`/retro`](retro.md) | Session-Rückblick: Gelerntes klassifizieren + ans richtige Ziel routen | SELF_OPTIMIZATION, Memory/GSD/TheBrain |
-| [`/hot-reload`](hot-reload.md) | `/retro` + Zustand sichern + `/clear`-Reset vorbereiten | retro.md |
+| [`/hx:spec`](spec.md) | Idee → geschärfte, testbare Feature-Spec | SPEC_WORKFLOW, FEATURE_TEMPLATE |
+| [`/hx:review`](review.md) | Multi-Agent-Review-Panel über den Diff | REVIEW_PANEL |
+| [`/hx:verify`](verify.md) | App wirklich starten, Verhalten end-to-end beobachten | TESTS, GUARDRAILS C |
+| [`/hx:commit`](commit.md) | Pre-Commit-Check + atomarer, konventioneller Commit | GUARDRAILS, Pre-Commit-Check |
+| [`/hx:pr`](pr.md) | PR vorbereiten: Gate grün, AC-Abdeckung, Branch/PR | AGENT_LOOP, feature.md |
+| [`/hx:retro`](retro.md) | Session-Rückblick: Gelerntes klassifizieren + ans richtige Ziel routen | SELF_OPTIMIZATION, Memory/GSD/TheBrain |
+| [`/hx:hot-reload`](hot-reload.md) | `/hx:retro` + Zustand sichern + `/clear`-Reset vorbereiten | retro.md |
 
 > `README.md` (diese Datei) ist Doku, **kein** Command — beim Deployen nach
 > `~/.claude/commands/` ausschließen.

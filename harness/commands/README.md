@@ -19,8 +19,11 @@ Built-ins kollidieren können: `commands/hx/commit.md` → `/hx:commit`.
 # global deployen (empfohlen)
 mkdir -p ~/.claude/commands/hx
 rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
-rm -f ~/.claude/commands/hx/README.md
 ```
+
+> `--delete` ist destruktiv: `~/.claude/commands/hx/` ist ein repo-owned Mirror,
+> alles dort Fremde wird gelöscht. Vor erstem Sync auf vorhandene Daten prüfen —
+> siehe Guardrail in [`APPLY.md`](../../APPLY.md) Schritt 7c.
 
 ## Commands
 

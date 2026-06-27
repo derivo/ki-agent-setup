@@ -30,7 +30,10 @@ den Fehler erst im Gate zu fangen.
 Wenn der Agent fertig sein WILL, läuft das Gate-Kommando des Stacks. Ist es rot,
 ist die Aufgabe nicht erledigt — der Agent arbeitet weiter, bis es grün ist. Das
 macht "du bewertest deine Arbeit nicht selbst" mechanisch (Details: GUARDRAILS.md,
-Abschnitt C).
+Abschnitt C). Bei nicht-trivialen Änderungen kommt vor der Fertig-Meldung das
+[Review-Panel](REVIEW_PANEL.md) dazu (Korrektheit/Security/Performance, parallel +
+adversarial) plus der Security-Pass (GUARDRAILS.md, Abschnitt E) — das mechanische
+Gate allein fängt Logik- und Sicherheitslücken nicht zuverlässig.
 
 ## Der Ablauf als Bild
 

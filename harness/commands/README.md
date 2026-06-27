@@ -30,6 +30,7 @@ cp harness/commands/*.md ~/.claude/commands/
 | [`/verify`](verify.md) | App wirklich starten, Verhalten end-to-end beobachten | TESTS, GUARDRAILS C |
 | [`/commit`](commit.md) | Pre-Commit-Check + atomarer, konventioneller Commit | GUARDRAILS, Pre-Commit-Check |
 | [`/pr`](pr.md) | PR vorbereiten: Gate grün, AC-Abdeckung, Branch/PR | AGENT_LOOP, feature.md |
+| [`/retro`](retro.md) | Session-Rückblick: Gelerntes klassifizieren + ans richtige Ziel routen | SELF_OPTIMIZATION, Memory/GSD/TheBrain |
 
 Diese Commands referenzieren die Harness-Dateien (global unter
 `~/.claude/harness/`). Neue Commands nach demselben Muster ergänzen: kurz,

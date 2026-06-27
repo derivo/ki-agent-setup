@@ -14,6 +14,108 @@ the configuration itself from [`APPLY.md`](APPLY.md).
 
 ---
 
+## Usage
+
+```bash
+git clone git@github.com:derivo/ki-agent-setup.git
+```
+
+Then in the AI client:
+
+> Read `APPLY.md` and apply the setup to this machine.
+
+Or use the autonomous bootstrap skill
+([`skills/setup-ki-agent/SKILL.md`](skills/setup-ki-agent/SKILL.md)) — it
+orchestrates the whole setup from `APPLY.md` on its own. Make it available once:
+
+```bash
+ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
+```
+
+Change the setup → edit `APPLY.md`, commit, pull on other machines.
+
+---
+
+## What the setup does
+
+The setup turns an AI coding client into a structured development agent. It has
+two layers:
+
+**Client-neutral** — applies to any agent (Claude Code, Codex, Cursor, Gemini …):
+- Layered working rules following the [AGENTS.md](https://agents.md) standard
+  ([`instructions/`](instructions/)): neutral base (`AGENTS.md`) + client deltas
+  — German output, think-before-coding, simplicity-first, surgical changes,
+  honesty/verification discipline, mandatory edge-case testing.
+- [`harness/`](harness/README.md) — general, stack-agnostic software-development
+  workflow (spec → test → code → gate, self-optimization).
+- [`doc-harness/`](doc-harness/README.md) — workflow for documentation projects.
+- **GSD (get-shit-done)** — phase/roadmap workflow, single source of truth; the
+  installer supports multiple runtimes.
+- **Skills** — installable cross-client via the `skills` CLI
+  ([`SKILLS.md`](SKILLS.md)).
+
+**Claude-Code-specific** — the plumbing that wires it into Claude Code:
+- **caveman** — token-compressed communication (~75 % fewer tokens).
+- **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
+  Claude Code mechanisms.
+
+Accordingly, [`APPLY.md`](APPLY.md) is primarily tailored to Claude Code
+(`claude plugin …`, `~/.claude/`); the client-neutral layer is additionally rolled
+out to other clients (step 7 → `~/.codex/`, `~/.gemini/` …).
+
+---
+
+## Installed extensions
+
+| Tool | Source | Type | Purpose |
+|---|---|---|---|
+| **GSD (get-shit-done)** | own installer → `~/.claude/get-shit-done` | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
+| **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra |
+
+Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
+
+### Additional skills (not from GSD/caveman)
+
+Separately installed skills (web, testing, PHP, security …), managed by a skill
+manager with the lockfile `~/.agents/.skill-lock.json`. Full inventory with the
+GitHub source per skill: [`SKILLS.md`](SKILLS.md).
+
+---
+
+## Statusline layout
+
+Custom statusline via `~/.claude/hooks/gsd-statusline.js` (GSD Edition).
+Layout, top to bottom (target structure, aligned with the real output):
+
+```
+[GSD update warning]                                       (optional, only on update/stale hooks)
+model (context window) │ [context meter] <used>%  │  <N> cached
+[5h limit] <used>% - HH:MM  │  [weekly limit] <used>% - day HH:MM  │  $<session cost>
+full path │ git branch                                     (dim)
+<GSD version> [milestone bar] <used>% · <GSD state/phase> │ dirname  [│ last: /command]
+```
+
+Example (project `grouphero`):
+```
+Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
+[▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Tue 21:00  │  $225
+/Users/dennis/code/grouphero │ main
+v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ grouphero
+```
+
+Properties:
+- Row 1: model + context meter (used share, color-coded) + cached tokens.
+- Row 2: 5-hour rate limit and weekly limit (each `used% - reset`) + session cost in `$`.
+- Row 3: full path + git branch (directly from `.git/HEAD`, no subprocess, worktree-aware).
+- Row 4: GSD milestone version + progress bar + GSD state/phase + dirname; reads
+  `.planning/STATE.md` + `.planning/config.json` walking up the hierarchy.
+  Optional `last: /command` suffix when enabled in config.
+- Fails silently on any error — never breaks the statusline.
+- The bottom terminal line (`bypass permissions on …`) is **Claude Code native**,
+  not part of this script.
+
+---
+
 ## How the files work together
 
 ```mermaid
@@ -75,108 +177,6 @@ projects.
 
 ---
 
-## What the setup does
-
-The setup turns an AI coding client into a structured development agent. It has
-two layers:
-
-**Client-neutral** — applies to any agent (Claude Code, Codex, Cursor, Gemini …):
-- Layered working rules following the [AGENTS.md](https://agents.md) standard
-  ([`instructions/`](instructions/)): neutral base (`AGENTS.md`) + client deltas
-  — German output, think-before-coding, simplicity-first, surgical changes,
-  honesty/verification discipline, mandatory edge-case testing.
-- [`harness/`](harness/README.md) — general, stack-agnostic software-development
-  workflow (spec → test → code → gate, self-optimization).
-- [`doc-harness/`](doc-harness/README.md) — workflow for documentation projects.
-- **GSD (get-shit-done)** — phase/roadmap workflow, single source of truth; the
-  installer supports multiple runtimes.
-- **Skills** — installable cross-client via the `skills` CLI
-  ([`SKILLS.md`](SKILLS.md)).
-
-**Claude-Code-specific** — the plumbing that wires it into Claude Code:
-- **caveman** — token-compressed communication (~75 % fewer tokens).
-- **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
-  Claude Code mechanisms.
-
-Accordingly, [`APPLY.md`](APPLY.md) is primarily tailored to Claude Code
-(`claude plugin …`, `~/.claude/`); the client-neutral layer is additionally rolled
-out to other clients (step 7 → `~/.codex/`, `~/.gemini/` …).
-
----
-
-## Statusline layout
-
-Custom statusline via `~/.claude/hooks/gsd-statusline.js` (GSD Edition).
-Layout, top to bottom (target structure, aligned with the real output):
-
-```
-[GSD update warning]                                       (optional, only on update/stale hooks)
-model (context window) │ [context meter] <used>%  │  <N> cached
-[5h limit] <used>% - HH:MM  │  [weekly limit] <used>% - day HH:MM  │  $<session cost>
-full path │ git branch                                     (dim)
-<GSD version> [milestone bar] <used>% · <GSD state/phase> │ dirname  [│ last: /command]
-```
-
-Example (project `grouphero`):
-```
-Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
-[▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Tue 21:00  │  $225
-/Users/dennis/code/grouphero │ main
-v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ grouphero
-```
-
-Properties:
-- Row 1: model + context meter (used share, color-coded) + cached tokens.
-- Row 2: 5-hour rate limit and weekly limit (each `used% - reset`) + session cost in `$`.
-- Row 3: full path + git branch (directly from `.git/HEAD`, no subprocess, worktree-aware).
-- Row 4: GSD milestone version + progress bar + GSD state/phase + dirname; reads
-  `.planning/STATE.md` + `.planning/config.json` walking up the hierarchy.
-  Optional `last: /command` suffix when enabled in config.
-- Fails silently on any error — never breaks the statusline.
-- The bottom terminal line (`bypass permissions on …`) is **Claude Code native**,
-  not part of this script.
-
----
-
-## Installed extensions
-
-| Tool | Source | Type | Purpose |
-|---|---|---|---|
-| **GSD (get-shit-done)** | own installer → `~/.claude/get-shit-done` | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
-| **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra |
-
-Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
-
-### Additional skills (not from GSD/caveman)
-
-Separately installed skills (web, testing, PHP, security …), managed by a skill
-manager with the lockfile `~/.agents/.skill-lock.json`. Full inventory with the
-GitHub source per skill: [`SKILLS.md`](SKILLS.md).
-
----
-
-## Usage
-
-```bash
-git clone git@github.com:derivo/ki-agent-setup.git
-```
-
-Then in the AI client:
-
-> Read `APPLY.md` and apply the setup to this machine.
-
-Or use the autonomous bootstrap skill
-([`skills/setup-ki-agent/SKILL.md`](skills/setup-ki-agent/SKILL.md)) — it
-orchestrates the whole setup from `APPLY.md` on its own. Make it available once:
-
-```bash
-ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
-```
-
-Change the setup → edit `APPLY.md`, commit, pull on other machines.
-
----
-
 ## Sources
 
 ### Tools & plugins
@@ -203,3 +203,4 @@ Change the setup → edit `APPLY.md`, commit, pull on other machines.
 - Agent Skills (Anthropic): https://docs.claude.com/en/docs/claude-code/skills
 - Andrej Karpathy — guidelines (LLM coding pitfalls): https://github.com/multica-ai/andrej-karpathy-skills
   · original tweet: https://x.com/karpathy/status/2015883857489522876
+

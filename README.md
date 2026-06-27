@@ -157,7 +157,7 @@ mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 ## Nutzung
 
 ```bash
-git clone git@github.com:derivo/ki-agents-parts.git
+git clone git@github.com:derivo/ki-agent-setup.git
 ```
 
 Dann im KI-Client:

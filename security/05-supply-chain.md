@@ -5,8 +5,8 @@
 MCP-Server stehen ohne Authentifizierung offen im Netz. Jeder Skill/MCP-Server
 läuft mit den Rechten des Agenten — das ist Angriffsfläche.
 
-Du hast **28 Skills aus zufälligen GitHub-Repos** + mehrere MCP-Server → das ist
-hier konkret relevant.
+Sobald Skills aus diversen GitHub-Repos und mehrere MCP-Server im Einsatz sind,
+ist das konkret relevant.
 
 ## Regeln für neue Erweiterungen
 - **Herkunft prüfen** vor Installation: offizielles/reputables Repo? Aktiv

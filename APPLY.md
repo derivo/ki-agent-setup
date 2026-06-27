@@ -51,10 +51,8 @@ lokal ab. Dateien **nicht** von Hand aus `agents/`/`commands/` kopieren — der
 Installer ist für Cross-Runtime-Kompatibilität nötig.
 
 Hinweis: Das frühere Upstream-Repo `gsd-build/get-shit-done` ist archiviert;
-Nachfolger ist `open-gsd/gsd-core` (npm `@opengsd/gsd-core`). Eine bestehende
-Installation aktualisiert der `gsd-update`-Skill. Versions-Lineage: ältere
-Installationen tragen `1.42.x` (altes `get-shit-done`), aktueller Upstream nutzt
-ein eigenes Schema — funktional gleichwertig, nicht byte-identisch.
+Nachfolger ist `open-gsd/gsd-core` (npm `@opengsd/gsd-core`). Updates über den
+`gsd-update`-Skill.
 
 **Verify:**
 - `~/.claude/hooks/gsd-statusline.js` existiert.
@@ -87,18 +85,16 @@ Alle Hook-Skripte liegen in `~/.claude/hooks/`. In `settings.json` registrieren
 - **UserPromptSubmit:** `caveman-mode-tracker.js`
 - **PreToolUse** (`Write|Edit`): `gsd-prompt-guard.js`, `gsd-read-guard.js`, `gsd-workflow-guard.js`
   — (`Bash`): `gsd-validate-commit.sh`
-- **PostToolUse:** `audit-log.js`; (`Bash|Edit|Write|MultiEdit|Agent|Task`) `gsd-context-monitor.js`;
+- **PostToolUse:** (`Bash|Edit|Write|MultiEdit|Agent|Task`) `gsd-context-monitor.js`;
   (`Read`) `gsd-read-injection-scanner.js`; (`Write|Edit`) `gsd-phase-boundary.sh`
 
 Die `gsd-*`-Hooks kommen aus dem GSD-Installer (Schritt 3), die `caveman-*`-Hooks
 aus dem caveman-Plugin (Schritt 2) bzw. werden vom Plugin selbst registriert.
-`audit-log.js` ist ein lokaler Eigenbau-Hook (PostToolUse-Audit-Trail nach
-`~/.claude/audit.log.jsonl`) — auf einer frischen Maschine entweder mitbringen
-oder den Eintrag weglassen, kein GSD/caveman-Bestandteil.
+Einen optionalen Audit-Trail-Hook (PostToolUse) kann man ergänzen — siehe
+[`security/`](security/README.md).
 
-Node-Pfad: Die GSD-Hooks tragen real den absoluten Pfad `/opt/homebrew/bin/node`
-(vom Installer gesetzt), die caveman-/Statusline-Hooks bloßes `node`. Auf der
-Zielmaschine den absoluten Node-Pfad einsetzen, wenn Hooks ohne PATH laufen.
+Node-Pfad: Laufen Hooks ohne PATH, den absoluten Node-Pfad eintragen
+(`command -v node` liefert ihn) statt bloßes `node`.
 
 **Verify:** Neue Session zeigt caveman-Aktivierung und GSD-Update-Check.
 
@@ -124,9 +120,6 @@ Folgende Top-Level-Keys setzen (mit bestehenden mergen):
 `permissions.allow` ist maschinen-/projektspezifisch (Tool-Allowlist) — **nicht**
 aus diesem Repo übernehmen, sondern auf der Zielmaschine organisch wachsen lassen.
 
-Hinweis: Ein real evtl. zusätzlich vorhandenes `voiceEnabled: true` ist
-Legacy/redundant zu `voice` — nicht doppelt pflegen.
-
 **Verify:** `claude` startet auf Deutsch, Thinking aktiv, dark-ansi-Theme.
 
 ---
@@ -141,15 +134,13 @@ Die portablen Anweisungen liegen geschichtet in [`instructions/`](instructions/)
 
 Deployment (Details + andere Clients: `instructions/README.md`):
 - **Claude Code:** beide Dateien nach `~/.claude/` kopieren (`AGENTS.md` +
-  `CLAUDE.md`). Bestehende `~/.claude/CLAUDE.md` mergen, nicht blind
+  `CLAUDE.md`). Falls dort schon eine `CLAUDE.md` liegt, mergen statt blind
   überschreiben.
 - **Codex CLI:** `instructions/AGENTS.md` nach `~/.codex/AGENTS.md` kopieren/symlinken.
 - **Gemini CLI:** bei Bedarf `~/.gemini/GEMINI.md` aus der Basis ableiten.
 
 Der `@AGENTS.md`-Import funktioniert nur, wenn **beide** Dateien im selben
-Verzeichnis liegen (`~/.claude/AGENTS.md` + `~/.claude/CLAUDE.md`). Dies ist der
-Soll-Zustand — eine bestehende Maschine kann eine ältere, nicht-geschichtete
-`CLAUDE.md` ohne `AGENTS.md` haben; beim Anwenden mergen statt überschreiben.
+Verzeichnis liegen (`~/.claude/AGENTS.md` + `~/.claude/CLAUDE.md`).
 
 **Verify:** `~/.claude/AGENTS.md` **und** `~/.claude/CLAUDE.md` existieren,
 `CLAUDE.md` importiert `AGENTS.md`, Inhalt deckt Arbeitsweise + Claude-Spezifika ab.
@@ -160,7 +151,7 @@ Soll-Zustand — eine bestehende Maschine kann eine ältere, nicht-geschichtete
 
 Vollständiges Inventar mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 Diese Skills werden über einen Skill-Manager verwaltet (Lockfile
-`~/.agents/.skill-lock.json`, Version 3) und nach `~/.claude/skills/` verlinkt.
+`~/.agents/.skill-lock.json`) und nach `~/.claude/skills/` verlinkt.
 
 Skill-Manager ist die `skills`-CLI (`vercel-labs/skills`, Registry
 [skills.sh](https://skills.sh)) — kein Setup nötig, läuft via `npx`.

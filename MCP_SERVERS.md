@@ -22,7 +22,7 @@ Für PHP/Laravel + MySQL/MariaDB + Docker.
 | **dbhub** (Datenbank) | [bytebase/dbhub](https://github.com/bytebase/dbhub) (★3k) | MySQL/MariaDB/Postgres/SQL Server abfragen — Schema, Tabellen, Queries. Zero-dependency, **read-only by default**. |
 | **Docker MCP** | [ckreiling/mcp-server-docker](https://github.com/ckreiling/mcp-server-docker) (★723) | Container inspizieren, **Logs streamen**, compose verwalten — passt zur Docker-Dev-Umgebung. Deckt auch „Logs analysieren" für Container ab. |
 
-> **Docker-MCP-Setup (getestet, macOS/Docker-Desktop):** läuft via `uvx
+> **Docker-MCP-Setup (macOS/Docker-Desktop):** läuft via `uvx
 > mcp-server-docker` (braucht `uv`: `brew install uv`). Docker Desktop hat **kein**
 > `/var/run/docker.sock` → `DOCKER_HOST` auf den realen Socket setzen, sonst
 > „Failed to connect":

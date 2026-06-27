@@ -15,7 +15,7 @@ kombinieren**: was rausgeht, wird auf Secrets/sensible Inhalte geprüft (siehe
 [03 DLP](03-request-proxy.md)).
 
 ## Umsetzung
-- **In der VM/Sandbox** (du hast Tart-Dev-VMs): Firewall-Regeln am VM-Gateway,
+- **In einer VM/Sandbox** (falls vorhanden): Firewall-Regeln am VM-Gateway,
   default-deny, nur Allowlist offen. Der saubere Ort dafür — der autonome Lauf
   passiert ohnehin isoliert ([06-sandbox.md](06-sandbox.md)).
 - **Claude Code Sandbox-Bash:** Netzwerk-Isolation aktiv; Netzzugriff nur über den

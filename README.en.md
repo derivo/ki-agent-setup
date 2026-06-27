@@ -103,12 +103,12 @@ full path │ git branch                                     (dim)
 <GSD version> [milestone bar] <used>% · <GSD state/phase> │ dirname  [│ last: /command]
 ```
 
-Example (project `grouphero`):
+Example:
 ```
 Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
 [▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Tue 21:00  │  $225
-/Users/dennis/code/grouphero │ main
-v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ grouphero
+/Users/you/code/myproject │ main
+v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ myproject
 ```
 
 Properties:

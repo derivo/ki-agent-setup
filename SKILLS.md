@@ -5,7 +5,7 @@ des Setups. Sie werden über einen Skill-Manager verwaltet, dessen Lockfile unte
 `~/.agents/.skill-lock.json` liegt und nach `~/.claude/skills/` verlinkt/kopiert.
 Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 
-> Sync-Quelle der Wahrheit: `~/.agents/.skill-lock.json` (Version 3). Wer das
+> Sync-Quelle der Wahrheit: `~/.agents/.skill-lock.json`. Wer das
 > Setup neu aufbaut, stellt die Skills aus diesem Lockfile wieder her oder
 > installiert sie einzeln aus den unten genannten Repos.
 

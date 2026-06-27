@@ -2,7 +2,7 @@
 
 **Schützt vor:** zerstörerischen oder gefährlichen Tool-Aufrufen, **bevor** sie
 laufen — `rm -rf`, `git push --force`, `eval`, Schreiben von Secrets, offensichtliche
-Injection-Muster. Unser `audit-log.js` schreibt nur mit (passiv); diese Kontrolle
+Injection-Muster. Ein Audit-Log-Hook schreibt nur mit (passiv); diese Kontrolle
 **blockt** (aktiv).
 
 ## Mechanik
@@ -29,7 +29,7 @@ Bei Unsicherheit blocken/zur manuellen Freigabe zwingen, nicht durchlassen.
    (★2) — vor Einsatz Code reviewen (ein Security-Hook hat vollen Tool-Input-
    Zugriff; ungeprüft einzubinden widerspricht [05](05-supply-chain.md)).
 
-## Verhältnis zu bestehenden Hooks
+## Verhältnis zu den GSD-Hooks
 Ergänzt `gsd-validate-commit` (Commit-Zeitpunkt) und `gsd-prompt-guard` um eine
 generische Gefahren-Blockade auf Tool-Ebene. Reihenfolge: erst blocken (dieser
-Hook), dann loggen (`audit-log.js`).
+Hook), dann loggen (Audit-Hook).

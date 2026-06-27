@@ -80,6 +80,14 @@ Separately installed skills (web, testing, PHP, security …), managed by a skil
 manager with the lockfile `~/.agents/.skill-lock.json`. Full inventory with the
 GitHub source per skill: [`SKILLS.md`](SKILLS.md).
 
+### MCP servers & security
+
+- **MCP servers** — curated, security-conscious recommendations (context7, GitHub,
+  Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md).
+- **Security** — hardening layer around the agent (secret scanning, tool block
+  hook, logging proxy, egress, supply chain, sandbox, prompt injection):
+  [`security/`](security/README.md).
+
 ---
 
 ## Statusline layout

@@ -29,7 +29,7 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 - Bestehenden Stand erfassen: `~/.claude/settings.json`, `claude plugin list`,
   vorhandene `~/.claude/CLAUDE.md`. **Nicht** blind überschreiben — mergen.
 
-### 2. Setup anwenden (APPLY.md, Schritt 1–8)
+### 2. Setup anwenden (APPLY.md vollständig, inkl. 7b/7c)
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
 Verify-Kriterium, bevor du weitergehst:
 1. Marketplaces registrieren.
@@ -38,8 +38,11 @@ Verify-Kriterium, bevor du weitergehst:
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
 5. Hooks eintragen (GSD-Guards, caveman-Aktivierung).
 6. Globale Settings setzen (Deutsch, Thinking, effort high, Theme …).
-7. Globale `CLAUDE.md` sicherstellen.
-8. Abschluss-Verifikation.
+7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`) sicherstellen.
+8. Zusätzliche Nicht-GSD/caveman-Skills nach `SKILLS.md`/Lockfile herstellen.
+9. Harness und optional doc-harness client-übergreifend hinterlegen; Claude-
+   Commands unter `/hx:*` deployen.
+10. Abschluss-Verifikation.
 
 `permissions.allow` **nicht** aus dem Repo übernehmen — maschinenspezifisch, wächst
 organisch (steht so in APPLY.md).

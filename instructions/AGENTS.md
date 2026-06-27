@@ -105,10 +105,12 @@ Bei Abbruch / Token-Ende: State-Files lesen, nahtlos fortsetzen. Projekte ohne
 
 Bei Feature-/Code-Arbeit nach dem **Harness** entwickeln: Spec → Test → Code →
 Gate → Korrektur, mit selbst-erzwungenen Guardrails und mechanischem
-Fertig-Kriterium. Das Harness ist global hinterlegt — Einstieg und Methode:
-`~/.claude/harness/README.md`, dann den passenden Stack-Adapter unter
-`~/.claude/harness/stacks/` wählen. (Dokumentarisch, kein Zwang per Hook — der
-Agent wendet es selbst an.)
+Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg und Methode in
+dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
+`~/.claude/harness/README.md`, `~/.codex/harness/README.md`,
+`~/.gemini/harness/README.md`, sonst `harness/README.md` im ki-agents-Repo. Danach
+den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
+(Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
 ## Testing — Pflichtstandard Edge Cases
 

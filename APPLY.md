@@ -42,9 +42,9 @@ GSD ist **kein** Marketplace-Plugin, sondern ein eigener Installer.
 Liegt unter `~/.claude/get-shit-done/` und liefert Hooks (`gsd-*`),
 Skills/Commands (`gsd-*`, `gsd:*`) und die Statusline.
 
-Installer ausführen:
+Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-06-27: `1.6.0`):
 ```bash
-npx @opengsd/gsd-core@latest
+npx @opengsd/gsd-core@1.6.0
 ```
 Der Installer fragt Runtime (Claude Code, Codex, Gemini, Cursor …) und global vs.
 lokal ab. Dateien **nicht** von Hand aus `agents/`/`commands/` kopieren — der
@@ -52,7 +52,7 @@ Installer ist für Cross-Runtime-Kompatibilität nötig.
 
 Hinweis: Das frühere Upstream-Repo `gsd-build/get-shit-done` ist archiviert;
 Nachfolger ist `open-gsd/gsd-core` (npm `@opengsd/gsd-core`). Updates über den
-`gsd-update`-Skill.
+`gsd-update`-Skill bzw. durch bewusstes Aktualisieren dieses Pins nach Prüfung.
 
 **Verify:**
 - `~/.claude/hooks/gsd-statusline.js` existiert.
@@ -111,14 +111,15 @@ Folgende Top-Level-Keys setzen (mit bestehenden mergen):
   "effortLevel": "high",
   "tui": "fullscreen",
   "theme": "dark-ansi",
-  "voice": { "enabled": true, "mode": "hold" },
-  "skipDangerousModePermissionPrompt": true,
-  "skipAutoPermissionPrompt": true
+  "voice": { "enabled": true, "mode": "hold" }
 }
 ```
 
 `permissions.allow` ist maschinen-/projektspezifisch (Tool-Allowlist) — **nicht**
 aus diesem Repo übernehmen, sondern auf der Zielmaschine organisch wachsen lassen.
+Permission-Skip-Flags (`skipDangerousModePermissionPrompt`,
+`skipAutoPermissionPrompt`) sind **kein Default**. Nur bewusst, temporär und mit
+Sandbox/VM setzen, wenn der User genau dieses Risiko freigibt.
 
 **Verify:** `claude` startet auf Deutsch, Thinking aktiv, dark-ansi-Theme.
 
@@ -178,30 +179,51 @@ Reihenfolge:
 ## 7c. Harness global hinterlegen
 
 Das Harness (genereller Softwareentwicklungs-Workflow) gilt für jedes Projekt und
-wird global hinterlegt:
+wird global hinterlegt. Für Cross-Client-Nutzung liegen Kopien in den globalen
+Config-Verzeichnissen der jeweiligen Clients:
 
 ```bash
-cp -R harness ~/.claude/harness
+mkdir -p ~/.claude ~/.codex ~/.gemini
+rsync -a --delete harness/ ~/.claude/harness/
+rsync -a --delete harness/ ~/.codex/harness/
+rsync -a --delete harness/ ~/.gemini/harness/
+
 # optional, für Doku-Projekte:
-cp -R doc-harness ~/.claude/doc-harness
+rsync -a --delete doc-harness/ ~/.claude/doc-harness/
+rsync -a --delete doc-harness/ ~/.codex/doc-harness/
+rsync -a --delete doc-harness/ ~/.gemini/doc-harness/
 ```
 
 `instructions/AGENTS.md` verweist bereits darauf (Abschnitt "Software-Entwicklung
 — Harness"); damit findet jeder Agent es ohne Projekt-Setup. Pro Projekt wählt der
-Agent den passenden Stack-Adapter unter `~/.claude/harness/stacks/` (oder legt
+Agent den passenden Stack-Adapter unter dem jeweiligen `harness/stacks/` (oder legt
 einen neuen an).
 
-Die Command-Library aufrufbar machen (damit `/spec`, `/review`, `/verify`,
-`/commit`, `/pr`, `/retro`, `/hot-reload` greifen) — in `~/.claude/commands/`
+Optional: Ein zentrales Harness-Root statt der Client-Kopien nutzen. Dann nur
+einmal hinterlegen und `$AGENT_HARNESS_ROOT` darauf zeigen lassen (in der
+Shell-Rc exportieren); der Lookup in `instructions/AGENTS.md` prüft diese Variable
+zuerst:
+```bash
+echo 'export AGENT_HARNESS_ROOT="$HOME/.harness"' >> ~/.zshrc
+rsync -a --delete harness/ ~/.harness/
+```
+
+Die Claude-Code-Command-Library aufrufbar machen (damit `/hx:spec`,
+`/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`, `/hx:retro`,
+`/hx:hot-reload` greifen) — in `~/.claude/commands/`
 legen. `review`/`verify` kollidieren mit Built-in-Skills → in einen Unterordner
 namespacen (`hx/` → `/hx:review`). `README.md` ist Doku, **nicht** deployen:
 ```bash
 mkdir -p ~/.claude/commands/hx
-cp harness/commands/*.md ~/.claude/commands/hx/ && rm -f ~/.claude/commands/hx/README.md
+rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
 ```
 
-**Verify:** `~/.claude/harness/README.md` existiert; `ls ~/.claude/harness/stacks/`
-zeigt die Adapter; `ls ~/.claude/commands/` enthält die Harness-Commands.
+**Verify:** Bei Client-Kopien existieren `~/.claude/harness/README.md`,
+`~/.codex/harness/README.md` und `~/.gemini/harness/README.md`, die drei
+`harness/stacks/` Verzeichnisse zeigen die Adapter. Beim zentralen Root stattdessen:
+`"$AGENT_HARNESS_ROOT/README.md"` existiert und `"$AGENT_HARNESS_ROOT/stacks/"`
+zeigt die Adapter. In beiden Fällen enthält `ls ~/.claude/commands/hx/` die
+Harness-Commands.
 
 ---
 
@@ -210,6 +232,7 @@ zeigt die Adapter; `ls ~/.claude/commands/` enthält die Harness-Commands.
 - `claude plugin list` → caveman enabled.
 - Neue Session: caveman-Mode aktiv, GSD-Statusline sichtbar.
 - In einem `.planning/`-Projekt: Statusline zeigt GSD-State.
-- `~/.claude/harness/` vorhanden; Instructions verweisen darauf.
+- `~/.claude/harness/`, `~/.codex/harness/` und `~/.gemini/harness/` vorhanden;
+  Instructions verweisen darauf.
 
 Bei Abweichungen oder fehlenden Quellen melden statt raten.

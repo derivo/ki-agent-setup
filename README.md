@@ -34,7 +34,7 @@ flowchart TD
     SKILLS["SKILLS.md<br/>Skill-Inventar + Quellen"]:::doc
     TOOLS(["~/.claude<br/>Plugins · GSD · caveman · Hooks · Statusline"]):::target
 
-    subgraph HARN[" harness/ — Dev-Workflow (PHP/Slim) "]
+    subgraph HARN[" harness/ — Dev-Workflow (generell, global) "]
         HREADME["README.md"]:::doc
         ROADMAP["ROADMAP.md<br/>5 Phasen"]:::doc
         GUARD["GUARDRAILS.md<br/>harte Regeln"]:::doc
@@ -42,10 +42,12 @@ flowchart TD
         FEATT["FEATURE_TEMPLATE.md"]:::doc
         TESTS["TESTS.md"]:::doc
         LOOP["AGENT_LOOP.md"]:::doc
+        SELF["SELF_OPTIMIZATION.md"]:::doc
         FEAT["feature.md<br/>Runbook"]:::doc
-        HREADME --> ROADMAP & GUARD & SPECW
+        PHPAD["stacks/php<br/>PHP Web+DB Adapter"]:::skill
+        HREADME --> ROADMAP & GUARD & SPECW & PHPAD
         SPECW --> FEATT
-        LOOP --> GUARD & TESTS & SPECW
+        LOOP --> GUARD & TESTS & SPECW & SELF
         FEAT --> LOOP & FEATT & TESTS
     end
 
@@ -53,8 +55,7 @@ flowchart TD
     APPLY -->|deployt| INSTR
     APPLY -->|installiert| TOOLS
     APPLY -->|stellt wieder her| SKILLS
-    APPLY -. optional ins Projekt .-> HREADME
-    SKILL -. optional .-> HREADME
+    APPLY -->|deployt global| HARN
 
     classDef core fill:#1f6feb,stroke:#0d419d,color:#fff;
     classDef skill fill:#8957e5,stroke:#6e40c9,color:#fff;
@@ -63,11 +64,12 @@ flowchart TD
 ```
 
 `APPLY.md` ist die Drehscheibe: Der Bootstrap-Skill liest sie, sie deployt die
-`instructions/`, installiert die Tools nach `~/.claude` und stellt die Skills
-wieder her. Davon unabhängig sind zwei optionale, projektbezogene Doku-Sets, die
-bei Bedarf in ein Zielprojekt übernommen werden: [`harness/`](harness/README.md)
-(Workflow für **Code**-Projekte, PHP/Slim) und
-[`doc-harness/`](doc-harness/README.md) (Workflow für **Doku**-Projekte).
+`instructions/` **und** das [`harness/`](harness/README.md) global nach
+`~/.claude/`, installiert die Tools und stellt die Skills wieder her. Das
+`harness/` ist der **generelle** Software-Entwicklungs-Workflow (stack-agnostisch);
+konkrete Stack-Details liegen als Adapter unter `harness/stacks/` (z. B.
+[`stacks/php`](harness/stacks/php/README.md) für PHP-Web + DB). Daneben gibt es
+das [`doc-harness/`](doc-harness/README.md) als Workflow für **Doku**-Projekte.
 
 ---
 

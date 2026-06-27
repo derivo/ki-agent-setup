@@ -101,6 +101,15 @@ Clients. Commits + `git log` sind die Historisierungsquelle (atomar pro Plan).
 Bei Abbruch / Token-Ende: State-Files lesen, nahtlos fortsetzen. Projekte ohne
 `.planning/` → Stand in `PROJECT.md`/`README.md` halten.
 
+## Software-Entwicklung — Harness
+
+Bei Feature-/Code-Arbeit nach dem **Harness** entwickeln: Spec → Test → Code →
+Gate → Korrektur, mit selbst-erzwungenen Guardrails und mechanischem
+Fertig-Kriterium. Das Harness ist global hinterlegt — Einstieg und Methode:
+`~/.claude/harness/README.md`, dann den passenden Stack-Adapter unter
+`~/.claude/harness/stacks/` wählen. (Dokumentarisch, kein Zwang per Hook — der
+Agent wendet es selbst an.)
+
 ## Testing — Pflichtstandard Edge Cases
 
 UI-Formular (E2E / Widget / Browser) → vollständige Edge-Case-Matrix. Prinzip:

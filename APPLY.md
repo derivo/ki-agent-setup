@@ -184,10 +184,32 @@ Reihenfolge:
 
 ---
 
+## 7c. Harness global hinterlegen
+
+Das Harness (genereller Softwareentwicklungs-Workflow) gilt für jedes Projekt und
+wird global hinterlegt:
+
+```bash
+cp -R harness ~/.claude/harness
+# optional, für Doku-Projekte:
+cp -R doc-harness ~/.claude/doc-harness
+```
+
+`instructions/AGENTS.md` verweist bereits darauf (Abschnitt "Software-Entwicklung
+— Harness"); damit findet jeder Agent es ohne Projekt-Setup. Pro Projekt wählt der
+Agent den passenden Stack-Adapter unter `~/.claude/harness/stacks/` (oder legt
+einen neuen an).
+
+**Verify:** `~/.claude/harness/README.md` existiert; `ls ~/.claude/harness/stacks/`
+zeigt die Adapter.
+
+---
+
 ## 8. Abschluss-Verifikation
 
 - `claude plugin list` → caveman enabled.
 - Neue Session: caveman-Mode aktiv, GSD-Statusline sichtbar.
 - In einem `.planning/`-Projekt: Statusline zeigt GSD-State.
+- `~/.claude/harness/` vorhanden; Instructions verweisen darauf.
 
 Bei Abweichungen oder fehlenden Quellen melden statt raten.

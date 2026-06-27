@@ -18,7 +18,7 @@ grün ist. Mehrere Runden sind der Normalfall, kein Versagen.
 [Selbst-Critic]  ── vor dem Write gegen GUARDRAILS.md
       │
       ▼
-composer quality   ── das Gate
+Gate-Kommando      ── das Gate (stack-spezifisch, siehe stacks/)
       │
    rot │ grün
       │     └────────► nächster Schritt / fertig
@@ -51,7 +51,7 @@ Hätte eine Regel das verhindert?
    │ nein → nur Code fixen
    │ ja
    ▼
-Regel in GUARDRAILS.md (oder projektnächster CLAUDE.md) ergänzen
+Regel ergänzen (GUARDRAILS.md generell, Stack-Adapter stack-spezifisch)
       │
       ▼
 Gate erneut → grün → Harness ist jetzt schärfer als vorher

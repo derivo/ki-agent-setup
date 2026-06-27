@@ -11,8 +11,8 @@ oder fremde Projekte. Voraussetzung für höhere Autonomie (ROADMAP Phase 4–5)
    [04](04-egress.md)). Schnellster Einstieg, kein extra Setup.
 2. **Container/Devcontainer** — Projekt läuft in Docker/Podman, definierte Mounts,
    eigene Netzwerk-Policy. Gut für reproduzierbare, projektgebundene Isolation.
-3. **VM (Tart-Dev-VMs)** — du hast das bereits. Stärkste Isolation: eigener Kernel,
-   eigenes Netz. Der richtige Ort für vollautonome Läufe + Egress-Firewall.
+3. **VM** (z. B. Tart, Lima, UTM) — stärkste Isolation: eigener Kernel, eigenes
+   Netz. Der richtige Ort für vollautonome Läufe + Egress-Firewall.
 
 ## Regeln
 - **Autonome / unbeaufsichtigte Läufe** (Agent arbeitet längere Strecken ohne

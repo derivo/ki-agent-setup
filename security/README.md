@@ -20,16 +20,16 @@ jede fail-closed (im Zweifel blocken/fragen), mit Audit-Trail.
 | Autonome Läufe ohne Isolation | Sandbox / VM | [06-sandbox.md](06-sandbox.md) |
 | Prompt-Injection / Goal-Hijacking | Untrusted-Content-Disziplin | [07-prompt-injection.md](07-prompt-injection.md) |
 
-## Was schon da ist (Basis)
-- `audit-log.js` (PostToolUse) — Trail aller Tool-Aufrufe.
+## Basis aus dem Setup
+Was das Setup ohnehin mitbringt und worauf dieser Layer aufbaut:
 - GSD-Guards (`gsd-prompt-guard`, `gsd-read-guard`, `gsd-read-injection-scanner`,
-  `gsd-validate-commit`) — vorhandene Hooks.
+  `gsd-validate-commit`) — Hooks aus dem GSD-Installer.
 - [GUARDRAILS.md Abschnitt E](../harness/GUARDRAILS.md) — Security-Pass als
   Pflicht-Selbstcheck im Harness.
 - Review-Panel Security-Lens ([REVIEW_PANEL.md](../harness/REVIEW_PANEL.md)).
 
-Dieser Layer härtet das **mechanisch** ab, was dort bisher nur als Regel/Selbstcheck
-steht.
+Dieser Layer härtet das **mechanisch** ab, was dort nur als Regel/Selbstcheck
+steht — inkl. eines optionalen Audit-Trail-Hooks (PostToolUse).
 
 ## Priorität
 1–2 zuerst (mechanischer Block, billig). 3 für Observability/Egress-DLP. 4–7 je

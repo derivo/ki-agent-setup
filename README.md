@@ -81,6 +81,14 @@ Separat installierte Skills (Web, Testing, PHP, Security …), verwaltet über e
 Skill-Manager mit Lockfile `~/.agents/.skill-lock.json`. Vollständiges Inventar
 mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 
+### MCP-Server & Sicherheit
+
+- **MCP-Server** — kuratierte, sicherheitsbewusste Empfehlungen (context7, GitHub,
+  Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md).
+- **Sicherheit** — Hardening-Layer um den Agenten (Secret-Scan, Tool-Block-Hook,
+  Logging-Proxy, Egress, Supply-Chain, Sandbox, Prompt-Injection):
+  [`security/`](security/README.md).
+
 ---
 
 ## Statusline-Aufbau

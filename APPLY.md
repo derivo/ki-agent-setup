@@ -201,10 +201,12 @@ Agent den passenden Stack-Adapter unter `~/.claude/harness/stacks/` (oder legt
 einen neuen an).
 
 Die Command-Library aufrufbar machen (damit `/spec`, `/review`, `/verify`,
-`/commit`, `/pr`, `/retro` greifen) — in `~/.claude/commands/` legen, bei
-Namenskollision umbenennen/in Unterordner:
+`/commit`, `/pr`, `/retro`, `/hot-reload` greifen) — in `~/.claude/commands/`
+legen. `review`/`verify` kollidieren mit Built-in-Skills → in einen Unterordner
+namespacen (`hx/` → `/hx:review`). `README.md` ist Doku, **nicht** deployen:
 ```bash
-cp harness/commands/*.md ~/.claude/commands/   # oder symlinken
+mkdir -p ~/.claude/commands/hx
+cp harness/commands/*.md ~/.claude/commands/hx/ && rm -f ~/.claude/commands/hx/README.md
 ```
 
 **Verify:** `~/.claude/harness/README.md` existiert; `ls ~/.claude/harness/stacks/`

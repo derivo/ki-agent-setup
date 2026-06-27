@@ -31,6 +31,10 @@ cp harness/commands/*.md ~/.claude/commands/
 | [`/commit`](commit.md) | Pre-Commit-Check + atomarer, konventioneller Commit | GUARDRAILS, Pre-Commit-Check |
 | [`/pr`](pr.md) | PR vorbereiten: Gate grün, AC-Abdeckung, Branch/PR | AGENT_LOOP, feature.md |
 | [`/retro`](retro.md) | Session-Rückblick: Gelerntes klassifizieren + ans richtige Ziel routen | SELF_OPTIMIZATION, Memory/GSD/TheBrain |
+| [`/hot-reload`](hot-reload.md) | `/retro` + Zustand sichern + `/clear`-Reset vorbereiten | retro.md |
+
+> `README.md` (diese Datei) ist Doku, **kein** Command — beim Deployen nach
+> `~/.claude/commands/` ausschließen.
 
 Diese Commands referenzieren die Harness-Dateien (global unter
 `~/.claude/harness/`). Neue Commands nach demselben Muster ergänzen: kurz,

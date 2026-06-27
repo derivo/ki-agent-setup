@@ -137,7 +137,7 @@ Eigenschaften:
 
 ---
 
-## Installierte Tools
+## Installierte Erweiterungen
 
 | Tool | Quelle | Typ | Zweck |
 |---|---|---|---|

@@ -2,7 +2,8 @@
 
 🇩🇪 Deutsch | [🇬🇧 English](README.en.md)
 
-Portable Beschreibung meines lokalen KI-Agent-Setups (Claude Code).
+Portable Beschreibung meines lokalen KI-Agent-Setups — client-übergreifend
+(Claude Code, Codex, Cursor, Gemini …), mit Claude Code als primärem Client.
 
 Ziel: Auf einer neuen Maschine dieses Repo auschecken, dem KI-Client sagen
 *"lies `APPLY.md` und wende es an"* — und das Setup wird reproduziert.
@@ -75,14 +76,30 @@ das [`doc-harness/`](doc-harness/README.md) als Workflow für **Doku**-Projekte.
 
 ## Was das Setup macht
 
-Claude Code wird zu einem strukturierten Entwicklungs-Agenten erweitert:
+Das Setup macht aus einem KI-Coding-Client einen strukturierten
+Entwicklungs-Agenten. Es hat zwei Ebenen:
 
-- **GSD (get-shit-done)** als Single-Source-of-Truth für Projektarbeit
-  (Phasen, Roadmap, State-Tracking, atomare Commits).
-- **caveman** komprimiert die Kommunikation (~75 % weniger Tokens).
-- Globale Arbeitsregeln, cross-client geschichtet ([`instructions/`](instructions/)):
-  neutrale Basis (`AGENTS.md`) + Claude-Delta (`CLAUDE.md`) — Deutsch,
-  Think-before-Coding, Simplicity-First, Surgical-Changes, Edge-Case-Testpflicht.
+**Client-neutral** — gilt für jeden Agenten (Claude Code, Codex, Cursor, Gemini …):
+- Geschichtete Arbeitsregeln nach dem [AGENTS.md](https://agents.md)-Standard
+  ([`instructions/`](instructions/)): neutrale Basis (`AGENTS.md`) + Client-Deltas
+  — Deutsch, Think-before-Coding, Simplicity-First, Surgical-Changes,
+  Ehrlichkeits-/Verifikations-Disziplin, Edge-Case-Testpflicht.
+- [`harness/`](harness/README.md) — genereller, stack-agnostischer
+  Software-Entwicklungs-Workflow (Spec → Test → Code → Gate, Self-Optimization).
+- [`doc-harness/`](doc-harness/README.md) — Workflow für Doku-Projekte.
+- **GSD (get-shit-done)** — Phasen-/Roadmap-Workflow, Single-Source-of-Truth;
+  der Installer unterstützt mehrere Runtimes.
+- **Skills** — via `skills`-CLI client-übergreifend installierbar
+  ([`SKILLS.md`](SKILLS.md)).
+
+**Claude-Code-spezifisch** — die Mechanik, die das in Claude Code einklinkt:
+- **caveman** — Token-komprimierte Kommunikation (~75 % weniger Tokens).
+- **Statusline** (`gsd-statusline.js`), **Hooks** und `settings.json` — eigene
+  Claude-Code-Mechanismen.
+
+Entsprechend ist [`APPLY.md`](APPLY.md) primär auf Claude Code zugeschnitten
+(`claude plugin …`, `~/.claude/`); die client-neutrale Ebene wird zusätzlich auf
+andere Clients ausgerollt (Schritt 7 → `~/.codex/`, `~/.gemini/` …).
 
 ---
 
@@ -103,7 +120,7 @@ Beispiel (Projekt `grouphero`):
 ```
 Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
 [▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Di 21:00  │  $225
-/Users/dennis/code/grouphero │ main
+/Users/derivo/code/grouphero │ main
 v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ grouphero
 ```
 

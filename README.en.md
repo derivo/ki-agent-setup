@@ -2,7 +2,8 @@
 
 [🇩🇪 Deutsch](README.md) | 🇬🇧 English
 
-Portable description of my local AI agent setup (Claude Code).
+Portable description of my local AI agent setup — cross-client (Claude Code,
+Codex, Cursor, Gemini …), with Claude Code as the primary client.
 
 Goal: check out this repo on a new machine, tell the AI client *"read `APPLY.md`
 and apply it"* — and the setup is reproduced. Define once, sync everywhere,
@@ -76,15 +77,30 @@ projects.
 
 ## What the setup does
 
-Claude Code is extended into a structured development agent:
+The setup turns an AI coding client into a structured development agent. It has
+two layers:
 
-- **GSD (get-shit-done)** as single source of truth for project work
-  (phases, roadmap, state tracking, atomic commits).
-- **caveman** compresses communication (~75 % fewer tokens).
-- Global working rules, layered cross-client ([`instructions/`](instructions/)):
-  neutral base (`AGENTS.md`) + Claude delta (`CLAUDE.md`) — German output,
-  think-before-coding, simplicity-first, surgical changes, mandatory edge-case
-  testing.
+**Client-neutral** — applies to any agent (Claude Code, Codex, Cursor, Gemini …):
+- Layered working rules following the [AGENTS.md](https://agents.md) standard
+  ([`instructions/`](instructions/)): neutral base (`AGENTS.md`) + client deltas
+  — German output, think-before-coding, simplicity-first, surgical changes,
+  honesty/verification discipline, mandatory edge-case testing.
+- [`harness/`](harness/README.md) — general, stack-agnostic software-development
+  workflow (spec → test → code → gate, self-optimization).
+- [`doc-harness/`](doc-harness/README.md) — workflow for documentation projects.
+- **GSD (get-shit-done)** — phase/roadmap workflow, single source of truth; the
+  installer supports multiple runtimes.
+- **Skills** — installable cross-client via the `skills` CLI
+  ([`SKILLS.md`](SKILLS.md)).
+
+**Claude-Code-specific** — the plumbing that wires it into Claude Code:
+- **caveman** — token-compressed communication (~75 % fewer tokens).
+- **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
+  Claude Code mechanisms.
+
+Accordingly, [`APPLY.md`](APPLY.md) is primarily tailored to Claude Code
+(`claude plugin …`, `~/.claude/`); the client-neutral layer is additionally rolled
+out to other clients (step 7 → `~/.codex/`, `~/.gemini/` …).
 
 ---
 

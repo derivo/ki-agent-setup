@@ -46,8 +46,8 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 9. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
-Slash-Commands (`/spec`, `/review`, `/verify`, `/commit`, `/pr`), die den Workflow
-als ein Wort abrufbar machen.
+Slash-Commands (`/spec`, `/review`, `/verify`, `/commit`, `/pr`, `/retro`), die den
+Workflow als ein Wort abrufbar machen.
 
 Dann den passenden **Stack-Adapter** unter [`stacks/`](stacks/) lesen — er füllt
 die generellen Platzhalter (Schichten, Gate-Befehl, Test-Framework) mit den

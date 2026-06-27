@@ -201,8 +201,8 @@ Agent den passenden Stack-Adapter unter `~/.claude/harness/stacks/` (oder legt
 einen neuen an).
 
 Die Command-Library aufrufbar machen (damit `/spec`, `/review`, `/verify`,
-`/commit`, `/pr` greifen) — in `~/.claude/commands/` legen, bei Namenskollision
-umbenennen/in Unterordner:
+`/commit`, `/pr`, `/retro` greifen) — in `~/.claude/commands/` legen, bei
+Namenskollision umbenennen/in Unterordner:
 ```bash
 cp harness/commands/*.md ~/.claude/commands/   # oder symlinken
 ```

@@ -182,6 +182,17 @@ Das Harness (genereller Softwareentwicklungs-Workflow) gilt für jedes Projekt u
 wird global hinterlegt. Für Cross-Client-Nutzung liegen Kopien in den globalen
 Config-Verzeichnissen der jeweiligen Clients:
 
+> **Achtung — `--delete` ist destruktiv.** Die `rsync`-Ziele unten
+> (`~/.{claude,codex,gemini}/harness/`, `…/doc-harness/`, `~/.harness/`,
+> `~/.claude/commands/hx/`) sind **repo-owned Mirror**: `--delete` löscht im Ziel
+> alles, was nicht aus der Quelle stammt. Das ist Absicht (sauberer Mirror),
+> widerspricht aber der Merge-Regel aus dem Kopf dieser Datei. Daher auf Systemen
+> mit vorhandenen Daten **vor dem ersten Sync**: prüfen, dass das Ziel leer oder
+> ein früherer Mirror ist (`ls`), sonst sichern/umlenken. Eigene Stack-Adapter
+> gehören ins Repo (`harness/stacks/`), **nicht** ins Deploy-Ziel — sonst killt
+> der nächste Sync sie. `$AGENT_HARNESS_ROOT` nie auf einen Pfad mit fremdem
+> Inhalt zeigen.
+
 ```bash
 mkdir -p ~/.claude ~/.codex ~/.gemini
 rsync -a --delete harness/ ~/.claude/harness/

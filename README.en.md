@@ -138,7 +138,7 @@ Properties:
 
 ---
 
-## Installed tools
+## Installed extensions
 
 | Tool | Source | Type | Purpose |
 |---|---|---|---|

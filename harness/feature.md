@@ -6,6 +6,9 @@ falls das Projekt einen anlegt). Der Agent arbeitet das Feature vollständig nac
 dem Harness ab und hält sich strikt an die Reihenfolge — kein Schritt wird
 übersprungen.
 
+Zuerst den passenden Stack-Adapter ([`stacks/`](stacks/)) lesen — er liefert die
+konkreten Schichtnamen und das Gate-Kommando.
+
 ---
 
 Du arbeitest das Feature **"$ARGUMENTS"** vollständig nach dem Harness ab.
@@ -16,20 +19,19 @@ Du arbeitest das Feature **"$ARGUMENTS"** vollständig nach dem Harness ab.
    kritischen Rückfragen. Sind die Akzeptanzkriterien unklar oder lückenhaft,
    FRAGE nach, statt zu raten.
 
-2. **Zerlegen.** Zerlege die Spec nach SPEC_WORKFLOW.md in Teilaufgaben in der
-   Reihenfolge Domain → Service → Infrastructure → Action. Liste die Teilaufgaben
-   kurz auf, bevor du beginnst.
+2. **Zerlegen.** Zerlege die Spec nach SPEC_WORKFLOW.md in Teilaufgaben von innen
+   nach außen: Kern/Domäne → Use Case → Integration/IO → Einstiegspunkt. Liste die
+   Teilaufgaben kurz auf, bevor du beginnst.
 
 3. **Pro Teilaufgabe — der innere Loop:**
    a. Schreibe ZUERST den/die Test(s) aus den Akzeptanzkriterien (siehe
-      [TESTS.md](TESTS.md), bei Action-Aufgaben mit API-Test: Response UND
-      DB-State).
+      [TESTS.md](TESTS.md); bei Einstiegspunkt-Aufgaben Durchstich-Test: Antwort
+      UND Zustand).
    b. Implementiere den Code in der richtigen Schicht. Prüfe vor jedem Schreiben
       gegen [GUARDRAILS.md](GUARDRAILS.md) (Selbst-Critic).
-   c. Lass `composer quality` laufen.
-   d. Bei Rot: Behebe die Ursache. Wenn der Fehler zeigt, dass eine Harness-Regel
-      fehlte, ergänze sie (Harness Correction, siehe AGENT_LOOP.md). Wiederhole
-      ab c.
+   c. Lass das Gate-Kommando des Stacks laufen.
+   d. Bei Rot: Behebe die Ursache. Zeigt der Fehler eine fehlende Harness-Regel,
+      ergänze sie (Harness Correction, siehe AGENT_LOOP.md). Wiederhole ab c.
    e. Erst wenn grün: nächste Teilaufgabe.
 
 4. **Abschluss.** Wenn alle Teilaufgaben grün sind, fasse zusammen, welche
@@ -39,5 +41,5 @@ Du arbeitest das Feature **"$ARGUMENTS"** vollständig nach dem Harness ab.
 ## Leitplanken während des gesamten Loops
 - Ein Feature pro Lauf. Nicht vorgreifen, nichts bauen, was die Spec nicht
   verlangt.
-- Testdaten immer synthetisch (Daten von Minderjährigen — GUARDRAILS.md, Regel 3).
+- Testdaten immer synthetisch; keine Secrets im Code (GUARDRAILS.md, Regel 3).
 - Du giltst als fertig, wenn das Gate grün ist — nicht, wenn du es für gut hältst.

@@ -34,7 +34,7 @@ flowchart TD
     SKILLS["SKILLS.md<br/>skill inventory + sources"]:::doc
     TOOLS(["~/.claude<br/>plugins · GSD · caveman · hooks · statusline"]):::target
 
-    subgraph HARN[" harness/ — dev workflow (PHP/Slim) "]
+    subgraph HARN[" harness/ — dev workflow (general, global) "]
         HREADME["README.md"]:::doc
         ROADMAP["ROADMAP.md<br/>5 phases"]:::doc
         GUARD["GUARDRAILS.md<br/>hard rules"]:::doc
@@ -42,10 +42,12 @@ flowchart TD
         FEATT["FEATURE_TEMPLATE.md"]:::doc
         TESTS["TESTS.md"]:::doc
         LOOP["AGENT_LOOP.md"]:::doc
+        SELF["SELF_OPTIMIZATION.md"]:::doc
         FEAT["feature.md<br/>runbook"]:::doc
-        HREADME --> ROADMAP & GUARD & SPECW
+        PHPAD["stacks/php<br/>PHP web+DB adapter"]:::skill
+        HREADME --> ROADMAP & GUARD & SPECW & PHPAD
         SPECW --> FEATT
-        LOOP --> GUARD & TESTS & SPECW
+        LOOP --> GUARD & TESTS & SPECW & SELF
         FEAT --> LOOP & FEATT & TESTS
     end
 
@@ -53,8 +55,7 @@ flowchart TD
     APPLY -->|deploys| INSTR
     APPLY -->|installs| TOOLS
     APPLY -->|restores| SKILLS
-    APPLY -. optional into project .-> HREADME
-    SKILL -. optional .-> HREADME
+    APPLY -->|deploys global| HARN
 
     classDef core fill:#1f6feb,stroke:#0d419d,color:#fff;
     classDef skill fill:#8957e5,stroke:#6e40c9,color:#fff;
@@ -63,11 +64,13 @@ flowchart TD
 ```
 
 `APPLY.md` is the hub: the bootstrap skill reads it, it deploys the
-`instructions/`, installs the tools into `~/.claude`, and restores the skills.
-Independent of that are two optional, project-scoped documentation sets that get
-copied into a target project on demand: [`harness/`](harness/README.md) (workflow
-for **code** projects, PHP/Slim) and [`doc-harness/`](doc-harness/README.md)
-(workflow for **documentation** projects).
+`instructions/` **and** the [`harness/`](harness/README.md) globally into
+`~/.claude/`, installs the tools, and restores the skills. The `harness/` is the
+**general** software-development workflow (stack-agnostic); concrete stack details
+live as adapters under `harness/stacks/` (e.g.
+[`stacks/php`](harness/stacks/php/README.md) for PHP web + DB). Alongside it,
+[`doc-harness/`](doc-harness/README.md) is the workflow for **documentation**
+projects.
 
 ---
 

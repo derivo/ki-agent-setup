@@ -6,66 +6,53 @@ Entwicklungsaufgaben werden. Sie ist die Brücke zwischen
 eigentlichen Coden.
 
 Der Kerngedanke: Eine Anforderung wird nicht in einem Rutsch implementiert,
-sondern zuerst ZERLEGT. Das LLM bekommt nicht "bau das Punktesystem", sondern
-eine in klare Einzelaufgaben zerschnittene Spec, und arbeitet die ab.
+sondern zuerst ZERLEGT. Das LLM bekommt nicht "bau das Feature", sondern eine in
+klare Einzelaufgaben zerschnittene Spec, und arbeitet die ab.
 
 ## Die vier Stufen
 
 ### Stufe 1 — Idee schärfen (kritisches Sparring)
-Wenn der Mensch eine grobe Idee gibt ("Jugendliche sollen Punkte einlösen
-können"), wird NICHT sofort gecodet. Erst hinterfragen — als kritischer
-Sparringspartner, nicht als Ja-Sager:
-- Was passiert in den Randfällen? (Nicht genug Punkte? Belohnung vergriffen?
-  Zwei Betreuer gleichzeitig?)
+Gibt der Mensch eine grobe Idee, wird NICHT sofort gecodet. Erst hinterfragen —
+als kritischer Sparringspartner, nicht als Ja-Sager:
+- Was passiert in den Randfällen? (Fehlende Vorbedingung, Ressource erschöpft,
+  konkurrierende Zugriffe?)
 - Wer darf das? (Berechtigung)
 - Was ist bewusst NICHT Teil davon? (Scope-Grenze)
-- Gibt es rechtliche/datenschutzrelevante Aspekte? (Daten Minderjähriger!)
+- Gibt es rechtliche/datenschutzrelevante/sicherheitskritische Aspekte?
 
-Ziel der Stufe: aus einer vagen Idee eine vollständige, widerspruchsfreie
-Beschreibung auf fachlicher Ebene machen.
+Ziel: aus einer vagen Idee eine vollständige, widerspruchsfreie Beschreibung auf
+fachlicher Ebene machen.
 
 ### Stufe 2 — In Anforderungen gießen
-Die geschärfte Idee wird zu einer Feature-Spec nach FEATURE_TEMPLATE.md:
-Ziel, Akzeptanzkriterien (konkret und prüfbar), Out-of-Scope, betroffene
-Schichten, Datenschutz-Check. Diese Spec geht ins Review beim Menschen, BEVOR
-Code entsteht. Erst wenn die Akzeptanzkriterien sitzen, geht es weiter.
+Die geschärfte Idee wird zu einer Feature-Spec nach FEATURE_TEMPLATE.md: Ziel,
+Akzeptanzkriterien (konkret und prüfbar), Out-of-Scope, betroffene Schichten,
+Sensible-Daten-Check. Diese Spec geht ins Review beim Menschen, BEVOR Code
+entsteht. Erst wenn die Akzeptanzkriterien sitzen, geht es weiter.
 
 ### Stufe 3 — Anforderung in Aufgaben zerlegen
 Die fertige Spec wird in einzelne Entwicklungsaufgaben zerschnitten. Eine gute
-Zerlegung folgt den Schichten und ist in sinnvoller Reihenfolge:
-1. Domain zuerst (Entities, Value Objects, Regel als Code) + zugehörige Unit-Tests
-2. Service (Use Case) + Test
-3. Infrastructure (Repository-Implementierung) + Integrationstest
-4. Action (HTTP-Endpunkt) + API-Test (Response + DB-State)
+Zerlegung folgt den Schichten von **innen nach außen**:
+1. Kern/Domäne zuerst (Entities, Value Objects, Regel als Code) + Unit-Tests
+2. Use Case (Service) + Test
+3. Integration/IO (Persistenz-/Adapter-Implementierung) + Integrationstest
+4. Einstiegspunkt (Endpoint/Handler/CLI) + Durchstich-Test (Antwort + Zustand)
 
-Jede Teilaufgabe ist klein genug, um in einem Durchlauf durch das Quality Gate
-zu passen. Eine Teilaufgabe, die mehr als ~3 Dateien gleichzeitig anfasst, ist
-meist zu groß — weiter zerlegen.
+Jede Teilaufgabe ist klein genug, um in einem Durchlauf durch das Gate zu passen.
+Eine Teilaufgabe, die mehr als ~3 Dateien gleichzeitig anfasst, ist meist zu
+groß — weiter zerlegen.
+
+(Konkrete Schicht-/Klassennamen und ein durchgerechnetes Beispiel: Stack-Adapter,
+[`stacks/`](stacks/).)
 
 ### Stufe 4 — Abarbeiten mit Gate pro Aufgabe
 Jede Teilaufgabe durchläuft den vollen Loop (siehe [AGENT_LOOP.md](AGENT_LOOP.md)):
-Test schreiben → Code → `composer quality` → bei Rot korrigieren. Erst wenn eine
-Teilaufgabe grün ist, beginnt die nächste. Nicht alle parallel anfangen.
+Test schreiben → Code → Gate → bei Rot korrigieren. Erst wenn eine Teilaufgabe
+grün ist, beginnt die nächste. Nicht alle parallel anfangen.
 
 ## Wichtig
-- Die Reihenfolge Domain → Service → Infrastructure → Action ist kein Dogma, aber
-  die Default-Zerlegung. Sie sorgt dafür, dass jede Schicht gegen eine fertige,
-  getestete innere Schicht baut.
+- Die Reihenfolge Kern → Use Case → Integration → Einstiegspunkt ist kein Dogma,
+  aber die Default-Zerlegung. Sie sorgt dafür, dass jede Schicht gegen eine
+  fertige, getestete innere Schicht baut.
 - Tests entstehen pro Teilaufgabe aus den Akzeptanzkriterien, NICHT am Ende.
-- Wenn beim Zerlegen auffällt, dass die Spec lückenhaft ist: zurück zu Stufe 1,
-  nicht raten.
-
-## Beispiel: "Belohnung einlösen" zerlegt
-
-Spec-Akzeptanzkriterien:
-- AC1: Ein Jugendlicher mit genug Punkten kann eine verfügbare Belohnung einlösen;
-  sein Punktestand sinkt um den Belohnungswert.
-- AC2: Reichen die Punkte nicht, schlägt das Einlösen fehl; Punktestand bleibt.
-- AC3: Nur ein Betreuer kann das Einlösen im Namen des Jugendlichen bestätigen.
-
-Zerlegung:
-1. Domain: `Reward`, `RewardCost` (VO), Regel "Saldo darf nicht negativ werden"
-   in `PointAccount.redeem()` + Unit-Tests für AC1/AC2.
-2. Service: `RedeemReward` Use Case + Test (Berechtigung AC3 hier prüfen).
-3. Infrastructure: `PdoRewardRepository` + Integrationstest.
-4. Action: `POST /rewards/{id}/redeem` + API-Test (Response + DB-Saldo prüfen).
+- Fällt beim Zerlegen auf, dass die Spec lückenhaft ist: zurück zu Stufe 1, nicht
+  raten.

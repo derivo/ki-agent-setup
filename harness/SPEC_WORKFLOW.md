@@ -23,6 +23,11 @@ als kritischer Sparringspartner, nicht als Ja-Sager:
 Ziel: aus einer vagen Idee eine vollständige, widerspruchsfreie Beschreibung auf
 fachlicher Ebene machen.
 
+Fällt dabei eine **architektonisch signifikante Entscheidung** (schwer rückgängig,
+bewusste Abweichung von der Default-Methode, schichtenübergreifend), wird sie als
+ADR festgehalten — siehe [ADR_TEMPLATE.md](ADR_TEMPLATE.md). Die Spec verweist
+dann auf das ADR statt die Begründung zu duplizieren.
+
 ### Stufe 2 — In Anforderungen gießen
 Die geschärfte Idee wird zu einer Feature-Spec nach FEATURE_TEMPLATE.md: Ziel,
 Akzeptanzkriterien (konkret und prüfbar), Out-of-Scope, betroffene Schichten,

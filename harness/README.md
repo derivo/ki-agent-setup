@@ -34,6 +34,9 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 3. **[SPEC_WORKFLOW.md](SPEC_WORKFLOW.md)** — wie aus einer groben Idee eine
    zerlegte, testbare Spec wird.
 4. **[FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md)** — die Form einer fertigen Spec.
+   Daneben **[ADR_TEMPLATE.md](ADR_TEMPLATE.md)** — die Form eines Architecture
+   Decision Record für architektonisch signifikante Entscheidungen, die beim
+   Schärfen der Spec anfallen.
 5. **[TESTS.md](TESTS.md)** — die Teststrategie (Unit für den Kern, Durchstich-
    Test mit Zustands-Assertion).
 6. **[AGENT_LOOP.md](AGENT_LOOP.md)** — der Ablauf, der alles verbindet:

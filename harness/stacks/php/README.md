@@ -121,8 +121,9 @@ UI mit eigener Logik; Mocking nur für echte externe Service-Aufrufe.
   parallelen Specs gegen dieselbe Test-DB** — mit **`workers: 1`** sequenziell
   konfigurieren. Nur das garantiert volle Sequenzialität; `fullyParallel: false`
   allein reicht nicht (lässt Dateien weiter parallel über mehrere Worker laufen).
-- **Diagnose:** `trace: 'on-first-retry'` + `screenshot: 'only-on-failure'` in
+- **Diagnose:** `trace: 'retain-on-failure'` + `screenshot: 'only-on-failure'` in
   `playwright.config.ts` — sonst ist ein CI-Failure remote nicht reproduzierbar.
+  (`on-first-retry` zeichnet nichts auf, solange `retries: 0` bleibt.)
 - **Readiness:** `webServer`-Block (`command` + `url` +
   `reuseExistingServer: !process.env.CI`) — der Lauf wartet auf den App-Start,
   statt gegen einen noch toten Server zu rennen.

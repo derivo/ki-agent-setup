@@ -87,7 +87,7 @@ Dazu pro Formular:
   CSS-Position, Textfragmente oder DOM-Reihenfolge — die brechen bei jedem
   Layout-Change.
 - **Deterministisch warten, nie feste Sleeps.** Auf eine Bedingung warten
-  (Element sichtbar, Response da, URL gewechselt), nicht auf `sleep(2s)`. Feste
+  (Element sichtbar, URL gewechselt), nicht auf `sleep(2s)`. Feste
   Wartezeiten sind die häufigste Flaky-Quelle. Bei asynchronem Backend nach dem
   Submit auf die Response/Netzwerk-Ruhe warten, nicht nur auf Element-Sichtbarkeit
   — sonst Race zwischen DOM-Update und API-Antwort.
@@ -96,8 +96,8 @@ Dazu pro Formular:
   hängt vom Restzustand eines anderen ab.
 - **Sequenziell gegen geteilte DB.** Keine parallelen E2E-Suites gegen denselben
   Datastore — sonst Kollisionen, Deadlocks, Falschfehler (siehe "Wichtig" unten).
-- **Cross-Browser.** In allen konfigurierten Engines grün (z. B. Chromium UND
-  Firefox), nicht nur in einer.
+- **Cross-Browser.** In allen konfigurierten Engines grün, nicht nur in einer.
+  (Welche Engines konkret: Stack-Adapter.)
 - **Doppel-Submit/Race.** Doppelklick auf Submit und langsames Netz dürfen keine
   doppelte Wirkung erzeugen — als eigenen Test absichern.
 

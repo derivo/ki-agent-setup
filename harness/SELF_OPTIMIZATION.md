@@ -39,6 +39,13 @@ Regeln für die Schleife:
 
 ## Schleife 2 — Harness Correction (Selbst-Optimierung)
 
+Diese Schleife trennt bewusst zwei Rollen: das **Agent-System**, das die Arbeit
+produziert, und den **Optimierer**, der das System verbessert. Der Optimierer ändert
+nicht den Code des aktuellen Features, sondern das Harness selbst — Regeln,
+Templates, das Gate. Diese Trennung macht Selbst-Verbesserung gerichtet statt
+zirkulär: der nächste Lauf des Agent-Systems läuft unter dem geschärften Harness,
+nicht unter ad-hoc-Korrekturen im Verlauf.
+
 Wenn das Gate einen Fehler fängt, den eine Regel hätte verhindern können, ist der
 Fix nur die halbe Arbeit. Die andere Hälfte: die fehlende Regel ergänzen, damit
 derselbe Fehler nie wieder entsteht.

@@ -30,6 +30,28 @@ wird zu einem Test mit sprechendem Namen, der genau dieses Verhalten prüft
 (Arrange: abgeschlossene Aufgabe; Act: Operation erneut ausführen; Assert:
 erwarteter Fehler, Zustand unverändert). Test ZUERST, dann Code.
 
+## Fertig ist eine enumerierte AC-Liste, kein einzelner grüner Lauf
+
+Bei größeren Features ist "fertig" nicht ein einzelnes grünes Gate, sondern eine
+**aufgezählte, maschinell prüfbare Liste von Akzeptanzkriterien** — je AC ein Test,
+alle anfangs rot. Fortschritt = wie viele davon grün sind. Die Regel dabei ist
+hart: **ein Test wird nie entfernt oder aufgeweicht, um grün zu werden** — grün
+entsteht nur, indem der Code stimmt. Wer den Test ändert, um zu bestehen, hat das
+Akzeptanzkriterium verschoben, nicht erfüllt (siehe GUARDRAILS.md, Abschnitt C).
+
+## Grün ist nicht gleich gültig — Test-Adäquanz
+
+Ein grünes Gate heißt nur: *die vorhandenen* Tests bestehen. Es heißt nicht, dass
+die Tests das Verhalten wirklich prüfen. Bevor du dich auf "grün" verlässt, prüfe
+die Tests selbst auf Adäquanz:
+- Prüft der Test den **Negativ-/Grenzfall**, nicht nur den Happy Path?
+- Ist die Assertion **spezifisch** — exakter Wert/Text/Zustand — oder so schwach,
+  dass auch eine leere/triviale Ausgabe sie erfüllt?
+- Kann der Test überhaupt **rot werden**? Ein Test, der nie fehlschlägt, prüft nichts.
+
+Ein grünes, aber inadäquates Gate ist gefährlicher als ein rotes — es meldet
+Sicherheit, die nicht da ist.
+
 ## Durchstich-Test — der wichtigste Testtyp
 
 Neben Unit-Tests (Kern) gibt es den **Durchstich**: ein echter Aufruf durch die

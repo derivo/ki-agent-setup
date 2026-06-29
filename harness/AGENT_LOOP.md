@@ -71,6 +71,24 @@ Abschnitt D). Je sensibler die Domäne, desto länger liest der Mensch mit.
 - Der Test-Datastore ist lokal erreichbar, damit Integrations-/Durchstich-Tests
   gegen echte Daten laufen.
 
+## Langlauf über mehrere Context-Fenster
+
+Ein Feature-Lauf passt nicht immer in ein Context-Fenster. Verlässt sich der Agent
+dann allein auf Context-Compaction, geht Stand verloren — Compaction komprimiert,
+sie persistiert nicht. Für Aufgaben, die über ein Fenster hinausreichen, braucht es
+**durablen externen State**, aus dem ein frischer Context den Stand rekonstruiert:
+
+- **Git-Historie** — atomare Commits pro abgeschlossenem Schritt sind das primäre,
+  prüfbare Gedächtnis. Was committet ist, ist sicher; der Rest ist Arbeitsstand.
+- **Progress-Log** — eine schlanke Datei (erledigt / als Nächstes / offene Punkte),
+  an jeder Schritt-Grenze aktualisiert. In `.planning/`-Projekten ist das `STATE.md`
+  (siehe `../instructions/AGENTS.md`); sonst eine `PROGRESS.md`.
+
+Beim Wiederaufsetzen liest der Agent git-Log + Progress-Log, nicht den
+(komprimierten) Gesprächsverlauf. Optional bei großen Vorhaben: der erste Lauf
+richtet nur die Umgebung ein (Setup, Skeleton, initialer Commit), die Folge-Läufe
+machen je einen Schritt — so liegt die Context-Grenze immer an einer sauberen Naht.
+
 ## Selbst-Optimierung & die prüfende Schleife
 Der Loop oben ist nur die Mechanik. Wie er sich wiederholt, bis verifiziert ist,
 und wie das Harness aus jedem gefangenen Fehler schärfer wird (Harness

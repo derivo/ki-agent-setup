@@ -69,6 +69,11 @@ Solange das Gate rot ist:
 Erst wenn das Gate sauber durchläuft, darfst du "fertig" melden — mit der
 Beobachtung (Befehl + Ergebnis).
 
+Bei größeren Features ist das Fertig-Kriterium nicht ein einzelner Lauf, sondern
+eine enumerierte, prüfbare AC-Liste (je AC ein Test, alle anfangs rot). Tests sind
+dabei unantastbar — grün entsteht nur durch korrekten Code, nie durch Aufweichen
+eines Tests (siehe [TESTS.md](TESTS.md)).
+
 ---
 
 ## D. Grenze zum Menschen

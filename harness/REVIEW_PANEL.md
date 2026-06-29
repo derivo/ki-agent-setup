@@ -60,6 +60,20 @@ parallel:  [Korrektheit]  [Security]  [Performance]   ◄─ je 1 Subagent, isol
   ([SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)) — und wenn ein Fund eine fehlende
   Regel offenlegt, wird sie ergänzt (Harness Correction).
 
+## Prozess prüfen, nicht nur das Ergebnis
+
+Ein sauberer End-Diff und ein grünes Gate sagen nicht, ob der *Weg* dorthin korrekt
+war — ob die Spec wirklich umgesetzt wurde oder ob der Agent das Ziel verfehlt und
+das Gate zufällig getroffen hat. Bei nicht-trivialer agentischer Arbeit prüft
+mindestens eine Lens die **Trajektorie**: Folgt die Umsetzung Spec und Plan? Sind
+die Zwischenentscheidungen belegt? Wurde ein Akzeptanzkriterium still umgangen?
+Reine Outcome-Review übersieht das.
+
+Mehr Reviewer sind nicht automatisch besser: Lässt man identische Judges nur
+abstimmen oder "debattieren", verstärkt sich gemeinsamer Bias, statt korrigiert zu
+werden. Der Schutz liegt in **getrennten, unabhängigen Lenses** und im adversarialen
+Widerlegen — nicht in Wiederholung derselben Perspektive.
+
 ## Aufruf
 Per [`commands/review.md`](commands/README.md) (`/hx:review`) oder direkt im Loop vor
 der Fertig-Meldung. Bei großen Batch-Änderungen können die Lens-Agents in

@@ -71,6 +71,11 @@ bündelt:
 In `composer.json` als `quality`-Script definieren. Erst wenn es sauber
 durchläuft, gilt "fertig".
 
+Gibt es eine UI mit eigener Logik, kommt der **E2E-Lauf als zweites, eigenes Gate**
+dazu (langsamer, daher getrennt vom schnellen `quality`): ein Befehl wie
+`npm run e2e` / `make test-e2e`, der **in allen konfigurierten Engines (Chromium
+UND Firefox) grün** sein muss. "Fertig" heißt: beide Gates grün.
+
 ---
 
 ## Tests (konkretisiert TESTS.md)
@@ -101,8 +106,53 @@ it('schreibt den Punktestand korrekt in die Datenbank', function () {
 });
 ```
 
-Minimum: Unit (Domain) + Durchstich (mit DB-Assertion). Browser-/UI-Tests nur bei
+Minimum: Unit (Domain) + Durchstich (mit DB-Assertion). Browser-/E2E-Tests nur bei
 UI mit eigener Logik; Mocking nur für echte externe Service-Aufrufe.
+
+### E2E / Browser (konkretisiert TESTS.md → "E2E / Browser")
+
+- **Runner:** Playwright, ein Projekt je Engine — Tests grün in **Chromium UND
+  Firefox**, nicht nur einer.
+- **Selektoren:** über `data-testid`/Rollen, nie über CSS-Position oder
+  Textfragmente. Deterministisch warten (`expect(locator).toBeVisible()`,
+  `waitForURL`), **nie** feste `waitForTimeout`-Sleeps.
+- **Daten:** pro Spec/Namespace seeden und in **FK-sicherer Reihenfolge** wieder
+  abräumen (Kinder vor Eltern: erst Bewegungsdaten, dann Stammdaten). **Keine
+  parallelen Specs gegen dieselbe Test-DB** — mit **`workers: 1`** sequenziell
+  konfigurieren. Nur das garantiert volle Sequenzialität; `fullyParallel: false`
+  allein reicht nicht (lässt Dateien weiter parallel über mehrere Worker laufen).
+- **Diagnose:** `trace: 'on-first-retry'` + `screenshot: 'only-on-failure'` in
+  `playwright.config.ts` — sonst ist ein CI-Failure remote nicht reproduzierbar.
+- **Readiness:** `webServer`-Block (`command` + `url` +
+  `reuseExistingServer: !process.env.CI`) — der Lauf wartet auf den App-Start,
+  statt gegen einen noch toten Server zu rennen.
+- **Login-State:** einmalig per `globalSetup` + `storageState` erzeugen und je Test
+  via `use: { storageState }` wiederverwenden — kein wiederholter Login-Flow als
+  Flaky-Quelle.
+- **Assertion auf den EXAKTEN deutschen Fehlertext**, nicht nur auf "Fehler
+  vorhanden":
+
+```ts
+import { test, expect } from '@playwright/test';
+
+test('E-Mail-Feld leer → exakte Fehlermeldung', async ({ page }) => {
+  await page.goto('/register');
+  // alle Pflichtfelder korrekt AUSSER E-Mail (genau EIN Feld falsch)
+  await page.getByTestId('name').fill('Test Nutzer');
+  await page.getByTestId('passwort').fill('korrektesPasswort1');
+  await page.getByTestId('passwort-bestaetigung').fill('korrektesPasswort1');
+  await page.getByTestId('agb').check();
+  // E-Mail bewusst leer
+  await page.getByTestId('submit').click();
+
+  await expect(page.getByTestId('email-error'))
+    .toHaveText('E-Mail-Adresse ist erforderlich');   // exakter Text, nicht /Fehler/
+});
+```
+
+Pro Formular die volle Ein-Feld-falsch-Matrix rotieren, Keyboard-/Enter-Submit als
+eigenen Test, Happy Path zuletzt. Querschnitt (Authz, CSRF, Session, Upload/IDOR,
+XSS, Grenzwerte, State/Race, Pagination/Empty, A11y): Checkliste in TESTS.md.
 
 ---
 

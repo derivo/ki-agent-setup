@@ -54,8 +54,88 @@ geben echte Sicherheit.
 ## Teststrategie bewusst zuschneiden
 Nimm nur die Testtypen, die echten Schutz bringen. Hat die App keine externen
 Service-Aufrufe, brauchst du kein Mocking-Framework dafür. Default-Minimum: Unit
-(Kern) + Durchstich (mit Zustands-Assertion). Browser-/UI-Tests nur, wenn es eine
-UI mit eigener Logik gibt.
+(Kern) + Durchstich (mit Zustands-Assertion). Browser-/E2E-Tests nur, wenn es eine
+UI mit eigener Logik gibt — dann aber nach den Regeln unten, damit sie von Anfang
+an stabil und aussagekräftig sind.
+
+## E2E / Browser — stabil von Anfang an
+
+Ein E2E-Test fährt die echte UI im Browser (Klick, Tippen, Submit) gegen eine
+echte Test-DB. Er ist teuer und neigt zu Flakiness — deshalb wird er bewusst
+aufgebaut, nicht nachträglich geflickt. Die folgenden Regeln gelten ab dem ersten
+E2E-Test, nicht erst wenn er rot blinkt.
+
+### Edge-Case-Matrix — der Pflichtkern
+Ein Happy-Path-Test allein ist kein Schutz. Jedes Eingabe-Formular wird über die
+volle Matrix geprüft: **immer genau EIN Feld falsch, alle anderen korrekt — durch
+alle Felder rotieren**, dazu Grenzwerte (leer, zu kurz/zu lang, min/min−1,
+max/max+1, falsches Format, ungültige Auswahl, abweichendes Bestätigungsfeld).
+Die vollständige Matrix-Regel mit Beispiel-Tabelle steht im Instruktions-Standard
+(AGENTS.md → »Testing — Pflichtstandard Edge Cases«); hier zählt:
+ohne rotierende Ein-Feld-falsch-Matrix ist ein Formular nicht abgedeckt.
+
+Dazu pro Formular:
+- **Keyboard-/Enter-Submit als eigener Pfad** — kann die Button-Validierung
+  umgehen und ist ein eigener Bug-Vektor.
+- **Assertion auf den EXAKTEN Fehlertext**, nicht nur "ein Fehler erscheint". Ein
+  falscher, aber vorhandener Text muss rot werden.
+- **Happy Path als LETZTER Test der Gruppe** — er baut auf dem Zustand der
+  Edge-Cases auf.
+
+### Stabilität — keine Flakiness einbauen
+- **Stabile Selektoren.** Über `data-testid`/Rollen ansprechen, nicht über
+  CSS-Position, Textfragmente oder DOM-Reihenfolge — die brechen bei jedem
+  Layout-Change.
+- **Deterministisch warten, nie feste Sleeps.** Auf eine Bedingung warten
+  (Element sichtbar, Response da, URL gewechselt), nicht auf `sleep(2s)`. Feste
+  Wartezeiten sind die häufigste Flaky-Quelle. Bei asynchronem Backend nach dem
+  Submit auf die Response/Netzwerk-Ruhe warten, nicht nur auf Element-Sichtbarkeit
+  — sonst Race zwischen DOM-Update und API-Antwort.
+- **Isolierte, FK-sichere Daten pro Test/Namespace.** Jeder Lauf seedet seine
+  eigenen Daten und räumt sie in FK-sicherer Reihenfolge wieder ab. Kein Test
+  hängt vom Restzustand eines anderen ab.
+- **Sequenziell gegen geteilte DB.** Keine parallelen E2E-Suites gegen denselben
+  Datastore — sonst Kollisionen, Deadlocks, Falschfehler (siehe "Wichtig" unten).
+- **Cross-Browser.** In allen konfigurierten Engines grün (z. B. Chromium UND
+  Firefox), nicht nur in einer.
+- **Doppel-Submit/Race.** Doppelklick auf Submit und langsames Netz dürfen keine
+  doppelte Wirkung erzeugen — als eigenen Test absichern.
+
+### Querschnitt-Checkliste — über die Formular-Matrix hinaus
+Soweit auf das Projekt zutreffend, je ein E2E-/Durchstich-Test:
+- **Autorisierung:** jede Rolle gegen jede fremde/geschützte Route → blockiert/
+  Redirect; nicht eingeloggt → Login.
+- **CSRF — nur HTTP-Durchstich, nicht Browser-E2E** (der Browser sendet automatisch
+  ein gültiges Token; absichtlich fehlende/fremde Token sind nur auf HTTP-Ebene
+  injizierbar): POST ohne / mit fremdem / abgelaufenem Token → abgelehnt.
+- **Session/TTL:** abgelaufene Session → Login; unterschiedliche TTLs;
+  deaktivierter User mit noch offener Session.
+- **Erzwungene Folgeaktion** (z. B. Passwortwechsel-Gate) blockiert andere Routen,
+  bis erledigt.
+- **Datei-Upload:** Inhalts-MIME vs. Endung, Übergröße, 0-Byte,
+  Pfad-Traversal-Name, Besitz-/IDOR-Zugriff, Direktzugriff auf Storage-Pfad → 404,
+  randomisierter Dateiname.
+- **Objekt-Zugriff/IDOR:** Nutzer A sieht keine Daten von Nutzer B; nur opake/
+  numerische IDs in URLs.
+- **Stored-/Reflected-XSS:** Script/HTML in Freitextfeldern → escaped gerendert.
+- **Domänen-Grenzwerte:** Schwellen exakt getroffen vs. knapp darunter, idempotente
+  Wiederholung, numerische Overflows (Spalten-Limits), Maximalzustände ohne
+  Division/Null-Fehler, Datum-/Zeitzonen-Tagesgrenze.
+- **Zustandsübergänge:** Wiedereinreichen/Re-Try, Re-Check bei Freigabe wenn sich
+  die Vorbedingung änderte, gleichzeitige Doppel-Aktion → nur einmal wirksam,
+  Aktion auf zwischenzeitlich deaktiviertes Objekt.
+- **Listen/Pagination:** Seite über Ende / negativ → geklemmt; Filter ohne Treffer
+  → Empty-State; frischer Account → sauberer Empty-State.
+- **A11y/Interaktion:** Modal-Focus-Trap + ESC + Fokus-Rückkehr.
+
+### Priorisierung, wenn die Lücke groß ist
+1. Regression für gerade gefundene/gebaute Bugs (frisch, oft 0 Coverage).
+2. Sicherheitskritische Null-Coverage-Zonen (Autorisierung, CSRF, Session,
+   Upload, IDOR).
+3. Domänen-Kernlogik mit Grenzwerten.
+4. Restliche Form-Matrix, Pagination, Empty-States, A11y.
+
+(Konkretes Test-Framework, Browser-Runner und Seed/Cleanup-Werkzeug: Stack-Adapter.)
 
 ## Wichtig
 - Tests aus den Akzeptanzkriterien ZUERST schreiben, dann Code.

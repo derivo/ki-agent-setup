@@ -16,13 +16,15 @@ Zielort der globalen Config: `~/.claude/`.
 
 ---
 
-## 1. Plugin-Marketplace registrieren
+## 1. Plugin-Marketplaces registrieren
 
 ```bash
 claude plugin marketplace add JuliusBrussee/caveman
+claude plugin marketplace add anthropics/claude-plugins-official
 ```
 
-**Verify:** `claude plugin marketplace list` zeigt `caveman`.
+**Verify:** `claude plugin marketplace list` zeigt `caveman` **und**
+`claude-plugins-official`.
 
 ---
 
@@ -30,9 +32,34 @@ claude plugin marketplace add JuliusBrussee/caveman
 
 ```bash
 claude plugin install caveman@caveman
+claude plugin install claude-md-management@claude-plugins-official
+claude plugin install frontend-design@claude-plugins-official
+claude plugin install playwright@claude-plugins-official
 ```
 
-**Verify:** `claude plugin list` zeigt `caveman` als enabled.
+`caveman` liefert die Kompressions-Modi + Hooks (Schritt 5). Die drei
+`@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege, Frontend-Design und
+Playwright-Browser-Automatisierung.
+
+**Version-Pinning:** `claude plugin install` hat **kein** Version-/Ref-Flag, ebenso
+`marketplace add` — die installierte Version ist der git-HEAD des Marketplace zum
+Install-Zeitpunkt. Hartes Pinning wie bei GSD (Schritt 3, `@1.6.0`) ist hier per
+CLI **nicht** möglich. Stattdessen werden die geprüften Known-Good-Versionen
+dokumentiert; Drift wird über `claude plugin list` gegen diese Tabelle erkannt:
+
+| Plugin | Known-Good (Stand 2026-06-30) |
+|---|---|
+| `caveman@caveman` | `25d22f864ad6` |
+| `claude-md-management@claude-plugins-official` | `1.0.0` |
+| `frontend-design@claude-plugins-official` | `61c0597779bd` |
+| `playwright@claude-plugins-official` | `d53f6ca4cdb0` |
+
+Bewusste Aktualisierung: nach Prüfung diese Tabelle neu setzen (analog zum
+GSD-Pin). Reine git-Hashes sind keine Semver-Tags — der Upstream-Marketplace
+vergibt keine stabilen Versionen für diese Plugins.
+
+**Verify:** `claude plugin list` zeigt alle vier als enabled; Versionen stimmen mit
+der Tabelle überein (oder Abweichung ist bewusst dokumentiert).
 
 ---
 
@@ -240,7 +267,7 @@ Harness-Commands.
 
 ## 8. Abschluss-Verifikation
 
-- `claude plugin list` → caveman enabled.
+- `claude plugin list` → caveman + die drei `claude-plugins-official`-Plugins enabled.
 - Neue Session: caveman-Mode aktiv, GSD-Statusline sichtbar.
 - In einem `.planning/`-Projekt: Statusline zeigt GSD-State.
 - `~/.claude/harness/`, `~/.codex/harness/` und `~/.gemini/harness/` vorhanden;

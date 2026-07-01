@@ -249,9 +249,9 @@ echo 'export AGENT_HARNESS_ROOT="$HOME/.harness"' >> ~/.zshrc
 rsync -a --delete harness/ ~/.harness/
 ```
 
-Die Claude-Code-Command-Library aufrufbar machen (damit `/hx:spec`,
+Die Claude-Code-Command-Library aufrufbar machen (damit `/hx:start`, `/hx:spec`,
 `/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`, `/hx:retro`,
-`/hx:hot-reload` greifen) — in `~/.claude/commands/`
+`/hx:hot-reload`, `/hx:eod` greifen) — in `~/.claude/commands/`
 legen. `review`/`verify` kollidieren mit Built-in-Skills → in einen Unterordner
 namespacen (`hx/` → `/hx:review`). `README.md` ist Doku, **nicht** deployen:
 ```bash

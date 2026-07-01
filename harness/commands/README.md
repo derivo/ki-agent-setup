@@ -29,6 +29,7 @@ rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
 
 | Command | Zweck | Bindet an |
 |---|---|---|
+| [`/hx:start`](start.md) | Session-Start: Harness laden, Projektstand erfassen, bereit melden | README-Lesereihenfolge, GUARDRAILS, Stack-Adapter |
 | [`/hx:spec`](spec.md) | Idee → geschärfte, testbare Feature-Spec | SPEC_WORKFLOW, FEATURE_TEMPLATE |
 | [`/hx:review`](review.md) | Multi-Agent-Review-Panel über den Diff | REVIEW_PANEL |
 | [`/hx:verify`](verify.md) | App wirklich starten, Verhalten end-to-end beobachten | TESTS, GUARDRAILS C |
@@ -36,6 +37,7 @@ rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
 | [`/hx:pr`](pr.md) | PR vorbereiten: Gate grün, AC-Abdeckung, Branch/PR | AGENT_LOOP, feature.md |
 | [`/hx:retro`](retro.md) | Session-Rückblick: Gelerntes klassifizieren + ans richtige Ziel routen | SELF_OPTIMIZATION, Memory/GSD/TheBrain |
 | [`/hx:hot-reload`](hot-reload.md) | `/hx:retro` + Zustand sichern + `/clear`-Reset vorbereiten | retro.md |
+| [`/hx:eod`](eod.md) | Tagesabschluss: retro + Arbeitsstand/Commit-Check + State + Übergabe an morgen | retro.md, commit.md, Arbeits-Tracking |
 
 > `README.md` (diese Datei) ist Doku, **kein** Command — beim Deployen nach
 > `~/.claude/commands/` ausschließen.

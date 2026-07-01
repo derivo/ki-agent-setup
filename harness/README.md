@@ -44,9 +44,12 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 7. **[SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)** — das Herz: die prüfende
    Schleife (wiederholen bis verifiziert) und wie das Harness aus jedem Fehler
    schärfer wird (Harness Correction).
-8. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
+8. **[EVALS.md](EVALS.md)** — die Messhälfte dazu: festes Referenzaufgaben-Set,
+   das nach Harness-Änderungen und Modell-Updates prüft, ob das Harness seine
+   Versprechen noch hält.
+9. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
    Security / Performance, parallel + adversarial) vor der Fertig-Meldung.
-9. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+10. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced

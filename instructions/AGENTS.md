@@ -163,4 +163,6 @@ Zusätzlich:
 
 **Diese Regeln greifen, wenn:** weniger unnötige Änderungen im Diff, weniger
 Rewrites wegen Überkomplexität, und Rückfragen kommen vor der Umsetzung statt
-nach dem Fehler.
+nach dem Fehler. Mechanisch geprüft wird das über die Referenzaufgaben in
+`EVALS.md` des Harness (Ablageort: siehe Harness-Lookup oben) — ein Lauf ist
+fällig nach Änderungen an diesen Regeln und nach Modell-Updates.

@@ -82,7 +82,11 @@ Der Loop automatisiert Bauen und Prüfen. **Merge und Deploy bleiben beim
 Menschen.** Der Agent bereitet vor, der Mensch gibt frei. Wie weit Autonomie
 reicht, ist risikoabhängig: je sensibler Daten/Domäne, desto später der Punkt, an
 dem ohne Mitlesen freigegeben wird (siehe [ROADMAP.md](ROADMAP.md), Phase 5).
-Deploy-Ziele/-Besonderheiten: Stack-Adapter.
+
+Die Grenze entbindet nicht von der Definition: Die **Deploy-Strecke** (Ziele
+Test/Prod, Artefakt-Weg, Rollback) definiert der Stack-Adapter, gefüllt pro
+Projekt. Ist sie nicht definiert, wird das bei der Fertig-Meldung als offene
+Lücke benannt — nicht stillschweigend übersprungen.
 
 ---
 

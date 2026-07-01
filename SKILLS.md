@@ -9,6 +9,14 @@ Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 > Setup neu aufbaut, stellt die Skills aus diesem Lockfile wieder her oder
 > installiert sie einzeln aus den unten genannten Repos.
 
+> **Pinning & Reproduzierbarkeit:** Die Installation über die `skills`-CLI zieht
+> den aktuellen Stand des jeweiligen Quell-Repos — den exakt installierten Stand
+> kennt nur das Lockfile. Das Lockfile ist **maschinenlokal** und nicht Teil
+> dieses Repos: nach Skill-Änderungen eine Kopie sichern (privates Backup).
+> Sonst ist bei Maschinenverlust nur die Quellenliste hier rekonstruierbar,
+> nicht der geprüfte Stand (analog zur Known-Good-Tabelle der Plugins in
+> `APPLY.md` Schritt 2).
+
 Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) und caveman
 (`caveman:*`, Plugin).
 

@@ -69,7 +69,22 @@ Symfony) ist innerhalb eines Adapters nur eine Variante des Einstiegspunkts.
 
 Neuer Stack → neuen Adapter nach dem Muster von `php` anlegen: konkrete Schichten
 + Verbots-Muster, das Gate-Kommando, das Test-Framework, DB-/Layout-Konventionen,
-eine Beispiel-Zerlegung. Die generellen Dateien bleiben unverändert.
+die Deploy-Strecke (Ziele, Artefakt-Weg, Rollback), eine Beispiel-Zerlegung. Die
+generellen Dateien bleiben unverändert.
+
+---
+
+## Projekt-Doku
+
+Erzeugt oder pflegt der Agent Entwickler-Doku eines Code-Projekts (Handbuch,
+API-Doku, Architektur-Überblick — manuell oder als wiederkehrender Job), gilt:
+**erst Struktur, dann Inhalt.** Die Zielstruktur (Gliederung, Zielgruppe,
+Fertig-Kriterien) steht in einer `docs/README.md` bzw. `docs/CLAUDE.md` des
+Projekts, **bevor** generiert wird — sonst produziert jeder Lauf eine andere
+Doku. Als Ausgangspunkt dient
+[`../doc-harness/DOC_TEMPLATE.md`](../doc-harness/DOC_TEMPLATE.md); für große,
+langlebige oder korrektheitskritische Doku-Basen gilt das ganze
+[`doc-harness/`](../doc-harness/README.md) (Claims-gegen-Quelle als Gate).
 
 ---
 

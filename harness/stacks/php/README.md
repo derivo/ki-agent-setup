@@ -175,6 +175,23 @@ Zerlegung (innen → außen):
 
 ---
 
+## Deploy-Strecke (konkretisiert GUARDRAILS.md D)
+
+Das Gate beendet den Agent-Loop — die Strecke dahinter muss trotzdem definiert
+sein, sonst endet „fertig" beim grünen Gate statt beim laufenden System. Pro
+Projekt festlegen (Platzhalter füllen):
+
+| Baustein | Vorgabe |
+|---|---|
+| **Ziele** | eine Testumgebung + eine Produktionsumgebung (`<test-url/host>`, `<prod-url/host>`) |
+| **Artefakt** | versioniertes Build-Artefakt, empfohlen: Container-Image, Tag = Commit/Release, in eigener Registry |
+| **Weg** | **Pull durch die Zielmaschine** (z. B. Cron/Watchtower/`compose pull`) statt SSH-Push aus der CI — kein Runner-Key, der auf die Produktionsmaschine zeigt |
+| **Stufen** | Test: automatisch nach grünem Gate. Prod: manuell ausgelöst — der Mensch gibt frei (GUARDRAILS D) |
+| **Rollback** | vorheriges Image-Tag bleibt verfügbar, Rollback-Kommando dokumentiert und einmal geprobt; Migrations reversibel (siehe oben) |
+
+Solange die Tabelle im Projekt nicht gefüllt ist, gilt die Deploy-Strecke als
+**offen** und wird bei der Fertig-Meldung als Lücke benannt.
+
 ## Grenze zum Menschen (konkretisiert GUARDRAILS.md D)
 Merge und Deploy bleiben beim Menschen. Bei sensibler Domäne den Punkt, ab dem
 ohne Mitlesen freigegeben wird, deutlich später ansetzen.

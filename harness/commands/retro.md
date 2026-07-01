@@ -15,6 +15,9 @@ richtige Ziel. Kein neues Silo: pro Erkenntnis genau **ein** Ziel.
    - **Arbeitsweise / fehlende Regel** → Harness Correction: konkrete Regel für
      `GUARDRAILS.md` (oder Stack-Adapter) vorschlagen (siehe SELF_OPTIMIZATION.md).
      Wird eine Regel übernommen: Eval-Lauf nach `EVALS.md` fällig.
+   - **Command / Skill hat geklemmt** (missverständlich, Schritt fehlte, falsche
+     Reihenfolge) → konkreten Edit am betroffenen Command (`harness/commands/*`)
+     bzw. Skill vorschlagen — als Diff zeigen, Freigabe einholen.
    - **Projekt-Wissen** (Entscheidung, Domänenfakt, Gotcha) → Projekt-Memory bzw.
      GSD `SUMMARY.md` / `extract-learnings`.
    - **Referenz** (URL, Ticket, Doku) → Memory-Eintrag Typ reference.

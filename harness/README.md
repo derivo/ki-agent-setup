@@ -53,8 +53,9 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced
-unter `/hx:spec`, `/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`,
-`/hx:retro`, `/hx:hot-reload`, damit sie nicht mit Built-ins kollidieren.
+unter `/hx:start`, `/hx:spec`, `/hx:review`, `/hx:verify`, `/hx:commit`,
+`/hx:pr`, `/hx:retro`, `/hx:hot-reload`, `/hx:eod`, damit sie nicht mit
+Built-ins kollidieren.
 
 Dann den passenden **Stack-Adapter** unter [`stacks/`](stacks/) lesen — er füllt
 die generellen Platzhalter (Schichten, Gate-Befehl, Test-Framework) mit den

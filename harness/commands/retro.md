@@ -14,6 +14,7 @@ richtige Ziel. Kein neues Silo: pro Erkenntnis genau **ein** Ziel.
 3. **Routen** je Typ an genau ein bestehendes Ziel:
    - **Arbeitsweise / fehlende Regel** → Harness Correction: konkrete Regel für
      `GUARDRAILS.md` (oder Stack-Adapter) vorschlagen (siehe SELF_OPTIMIZATION.md).
+     Wird eine Regel übernommen: Eval-Lauf nach `EVALS.md` fällig.
    - **Projekt-Wissen** (Entscheidung, Domänenfakt, Gotcha) → Projekt-Memory bzw.
      GSD `SUMMARY.md` / `extract-learnings`.
    - **Referenz** (URL, Ticket, Doku) → Memory-Eintrag Typ reference.

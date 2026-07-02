@@ -3,6 +3,9 @@
 Anleitung für den KI-Client. Arbeite die Schritte der Reihe nach ab,
 prüfe je Schritt das Verify-Kriterium, frage bei Konflikten nach.
 Bestehende Werte des Users **nicht** blind überschreiben — mergen, Abweichungen melden.
+Vor jeder Änderung an einer bestehenden Datei unter `~/.claude/` (insbesondere
+`settings.json`) ein Datei-Backup anlegen (z. B. `cp settings.json
+settings.json.bak-$(date +%F)`) — jede Änderung bleibt datei-weise revertierbar.
 
 Zielort der globalen Config: `~/.claude/`.
 
@@ -246,9 +249,9 @@ echo 'export AGENT_HARNESS_ROOT="$HOME/.harness"' >> ~/.zshrc
 rsync -a --delete harness/ ~/.harness/
 ```
 
-Die Claude-Code-Command-Library aufrufbar machen (damit `/hx:spec`,
+Die Claude-Code-Command-Library aufrufbar machen (damit `/hx:start`, `/hx:spec`,
 `/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`, `/hx:retro`,
-`/hx:hot-reload` greifen) — in `~/.claude/commands/`
+`/hx:hot-reload`, `/hx:eod` greifen) — in `~/.claude/commands/`
 legen. `review`/`verify` kollidieren mit Built-in-Skills → in einen Unterordner
 namespacen (`hx/` → `/hx:review`). `README.md` ist Doku, **nicht** deployen:
 ```bash
@@ -265,6 +268,50 @@ Harness-Commands.
 
 ---
 
+## 7d. MCP-Server (Kern-Set)
+
+Die MCP-Empfehlungen stehen in [`MCP_SERVERS.md`](MCP_SERVERS.md); das dort als
+**Kern-Set** geführte Trio (context7, GitHub MCP, Playwright MCP) gehört zum
+reproduzierten Setup. Pro Server (Details + Sicherheit: `MCP_SERVERS.md`):
+
+- Install-Kommando aus der **offiziellen Doku** des Servers (Quelle steht in der
+  Tabelle), Version **pinnen** — nicht `latest`.
+- Tokens/Keys aus `.env`/Secret-Store, nie im Klartext in `mcp.json`;
+  `mcp.json` nicht versionieren.
+- Die Entwicklungs-Server (dbhub, Docker) nur auf Maschinen mit lokalem
+  Dev-Stack, nach den Sicherheitsregeln in `MCP_SERVERS.md` (read-only, keine
+  Produktions-Credentials).
+
+`MCP_SERVERS.md` ist das **secret-freie Inventar**: Wird ein Server dauerhaft
+ergänzt oder entfernt, die Tabelle dort nachziehen (analog `SKILLS.md` für
+Skills).
+
+**Verify:** `claude mcp list` zeigt die Kern-Set-Server als verbunden.
+
+---
+
+## 7e. Security-Basis (Kontrollen 1–2)
+
+Der Hardening-Layer steht in [`security/`](security/README.md). Die dort als
+Priorität 1 eingestuften, billigen mechanischen Kontrollen werden **immer**
+eingerichtet — nicht erst bei autonomen Läufen:
+
+1. **Secret-Scanning** nach [`security/01`](security/01-secret-scanning.md):
+   `gitleaks` installieren und als Pre-Commit-Schritt einklinken
+   (`gitleaks protect --staged --redact`).
+2. **Tool-Guard** nach [`security/02`](security/02-tool-guard.md): eigenen
+   PreToolUse-Block-Hook (matcher `Bash|Write|Edit`) nach dem Muster der
+   `gsd-*`-Guards anlegen und in `settings.json` registrieren (fail-closed,
+   exit 2 bei Treffer).
+
+Die Kontrollen 03–07 (Proxy, Egress, Supply-Chain, Sandbox, Injection) je nach
+Autonomiegrad ergänzen — Priorisierung siehe `security/README.md`.
+
+**Verify:** `gitleaks version` liefert eine Version; `settings.json` enthält den
+PreToolUse-Guard; ein Test-Commit mit Dummy-Secret wird geblockt.
+
+---
+
 ## 8. Abschluss-Verifikation
 
 - `claude plugin list` → caveman + die drei `claude-plugins-official`-Plugins enabled.
@@ -272,5 +319,7 @@ Harness-Commands.
 - In einem `.planning/`-Projekt: Statusline zeigt GSD-State.
 - `~/.claude/harness/`, `~/.codex/harness/` und `~/.gemini/harness/` vorhanden;
   Instructions verweisen darauf.
+- `claude mcp list` → Kern-Set aus `MCP_SERVERS.md` verbunden (7d).
+- Security-Basis aktiv: gitleaks im Pre-Commit, Tool-Guard-Hook registriert (7e).
 
 Bei Abweichungen oder fehlenden Quellen melden statt raten.

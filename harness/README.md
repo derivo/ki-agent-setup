@@ -44,14 +44,18 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 7. **[SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)** — das Herz: die prüfende
    Schleife (wiederholen bis verifiziert) und wie das Harness aus jedem Fehler
    schärfer wird (Harness Correction).
-8. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
+8. **[EVALS.md](EVALS.md)** — die Messhälfte dazu: festes Referenzaufgaben-Set,
+   das nach Harness-Änderungen und Modell-Updates prüft, ob das Harness seine
+   Versprechen noch hält.
+9. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
    Security / Performance, parallel + adversarial) vor der Fertig-Meldung.
-9. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+10. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced
-unter `/hx:spec`, `/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`,
-`/hx:retro`, `/hx:hot-reload`, damit sie nicht mit Built-ins kollidieren.
+unter `/hx:start`, `/hx:spec`, `/hx:review`, `/hx:verify`, `/hx:commit`,
+`/hx:pr`, `/hx:retro`, `/hx:hot-reload`, `/hx:eod`, damit sie nicht mit
+Built-ins kollidieren.
 
 Dann den passenden **Stack-Adapter** unter [`stacks/`](stacks/) lesen — er füllt
 die generellen Platzhalter (Schichten, Gate-Befehl, Test-Framework) mit den
@@ -69,7 +73,22 @@ Symfony) ist innerhalb eines Adapters nur eine Variante des Einstiegspunkts.
 
 Neuer Stack → neuen Adapter nach dem Muster von `php` anlegen: konkrete Schichten
 + Verbots-Muster, das Gate-Kommando, das Test-Framework, DB-/Layout-Konventionen,
-eine Beispiel-Zerlegung. Die generellen Dateien bleiben unverändert.
+die Deploy-Strecke (Ziele, Artefakt-Weg, Rollback), eine Beispiel-Zerlegung. Die
+generellen Dateien bleiben unverändert.
+
+---
+
+## Projekt-Doku
+
+Erzeugt oder pflegt der Agent Entwickler-Doku eines Code-Projekts (Handbuch,
+API-Doku, Architektur-Überblick — manuell oder als wiederkehrender Job), gilt:
+**erst Struktur, dann Inhalt.** Die Zielstruktur (Gliederung, Zielgruppe,
+Fertig-Kriterien) steht in einer `docs/README.md` bzw. `docs/CLAUDE.md` des
+Projekts, **bevor** generiert wird — sonst produziert jeder Lauf eine andere
+Doku. Als Ausgangspunkt dient
+[`../doc-harness/DOC_TEMPLATE.md`](../doc-harness/DOC_TEMPLATE.md); für große,
+langlebige oder korrektheitskritische Doku-Basen gilt das ganze
+[`doc-harness/`](../doc-harness/README.md) (Claims-gegen-Quelle als Gate).
 
 ---
 

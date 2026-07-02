@@ -68,6 +68,11 @@ So wächst das Harness aus echten Fehlern statt aus Vermutungen. Über die Zeit
 fängt der Selbst-Critic (Schleife 1) immer mehr ab, bevor das teurere Gate
 anspringt.
 
+Diese Schleife ist anekdotengetrieben — sie korrigiert, misst aber nicht. Ob eine
+Regel-Änderung tatsächlich verbessert (und ob ein Modell-Update etwas gebrochen
+hat), prüft das Referenzaufgaben-Set in [EVALS.md](EVALS.md): nach Änderungen an
+Harness/Instructions und nach Modell-Updates ist ein Eval-Lauf fällig.
+
 ### Wann eine Regel ergänzen — und wann nicht
 Nicht jeder Einzelfall wird zur Regel (sonst Regel-Wildwuchs, gegen Simplicity
 First):

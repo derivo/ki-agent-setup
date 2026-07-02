@@ -84,10 +84,13 @@ mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 ### MCP-Server & Sicherheit
 
 - **MCP-Server** — kuratierte, sicherheitsbewusste Empfehlungen (context7, GitHub,
-  Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md).
+  Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md). Das Kern-Set wird beim Setup
+  mitinstalliert (`APPLY.md` Schritt 7d); die Datei ist zugleich das secret-freie
+  Inventar.
 - **Sicherheit** — Hardening-Layer um den Agenten (Secret-Scan, Tool-Block-Hook,
   Logging-Proxy, Egress, Supply-Chain, Sandbox, Prompt-Injection):
-  [`security/`](security/README.md).
+  [`security/`](security/README.md). Die Basis-Kontrollen (Secret-Scan,
+  Tool-Guard) sind Teil des Setups (`APPLY.md` Schritt 7e).
 
 ---
 
@@ -133,7 +136,7 @@ flowchart TD
 
     subgraph SETUP[" Setup-Reproduktion "]
         SKILL["skills/setup-ki-agent<br/>autonomer Bootstrap"]:::skill
-        APPLY["APPLY.md<br/>8 Setup-Schritte + Verify"]:::core
+        APPLY["APPLY.md<br/>Setup-Schritte 0–8 + Verify"]:::core
         SKILL -->|liest und führt aus| APPLY
     end
 

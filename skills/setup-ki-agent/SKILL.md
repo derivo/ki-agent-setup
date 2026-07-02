@@ -25,15 +25,15 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 ### 1. Orientieren
 - Repo-Wurzel finden (dort liegen `README.md`, `APPLY.md`, `harness/`).
 - `README.md` lesen → Überblick, Statusline-Aufbau, Tool-Liste.
-- `APPLY.md` lesen → die 8 verbindlichen Setup-Schritte.
+- `APPLY.md` lesen → die verbindlichen Setup-Schritte (0–8 inkl. 7b–7e).
 - Bestehenden Stand erfassen: `~/.claude/settings.json`, `claude plugin list`,
   vorhandene `~/.claude/CLAUDE.md`. **Nicht** blind überschreiben — mergen.
 
-### 2. Setup anwenden (APPLY.md vollständig, inkl. 7b/7c)
+### 2. Setup anwenden (APPLY.md vollständig, inkl. 7b–7e)
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
 Verify-Kriterium, bevor du weitergehst:
 1. Marketplaces registrieren.
-2. Plugin installieren (caveman).
+2. Plugins installieren (caveman + die drei `claude-plugins-official`-Plugins).
 3. GSD installieren (eigener Installer, kein Marketplace-Plugin).
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
 5. Hooks eintragen (GSD-Guards, caveman-Aktivierung).
@@ -42,7 +42,9 @@ Verify-Kriterium, bevor du weitergehst:
 8. Zusätzliche Nicht-GSD/caveman-Skills nach `SKILLS.md`/Lockfile herstellen.
 9. Harness und optional doc-harness client-übergreifend hinterlegen; Claude-
    Commands unter `/hx:*` deployen.
-10. Abschluss-Verifikation.
+10. MCP-Kern-Set installieren (Versionen pinnen; Inventar = `MCP_SERVERS.md`).
+11. Security-Basis einrichten (Secret-Scan + Tool-Guard, `security/01`–`02`).
+12. Abschluss-Verifikation.
 
 `permissions.allow` **nicht** aus dem Repo übernehmen — maschinenspezifisch, wächst
 organisch (steht so in APPLY.md).

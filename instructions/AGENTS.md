@@ -112,6 +112,16 @@ dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
 den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
+## Doku-Projekte — Doc-Harness
+
+Für Doku-Arbeit (README-Sammlungen, Handbücher, API-Doku) gilt analog das
+**Doc-Harness** (Claims-gegen-Quelle als Gate). Suchreihenfolge:
+`~/.claude/doc-harness/README.md`, `~/.codex/doc-harness/README.md`,
+`~/.gemini/doc-harness/README.md`, sonst `doc-harness/README.md` im
+ki-agents-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
+Struktur** (`docs/README.md`/`docs/CLAUDE.md` im Projekt, Vorlage:
+`doc-harness/DOC_TEMPLATE.md`) — ohne definierte Struktur keine generierte Doku.
+
 ## Testing — Pflichtstandard Edge Cases
 
 UI-Formular (E2E / Widget / Browser) → vollständige Edge-Case-Matrix. Prinzip:
@@ -153,4 +163,6 @@ Zusätzlich:
 
 **Diese Regeln greifen, wenn:** weniger unnötige Änderungen im Diff, weniger
 Rewrites wegen Überkomplexität, und Rückfragen kommen vor der Umsetzung statt
-nach dem Fehler.
+nach dem Fehler. Mechanisch geprüft wird das über die Referenzaufgaben in
+`EVALS.md` des Harness (Ablageort: siehe Harness-Lookup oben) — ein Lauf ist
+fällig nach Änderungen an diesen Regeln und nach Modell-Updates.

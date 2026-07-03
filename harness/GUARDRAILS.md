@@ -111,6 +111,11 @@ eigene Lens im [Review-Panel](REVIEW_PANEL.md), mindestens aber als Selbstcheck.
   nur aus `.env`/Secret-Store (deckt sich mit Regel 3).
 - **Authz/Authn:** Jeder Einstiegspunkt, der geschützte Daten/Aktionen berührt,
   prüft Berechtigung explizit — keine impliziten "ist eh eingeloggt".
+  - **Ownership-Transfer:** Eine Operation, die Besitzer/Tenant eines Datensatzes
+    ändert (`user_id`/`project_id`/`owner`), autorisiert gegen den **beanspruchten**
+    Zielzustand, nicht nur gegen Zugriff auf den Ist-Zustand. Falle: Schreibrecht am
+    geteilten Objekt erlaubt noch nicht die Überführung in privaten Besitz — die
+    "nach privat"-Richtung braucht eine eigene Owner-Prüfung.
 - **Unsichere Defaults:** Keine deaktivierte Zertifikatsprüfung, kein `eval`/
   dynamische Deserialisierung auf Nutzerdaten, keine offenen CORS-/Debug-Flags in
   Produktionspfaden.

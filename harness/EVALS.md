@@ -146,4 +146,4 @@ grüne Zeile wird Drift erkannt.
 
 | Datum | Anlass | Modell/Client | Harness-Stand (Commit) | Ergebnis | Auffälligkeiten |
 |---|---|---|---|---|---|
-| — | — | — | — | — | noch kein Lauf |
+| 2026-07-03 | Regel-Add (Ownership-Transfer + E10) | Opus 4.8 / Claude Code | 43ea745 | E10 **PASS** (mit Regel) | Gezielter E10-Lauf (kein Voll-Sweep). A/B: frischer Agent OHNE Regel → **FAIL** (kopiert `edit_record`-Check, lässt WRITE-Co-User fremden Datensatz privatisieren; benannte das Risiko nur in Prosa). MIT Regel → PASS (Owner-Prüfung, Co-User 403). Regel justiziert. |

@@ -3,11 +3,13 @@
 Anleitung für den KI-Client. Arbeite die Schritte der Reihe nach ab,
 prüfe je Schritt das Verify-Kriterium, frage bei Konflikten nach.
 Bestehende Werte des Users **nicht** blind überschreiben — mergen, Abweichungen melden.
-Vor jeder Änderung an einer bestehenden Datei unter `~/.claude/` (insbesondere
-`settings.json`) ein Datei-Backup anlegen (z. B. `cp settings.json
-settings.json.bak-$(date +%F)`) — jede Änderung bleibt datei-weise revertierbar.
+Vor jeder Änderung an einer bestehenden Datei unter globalen Client-Verzeichnissen
+(`~/.claude/`, `~/.codex/`, `~/.gemini/`, optional `~/.harness/`) ein Datei-Backup
+anlegen (z. B. `cp settings.json settings.json.bak-$(date +%F)`) — jede Änderung
+bleibt datei-weise revertierbar.
 
-Zielort der globalen Config: `~/.claude/`.
+Primärer Zielort der globalen Config: `~/.claude/`. Cross-Client-Mirrors liegen
+zusätzlich unter `~/.codex/`, `~/.gemini/` und optional `~/.harness/`.
 
 ---
 
@@ -69,8 +71,9 @@ der Tabelle überein (oder Abweichung ist bewusst dokumentiert).
 ## 3. GSD (get-shit-done) installieren
 
 GSD ist **kein** Marketplace-Plugin, sondern ein eigener Installer.
-Liegt unter `~/.claude/get-shit-done/` und liefert Hooks (`gsd-*`),
-Skills/Commands (`gsd-*`, `gsd:*`) und die Statusline.
+Liegt im Runtime-Config-Verzeichnis (z. B. `~/.claude/get-shit-done/` oder
+`~/.codex/get-shit-done/`) und liefert Hooks (`gsd-*`), Skills/Commands
+(`gsd-*`, `gsd:*`) und die Statusline.
 
 Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-06-27: `1.6.0`):
 ```bash
@@ -158,8 +161,9 @@ Sandbox/VM setzen, wenn der User genau dieses Risiko freigibt.
 ## 7. Globale Arbeitsregeln (Cross-Client)
 
 Die portablen Anweisungen liegen geschichtet in [`instructions/`](instructions/):
-- `instructions/AGENTS.md` — client-neutrale Basis (Arbeitsweise, Testing,
-  Konventionen).
+- `instructions/AGENTS.md` — client-übergreifende Basis (Arbeitsweise, Testing,
+  Konventionen) plus klar markierte Codex-Hinweise, weil Codex hier `AGENTS.md`
+  direkt liest.
 - `instructions/CLAUDE.md` — Claude-Delta (GSD, caveman, Skills),
   importiert die Basis via `@AGENTS.md`.
 
@@ -168,6 +172,8 @@ Deployment (Details + andere Clients: `instructions/README.md`):
   `CLAUDE.md`). Falls dort schon eine `CLAUDE.md` liegt, mergen statt blind
   überschreiben.
 - **Codex CLI:** `instructions/AGENTS.md` nach `~/.codex/AGENTS.md` kopieren/symlinken.
+  Kein separates `CODEX.md` anlegen; Codex-spezifische Hinweise bleiben im
+  markierten Abschnitt der `AGENTS.md`.
 - **Gemini CLI:** bei Bedarf `~/.gemini/GEMINI.md` aus der Basis ableiten.
 
 Der `@AGENTS.md`-Import funktioniert nur, wenn **beide** Dateien im selben
@@ -175,6 +181,8 @@ Verzeichnis liegen (`~/.claude/AGENTS.md` + `~/.claude/CLAUDE.md`).
 
 **Verify:** `~/.claude/AGENTS.md` **und** `~/.claude/CLAUDE.md` existieren,
 `CLAUDE.md` importiert `AGENTS.md`, Inhalt deckt Arbeitsweise + Claude-Spezifika ab.
+Für Codex existiert `~/.codex/AGENTS.md` und enthält den Abschnitt
+`Codex-spezifisch`.
 
 ---
 
@@ -249,14 +257,34 @@ echo 'export AGENT_HARNESS_ROOT="$HOME/.harness"' >> ~/.zshrc
 rsync -a --delete harness/ ~/.harness/
 ```
 
-Die Claude-Code-Command-Library aufrufbar machen (damit `/hx:start`, `/hx:spec`,
+Die Command-Library aufrufbar machen. `README.md` ist Doku, **nicht** deployen.
+
+**Claude Code** (Namespace über Unterordner `hx/` → `/hx:start`, `/hx:spec`,
 `/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`, `/hx:retro`,
-`/hx:hot-reload`, `/hx:eod` greifen) — in `~/.claude/commands/`
-legen. `review`/`verify` kollidieren mit Built-in-Skills → in einen Unterordner
-namespacen (`hx/` → `/hx:review`). `README.md` ist Doku, **nicht** deployen:
+`/hx:hot-reload`, `/hx:eod`; `review`/`verify` kollidieren sonst mit
+Built-in-Skills):
 ```bash
 mkdir -p ~/.claude/commands/hx
 rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
+```
+
+**Codex CLI** liest Custom-Prompts flach aus `~/.codex/prompts/*.md` und kennt
+**kein** `:`-Namespace-Schema. Deshalb wird der Claude-Namespace `/hx:<name>` bei
+Codex zum Datei-Präfix `hx-<name>` → aufrufbar als `/hx-start`, `/hx-spec` usw.
+Die Dateien referenzieren sich intern gegenseitig (`/hx:retro` in `eod.md` etc.);
+diese Cross-Refs werden beim Deploy per `sed` auf `/hx-` mitgezogen, sonst zeigen
+sie bei Codex ins Leere. `~/.codex/prompts/` ist flach und **geteilt** (kann
+fremde Codex-Prompts enthalten) — kein `rsync --delete` aufs ganze Verzeichnis.
+Stattdessen Delete-by-Präfix: nur `hx-*.md` vorab wegräumen (der `hx-`-Präfix ist
+die Namespace-Grenze), damit entfernte Commands nicht als Leichen liegen bleiben,
+Fremdes aber unangetastet:
+```bash
+mkdir -p ~/.codex/prompts
+rm -f ~/.codex/prompts/hx-*.md
+for f in harness/commands/*.md; do
+  base=$(basename "$f"); [ "$base" = "README.md" ] && continue
+  sed 's#/hx:#/hx-#g' "$f" > ~/.codex/prompts/hx-"$base"
+done
 ```
 
 **Verify:** Bei Client-Kopien existieren `~/.claude/harness/README.md`,
@@ -264,7 +292,9 @@ rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
 `harness/stacks/` Verzeichnisse zeigen die Adapter. Beim zentralen Root stattdessen:
 `"$AGENT_HARNESS_ROOT/README.md"` existiert und `"$AGENT_HARNESS_ROOT/stacks/"`
 zeigt die Adapter. In beiden Fällen enthält `ls ~/.claude/commands/hx/` die
-Harness-Commands.
+Harness-Commands; für Codex enthält `ls ~/.codex/prompts/` dieselben Commands als
+`hx-*.md`, und `grep -rl '/hx:' ~/.codex/prompts/` liefert **nichts** (alle
+internen Cross-Refs sind auf `/hx-` umgeschrieben).
 
 ---
 
@@ -323,3 +353,8 @@ PreToolUse-Guard; ein Test-Commit mit Dummy-Secret wird geblockt.
 - Security-Basis aktiv: gitleaks im Pre-Commit, Tool-Guard-Hook registriert (7e).
 
 Bei Abweichungen oder fehlenden Quellen melden statt raten.
+
+Für Änderungen an diesem Repo vor dem Commit zusätzlich:
+```bash
+make verify-docs
+```

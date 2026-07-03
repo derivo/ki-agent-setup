@@ -8,17 +8,33 @@ Review-Tiefe, Verify-Schritte).
 
 ## Deployment
 
-Commands müssen in einem von Claude Code gescannten Verzeichnis liegen:
-- **Global:** `~/.claude/commands/` → überall aufrufbar.
-- **Projekt:** `<repo>/.claude/commands/` → nur im Projekt.
-
-Aufruf als `/<name>`. Empfohlen ist ein Namespace, weil `review`/`verify` mit
-Built-ins kollidieren können: `commands/hx/commit.md` → `/hx:commit`.
+**Claude Code** scannt `~/.claude/commands/` (global) bzw. `<repo>/.claude/commands/`
+(projekt). Aufruf als `/<name>`; empfohlen ist ein Namespace über den Unterordner
+`hx/`, weil `review`/`verify` mit Built-ins kollidieren: `commands/hx/commit.md`
+→ `/hx:commit`.
 
 ```bash
 # global deployen (empfohlen)
 mkdir -p ~/.claude/commands/hx
 rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
+```
+
+**Codex CLI** scannt `~/.codex/prompts/*.md` flach und kennt **kein**
+`:`-Namespace-Schema. Der Claude-Namespace `/hx:<name>` wird bei Codex deshalb zum
+Datei-Präfix `hx-<name>` → `/hx-commit`, `/hx-start` usw. Die internen Cross-Refs
+(`/hx:retro` in `eod.md` etc.) werden beim Deploy per `sed` auf `/hx-` mitgezogen.
+`~/.codex/prompts/` ist flach und geteilt (kein dedizierter Namespace-Ordner wie
+Claudes `hx/`), darum kein `rsync --delete` — stattdessen Delete-by-Präfix: nur
+`hx-*.md` vorab wegräumen, damit entfernte Commands keine Leichen hinterlassen,
+fremde Prompts aber bleiben.
+
+```bash
+mkdir -p ~/.codex/prompts
+rm -f ~/.codex/prompts/hx-*.md
+for f in harness/commands/*.md; do
+  base=$(basename "$f"); [ "$base" = "README.md" ] && continue
+  sed 's#/hx:#/hx-#g' "$f" > ~/.codex/prompts/hx-"$base"
+done
 ```
 
 > `--delete` ist destruktiv: `~/.claude/commands/hx/` ist ein repo-owned Mirror,

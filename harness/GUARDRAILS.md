@@ -74,6 +74,13 @@ eine enumerierte, prüfbare AC-Liste (je AC ein Test, alle anfangs rot). Tests s
 dabei unantastbar — grün entsteht nur durch korrekten Code, nie durch Aufweichen
 eines Tests (siehe [TESTS.md](TESTS.md)).
 
+### Regel — Laufende Verifikation nicht unterminieren
+- Während ein Test-/Verify-Lauf gegen einen live nachladenden Server läuft
+  (Vite/HMR, watch-Modus, Hot-Reload), sind Quellcode-Mutationen tabu:
+  kein Edit, kein `git stash/checkout/switch`, kein Branch-Wechsel.
+  Erst Lauf beenden oder abbrechen, dann mutieren — sonst testet der Lauf
+  einen Zustand, den es nie gab (Flakes, wertlose Ergebnisse).
+
 ---
 
 ## D. Grenze zum Menschen

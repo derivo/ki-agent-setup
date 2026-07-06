@@ -81,6 +81,18 @@ eines Tests (siehe [TESTS.md](TESTS.md)).
   Erst Lauf beenden oder abbrechen, dann mutieren — sonst testet der Lauf
   einen Zustand, den es nie gab (Flakes, wertlose Ergebnisse).
 
+### Regel — Vollständigkeits-Aussagen erden
+Bevor du „alle / vollständig / jedes X" meldest: die tatsächliche Grundgesamtheit
+von X aus der **Ground Truth** enumerieren (Controller, Routen, Dateien, DB), nie
+aus einem Proxy (Feature-Flag-Liste, Doku-Kapitel, Erinnerung). Die Zählung selbst
+ist Teil des Fertig-Kriteriums — nicht nur „ist jedes bekannte Element geprüft".
+
+### Regel — Abwesenheit so streng belegen wie Anwesenheit
+Eine „X fehlt / nicht vorhanden / nicht verdrahtet"-Aussage braucht dieselbe
+Beleg-Härte wie eine Existenz-Aussage: am tatsächlichen Ort prüfen (z. B. Paket-Dir
++ Binary + Config, nicht ein einziger Manifest-grep), bevor du Abwesenheit
+behauptest. Ein Ein-Quellen-Schluss ist kein Beleg.
+
 ---
 
 ## D. Grenze zum Menschen

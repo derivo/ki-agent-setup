@@ -9,8 +9,9 @@ Goal: check out this repo on a new machine, tell the AI client *"read `APPLY.md`
 and apply it"* — and the setup is reproduced. Define once, sync everywhere,
 update and adapt easily.
 
-This repo contains **no** config files, only documentation. The AI client builds
-the configuration itself from [`APPLY.md`](APPLY.md).
+This repo contains **no machine-local runtime config files**; it contains docs,
+templates, and verification helpers. The AI client builds the concrete
+configuration itself from [`APPLY.md`](APPLY.md).
 
 ---
 
@@ -34,6 +35,12 @@ ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
 
 Change the setup → edit `APPLY.md`, commit, pull on other machines.
 
+Before committing:
+
+```bash
+make verify-docs
+```
+
 ---
 
 ## What the setup does
@@ -41,10 +48,11 @@ Change the setup → edit `APPLY.md`, commit, pull on other machines.
 The setup turns an AI coding client into a structured development agent. It has
 two layers:
 
-**Client-neutral** — applies to any agent (Claude Code, Codex, Cursor, Gemini …):
+**Cross-client** — applies to any agent (Claude Code, Codex, Cursor, Gemini …):
 - Layered working rules following the [AGENTS.md](https://agents.md) standard
-  ([`instructions/`](instructions/)): neutral base (`AGENTS.md`) + client deltas
-  — German output, think-before-coding, simplicity-first, surgical changes,
+  ([`instructions/`](instructions/)): shared base (`AGENTS.md`) + thin client
+  additions (Claude in `CLAUDE.md`, Codex clearly marked in `AGENTS.md`) —
+  German output, think-before-coding, simplicity-first, surgical changes,
   honesty/verification discipline, mandatory edge-case testing.
 - [`harness/`](harness/README.md) — general, stack-agnostic software-development
   workflow (spec → test → code → gate, self-optimization).
@@ -60,7 +68,7 @@ two layers:
   Claude Code mechanisms.
 
 Accordingly, [`APPLY.md`](APPLY.md) is primarily tailored to Claude Code
-(`claude plugin …`, `~/.claude/`); the client-neutral layer is additionally rolled
+(`claude plugin …`, `~/.claude/`); the cross-client layer is additionally rolled
 out to other clients (step 7 → `~/.codex/`, `~/.gemini/` …).
 
 ---
@@ -69,7 +77,7 @@ out to other clients (step 7 → `~/.codex/`, `~/.gemini/` …).
 
 | Tool | Source | Type | Purpose |
 |---|---|---|---|
-| **GSD (get-shit-done)** | own installer → `~/.claude/get-shit-done` | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
+| **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
 | **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra |
 
 Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
@@ -140,7 +148,7 @@ flowchart TD
     end
 
     subgraph INSTR[" instructions/ — cross-client rules "]
-        AGENTS["AGENTS.md<br/>neutral base"]:::doc
+        AGENTS["AGENTS.md<br/>base + Codex notes"]:::doc
         CLAUDE["CLAUDE.md<br/>Claude delta"]:::doc
         CLAUDE -->|imports| AGENTS
     end
@@ -185,7 +193,14 @@ tools, and restores the skills. The `harness/` is the
 live as adapters under `harness/stacks/` (e.g.
 [`stacks/php`](harness/stacks/php/README.md) for PHP web + DB). Alongside it,
 [`doc-harness/`](doc-harness/README.md) is the workflow for **documentation**
-projects.
+projects. Codex uses `~/.codex/AGENTS.md` and the harness mirror under
+`~/.codex/harness/`; this setup does not use a separate `CODEX.md`.
+
+For repo maintenance, there is a no-dependency baseline check:
+[`scripts/verify-docs.py`](scripts/verify-docs.py), exposed as
+`make verify-docs`. It checks internal Markdown links, `git diff --check`, and
+basic secret patterns; external URL provenance remains a per-session duty under
+`instructions/AGENTS.md`.
 
 ---
 

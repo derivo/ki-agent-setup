@@ -1,12 +1,13 @@
 ---
 name: setup-ki-agent
-description: Bootet das lokale KI-Agent-Setup aus diesem Repo autonom zusammen. Use when the user checks out the ki-agents repo on a (new) machine and wants the Claude Code setup assembled, synced, or updated — e.g. "bau mein KI-Agent-Setup auf", "wende ki-agents an", "richte den Agenten ein", "sync mein Setup". Reads APPLY.md, installs plugins, configures ~/.claude, verifies, and can drop the harness docs into a dev project.
+description: Bootet das lokale KI-Agent-Setup aus diesem Repo autonom zusammen. Use when the user checks out the ki-agents repo on a (new) machine and wants the Claude Code setup plus cross-client instructions/harness mirrors assembled, synced, or updated — e.g. "bau mein KI-Agent-Setup auf", "wende ki-agents an", "richte den Agenten ein", "sync mein Setup". Reads APPLY.md, installs plugins, configures ~/.claude and ~/.codex/AGENTS.md, verifies, and can drop the harness docs into a dev project.
 ---
 
 # setup-ki-agent
 
 Dieser Skill macht das ki-agents-Repo selbst-anwendend: Ein Agent liest ihn nach
-dem Checkout und baut das lokale Claude-Code-Setup autonom zusammen — Plugins,
+dem Checkout und baut das lokale Claude-Code-Setup plus die
+client-übergreifenden Arbeitsregeln/Harness-Mirrors autonom zusammen — Plugins,
 globale Config, GSD, caveman, Statusline, Arbeitsregeln. Optional verdrahtet er
 das Entwicklungs-Harness in ein Zielprojekt.
 
@@ -27,7 +28,8 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 - `README.md` lesen → Überblick, Statusline-Aufbau, Tool-Liste.
 - `APPLY.md` lesen → die verbindlichen Setup-Schritte (0–8 inkl. 7b–7e).
 - Bestehenden Stand erfassen: `~/.claude/settings.json`, `claude plugin list`,
-  vorhandene `~/.claude/CLAUDE.md`. **Nicht** blind überschreiben — mergen.
+  vorhandene `~/.claude/CLAUDE.md`, vorhandene `~/.codex/AGENTS.md`. **Nicht**
+  blind überschreiben — mergen.
 
 ### 2. Setup anwenden (APPLY.md vollständig, inkl. 7b–7e)
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
@@ -38,7 +40,8 @@ Verify-Kriterium, bevor du weitergehst:
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
 5. Hooks eintragen (GSD-Guards, caveman-Aktivierung).
 6. Globale Settings setzen (Deutsch, Thinking, effort high, Theme …).
-7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`) sicherstellen.
+7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`, inkl. Codex-Abschnitt in
+   `AGENTS.md`) sicherstellen.
 8. Zusätzliche Nicht-GSD/caveman-Skills nach `SKILLS.md`/Lockfile herstellen.
 9. Harness und optional doc-harness client-übergreifend hinterlegen; Claude-
    Commands unter `/hx:*` deployen.
@@ -55,8 +58,8 @@ organisch (steht so in APPLY.md).
   **melden**, nicht raten.
 - Bestehende User-Werte abweichend vom Repo → Abweichung melden, nicht still
   überschreiben.
-- Schritte, die etwas installieren oder `~/.claude` ändern, vor Ausführung kurz
-  ankündigen.
+- Schritte, die etwas installieren oder globale Client-Verzeichnisse ändern, vor
+  Ausführung kurz ankündigen.
 
 ### 4. Harness optional einsetzen
 Soll ein PHP/Slim-Projekt nach dem Harness entwickelt werden:
@@ -82,7 +85,8 @@ Prüfpunkte:
 1. **APPLY.md noch gültig** — Befehle syntaktisch ok; Marketplace-/Quell-Repos
    erreichbar (z. B. `gh api repos/<owner>/<repo>`); keine toten Links; GSD- und
    Skill-Install-Quellen existieren noch (nicht archiviert/umgezogen).
-2. **instructions/ kohärent** — `CLAUDE.md` importiert `@AGENTS.md`; kein
+2. **instructions/ kohärent** — `CLAUDE.md` importiert `@AGENTS.md`; der
+   Codex-Abschnitt bleibt in `AGENTS.md` klar markiert; kein
    Widerspruch/Duplikat zwischen Basis und Delta.
 3. **SKILLS.md** — Inventar vs. `~/.agents/.skill-lock.json`; genannte Quell-Repos
    existieren.
@@ -90,6 +94,7 @@ Prüfpunkte:
    deckt sich mit `~/.claude/hooks/gsd-statusline.js`.
 5. **Diagramme rendern** — Mermaid-Blöcke parsen (z. B. `mermaid-cli` lokal).
 6. **Querverweise** — interne Markdown-Links zeigen auf existierende Dateien.
+7. **Repo-Basischeck** — `make verify-docs` läuft grün.
 
 Ablauf:
 - Check ausführen, **Abweichungen/Findings dem User anzeigen** (priorisiert:

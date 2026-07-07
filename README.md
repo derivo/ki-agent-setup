@@ -9,8 +9,9 @@ Ziel: Auf einer neuen Maschine dieses Repo auschecken, dem KI-Client sagen
 *"lies `APPLY.md` und wende es an"* — und das Setup wird reproduziert.
 Einmal definiert, überall synkbar, update- und anpassbar.
 
-Dieses Repo enthält **keine** Config-Dateien, nur Doku. Der KI-Client baut
-die Konfiguration anhand von [`APPLY.md`](APPLY.md) selbst auf.
+Dieses Repo enthält **keine maschinenlokalen Runtime-Config-Dateien**, sondern
+Doku, Templates und Verify-Hilfen. Der KI-Client baut die konkrete Konfiguration
+anhand von [`APPLY.md`](APPLY.md) selbst auf.
 
 ---
 
@@ -35,6 +36,12 @@ ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
 
 Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
 
+Vor dem Commit:
+
+```bash
+make verify-docs
+```
+
 ---
 
 ## Was das Setup macht
@@ -42,9 +49,10 @@ Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
 Das Setup macht aus einem KI-Coding-Client einen strukturierten
 Entwicklungs-Agenten. Es hat zwei Ebenen:
 
-**Client-neutral** — gilt für jeden Agenten (Claude Code, Codex, Cursor, Gemini …):
+**Client-übergreifend** — gilt für jeden Agenten (Claude Code, Codex, Cursor, Gemini …):
 - Geschichtete Arbeitsregeln nach dem [AGENTS.md](https://agents.md)-Standard
-  ([`instructions/`](instructions/)): neutrale Basis (`AGENTS.md`) + Client-Deltas
+  ([`instructions/`](instructions/)): gemeinsame Basis (`AGENTS.md`) + dünne
+  Client-Ergänzungen (Claude in `CLAUDE.md`, Codex klar markiert in `AGENTS.md`)
   — Deutsch, Think-before-Coding, Simplicity-First, Surgical-Changes,
   Ehrlichkeits-/Verifikations-Disziplin, Edge-Case-Testpflicht.
 - [`harness/`](harness/README.md) — genereller, stack-agnostischer
@@ -61,7 +69,7 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   Claude-Code-Mechanismen.
 
 Entsprechend ist [`APPLY.md`](APPLY.md) primär auf Claude Code zugeschnitten
-(`claude plugin …`, `~/.claude/`); die client-neutrale Ebene wird zusätzlich auf
+(`claude plugin …`, `~/.claude/`); die client-übergreifende Ebene wird zusätzlich auf
 andere Clients ausgerollt (Schritt 7 → `~/.codex/`, `~/.gemini/` …).
 
 ---
@@ -70,7 +78,7 @@ andere Clients ausgerollt (Schritt 7 → `~/.codex/`, `~/.gemini/` …).
 
 | Tool | Quelle | Typ | Zweck |
 |---|---|---|---|
-| **GSD (get-shit-done)** | eigener Installer → `~/.claude/get-shit-done` | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
+| **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
 | **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
@@ -141,7 +149,7 @@ flowchart TD
     end
 
     subgraph INSTR[" instructions/ — Cross-Client-Regeln "]
-        AGENTS["AGENTS.md<br/>neutrale Basis"]:::doc
+        AGENTS["AGENTS.md<br/>Basis + Codex-Hinweise"]:::doc
         CLAUDE["CLAUDE.md<br/>Claude-Delta"]:::doc
         CLAUDE -->|importiert| AGENTS
     end
@@ -186,6 +194,14 @@ die Tools und stellt die Skills wieder her. Das
 konkrete Stack-Details liegen als Adapter unter `harness/stacks/` (z. B.
 [`stacks/php`](harness/stacks/php/README.md) für PHP-Web + DB). Daneben gibt es
 das [`doc-harness/`](doc-harness/README.md) als Workflow für **Doku**-Projekte.
+Codex nutzt dafür `~/.codex/AGENTS.md` und den Harness-Mirror unter
+`~/.codex/harness/`; ein separates `CODEX.md` gibt es in diesem Setup nicht.
+
+Für Repo-Pflege gibt es einen no-dependency-Basischeck:
+[`scripts/verify-docs.py`](scripts/verify-docs.py), aufrufbar über
+`make verify-docs`. Er prüft interne Markdown-Links, `git diff --check` und
+Basis-Secret-Patterns; externe URL-Provenance bleibt eine Session-Pflicht nach
+`instructions/AGENTS.md`.
 
 ---
 

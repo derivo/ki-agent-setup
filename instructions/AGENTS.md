@@ -1,8 +1,10 @@
 # AGENTS.md — gemeinsame Basis für alle KI-Clients
 
-Client-neutrale Arbeitsregeln. Gelten für **jeden** Agenten (Claude Code, Codex,
+Gemeinsame Arbeitsregeln. Gelten für **jeden** Agenten (Claude Code, Codex,
 Cursor, Gemini …). Tool-spezifische Ergänzungen stehen in der jeweiligen
-Client-Datei (z. B. `CLAUDE.md`), die diese Basis erweitert — nicht ersetzt.
+Client-Datei (z. B. `CLAUDE.md`), die diese Basis erweitert — nicht ersetzt. Wo
+ein Client hier kein eigenes Delta nutzt (Codex), bleiben die Hinweise in dieser
+Datei klar markiert.
 
 Standard: [AGENTS.md](https://agents.md) (Cross-Tool-Format, von OpenAI gestartet,
 heute unter der Linux Foundation / Agentic AI Foundation).
@@ -158,6 +160,22 @@ Zusätzlich:
 **Laravel-spezifisch:**
 - Eloquent: `$fillable` / `$guarded` korrekt setzen.
 - Autorisierung über Policies / Gates (Spatie Permission Paket).
+
+## Codex-spezifisch
+
+Codex hat in diesem Setup kein separates `CODEX.md`-Delta. Codex liest die
+globale bzw. projektlokale `AGENTS.md`; deshalb stehen die wenigen
+Codex-spezifischen Hinweise hier und bleiben klar auf Codex begrenzt.
+
+- GSD-Runtime-Daten liegen unter `~/.codex/get-shit-done`.
+- Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
+  `~/.codex/harness/README.md`, sonst `harness/README.md` im `ki-agents`-Repo.
+  Vor Feature-/Code-Arbeit den dortigen Einstieg und den passenden Stack-Adapter
+  lesen.
+- Wenn verschachtelte Codex-Läufe nicht nach `~/.codex` schreiben können, via
+  `codex-tmp` starten, damit `CODEX_HOME` auf `/tmp/codex-$USER` zeigt.
+- Projektspezifische Anweisungen gehören ins Repository (`AGENTS.md` bzw.
+  `AGENT.md`) und nicht nur in lokale Codex-Konfiguration.
 
 ---
 

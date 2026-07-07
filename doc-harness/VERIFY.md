@@ -28,6 +28,14 @@ markdownlint "**/*.md"
 lychee --no-progress "**/*.md"
 ```
 
+In diesem Repo gibt es zusätzlich einen no-dependency-Basischeck:
+```
+make verify-docs
+```
+Er prüft interne Markdown-Links, `git diff --check` und Basis-Secret-Patterns.
+Externe URLs werden gezählt, aber nicht abgerufen; URL-Provenance bleibt die
+Pflicht des Agenten in derselben Session.
+
 ## Ebene 2 — Claims-gegen-Quelle (der Kern)
 
 Mechanische Checks sagen nichts darüber, ob der **Inhalt stimmt**. Diese Ebene

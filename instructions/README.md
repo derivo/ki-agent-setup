@@ -1,15 +1,18 @@
 # instructions/ — Cross-Client-Anweisungen
 
-Die portablen Agent-Anweisungen, geschichtet: **eine neutrale Basis, dünne
-Client-Deltas.** So gibt es eine Quelle der Wahrheit statt N kopierter Regelsätze.
+Die portablen Agent-Anweisungen, geschichtet: **eine gemeinsame Basis, dünne
+Client-Ergänzungen.** So gibt es eine Quelle der Wahrheit statt N kopierter
+Regelsätze.
 
 ```
-AGENTS.md   ← gemeinsame Basis (client-neutral). Standard, lesen alle Tools.
+AGENTS.md   ← gemeinsame Basis. Standard; Codex-Hinweise sind klar markiert.
 CLAUDE.md   ← Claude-only-Delta (GSD, caveman, Skills) + importiert AGENTS.md
 ```
 
 `CLAUDE.md` bindet die Basis über die Claude-Code-Import-Syntax `@AGENTS.md` ein —
 beim Deployen müssen beide Dateien im selben Verzeichnis liegen.
+Codex bekommt kein separates Delta: Codex liest `AGENTS.md`, deshalb stehen die
+wenigen Codex-spezifischen Hinweise dort in einem eigenen Abschnitt.
 
 ## Hintergrund: der Standard
 
@@ -27,7 +30,7 @@ beim Deployen müssen beide Dateien im selben Verzeichnis liegen.
 | Client | Ziel (global) | Vorgehen |
 |---|---|---|
 | Claude Code | `~/.claude/CLAUDE.md` (+ `~/.claude/AGENTS.md`) | beide Dateien kopieren; `CLAUDE.md` importiert `AGENTS.md` |
-| Codex CLI | `~/.codex/AGENTS.md` | `AGENTS.md` kopieren oder symlinken |
+| Codex CLI | `~/.codex/AGENTS.md` | `AGENTS.md` kopieren oder symlinken; der Codex-Abschnitt bleibt darin |
 | Gemini CLI | `~/.gemini/GEMINI.md` | aus `AGENTS.md` ableiten / symlinken |
 | Cursor u. a. | projektweit `AGENTS.md` | im Projekt ablegen |
 
@@ -41,5 +44,6 @@ Tools gelesen — die zuverlässigste gemeinsame Ablage. Claude ergänzt es per
 projekt-lokaler `CLAUDE.md`, falls Claude-Spezifika nötig sind.
 
 ## Pflege
-Regel ändern → entscheiden: client-neutral → `AGENTS.md`; nur Claude → `CLAUDE.md`.
-Im Zweifel in die Basis, Delta klein halten.
+Regel ändern → entscheiden: client-übergreifend → `AGENTS.md`; nur Claude →
+`CLAUDE.md`; nur Codex → klar markierter Abschnitt in `AGENTS.md`. Im Zweifel in
+die Basis, Ergänzung klein halten.

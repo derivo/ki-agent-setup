@@ -136,3 +136,14 @@ eigene Lens im [Review-Panel](REVIEW_PANEL.md), mindestens aber als Selbstcheck.
 
 Findet der Pass etwas, gilt dieselbe Regel wie beim Gate: Ursache fixen, nicht
 verstecken. Stack-spezifische Tools (SAST, Secret-Scanner) nennt der Adapter.
+
+---
+
+## F. Text-Treue (Encoding in Payloads)
+
+### Regel 5 — Keine vorauseilende ASCII-Transliteration
+Umlaute/Akzente bleiben erhalten — auch außerhalb von Fließtext: in Dateinamen,
+Konfig-Werten, String-Literalen und eingebettetem Diagramm-Code (Mermaid,
+draw.io, PlantUML). Kein `ue`/`ae`/`oe`-Ersatz "zur Sicherheit"; moderne Tools
+sind UTF-8. Ausnahme nur bei nachgewiesenem (getestetem) Tool-Fail — dann Grund
+benennen.

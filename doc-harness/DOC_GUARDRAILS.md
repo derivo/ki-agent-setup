@@ -54,6 +54,15 @@ Kein "Verbessern" angrenzender Abschnitte, keine Umformatierung unbeteiligter
 Teile. Jede geänderte Zeile ist auf den Auftrag zurückführbar. Fremde Schwächen
 erwähnen, nicht ungefragt umschreiben.
 
+## E. Orthografie & Encoding
+
+### Regel 9 — Umlaute/Akzente auch in Nicht-Fließtext-Payloads
+Die Umlaut-/Akzent-Treue gilt nicht nur im Fließtext, sondern auch in
+Diagramm-Code, Tool-Import-Formaten (Mermaid, draw.io, PlantUML),
+Dateinamen-Labels und Konfig-Werten. Keine vorauseilende ASCII-Transliteration
+"zur Sicherheit" (`ueber`, `faellt`) — moderne Tools sind UTF-8. Ausnahme nur,
+wenn ein Tool nachweislich (getestet) scheitert; dann Grund benennen.
+
 ---
 
 ## Das Fertig-Kriterium

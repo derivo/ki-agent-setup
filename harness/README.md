@@ -105,3 +105,11 @@ GUARDRAILS.md → "Das Fertig-Kriterium").
 Wer das Harness später wieder härten will (Hooks, CI), baut auf dieser
 dokumentarischen Basis auf — die Regeln stehen schon, sie müssen nur in Skripte
 übersetzt werden.
+
+Ein erster, **nicht-erzwingender** Baustein liegt bereits bei:
+[`hooks/harness-activate.sh`](hooks/harness-activate.sh) — ein Claude-Code-
+SessionStart-Hook, der beim Session-Start einen kurzen Reminder (Lookup +
+Ablauf + Fertig-Kriterium) in den Kontext injiziert. Er blockiert nichts und
+gatet nichts; er macht nur den ohnehin in `instructions/AGENTS.md` stehenden
+Pointer salient, damit der Agent das Harness nicht überliest. Deploy +
+Registrierung: [`APPLY.md`](../APPLY.md) → Abschnitt 7c.

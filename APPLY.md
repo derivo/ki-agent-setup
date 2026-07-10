@@ -114,7 +114,8 @@ In `~/.claude/settings.json`:
 Alle Hook-Skripte liegen in `~/.claude/hooks/`. In `settings.json` registrieren
 (Pfade auf reales `$HOME` anpassen):
 
-- **SessionStart:** `gsd-check-update.js`, `gsd-session-state.sh`, `caveman-activate.js`
+- **SessionStart:** `gsd-check-update.js`, `gsd-session-state.sh`, `caveman-activate.js`,
+  `harness-activate.sh` (harness-eigen, Deploy siehe 7c — reine Kontext-Injektion, kein Gate)
 - **UserPromptSubmit:** `caveman-mode-tracker.js`
 - **PreToolUse** (`Write|Edit`): `gsd-prompt-guard.js`, `gsd-read-guard.js`, `gsd-workflow-guard.js`
   — (`Bash`): `gsd-validate-commit.sh`
@@ -267,6 +268,31 @@ Built-in-Skills):
 mkdir -p ~/.claude/commands/hx
 rsync -a --delete --exclude README.md harness/commands/ ~/.claude/commands/hx/
 ```
+
+**SessionStart-Reminder (optionale Härtung, nur Claude Code).** Der Harness-Pointer
+steht bereits in `instructions/AGENTS.md` und wird jede Session geladen — in einer
+langen Datei aber leicht überlesen (in der Praxis passiert: Feature ohne
+Harness-Konsultation gebaut). `harness/hooks/harness-activate.sh` injiziert beim
+Session-Start einen kurzen, unübersehbaren Reminder (Lookup + Ablauf +
+Fertig-Kriterium). Es ist **reine Kontext-Injektion, kein Gate** — blockiert nichts,
+erzwingt nichts; die Regel „selbst-erzwungene Gates statt Hooks" bleibt. Nur der
+Pointer wird salient. Deploy + Registrierung in `~/.claude/settings.json`:
+```bash
+cp harness/hooks/harness-activate.sh ~/.claude/hooks/harness-activate.sh
+chmod +x ~/.claude/hooks/harness-activate.sh
+# In settings.json unter hooks.SessionStart einen Eintrag ergänzen (mit bestehenden mergen):
+#   { "hooks": [ { "type": "command",
+#                  "command": "bash \"$HOME/.claude/hooks/harness-activate.sh\"",
+#                  "timeout": 5 } ] }
+# Vor der Änderung Backup: cp ~/.claude/settings.json ~/.claude/settings.json.bak-$(date +%F)
+```
+Der Hook resolved den Harness-Root wie `instructions/AGENTS.md` (zuerst
+`$AGENT_HARNESS_ROOT`, sonst `~/.claude/harness`); fehlt der Root, bleibt er still
+(`OK`). Nur Claude Code — Codex/Gemini lesen `AGENTS.md` direkt und haben den
+Pointer damit ohnehin.
+
+**Verify:** Neue Session zeigt eine `HARNESS AKTIV …`-Zeile im Kontext (analog zur
+caveman-Aktivierung).
 
 **Codex CLI** liest Custom-Prompts flach aus `~/.codex/prompts/*.md` und kennt
 **kein** `:`-Namespace-Schema. Deshalb wird der Claude-Namespace `/hx:<name>` bei

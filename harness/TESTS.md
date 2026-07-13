@@ -150,12 +150,37 @@ Soweit auf das Projekt zutreffend, je ein E2E-/Durchstich-Test:
   → Empty-State; frischer Account → sauberer Empty-State.
 - **A11y/Interaktion:** Modal-Focus-Trap + ESC + Fokus-Rückkehr.
 
+### Verhaltens-Tests — Journey, Misbehavior, Monkey
+Die Formular-Matrix prüft Eingaben isoliert; Verhaltens-Tests prüfen, wie die
+App sich über mehrere Schritte gegenüber echtem Nutzerverhalten hält. Drei
+Stufen, aufsteigend nach Chaos — sie ERGÄNZEN die Matrix, ersetzen sie nicht:
+
+- **User-Journey-Tests.** Ein realistischer Mehrschritt-Ablauf pro Kern-Rolle
+  (anlegen → bearbeiten → freigeben → abschließen), inklusive Abbruch mitten im
+  Ablauf und Wiederaufnahme. Prüft das Zusammenspiel der Module und die
+  Zustands-Konsistenz zwischen den Schritten — nicht einzelne Formulare.
+  Minimum: eine Journey je Kern-Rolle.
+- **Misbehavior-Simulation.** Systematisch pro Modul absichtliches Fehlverhalten
+  durchspielen: leere Submits, überlange Eingaben, XSS-/Injection-Payloads,
+  Doppel-Submit, unautorisierte Zugriffe. Bündelt die Querschnitts-Checks als
+  wiederholbaren Sweep über alle Module statt als Einzelfälle.
+- **Monkey-/Chaos-Testing.** Zufällige Interaktionen (Klicks, Eingaben,
+  Navigation), gern unter Last, ohne definierte Erwartung pro Schritt. Einzige
+  Assertions: kein 5xx, keine unbehandelten JS-Fehler, App bleibt bedienbar.
+  Destruktiv — läuft als letzter Test der Suite und nie gegen geteilte Daten,
+  auf die andere Tests noch bauen.
+
+Reihenfolge nach Schutzwirkung: Journeys zuerst, dann Misbehavior je Modul,
+Monkey erst wenn die Suite stabil läuft (ein flakiger Monkey-Test erzeugt nur
+Rauschen).
+
 ### Priorisierung, wenn die Lücke groß ist
 1. Regression für gerade gefundene/gebaute Bugs (frisch, oft 0 Coverage).
 2. Sicherheitskritische Null-Coverage-Zonen (Autorisierung, CSRF, Session,
    Upload, IDOR).
 3. Domänen-Kernlogik mit Grenzwerten.
 4. Restliche Form-Matrix, Pagination, Empty-States, A11y.
+5. Verhaltens-Tests: Journeys je Rolle, dann Misbehavior-Sweep, Monkey zuletzt.
 
 (Konkretes Test-Framework, Browser-Runner und Seed/Cleanup-Werkzeug: Stack-Adapter.)
 

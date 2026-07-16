@@ -13,6 +13,12 @@ konkreten Schichtnamen und das Gate-Kommando.
 
 Du arbeitest das Feature **"$ARGUMENTS"** vollständig nach dem Harness ab.
 
+0. **Baseline-Check.** Bevor du am Feature arbeitest, den Ist-Stand verifizieren:
+   das Gate-Kommando des Stacks einmal laufen lassen. Ist es schon rot, ist das
+   **vorbestehende** Breakage — melden und klären, bevor du Neues baust. Sonst
+   vermischt sich dein Ergebnis mit fremdem Rot und eine spätere Grün-Meldung wäre
+   nicht deinem Code zuzuschreiben. Grün auf dem Ist-Stand ist die Startlinie.
+
 1. **Spec prüfen.** Suche die Spec zu diesem Feature unter `specs/`. Existiert
    keine, erstelle sie nach [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) und arbeite
    die Stufen aus [SPEC_WORKFLOW.md](SPEC_WORKFLOW.md) ab — inklusive der

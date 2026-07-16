@@ -89,6 +89,29 @@ Beim Wiederaufsetzen liest der Agent git-Log + Progress-Log, nicht den
 richtet nur die Umgebung ein (Setup, Skeleton, initialer Commit), die Folge-Läufe
 machen je einen Schritt — so liegt die Context-Grenze immer an einer sauberen Naht.
 
+### Context als endliche Ressource
+
+Der Context ist knapp, nicht gratis: mit steigender Token-Zahl steigt die Konfusion
+(Context-Rot), nicht linear die Qualität. Ziel ist die kleinste Menge
+hoch-signalhafter Tokens, nicht das größtmögliche Fenster. Vier Hebel, um das über
+lange Läufe zu halten (der durable State oben ist der erste davon):
+
+- **Note-Taking als externes Gedächtnis.** Fortschritt/offene Punkte/Kern-
+  Entscheidungen in eine Datei außerhalb des Fensters schreiben (`PROGRESS.md`
+  bzw. `.planning/STATE.md`, siehe oben), nicht im Verlauf halten. Das ist der
+  Progress-Log von oben — hier als bewusster Kontext-Hebel benannt.
+- **Just-in-time-Retrieval statt Vorab-Dump.** Leichte Identifier halten (Dateipfade,
+  Queries, Ticket-IDs) und erst bei Bedarf nachladen — nicht ganze Dateien/Ergebnisse
+  auf Vorrat in den Context ziehen. Ordnerstruktur/Namen leiten den Agenten zum
+  richtigen Ort (deckt sich mit "Context-Budget schlank" in `../instructions/AGENTS.md`).
+- **Compaction am Fenster-Limit.** Naht das Limit, den Verlauf zusammenfassen und mit
+  der Summary neu aufsetzen. Bewahren: Architektur-Entscheidungen, offene Bugs,
+  Impl-Details; verwerfen: redundante Tool-Ausgaben. Leichtester Hebel zuerst —
+  alte Tool-Call-Ergebnisse leeren, bevor der Gesprächsverlauf angetastet wird.
+- **Subagents für tiefe Teilaufgaben.** Fokus-Arbeit an einen Subagenten mit eigenem,
+  sauberem Context delegieren, der eine kondensierte Summary zurückgibt statt Rohdaten
+  (siehe [REVIEW_PANEL.md](REVIEW_PANEL.md)) — so bleibt der Hauptthread schlank.
+
 ## Selbst-Optimierung & die prüfende Schleife
 Der Loop oben ist nur die Mechanik. Wie er sich wiederholt, bis verifiziert ist,
 und wie das Harness aus jedem gefangenen Fehler schärfer wird (Harness

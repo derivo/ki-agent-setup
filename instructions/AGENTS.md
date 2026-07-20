@@ -60,6 +60,18 @@ Nur anfassen was nötig ist. Kein "Verbessern" von angrenzendem Code. Style des
 Bestands matchen. Orphans aus eigenen Änderungen entfernen, fremden Dead-Code nur
 erwähnen — nicht löschen. Jede geänderte Zeile rückführbar auf User-Request.
 
+### Consistency First
+Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleiche
+Bausteine für gleiche Zwecke (Buttons/UI, Fehlerbehandlung, API-Shapes, Naming).
+Vor einer neuen Variante prüfen, ob es das schon gibt. Abweichungen von
+etablierten Projekt-Konventionen brauchen explizite Freigabe — nicht still einführen.
+
+### Modular by Default
+Software modular bauen: klar abgegrenzte Einheiten mit einer Verantwortung,
+Kommunikation über schmale Schnittstellen statt geteiltem Zustand. Geschäftslogik
+raus aus Einstiegspunkten (Controller/Handler/CLI) in Module/Services. Ein Modul =
+ein Grund zu ändern; keine Gott-Klassen/-Dateien. Tiefe/Muster: `harness/ENGINEERING.md`.
+
 ### Goal-Driven Execution
 Verifizierbare Ziele formulieren:
 - "Add validation" → "Tests für invalid inputs, dann grün machen"
@@ -113,6 +125,11 @@ dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
 `~/.gemini/harness/README.md`, sonst `harness/README.md` im ki-agents-Repo. Danach
 den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
+
+Engineering-Prinzipien (Modularität, Kohäsion/Kopplung, Interface-/Dependency-
+Richtung, Fehler-Shape, Wann-abstrahieren) sind vertieft in `harness/ENGINEERING.md`
+— gleiche Lookup-Reihenfolge wie oben, Referenz-Doc (on-demand gelesen, expandiert
+die terse Arbeitsweise-Regeln oben, dupliziert GUARDRAILS/AGENTS nicht).
 
 ## Doku-Projekte — Doc-Harness
 

@@ -93,6 +93,21 @@ Beleg-Härte wie eine Existenz-Aussage: am tatsächlichen Ort prüfen (z. B. Pak
 + Binary + Config, nicht ein einziger Manifest-grep), bevor du Abwesenheit
 behauptest. Ein Ein-Quellen-Schluss ist kein Beleg.
 
+### Regel — Reference-first bei Mass-Rollout / Fan-out
+Bevor ein struktureller/Layout-Pattern über viele Dateien ausgerollt wird (besonders
+via Subagent-Fan-out): existiert ein kanonisches Vorbild, zuerst **eine** Datei exakt
+gegen dessen Struktur bauen und verifizieren — dann erst fan-out. Eine erfundene
+Variante multipliziert sich über alle N (Rework-Kosten = N), auch wenn sie lokal
+plausibel aussieht. Ergänzt „Style des Bestands matchen": nicht nur der lokale Stil,
+sondern die Struktur des Referenz-Exemplars.
+
+### Regel — Fan-out-Ergebnis zentral verifizieren
+Ergebnisse paralleler Subagents werden zentral geprüft (Gate/Compile **und**
+Runtime-/Render-Check), nicht aus ihren Selbstmeldungen geschlossen. Agents kürzen
+Scope still — entfernen „leere" Wrapper, lassen Teile aus, melden trotzdem Erfolg.
+Ein grüner Compile-Check ist kein Runtime-Beleg, wenn die Änderung Verhalten
+(Interaktion, dynamische UI) berührt: dann zusätzlich am gerenderten Zustand prüfen.
+
 ---
 
 ## D. Grenze zum Menschen

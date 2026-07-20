@@ -108,6 +108,15 @@ Scope still — entfernen „leere" Wrapper, lassen Teile aus, melden trotzdem E
 Ein grüner Compile-Check ist kein Runtime-Beleg, wenn die Änderung Verhalten
 (Interaktion, dynamische UI) berührt: dann zusätzlich am gerenderten Zustand prüfen.
 
+### Regel — „Immer noch kaputt" heißt reproduzieren, nicht raten
+Meldet der Nutzer nach einem Fix, dass ein Verhalten/visueller Bug weiter besteht,
+wird VOR dem nächsten Fix eine deterministische Reproduktion des exakten Symptoms
+gebaut (Skript, DOM-/State-Sample, Video, Log) und die Ursache daran belegt. Kein
+zweiter spekulativer Fix ohne Reproduktion — gestapelte Vermutungs-Fixes kaschieren
+die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z. B.
+Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
+als „gefixt / nicht reproduzierbar" gewertet.
+
 ---
 
 ## D. Grenze zum Menschen

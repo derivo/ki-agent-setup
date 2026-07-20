@@ -162,3 +162,19 @@ Konfig-Werten, String-Literalen und eingebettetem Diagramm-Code (Mermaid,
 draw.io, PlantUML). Kein `ue`/`ae`/`oe`-Ersatz "zur Sicherheit"; moderne Tools
 sind UTF-8. Ausnahme nur bei nachgewiesenem (getestetem) Tool-Fail — dann Grund
 benennen.
+
+## G. Shell/Tooling-Hygiene (Bash-Tool)
+
+### Regel 6 — Shell ist nicht per Default bash
+Das Bash-Tool läuft je Maschine ggf. unter zsh (macOS-Default). Unquoted `$var`
+wird in zsh **nicht** auf Whitespace/Newlines gesplittet — `for f in $files`
+iteriert einmal über den ganzen Blob statt pro Datei. Für Multi-File-Loops
+`… | while read -r f` oder `${(f)files}` nutzen. `sed -i` braucht auf macOS das
+leere Backup-Arg (`sed -i '' …`); GNU-only-Flags (`grep -P`, `sed -r`) nicht
+annehmen.
+
+### Regel 7 — Sweep-Ergebnis mechanisch verifizieren
+Nach jedem Datei-Sweep (sed/perl/Massen-Edit) das Ergebnis prüfen statt
+anzunehmen: `grep -c <muster>` auf 0 bzw. die erwartete Zahl. „Befehl lief durch"
+ist nicht „Befehl hat gewirkt" — ein stummer Fehlschlag (falsches Regex, kein
+Word-Split, falsche sed-Syntax) sieht sonst aus wie Erfolg.

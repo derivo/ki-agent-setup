@@ -72,8 +72,9 @@ Symfony) ist innerhalb eines Adapters nur eine Variante des Einstiegspunkts.
 | [`stacks/php/`](stacks/php/README.md) | PHP-Web + relationale DB (framework-neutral: Slim, Laravel, Symfony, pures PHP) |
 
 Neuer Stack → neuen Adapter nach dem Muster von `php` anlegen: konkrete Schichten
-+ Verbots-Muster, das Gate-Kommando, das Test-Framework, DB-/Layout-Konventionen,
-die Deploy-Strecke (Ziele, Artefakt-Weg, Rollback), eine Beispiel-Zerlegung. Die
++ Verbots-Muster, das Gate-Kommando, das Bring-up-/Run-Kommando (App lokal
+prüfbar hochfahren), das Test-Framework, DB-/Layout-Konventionen, die
+Deploy-Strecke (Ziele, Artefakt-Weg, Rollback), eine Beispiel-Zerlegung. Die
 generellen Dateien bleiben unverändert.
 
 ---

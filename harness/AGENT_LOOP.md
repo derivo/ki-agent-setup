@@ -68,6 +68,9 @@ Abschnitt D). Je sensibler die Domäne, desto länger liest der Mensch mit.
 ## Voraussetzungen
 - Ein **Gate-Kommando** ist definiert, das statische Analyse, Typprüfung,
   Formatter und Tests bündelt (welches genau: Stack-Adapter).
+- Ein **Bring-up-/Run-Kommando** ist definiert, das die App lokal in einen
+  prüfbaren Zustand hochfährt (ein Befehl, idempotent) — damit sichtbares
+  Verhalten End-to-End beobachtbar ist, nicht nur über Unit-Tests (Stack-Adapter).
 - Der Test-Datastore ist lokal erreichbar, damit Integrations-/Durchstich-Tests
   gegen echte Daten laufen.
 
@@ -88,6 +91,15 @@ Beim Wiederaufsetzen liest der Agent git-Log + Progress-Log, nicht den
 (komprimierten) Gesprächsverlauf. Optional bei großen Vorhaben: der erste Lauf
 richtet nur die Umgebung ein (Setup, Skeleton, initialer Commit), die Folge-Läufe
 machen je einen Schritt — so liegt die Context-Grenze immer an einer sauberen Naht.
+
+### Session-Start-Health-Check (vor der ersten neuen Änderung)
+Zustand lesen genügt nicht. Bevor ein Folge-Lauf neue Arbeit draufsattelt, fährt
+er die App per **Bring-up-Kommando** hoch und lässt einen **schnellen Smoke-/
+Durchstich-Lauf** laufen. Bricht der, wird zuerst die (oft undokumentierte) Drift
+der Vor-Session gefixt oder im Progress-Log benannt — **erst dann** das nächste
+Feature. Sonst baut Lauf N auf dem kaputten Stand von Lauf N-1, und der Bug
+versteckt sich hinter scheinbar frischer Arbeit. (Anthropic-Harness: "Initial
+Health Checks".)
 
 ### Context als endliche Ressource
 

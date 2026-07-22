@@ -80,6 +80,14 @@ Service-Aufrufe, brauchst du kein Mocking-Framework dafür. Default-Minimum: Uni
 UI mit eigener Logik gibt — dann aber nach den Regeln unten, damit sie von Anfang
 an stabil und aussagekräftig sind.
 
+**Die Default-Suite bleibt schnell und hermetisch.** Teure oder umgebungs-/
+plattformabhängige Tests (echte Audio-Ein-/Ausgabe, GPU, externe Kosten-APIs,
+Läufe von Minuten) laufen **nicht** im Standardlauf mit, sondern hinter einem
+**Env-Flag + Plattform-Guard** (`RUN_AUDIO_E2E=1`, sonst übersprungen). So bleibt
+das schnelle Gate hermetisch und lokal jederzeit grün-prüfbar; der teure Lauf wird
+bewusst angestoßen (vor Release, in dedizierter CI-Stufe). Übersprungene Tests
+werden als übersprungen gemeldet, nicht als bestanden.
+
 ## Nicht-deterministische Ausgaben (LLM/AI) testen
 
 Ruft die App ein Sprachmodell (oder eine andere nicht-deterministische Quelle),

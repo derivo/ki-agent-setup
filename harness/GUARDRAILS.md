@@ -108,6 +108,15 @@ Scope still — entfernen „leere" Wrapper, lassen Teile aus, melden trotzdem E
 Ein grüner Compile-Check ist kein Runtime-Beleg, wenn die Änderung Verhalten
 (Interaktion, dynamische UI) berührt: dann zusätzlich am gerenderten Zustand prüfen.
 
+### Regel — Verifikation belegen: Evidence, nicht Behauptung
+Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,
+grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".
+Ein Kriterium ohne Beleg gilt als **nicht** verifiziert. Was **nur** zur Laufzeit
+prüfbar ist (Sandbox-Verhalten, echtes Rendering, Keychain/OS-Integration, Deploy-
+Pfad), wird nicht als maschinell verifiziert ausgegeben, sondern als **eigener
+Human-Verify-Checkpoint** ausgewiesen. Code-Gate (maschinell) und Runtime-Gate
+(Mensch/echte Umgebung) sind getrennte Ebenen — die eine überdeckt nie die andere.
+
 ---
 
 ## D. Grenze zum Menschen

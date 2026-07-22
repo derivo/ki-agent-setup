@@ -112,6 +112,29 @@ grün ist, beginnt neue Arbeit.
 
 ---
 
+## UI-Konsistenz (konkretisiert GUARDRAILS.md G)
+
+Gilt, sobald das Projekt eine UI mit eigenen Komponenten hat (React/Vue/Svelte-
+Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
+
+- **Kanonische Komponenten:** wiederverwendbare Components im Design-System-/
+  `components/`-Verzeichnis (`<Button>`, `<Table>`, `<Modal>`, `<Field>`) — bzw. das
+  UI-Kit des Projekts. Vor neuem Markup dort nachsehen; kein zweiter Button aus
+  rohem `<button className="…">`, wenn `<Button>` existiert.
+- **Tokens/Skala:** die eine Quelle sind Design-Tokens (CSS-Custom-Properties/
+  Theme-Objekt) bzw. die `theme`-Sektion in `tailwind.config.{js,ts}` (Farben,
+  Spacing, Radien, Schrift). Keine Inline-`style={{…}}`/`style="…"`, kein Hex direkt
+  im JSX/Template; Abstände/Höhen über die Token-/Utility-Skala, nicht Einzelfall-`px`.
+- **Check (Selbstcheck vor "fertig"):** in geänderten Views/Components grep auf
+  `style={{`/`style="`, Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-
+  Blöcke, die eine vorhandene Component nachbauen — jeder Treffer ist ein Finding
+  (Regel 6/7).
+
+Neuer geteilter Baustein nötig → **eine** neue Component/Token-Stufe anlegen, die
+zur Quelle wird; nicht pro Seite kopieren.
+
+---
+
 ## Tests (konkretisiert TESTS.md)
 
 - **Framework:** Vitest (oder Jest), Arrange–Act–Assert.

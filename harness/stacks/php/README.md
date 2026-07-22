@@ -106,6 +106,28 @@ und Migrations-Stand prüft. Erst wenn der Poll grün ist, beginnt neue Arbeit.
 
 ---
 
+## UI-Konsistenz (konkretisiert GUARDRAILS.md G)
+
+Gilt, sobald das Projekt eine UI mit eigenen Komponenten hat (Blade/Livewire/
+Filament, ggf. + Tailwind).
+
+- **Kanonische Komponenten:** wiederverwendbare Blade-Components (`<x-button>`,
+  `<x-table>`, `<x-modal>`, `<x-field>`) in `resources/views/components/` — bzw. das
+  UI-Kit des Projekts. Vor neuem Markup dort nachsehen; kein zweiter Button aus
+  rohem `<button class="…">`, wenn `<x-button>` existiert.
+- **Tokens/Skala:** die eine Quelle ist die `theme`-Sektion in `tailwind.config.js`
+  (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
+  Inline-`style="…"`, kein Hex direkt im Markup; Abstände/Höhen über die
+  Utility-/Token-Skala, nicht als Einzelfall-`px`.
+- **Check (Selbstcheck vor "fertig"):** in geänderten Views grep auf `style="`,
+  Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die eine
+  vorhandene `<x-…>`-Komponente nachbauen — jeder Treffer ist ein Finding (Regel 6/7).
+
+Neuer geteilter Baustein nötig → **eine** neue Component/Token-Stufe anlegen, die
+zur Quelle wird; nicht pro Seite kopieren.
+
+---
+
 ## Tests (konkretisiert TESTS.md)
 
 - **Framework:** Pest (oder PHPUnit), Arrange–Act–Assert.

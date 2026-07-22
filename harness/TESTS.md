@@ -223,6 +223,55 @@ Rauschen).
 
 (Konkretes Test-Framework, Browser-Runner und Seed/Cleanup-Werkzeug: Stack-Adapter.)
 
+## Matrix über das Formular hinaus
+
+Das **Ein-Feld-falsch-Prinzip** der Formular-Matrix (oben; volle Regel im
+Instruktions-Standard AGENTS.md → „Testing — Pflichtstandard Edge Cases") gilt für
+**jede aufzählbare Eingabe-/Zustandsmenge**, nicht nur für UI-Formulare. Drei
+hochwirksame Anwendungen — je auf der richtigen Schicht, exakte Erwartung je Zelle,
+Happy Path zuletzt:
+
+### 1. API-/HTTP-Payload-Matrix (Durchstich, nicht Browser)
+Eine Schicht unter dem Formular und das **echte** Gate: Client-Validierung ist
+umgehbar, der HTTP-Endpoint nicht. Über Body-Felder + Query + relevante Header
+rotieren — genau eins falsch (fehlend, falscher Typ, Grenzwert, ungültiges Enum),
+Rest gültig. Assert: exakter Status (400/422) UND exakter Fehler-Body/Feldpfad,
+plus **kein** geschriebener Zustand (Zustands-Assertion wie beim Durchstich). Dazu
+die Payload-eigenen Grenzfälle: unbekanntes Feld (ignoriert/abgelehnt je Contract),
+falscher `Content-Type`, leerer Body, überzählige/verschachtelte Struktur.
+
+### 2. Autorisierungs-Matrix (Rolle × Route/Aktion)
+Echte 2D-Matrix: jede Rolle (inkl. anonym) gegen jede geschützte Route/Aktion. Je
+Zelle erlaubt (2xx) / verboten (403) / nicht eingeloggt → Login (401). Fremd-Objekt
+(IDOR) als eigene Achse: A greift auf Ressource von B → 403/404, nie 200.
+
+| Rolle ↓ / Route → | GET /x | POST /x | DELETE /x/{fremd} |
+|---|---|---|---|
+| anonym | 401 | 401 | 401 |
+| user  | 200 | 403 | 403 |
+| admin | 200 | 200 | 404 (fremd) / 200 (eigen) |
+
+Keine Zelle „ist eh eingeloggt" annehmen — jede explizit geprüft. Macht GUARDRAILS.md
+Regel 4 (Authz) mechanisch.
+
+### 3. Zustandsübergangs-Matrix (Zustand × Event)
+Je erlaubtem Zustand jedes mögliche Event: legaler Zielzustand ODER Ablehnung +
+**Zustand unverändert**. Illegale Übergänge sind ein häufiger versteckter Bug
+(doppelte Freigabe, Aktion auf abgeschlossenem/storniertem Objekt). Idempotente
+Wiederholung und gleichzeitige Doppel-Aktion (nur einmal wirksam) sind eigene Zellen.
+
+| Zustand ↓ / Event → | submit | approve | cancel |
+|---|---|---|---|
+| draft    | → pending | reject | → cancelled |
+| pending  | reject | → approved | → cancelled |
+| approved | reject | reject (idempotent) | reject |
+
+„reject" heißt: Fehler + Zustand bleibt — **kein stiller No-Op, der wie Erfolg
+aussieht**.
+
+(Konkrete Syntax für datengetriebene Matrizen — z. B. Dataset/DataProvider:
+Stack-Adapter.)
+
 ## Wichtig
 - Tests aus den Akzeptanzkriterien ZUERST schreiben, dann Code.
 - Tests niemals manipulieren, damit sie grün werden, ohne dass der Code stimmt.

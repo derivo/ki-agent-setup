@@ -183,6 +183,44 @@ Pro Formular die volle Ein-Feld-falsch-Matrix rotieren, Keyboard-/Enter-Submit a
 eigenen Test, Happy Path zuletzt. Querschnitt (Authz, CSRF, Session, Upload/IDOR,
 XSS, Grenzwerte, State/Race, Pagination/Empty, A11y): Checkliste in TESTS.md.
 
+### Matrizen datengetrieben (konkretisiert TESTS.md → "Matrix über das Formular hinaus")
+
+Die API-Payload-, Authz- (Rolle × Route) und Zustandsübergangs-Matrix werden als
+**Pest-Dataset** (bzw. PHPUnit `@dataProvider`) geschrieben — eine Zeile je Zelle,
+nicht N kopierte Testmethoden. Der Testrumpf setzt den Durchstich ab, das Dataset
+liefert die Zeilen samt erwartetem Ergebnis:
+
+```php
+// API-Payload: genau ein Feld falsch, Rest gültig
+it('lehnt ungültige Anlage ab', function (array $override, int $status, string $feld) {
+    $payload = [...validPayload(), ...$override];         // ein Feld überschrieben
+    $response = $this->postJson('/api/v1/tasks', $payload);
+    expect($response->getStatusCode())->toBe($status);    // exakter Status
+    expect($response->json("errors.$feld"))->not->toBeEmpty();
+    expect($this->db->count('tasks'))->toBe(0);           // KEIN Zustand geschrieben
+})->with([
+    'title fehlt'   => [['title' => null], 422, 'title'],
+    'title zu lang' => [['title' => str_repeat('x', 300)], 422, 'title'],
+    'status Enum'   => [['status' => 'bogus'], 422, 'status'],
+]);
+
+// Authz Rolle × Route: eine Zeile je Zelle → erwarteter HTTP-Status
+it('erzwingt Berechtigung', function (string $rolle, string $method, string $uri, int $status) {
+    actingAsRole($rolle);
+    expect($this->call($method, $uri)->getStatusCode())->toBe($status);
+})->with([
+    ['anonym', 'GET',    '/api/v1/tasks',   401],
+    ['user',   'POST',   '/api/v1/tasks',   403],
+    ['user',   'DELETE', '/api/v1/tasks/99', 403],   // fremdes Objekt (IDOR)
+    ['admin',  'POST',   '/api/v1/tasks',   201],
+]);
+```
+
+Der Zustandsübergang analog: Dataset `[$startZustand, $event, $zielOderNull]`, im
+Rumpf Startzustand seeden, Event absetzen, dann End-Zustand in der DB prüfen — bei
+`reject` explizit, dass der Zustand **unverändert** ist. Jede Matrix-Zeile ist so
+einzeln benannt und einzeln rot/grün.
+
 ---
 
 ## Beispiel-Zerlegung (konkretisiert SPEC_WORKFLOW.md Stufe 3)

@@ -52,6 +52,14 @@ mit Begründung im Commit, nicht während eines Laufs.
 - **Vorher grün, jetzt rot nach Modell-/Client-Update** → Drift dokumentieren
   (Protokoll) und prüfen, ob eine Regel expliziter formuliert werden muss —
   Regeln, die nur implizit getragen wurden, brechen bei Modellwechseln zuerst.
+- **Rot, aber Ursache nicht reproduzierbar** → vor dem Regressions-Schluss einmal
+  in frischer Session re-runnen (anderer Zeitpunkt/Umgebung). Bleibt es dann grün,
+  war es Infrastruktur-Noise (transiente Ressourcen-Spikes, Nichtdeterminismus),
+  keine Regression. Ein Ein-Lauf-Fail belegt keine Regression — analog zu
+  „Abwesenheit so streng belegen wie Anwesenheit" (GUARDRAILS.md C). Infra-Konfig
+  kann Ergebnisse messbar schwanken lassen (dokumentiert: Swings größer als der
+  Abstand zwischen Top-Modellen), also mehr als der Effekt, den ein Lauf gerade
+  belegen soll.
 - **Rot bei Erst-Lauf** → die Lücke gehört ins Harness, nicht in die Aufgabe.
 
 ---

@@ -103,6 +103,11 @@ Menschen einbeziehen, wenn:
 - Ein Fix nur möglich wäre, indem man eine Guardrail bricht.
 - Der Verdacht besteht, dass das Gate selbst kaputt/falsch ist — dann nicht den
   Code an ein falsches Gate anpassen, sondern das Gate prüfen.
+- Ein vorab gesetztes Budget (Runden/Steps/Zeit) ist erreicht, ohne dass das Gate
+  grün wurde — dann Stand + letzte Hypothese berichten und übergeben, statt still
+  weiterzubrennen. Compute ist wie der Context endlich (siehe AGENT_LOOP.md,
+  „Context als endliche Ressource"); ein hartes Budget-Signal ergänzt die
+  qualitativen Abbruch-Gründe oben um ein quantitatives.
 
 Benennen, was klemmt, statt es zu überspielen (siehe Ehrlichkeit in
 `../instructions/AGENTS.md`).

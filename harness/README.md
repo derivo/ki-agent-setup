@@ -44,12 +44,15 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 7. **[SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)** — das Herz: die prüfende
    Schleife (wiederholen bis verifiziert) und wie das Harness aus jedem Fehler
    schärfer wird (Harness Correction).
-8. **[EVALS.md](EVALS.md)** — die Messhälfte dazu: festes Referenzaufgaben-Set,
+8. **[DEBUG.md](DEBUG.md)** — der hypothesengetriebene Investigations-Loop für
+   Bugs, die eine normale Runde überleben: persistenter, falsifizierbarer
+   Debug-State, der einen Context-Reset übersteht.
+9. **[EVALS.md](EVALS.md)** — die Messhälfte dazu: festes Referenzaufgaben-Set,
    das nach Harness-Änderungen und Modell-Updates prüft, ob das Harness seine
    Versprechen noch hält.
-9. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
+10. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
    Security / Performance, parallel + adversarial) vor der Fertig-Meldung.
-10. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+11. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced
@@ -72,8 +75,9 @@ Symfony) ist innerhalb eines Adapters nur eine Variante des Einstiegspunkts.
 | [`stacks/php/`](stacks/php/README.md) | PHP-Web + relationale DB (framework-neutral: Slim, Laravel, Symfony, pures PHP) |
 
 Neuer Stack → neuen Adapter nach dem Muster von `php` anlegen: konkrete Schichten
-+ Verbots-Muster, das Gate-Kommando, das Test-Framework, DB-/Layout-Konventionen,
-die Deploy-Strecke (Ziele, Artefakt-Weg, Rollback), eine Beispiel-Zerlegung. Die
++ Verbots-Muster, das Gate-Kommando, das Bring-up-/Run-Kommando (App lokal
+prüfbar hochfahren), das Test-Framework, DB-/Layout-Konventionen, die
+Deploy-Strecke (Ziele, Artefakt-Weg, Rollback), eine Beispiel-Zerlegung. Die
 generellen Dateien bleiben unverändert.
 
 ---

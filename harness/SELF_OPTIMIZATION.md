@@ -35,7 +35,9 @@ Regeln für die Schleife:
   Aufweichen, damit es grün aussieht.
 - **Jede Runde mit einer Hypothese starten** ("Fehler X kommt von Y"), nicht
   blind variieren. Bestätigt die Runde die Hypothese nicht → neue Hypothese,
-  nicht dieselbe Änderung nochmal.
+  nicht dieselbe Änderung nochmal. Bei zähen, intermittierenden oder über ein
+  Context-Fenster reichenden Bugs greift der vollständige, persistente
+  Investigations-Loop in [DEBUG.md](DEBUG.md).
 
 ## Schleife 2 — Harness Correction (Selbst-Optimierung)
 
@@ -101,6 +103,11 @@ Menschen einbeziehen, wenn:
 - Ein Fix nur möglich wäre, indem man eine Guardrail bricht.
 - Der Verdacht besteht, dass das Gate selbst kaputt/falsch ist — dann nicht den
   Code an ein falsches Gate anpassen, sondern das Gate prüfen.
+- Ein vorab gesetztes Budget (Runden/Steps/Zeit) ist erreicht, ohne dass das Gate
+  grün wurde — dann Stand + letzte Hypothese berichten und übergeben, statt still
+  weiterzubrennen. Compute ist wie der Context endlich (siehe AGENT_LOOP.md,
+  „Context als endliche Ressource"); ein hartes Budget-Signal ergänzt die
+  qualitativen Abbruch-Gründe oben um ein quantitatives.
 
 Benennen, was klemmt, statt es zu überspielen (siehe Ehrlichkeit in
 `../instructions/AGENTS.md`).

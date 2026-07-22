@@ -80,6 +80,45 @@ Service-Aufrufe, brauchst du kein Mocking-Framework dafür. Default-Minimum: Uni
 UI mit eigener Logik gibt — dann aber nach den Regeln unten, damit sie von Anfang
 an stabil und aussagekräftig sind.
 
+**Die Default-Suite bleibt schnell und hermetisch.** Teure oder umgebungs-/
+plattformabhängige Tests (echte Audio-Ein-/Ausgabe, GPU, externe Kosten-APIs,
+Läufe von Minuten) laufen **nicht** im Standardlauf mit, sondern hinter einem
+**Env-Flag + Plattform-Guard** (`RUN_AUDIO_E2E=1`, sonst übersprungen). So bleibt
+das schnelle Gate hermetisch und lokal jederzeit grün-prüfbar; der teure Lauf wird
+bewusst angestoßen (vor Release, in dedizierter CI-Stufe). Übersprungene Tests
+werden als übersprungen gemeldet, nicht als bestanden.
+
+## Nicht-deterministische Ausgaben (LLM/AI) testen
+
+Ruft die App ein Sprachmodell (oder eine andere nicht-deterministische Quelle),
+lässt sich die **Modell-Antwort** nicht per exaktem Vergleich prüfen — derselbe
+Input liefert nicht denselben Output. Nicht die Antwort testen, sondern das
+**Deterministische darum herum**:
+
+- **Golden-Prompt-Test.** Prüfe den *zusammengebauten* Prompt-String (System +
+  Kontext + Tool-Beschreibungen + User-Eingabe), der ans Modell geht — exakter
+  Vergleich gegen ein Golden-Literal. Der Prompt-Bau ist deine Logik und
+  deterministisch; hier verstecken sich die echten Regressions (falscher Kontext,
+  fehlende Escapes, vertauschte Reihenfolge), nicht in der Modell-Kreativität.
+- **Provider per Dependency Injection, Test gegen einen Stub.** Das Modell ist ein
+  Interface (Port), kein direkter Aufruf. Tests laufen gegen einen **deterministischen
+  Stub-Provider** mit fest hinterlegter Antwort; das echte Modell wird nur im
+  Bring-up/manuellen Check verdrahtet. So bleibt die Suite schnell und hermetisch.
+- **Determinismus-Quellen fixieren.** Keine `now()`/Zufallswerte direkt im Code —
+  Clock und Seed injizieren, in Tests auf feste Werte setzen (z. B. fixe UTC-ISO-
+  Zeit). Sonst flakt der Test aus Gründen, die nichts mit dem Modell zu tun haben.
+- **Guardrail-Primitive separat unit-testen.** Absicherungen gegen Modell-Fehlgriffe
+  — Iterations-Cap gegen Endlos-Tool-Loops, Erkennung byte-identischer
+  Wiederholung, Umhüllen unvertrauten Texts gegen Prompt-Injection — sind kleine
+  reine Funktionen mit eigenen Unit-Tests, getrennt vom Consumer.
+
+**Grenze — ehrlich benannt:** Das prüft Verdrahtung und Determinismus, **nicht die
+Qualität der Modell-Ausgabe**. Ob eine Antwort *gut* ist (Eval-Sets,
+LLM-as-judge, Golden-Transcript-Vergleiche, toleranzbasierte Assertions), ist eine
+eigene Disziplin — hier bewusst nicht abgedeckt. Wo Ausgabe-Qualität selbst
+zusagepflichtig wird, gehört ein Eval-Harness dazu; bis dahin gilt: Determinismus
+umgehen, nicht Qualität vortäuschen.
+
 ## E2E / Browser — stabil von Anfang an
 
 Ein E2E-Test fährt die echte UI im Browser (Klick, Tippen, Submit) gegen eine

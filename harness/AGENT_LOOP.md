@@ -101,6 +101,13 @@ Feature. Sonst baut Lauf N auf dem kaputten Stand von Lauf N-1, und der Bug
 versteckt sich hinter scheinbar frischer Arbeit. (Anthropic-Harness: "Initial
 Health Checks".)
 
+Wie der Smoke die Bereitschaft feststellt, hängt am **beobachtbaren Kanal**, nie
+an einem festen Sleep: ein HTTP-Health-Endpoint (Poll bis 200) oder — bei
+CLI-/Langläufer-Apps ohne HTTP — ein definierter **Ready-Marker auf stdout**, auf
+den der Smoke mit Timeout wartet (`waitForLog(…"ready")`), statt gegen einen noch
+toten Prozess zu rennen. Ein fester `sleep(2s)` ist die häufigste Flake-Quelle und
+belegt Bereitschaft nicht. (Konkreter Kanal + Marker: Stack-Adapter.)
+
 ### Context als endliche Ressource
 
 Der Context ist knapp, nicht gratis: mit steigender Token-Zahl steigt die Konfusion

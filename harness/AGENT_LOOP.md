@@ -68,6 +68,9 @@ Abschnitt D). Je sensibler die Domäne, desto länger liest der Mensch mit.
 ## Voraussetzungen
 - Ein **Gate-Kommando** ist definiert, das statische Analyse, Typprüfung,
   Formatter und Tests bündelt (welches genau: Stack-Adapter).
+- Ein **Bring-up-/Run-Kommando** ist definiert, das die App lokal in einen
+  prüfbaren Zustand hochfährt (ein Befehl, idempotent) — damit sichtbares
+  Verhalten End-to-End beobachtbar ist, nicht nur über Unit-Tests (Stack-Adapter).
 - Der Test-Datastore ist lokal erreichbar, damit Integrations-/Durchstich-Tests
   gegen echte Daten laufen.
 
@@ -88,6 +91,45 @@ Beim Wiederaufsetzen liest der Agent git-Log + Progress-Log, nicht den
 (komprimierten) Gesprächsverlauf. Optional bei großen Vorhaben: der erste Lauf
 richtet nur die Umgebung ein (Setup, Skeleton, initialer Commit), die Folge-Läufe
 machen je einen Schritt — so liegt die Context-Grenze immer an einer sauberen Naht.
+
+### Session-Start-Health-Check (vor der ersten neuen Änderung)
+Zustand lesen genügt nicht. Bevor ein Folge-Lauf neue Arbeit draufsattelt, fährt
+er die App per **Bring-up-Kommando** hoch und lässt einen **schnellen Smoke-/
+Durchstich-Lauf** laufen. Bricht der, wird zuerst die (oft undokumentierte) Drift
+der Vor-Session gefixt oder im Progress-Log benannt — **erst dann** das nächste
+Feature. Sonst baut Lauf N auf dem kaputten Stand von Lauf N-1, und der Bug
+versteckt sich hinter scheinbar frischer Arbeit. (Anthropic-Harness: "Initial
+Health Checks".)
+
+Wie der Smoke die Bereitschaft feststellt, hängt am **beobachtbaren Kanal**, nie
+an einem festen Sleep: ein HTTP-Health-Endpoint (Poll bis 200) oder — bei
+CLI-/Langläufer-Apps ohne HTTP — ein definierter **Ready-Marker auf stdout**, auf
+den der Smoke mit Timeout wartet (`waitForLog(…"ready")`), statt gegen einen noch
+toten Prozess zu rennen. Ein fester `sleep(2s)` ist die häufigste Flake-Quelle und
+belegt Bereitschaft nicht. (Konkreter Kanal + Marker: Stack-Adapter.)
+
+### Context als endliche Ressource
+
+Der Context ist knapp, nicht gratis: mit steigender Token-Zahl steigt die Konfusion
+(Context-Rot), nicht linear die Qualität. Ziel ist die kleinste Menge
+hoch-signalhafter Tokens, nicht das größtmögliche Fenster. Vier Hebel, um das über
+lange Läufe zu halten (der durable State oben ist der erste davon):
+
+- **Note-Taking als externes Gedächtnis.** Fortschritt/offene Punkte/Kern-
+  Entscheidungen in eine Datei außerhalb des Fensters schreiben (`PROGRESS.md`
+  bzw. `.planning/STATE.md`, siehe oben), nicht im Verlauf halten. Das ist der
+  Progress-Log von oben — hier als bewusster Kontext-Hebel benannt.
+- **Just-in-time-Retrieval statt Vorab-Dump.** Leichte Identifier halten (Dateipfade,
+  Queries, Ticket-IDs) und erst bei Bedarf nachladen — nicht ganze Dateien/Ergebnisse
+  auf Vorrat in den Context ziehen. Ordnerstruktur/Namen leiten den Agenten zum
+  richtigen Ort (deckt sich mit "Context-Budget schlank" in `../instructions/AGENTS.md`).
+- **Compaction am Fenster-Limit.** Naht das Limit, den Verlauf zusammenfassen und mit
+  der Summary neu aufsetzen. Bewahren: Architektur-Entscheidungen, offene Bugs,
+  Impl-Details; verwerfen: redundante Tool-Ausgaben. Leichtester Hebel zuerst —
+  alte Tool-Call-Ergebnisse leeren, bevor der Gesprächsverlauf angetastet wird.
+- **Subagents für tiefe Teilaufgaben.** Fokus-Arbeit an einen Subagenten mit eigenem,
+  sauberem Context delegieren, der eine kondensierte Summary zurückgibt statt Rohdaten
+  (siehe [REVIEW_PANEL.md](REVIEW_PANEL.md)) — so bleibt der Hauptthread schlank.
 
 ## Selbst-Optimierung & die prüfende Schleife
 Der Loop oben ist nur die Mechanik. Wie er sich wiederholt, bis verifiziert ist,

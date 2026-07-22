@@ -78,6 +78,34 @@ UND Firefox) grün** sein muss. "Fertig" heißt: beide Gates grün.
 
 ---
 
+## Das Bring-up-/Run-Kommando (konkretisiert AGENT_LOOP.md → Voraussetzungen)
+
+Ein **einzelnes reproduzierbares Kommando**, das die App lokal in einen prüfbaren
+Zustand bringt (Dev-Server + Test-DB), damit eine frische Session sichtbares
+Verhalten End-to-End beobachten kann — nicht nur Unit-Tests:
+
+```
+make up      # oder: docker compose up -d && php artisan serve
+```
+
+Zweck (nach Anthropics Long-Running-Harness, `init.sh`-Pattern): Jeder Folge-Lauf
+fährt damit in Sekunden hoch und kann einen **Smoke-Durchstich** absetzen, bevor
+er neue Arbeit beginnt (siehe AGENT_LOOP.md → Session-Start-Health-Check). Das
+Kommando ist idempotent (mehrfach aufrufbar) und räumt bei Bedarf sauber ab.
+
+**Readiness konkret (Web/PHP):** ein `/health`- (oder `/up`-)Endpoint, den der
+Smoke pollt, bis er 200 liefert — kein fester Sleep:
+
+```
+until curl -fsS http://localhost:8000/health >/dev/null; do sleep 0.5; done
+curl -fsS http://localhost:8000/tasks/1 | grep -q '"status"'   # ein Durchstich
+```
+
+Laravel bringt `/up` bereits mit; sonst eine schlanke Route, die DB-Verbindung
+und Migrations-Stand prüft. Erst wenn der Poll grün ist, beginnt neue Arbeit.
+
+---
+
 ## Tests (konkretisiert TESTS.md)
 
 - **Framework:** Pest (oder PHPUnit), Arrange–Act–Assert.

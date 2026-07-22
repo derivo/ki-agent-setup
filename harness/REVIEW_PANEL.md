@@ -14,7 +14,9 @@ berühren. Triviale Änderungen brauchen kein Panel (Simplicity First).
 
 Jede Lens ist ein **eigener Subagent mit isoliertem Context** — so verschmutzt die
 Review nicht den Hauptthread und jeder Reviewer ist blind für die Annahmen der
-anderen.
+anderen. Jede Lens gibt eine **kondensierte Fund-Liste** zurück (je Fund eine Zeile:
+Datei:Zeile · Lens · Schwere · Fix), keinen Volltext-Dump von Code oder Gedankengang
+— der Hauptthread sammelt Funde, nicht Rohkontext.
 
 - **Korrektheit** — Bugs, Edge-Cases, falsche Annahmen, nicht abgedeckte ACs.
 - **Security** — Injection (SQL/Command/Path), Secrets im Code, fehlende

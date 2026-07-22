@@ -73,6 +73,8 @@ Symfony) ist innerhalb eines Adapters nur eine Variante des Einstiegspunkts.
 | Adapter | Geltungsbereich |
 |---|---|
 | [`stacks/php/`](stacks/php/README.md) | PHP-Web + relationale DB (framework-neutral: Slim, Laravel, Symfony, pures PHP) |
+| [`stacks/node/`](stacks/node/README.md) | Node/TypeScript-Web + relationale DB (framework-neutral: Express, Fastify, NestJS, pures Node) |
+| [`stacks/python/`](stacks/python/README.md) | Python-Web + relationale DB (framework-neutral: FastAPI, Django, Flask, pures Python) |
 
 Neuer Stack → neuen Adapter nach dem Muster von `php` anlegen: konkrete Schichten
 + Verbots-Muster, das Gate-Kommando, das Bring-up-/Run-Kommando (App lokal

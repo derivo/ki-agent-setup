@@ -117,6 +117,15 @@ die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z.
 Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
 als „gefixt / nicht reproduzierbar" gewertet.
 
+### Regel — Verifikation belegen: Evidence, nicht Behauptung
+Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,
+grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".
+Ein Kriterium ohne Beleg gilt als **nicht** verifiziert. Was **nur** zur Laufzeit
+prüfbar ist (Sandbox-Verhalten, echtes Rendering, Keychain/OS-Integration, Deploy-
+Pfad), wird nicht als maschinell verifiziert ausgegeben, sondern als **eigener
+Human-Verify-Checkpoint** ausgewiesen. Code-Gate (maschinell) und Runtime-Gate
+(Mensch/echte Umgebung) sind getrennte Ebenen — die eine überdeckt nie die andere.
+
 ---
 
 ## D. Grenze zum Menschen
@@ -172,9 +181,44 @@ draw.io, PlantUML). Kein `ue`/`ae`/`oe`-Ersatz "zur Sicherheit"; moderne Tools
 sind UTF-8. Ausnahme nur bei nachgewiesenem (getestetem) Tool-Fail — dann Grund
 benennen.
 
-## G. Shell/Tooling-Hygiene (Bash-Tool)
+---
 
-### Regel 6 — Shell ist nicht per Default bash
+## G. UI-Konsistenz (bei Frontend-Arbeit, vor jedem UI-Write)
+
+Dieselbe DRY-/Reference-first-Härte wie im Code gilt für die Oberfläche: **ein**
+Button, **eine** Tabelle, **eine** Abstands-Skala — nicht pro Seite eine leicht
+andere Variante. Wo die Komponenten-Bibliothek und die Token-/Skala-Quelle konkret
+liegen (Component-Verzeichnis, Theme-/Tailwind-Config, Design-Tokens): Stack-Adapter.
+
+### Regel 6 — Komponente wiederverwenden statt neu bauen
+Bevor ein UI-Element entsteht (Button, Tabelle, Modal, Formularfeld, Card, Badge),
+prüfen ob eine kanonische Komponente dafür schon existiert. Existiert sie →
+wiederverwenden, nicht eine zweite, leicht abweichende Variante daneben bauen. Ein
+zweiter Button, der einen bestehenden nachbaut, ist kein Feature, sondern Drift.
+(Das ist Reference-first aus Abschnitt C, auf UI angewandt: **ein** Vorbild, dann
+reuse — nicht N Varianten.) Echt neues Muster → **eine** geteilte Komponente
+anlegen, die zur einzigen Quelle wird; andere nutzen sie, kopieren sie nicht.
+
+### Regel 7 — Maße/Abstände/Farben/Typo aus dem System, nie ad hoc
+Höhen, Breiten, Abstände (Padding/Margin/Gap), Farben, Schriftgrößen und Radien
+kommen aus der **einen** Quelle des Design-Systems (Token/Skala/Theme-Utilities),
+nicht als Magic-Number/Inline-Hex/Einzelfall-`px` pro Seite. Ein `color:#3b7` oder
+`margin:13px` direkt im Markup ist ein Signal: der Wert gehört in die Skala — oder
+es fehlt dort eine Stufe, die zentral ergänzt wird (nicht lokal umgangen).
+
+### Selbstcheck vor "fertig" (UI)
+- Kein dupliziertes Element, das ein bestehendes nachbaut (Regel 6).
+- Keine Inline-Farbe/Magic-Number, wo eine Token-/Skala-Stufe existiert (Regel 7).
+- Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
+
+Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —
+reine API-/CLI-Projekte überspringen Abschnitt G.
+
+---
+
+## H. Shell/Tooling-Hygiene (Bash-Tool)
+
+### Regel 8 — Shell ist nicht per Default bash
 Das Bash-Tool läuft je Maschine ggf. unter zsh (macOS-Default). Unquoted `$var`
 wird in zsh **nicht** auf Whitespace/Newlines gesplittet — `for f in $files`
 iteriert einmal über den ganzen Blob statt pro Datei. Für Multi-File-Loops
@@ -182,13 +226,13 @@ iteriert einmal über den ganzen Blob statt pro Datei. Für Multi-File-Loops
 leere Backup-Arg (`sed -i '' …`); GNU-only-Flags (`grep -P`, `sed -r`) nicht
 annehmen.
 
-### Regel 7 — Sweep-Ergebnis mechanisch verifizieren
+### Regel 9 — Sweep-Ergebnis mechanisch verifizieren
 Nach jedem Datei-Sweep (sed/perl/Massen-Edit) das Ergebnis prüfen statt
 anzunehmen: `grep -c <muster>` auf 0 bzw. die erwartete Zahl. „Befehl lief durch"
 ist nicht „Befehl hat gewirkt" — ein stummer Fehlschlag (falsches Regex, kein
 Word-Split, falsche sed-Syntax) sieht sonst aus wie Erfolg.
 
-### Regel 8 — Kein zweiter Agent auf demselben Working Tree; vor Commit Zustand prüfen
+### Regel 10 — Kein zweiter Agent auf demselben Working Tree; vor Commit Zustand prüfen
 Zwei Agenten-Sessions im selben Git-Working-Tree/Branch teilen Dateizustand,
 Commit-Stream und (bei Container-Stacks) DB/Cache — keine Isolation. Beobachtet:
 fremde Sessions setzen laufende Edits zurück, saugen uncommittete Änderungen in

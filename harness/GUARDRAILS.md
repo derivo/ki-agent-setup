@@ -108,6 +108,15 @@ Scope still — entfernen „leere" Wrapper, lassen Teile aus, melden trotzdem E
 Ein grüner Compile-Check ist kein Runtime-Beleg, wenn die Änderung Verhalten
 (Interaktion, dynamische UI) berührt: dann zusätzlich am gerenderten Zustand prüfen.
 
+### Regel — „Immer noch kaputt" heißt reproduzieren, nicht raten
+Meldet der Nutzer nach einem Fix, dass ein Verhalten/visueller Bug weiter besteht,
+wird VOR dem nächsten Fix eine deterministische Reproduktion des exakten Symptoms
+gebaut (Skript, DOM-/State-Sample, Video, Log) und die Ursache daran belegt. Kein
+zweiter spekulativer Fix ohne Reproduktion — gestapelte Vermutungs-Fixes kaschieren
+die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z. B.
+Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
+als „gefixt / nicht reproduzierbar" gewertet.
+
 ### Regel — Verifikation belegen: Evidence, nicht Behauptung
 Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,
 grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".
@@ -204,3 +213,30 @@ es fehlt dort eine Stufe, die zentral ergänzt wird (nicht lokal umgangen).
 
 Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —
 reine API-/CLI-Projekte überspringen Abschnitt G.
+
+---
+
+## H. Shell/Tooling-Hygiene (Bash-Tool)
+
+### Regel 8 — Shell ist nicht per Default bash
+Das Bash-Tool läuft je Maschine ggf. unter zsh (macOS-Default). Unquoted `$var`
+wird in zsh **nicht** auf Whitespace/Newlines gesplittet — `for f in $files`
+iteriert einmal über den ganzen Blob statt pro Datei. Für Multi-File-Loops
+`… | while read -r f` oder `${(f)files}` nutzen. `sed -i` braucht auf macOS das
+leere Backup-Arg (`sed -i '' …`); GNU-only-Flags (`grep -P`, `sed -r`) nicht
+annehmen.
+
+### Regel 9 — Sweep-Ergebnis mechanisch verifizieren
+Nach jedem Datei-Sweep (sed/perl/Massen-Edit) das Ergebnis prüfen statt
+anzunehmen: `grep -c <muster>` auf 0 bzw. die erwartete Zahl. „Befehl lief durch"
+ist nicht „Befehl hat gewirkt" — ein stummer Fehlschlag (falsches Regex, kein
+Word-Split, falsche sed-Syntax) sieht sonst aus wie Erfolg.
+
+### Regel 10 — Kein zweiter Agent auf demselben Working Tree; vor Commit Zustand prüfen
+Zwei Agenten-Sessions im selben Git-Working-Tree/Branch teilen Dateizustand,
+Commit-Stream und (bei Container-Stacks) DB/Cache — keine Isolation. Beobachtet:
+fremde Sessions setzen laufende Edits zurück, saugen uncommittete Änderungen in
+ihre eigenen Commits, und Test-Runner wechseln `.env`/DB unter dir. Parallel
+arbeiten → jede Session in einen eigenen `git worktree` (eigener Branch). Vor
+jedem Commit `git status` lesen und mit expliziten Pfaden stagen statt `git add .`
+— nie blind committen, was gerade im Tree liegt.

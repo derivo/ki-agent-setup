@@ -84,7 +84,10 @@ Vier feste Dimensionen, je bestanden/gefallen mit einem Satz Begründung:
 - **Handwerk** — Ausrichtung, Abstände, Zustände (hover/focus/disabled/leer/lang);
   nichts überlappt, nichts ist abgeschnitten.
 - **Konsistenz** — nutzt die kanonischen Komponenten und die Token-Skala
-  (GUARDRAILS Abschnitt G) und fällt nicht aus dem Rest der App heraus.
+  (GUARDRAILS Abschnitt G) und fällt nicht aus dem Rest der App heraus. Gibt es
+  eine `DESIGN.md`/Token-Quelle, wird der gerenderte Zustand gegen deren Tokens
+  geprüft (Farben/Typo/Abstände/Radien aufgelöst, Kontrast ≥ WCAG AA), nicht nur
+  gegen den Gesamteindruck.
 - **Funktion** — der Weg durch das Feature ist bedienbar: Fehlerfälle sichtbar,
   Ladezustände vorhanden, Tastaturbedienung möglich.
 - **Zweckmäßigkeit** — löst, was die Spec versprochen hat, ohne zusätzliche

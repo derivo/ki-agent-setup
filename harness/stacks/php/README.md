@@ -119,6 +119,13 @@ Filament, ggf. + Tailwind).
   (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
   Inline-`style="…"`, kein Hex direkt im Markup; Abstände/Höhen über die
   Utility-/Token-Skala, nicht als Einzelfall-`px`.
+- **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
+  im Repo-Root, ist sie die normative Quelle. Der Validator ist node-basiert (setzt
+  ein vorhandenes Node/`npx` voraus — bei Laravel für den Asset-Build ohnehin da):
+  `npx @google/design.md lint DESIGN.md` (Exit 1 bei Fehlern, inkl. WCAG-AA-Kontrast)
+  vor UI-Write bzw. in den Asset-Build hängen. Tailwind aus ihr generieren statt
+  Werte doppeln: `npx @google/design.md export --format css-tailwind DESIGN.md`
+  (v4) bzw. `--format json-tailwind` (v3) — so bleibt `tailwind.config` deriviert.
 - **Check (Selbstcheck vor "fertig"):** in geänderten Views grep auf `style="`,
   Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die eine
   vorhandene `<x-…>`-Komponente nachbauen — jeder Treffer ist ein Finding (Regel 6/7).

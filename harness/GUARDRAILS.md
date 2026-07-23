@@ -206,10 +206,20 @@ nicht als Magic-Number/Inline-Hex/Einzelfall-`px` pro Seite. Ein `color:#3b7` od
 `margin:13px` direkt im Markup ist ein Signal: der Wert gehört in die Skala — oder
 es fehlt dort eine Stufe, die zentral ergänzt wird (nicht lokal umgangen).
 
+Deklariert das Projekt sein Design-System **maschinenlesbar** — eine `DESIGN.md`
+im [google-labs-code-Format](https://github.com/google-labs-code/design.md) (YAML-
+Front-Matter: `colors`/`typography`/`spacing`/`rounded`/`components`, Token-Refs wie
+`{colors.primary}`), oder ein äquivalenter Token-Export —, dann ist **diese Datei**
+die „eine Quelle" oben: Tokens sind **normativ**, die Prosa gibt nur den Kontext.
+Vor jedem UI-Write gelesen, Token-Refs aufgelöst statt Werte dupliziert, Kontrast
+gegen **WCAG AA** (≥ 4.5:1 Text) geprüft. Wo die Datei liegt und mit welchem
+Kommando sie validiert wird: Stack-Adapter.
+
 ### Selbstcheck vor "fertig" (UI)
 - Kein dupliziertes Element, das ein bestehendes nachbaut (Regel 6).
 - Keine Inline-Farbe/Magic-Number, wo eine Token-/Skala-Stufe existiert (Regel 7).
 - Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
+- Gibt es eine `DESIGN.md`/Token-Quelle: Werte lösen deren Tokens auf, Kontrast ≥ WCAG AA.
 
 Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —
 reine API-/CLI-Projekte überspringen Abschnitt G.

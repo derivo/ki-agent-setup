@@ -130,6 +130,16 @@ ein separates JS-Frontend).
   (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
   Inline-`style="…"`, kein Hex direkt im Template; Abstände/Höhen über die
   Utility-/Token-Skala, nicht Einzelfall-`px`.
+- **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
+  im Repo-Root, ist sie die normative Quelle. Der Validator ist node-basiert (setzt
+  ein vorhandenes Node/`npx` voraus — nur relevant, wenn das Frontend Tailwind/JS
+  nutzt): `npx @google/design.md lint DESIGN.md` vor UI-Write.
+  **Achtung Exit-Code:** strukturelle Fehler → Exit 1, aber
+  ein **Kontrast-Verstoß kommt nur als `warning` (Exit bleibt 0)** — verifiziert.
+  Exit 0 heißt *nicht* „Kontrast ok"; `findings` lesen und Kontrast-Warnungen als
+  blockierend behandeln. Tailwind aus ihr generieren statt Werte doppeln:
+  `npx @google/design.md export --format css-tailwind DESIGN.md` (v4) bzw.
+  `--format json-tailwind` (v3) — so bleibt `tailwind.config` deriviert.
 - **Check (Selbstcheck vor "fertig"):** in geänderten Templates grep auf `style="`,
   Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die ein
   vorhandenes Macro/Partial nachbauen — jeder Treffer ist ein Finding (Regel 6/7).

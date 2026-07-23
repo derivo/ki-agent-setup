@@ -206,10 +206,28 @@ nicht als Magic-Number/Inline-Hex/Einzelfall-`px` pro Seite. Ein `color:#3b7` od
 `margin:13px` direkt im Markup ist ein Signal: der Wert gehört in die Skala — oder
 es fehlt dort eine Stufe, die zentral ergänzt wird (nicht lokal umgangen).
 
+Deklariert das Projekt sein Design-System **maschinenlesbar** — eine `DESIGN.md`
+im [google-labs-code-Format](https://github.com/google-labs-code/design.md) (YAML-
+Front-Matter: `colors`/`typography`/`spacing`/`rounded`/`components`, Token-Refs wie
+`{colors.primary}`), oder ein äquivalenter Token-Export —, dann ist **diese Datei**
+die „eine Quelle" oben: Tokens sind **normativ**, die Prosa gibt nur den Kontext.
+Vor jedem UI-Write gelesen, Token-Refs aufgelöst statt Werte dupliziert, Kontrast
+gegen **WCAG AA** (≥ 4.5:1 Text) geprüft. Wo die Datei liegt und mit welchem
+Kommando sie validiert wird: Stack-Adapter.
+
+Hat das Projekt **Design-Anforderungen, aber (noch) keine** solche Quelle, wird eine
+`DESIGN.md` **nicht eigenmächtig** angelegt. Stattdessen wird die Lücke benannt und
+das Erstellen **vorgeschlagen** — mit Freigabe des Nutzers (deckt sich mit „nicht
+Angefordertes nur mit expliziter Freigabe", `instructions/AGENTS.md`). Bis dahin
+gilt die vorhandene Token-/Theme-Quelle des Projekts als „eine Quelle"; fehlt auch
+die, wird das als offene Lücke gemeldet, nicht durch eine erfundene ersetzt.
+
 ### Selbstcheck vor "fertig" (UI)
 - Kein dupliziertes Element, das ein bestehendes nachbaut (Regel 6).
 - Keine Inline-Farbe/Magic-Number, wo eine Token-/Skala-Stufe existiert (Regel 7).
 - Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
+- Gibt es eine `DESIGN.md`/Token-Quelle: Werte lösen deren Tokens auf, Kontrast ≥ WCAG AA.
+- Design-Anforderung, aber keine `DESIGN.md`/Token-Quelle → Erstellen vorgeschlagen und gefragt, nicht eigenmächtig angelegt.
 
 Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —
 reine API-/CLI-Projekte überspringen Abschnitt G.

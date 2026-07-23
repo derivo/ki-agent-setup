@@ -127,8 +127,11 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   im JSX/Template; Abstände/Höhen über die Token-/Utility-Skala, nicht Einzelfall-`px`.
 - **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
   im Repo-Root, ist sie die normative Quelle. Vor UI-Write validieren und ins Gate
-  hängen: `npx @google/design.md lint DESIGN.md` (Exit 1 bei Fehlern, inkl. WCAG-AA-
-  Kontrast). Tailwind aus ihr generieren statt Werte doppeln:
+  hängen: `npx @google/design.md lint DESIGN.md`. **Achtung Exit-Code:** strukturelle
+  Fehler → Exit 1, aber ein **Kontrast-Verstoß kommt nur als `warning` (Exit bleibt
+  0)** — verifiziert am Validator. Exit 0 heißt also *nicht* „Kontrast ok"; die
+  `findings` lesen und Kontrast-Warnungen im UI-Selbstcheck als blockierend behandeln
+  (oder `warnings > 0` selbst zum Fehler machen). Tailwind aus ihr generieren statt Werte doppeln:
   `npx @google/design.md export --format css-tailwind DESIGN.md > theme.css`
   (v4) bzw. `--format json-tailwind` (v3) — dann bleibt `tailwind.config` deriviert,
   keine zweite Wahrheit.

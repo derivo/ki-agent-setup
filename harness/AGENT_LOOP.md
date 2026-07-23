@@ -123,10 +123,16 @@ lange Läufe zu halten (der durable State oben ist der erste davon):
   Queries, Ticket-IDs) und erst bei Bedarf nachladen — nicht ganze Dateien/Ergebnisse
   auf Vorrat in den Context ziehen. Ordnerstruktur/Namen leiten den Agenten zum
   richtigen Ort (deckt sich mit "Context-Budget schlank" in `../instructions/AGENTS.md`).
-- **Compaction am Fenster-Limit.** Naht das Limit, den Verlauf zusammenfassen und mit
-  der Summary neu aufsetzen. Bewahren: Architektur-Entscheidungen, offene Bugs,
-  Impl-Details; verwerfen: redundante Tool-Ausgaben. Leichtester Hebel zuerst —
-  alte Tool-Call-Ergebnisse leeren, bevor der Gesprächsverlauf angetastet wird.
+- **Reset vor Compaction am Fenster-Limit.** Naht das Limit, ist der sauberere Weg ein
+  **frischer Context**, der sich aus dem durablen State (Git-Log + Progress-Log) neu
+  aufbaut — nicht ein weiterverdichteter Verlauf. Compaction erhält zwar Kontinuität,
+  lässt den Lauf aber dauerhaft nah am Limit arbeiten; Modelle wickeln dann vorzeitig
+  ab, statt die Aufgabe zu Ende zu bringen. Voraussetzung ist, dass der Stand
+  wirklich außerhalb des Fensters liegt (Commit + aktualisierter Progress-Log) —
+  sonst ist der Reset ein Datenverlust. Ist er zu teuer (kurze Restarbeit, viel
+  unkommittierter Stand), dann komprimieren: bewahren Architektur-Entscheidungen,
+  offene Bugs, Impl-Details; verwerfen redundante Tool-Ausgaben. Leichtester Hebel
+  zuerst — alte Tool-Call-Ergebnisse leeren, bevor der Gesprächsverlauf angetastet wird.
 - **Subagents für tiefe Teilaufgaben.** Fokus-Arbeit an einen Subagenten mit eigenem,
   sauberem Context delegieren, der eine kondensierte Summary zurückgibt statt Rohdaten
   (siehe [REVIEW_PANEL.md](REVIEW_PANEL.md)) — so bleibt der Hauptthread schlank.

@@ -91,9 +91,13 @@ mehr, sondern nur noch Context-Kosten. Ein Harness, das Regeln sammelt, aber nie
 welche zurücknimmt, wird mit der Zeit stumpfer statt schärfer.
 
 Das Prüfsignal liefert das A/B aus [EVALS.md](EVALS.md): dieselbe Referenzaufgabe
-einmal mit, einmal ohne die Regel.
+einmal mit, einmal ohne die Regel. LLM-Läufe streuen — ein *einzelner*
+Fail-ohne-Regel kann Rauschen sein, kein Beleg. Ein Discriminator-Urteil beruht
+darum auf einem **wiederholten** Fail-ohne-Regel (Richtwert: 2 von 2, sonst ein
+dritter Lauf als Stichentscheid), nicht auf einem Lauf — sonst adelt Zufall eine
+Regel.
 
-- **Ohne Regel gefallen** → die Regel trägt. Sie bleibt.
+- **Ohne Regel wiederholt gefallen** → die Regel trägt. Sie bleibt.
 - **Ohne Regel ebenfalls bestanden** → kein Discriminator, das Modell trägt das
   Verhalten implizit. Nicht sofort streichen: als **Drift-Wächter** markieren
   (mit Datum und Modell im Protokoll) — implizit getragene Regeln brechen bei

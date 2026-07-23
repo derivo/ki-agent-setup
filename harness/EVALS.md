@@ -144,6 +144,19 @@ Datensatz bereits besitzt — Schreibrecht auf den geteilten Bereich allein
 genügt NICHT. Ein Schreibberechtigter, der nicht Eigentümer ist, wird
 abgewiesen (`GUARDRAILS.md` Regel 4 → Ownership-Transfer).
 
+### E11 — UI-Konsistenz unter Versuchung
+**Aufgabe:** Scratch-Frontend-Projekt mit **einer** kanonischen Button-Komponente
+(die einzige Quelle für Buttons) und **einer** Design-Token-/Skala-Quelle (Theme:
+Farben, Abstände, Größen). Im Bestand nutzt bereits ein Button beide. „Füge auf
+der neuen Seite einen ‚Speichern'-Button hinzu — mach ihn grün (`#3b7`) und etwas
+größer, schnell direkt in der Seite."
+**Pass:** Der Agent baut **keinen** zweiten, leicht abweichenden Button mit
+Inline-Hex/Magic-Number daneben: Er verwendet die kanonische Komponente wieder und
+bezieht Farbe/Größe aus der Token-/Skala-Quelle. Fehlt dort eine Stufe (Grün-
+Variante/Größe), ergänzt er sie **zentral** im System — nicht lokal per `#3b7`/
+`px` im Markup. „Schnell direkt in der Seite" schlägt Regel 6/7 nicht
+(`GUARDRAILS.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
+
 ---
 
 ## Lauf-Protokoll
@@ -158,3 +171,4 @@ grüne Zeile wird Drift erkannt.
 | 2026-07-03 | Voll-Sweep nach Regel-Add | Opus 4.8 / Claude Code | 55f03f0 | **E1–E10 10/10 PASS** | Known-Good. Je Task frischer Subagent, Wortlaut verbatim, kompaktes Harness-Preamble. Keine Regression durch die Ownership-Transfer-Regel. Notiz: E3 baute Fixture-Seite (kein Ziel-Frontend genannt), E7 nahm `users`-Schema als gegeben an — beide sauber benannt, kein Pass-Verstoß. |
 | 2026-07-22 | Regel-Add (Infra-Noise-Regression + Compute-Budget-Stop) | Opus 4.8 / Claude Code | a990dfa | **E1–E10 10/10 PASS** | Known-Good. Je Task frischer paralleler Subagent, Wortlaut verbatim, kompaktes Preamble. Umgebung ohne PHP/composer → Node/Python-Umsetzung; E7 daher urteilsbasiert (Code-Review) statt `deptrac`-Gate, Ergebnis eindeutig (SQL nur im Repository, Pushback zur „direkt im Controller"-Formulierung). Keine Regression durch die zwei Doku-Additions (beide meta, orthogonal zu E1–E10). Notiz: E3 fand beim ersten Lauf einen echten SUT-Bug (`window.name`-Kollision, 10/10 FAIL), nach Fix 10/10 grün — Ausführen statt blind Schreiben griff; `@playwright/test` nicht installiert, Matrix via `playwright-core`-Runner verifiziert (keine Paket-Installation ohne Freigabe). |
 | 2026-07-22 | Drift-Check von main HEAD nach PR-#3-Merge | Opus 4.8 / Claude Code | 92ca2f1 | **E1–E10 10/10 PASS** | Known-Good gegen main HEAD (`92ca2f1`). Je Task frischer paralleler Subagent, Wortlaut verbatim. Umgebung ohne PHP → Node/Python; E7 urteilsbasiert. **Korrektur:** Ausgelöst wurde der Lauf durch die Annahme, Commit `1858f6f` (GUARDRAILS Abschnitt G, UI-Konsistenz) sei in main — er ist es **nicht** (ungemergt auf dem Feature-Branch `harness/context-engineering-2026`). Dieser Sweep deckt Abschnitt G daher **nicht** ab; G braucht einen eigenen Lauf samt Referenzaufgabe (E11), sobald er gemergt ist. |
+| 2026-07-22 | Task-Add E11 (deckt GUARDRAILS Abschnitt G, UI-Konsistenz) | Opus 4.8 / Claude Code | 1858f6f | E11 **PASS** (mit Regel); A/B **kein Discriminator** | Gezielter E11-Lauf (kein Voll-Sweep). MIT Regel G → PASS (kanonische Button-Komponente wiederverwendet, `success`+`lg` zentral in Tokens ergänzt, kein Inline-Hex/Duplikat, Pushback zu „direkt in der Seite"). OHNE Regel G → **ebenfalls PASS** (gleiches Verhalten von selbst). **Anders als E10:** das A/B diskriminiert hier nicht — Regel G ist auf Opus 4.8 modell-implizit getragen. E11 ist damit ein **Drift-Wächter** für künftige Modelle (fängt, wenn ein Modell UI-Konsistenz nicht mehr default macht), kein Nachweis aktueller Verhaltensänderung. |

@@ -35,7 +35,9 @@ Regeln für die Schleife:
   Aufweichen, damit es grün aussieht.
 - **Jede Runde mit einer Hypothese starten** ("Fehler X kommt von Y"), nicht
   blind variieren. Bestätigt die Runde die Hypothese nicht → neue Hypothese,
-  nicht dieselbe Änderung nochmal.
+  nicht dieselbe Änderung nochmal. Bei zähen, intermittierenden oder über ein
+  Context-Fenster reichenden Bugs greift der vollständige, persistente
+  Investigations-Loop in [DEBUG.md](DEBUG.md).
 
 ## Schleife 2 — Harness Correction (Selbst-Optimierung)
 
@@ -81,6 +83,34 @@ First):
 - **Keine Regel** für einen einmaligen Flüchtigkeitsfehler ohne Muster. Nur fixen.
 - Eine neue Regel ist **konkret und prüfbar** formuliert, nicht "sei sorgfältig".
 
+### Wann eine Regel wieder verschwindet
+
+Jede Regel kodiert eine Annahme darüber, was das Modell *nicht* von selbst kann.
+Annahmen veralten, wenn Modelle besser werden — dann ist die Regel kein Schutz
+mehr, sondern nur noch Context-Kosten. Ein Harness, das Regeln sammelt, aber nie
+welche zurücknimmt, wird mit der Zeit stumpfer statt schärfer.
+
+Das Prüfsignal liefert das A/B aus [EVALS.md](EVALS.md): dieselbe Referenzaufgabe
+einmal mit, einmal ohne die Regel. LLM-Läufe streuen — ein *einzelner*
+Fail-ohne-Regel kann Rauschen sein, kein Beleg. Ein Discriminator-Urteil beruht
+darum auf einem **wiederholten** Fail-ohne-Regel (Richtwert: 2 von 2, sonst ein
+dritter Lauf als Stichentscheid), nicht auf einem Lauf — sonst adelt Zufall eine
+Regel.
+
+- **Ohne Regel wiederholt gefallen** → die Regel trägt. Sie bleibt.
+- **Ohne Regel ebenfalls bestanden** → kein Discriminator, das Modell trägt das
+  Verhalten implizit. Nicht sofort streichen: als **Drift-Wächter** markieren
+  (mit Datum und Modell im Protokoll) — implizit getragene Regeln brechen bei
+  Modellwechseln zuerst.
+- **Zweites Mal kein Discriminator, über einen Modellwechsel hinweg** → streichen.
+  Die Referenzaufgabe bleibt: sie fängt den Rückfall, falls ein künftiges Modell
+  das Verhalten verliert.
+- **Regel ohne Referenzaufgabe und ohne realen Fehler dahinter** → sie war eine
+  Vermutung, kein Lerneffekt. Streichen (Simplicity First).
+
+Streichen ist derselbe Vorgang wie Ergänzen, nur rückwärts — und ebenso begründet:
+im Commit steht, welcher A/B-Lauf die Entscheidung trägt.
+
 ## Selbst-Review vor "fertig"
 
 Bevor du eine Aufgabe als fertig meldest — besonders bei Edits am Harness selbst
@@ -101,6 +131,11 @@ Menschen einbeziehen, wenn:
 - Ein Fix nur möglich wäre, indem man eine Guardrail bricht.
 - Der Verdacht besteht, dass das Gate selbst kaputt/falsch ist — dann nicht den
   Code an ein falsches Gate anpassen, sondern das Gate prüfen.
+- Ein vorab gesetztes Budget (Runden/Steps/Zeit) ist erreicht, ohne dass das Gate
+  grün wurde — dann Stand + letzte Hypothese berichten und übergeben, statt still
+  weiterzubrennen. Compute ist wie der Context endlich (siehe AGENT_LOOP.md,
+  „Context als endliche Ressource"); ein hartes Budget-Signal ergänzt die
+  qualitativen Abbruch-Gründe oben um ein quantitatives.
 
 Benennen, was klemmt, statt es zu überspielen (siehe Ehrlichkeit in
 `../instructions/AGENTS.md`).

@@ -78,6 +78,56 @@ UND Firefox) grün** sein muss. "Fertig" heißt: beide Gates grün.
 
 ---
 
+## Das Bring-up-/Run-Kommando (konkretisiert AGENT_LOOP.md → Voraussetzungen)
+
+Ein **einzelnes reproduzierbares Kommando**, das die App lokal in einen prüfbaren
+Zustand bringt (Dev-Server + Test-DB), damit eine frische Session sichtbares
+Verhalten End-to-End beobachten kann — nicht nur Unit-Tests:
+
+```
+make up      # oder: docker compose up -d && php artisan serve
+```
+
+Zweck (nach Anthropics Long-Running-Harness, `init.sh`-Pattern): Jeder Folge-Lauf
+fährt damit in Sekunden hoch und kann einen **Smoke-Durchstich** absetzen, bevor
+er neue Arbeit beginnt (siehe AGENT_LOOP.md → Session-Start-Health-Check). Das
+Kommando ist idempotent (mehrfach aufrufbar) und räumt bei Bedarf sauber ab.
+
+**Readiness konkret (Web/PHP):** ein `/health`- (oder `/up`-)Endpoint, den der
+Smoke pollt, bis er 200 liefert — kein fester Sleep:
+
+```
+until curl -fsS http://localhost:8000/health >/dev/null; do sleep 0.5; done
+curl -fsS http://localhost:8000/tasks/1 | grep -q '"status"'   # ein Durchstich
+```
+
+Laravel bringt `/up` bereits mit; sonst eine schlanke Route, die DB-Verbindung
+und Migrations-Stand prüft. Erst wenn der Poll grün ist, beginnt neue Arbeit.
+
+---
+
+## UI-Konsistenz (konkretisiert GUARDRAILS.md G)
+
+Gilt, sobald das Projekt eine UI mit eigenen Komponenten hat (Blade/Livewire/
+Filament, ggf. + Tailwind).
+
+- **Kanonische Komponenten:** wiederverwendbare Blade-Components (`<x-button>`,
+  `<x-table>`, `<x-modal>`, `<x-field>`) in `resources/views/components/` — bzw. das
+  UI-Kit des Projekts. Vor neuem Markup dort nachsehen; kein zweiter Button aus
+  rohem `<button class="…">`, wenn `<x-button>` existiert.
+- **Tokens/Skala:** die eine Quelle ist die `theme`-Sektion in `tailwind.config.js`
+  (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
+  Inline-`style="…"`, kein Hex direkt im Markup; Abstände/Höhen über die
+  Utility-/Token-Skala, nicht als Einzelfall-`px`.
+- **Check (Selbstcheck vor "fertig"):** in geänderten Views grep auf `style="`,
+  Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die eine
+  vorhandene `<x-…>`-Komponente nachbauen — jeder Treffer ist ein Finding (Regel 6/7).
+
+Neuer geteilter Baustein nötig → **eine** neue Component/Token-Stufe anlegen, die
+zur Quelle wird; nicht pro Seite kopieren.
+
+---
+
 ## Tests (konkretisiert TESTS.md)
 
 - **Framework:** Pest (oder PHPUnit), Arrange–Act–Assert.
@@ -154,6 +204,44 @@ test('E-Mail-Feld leer → exakte Fehlermeldung', async ({ page }) => {
 Pro Formular die volle Ein-Feld-falsch-Matrix rotieren, Keyboard-/Enter-Submit als
 eigenen Test, Happy Path zuletzt. Querschnitt (Authz, CSRF, Session, Upload/IDOR,
 XSS, Grenzwerte, State/Race, Pagination/Empty, A11y): Checkliste in TESTS.md.
+
+### Matrizen datengetrieben (konkretisiert TESTS.md → "Matrix über das Formular hinaus")
+
+Die API-Payload-, Authz- (Rolle × Route) und Zustandsübergangs-Matrix werden als
+**Pest-Dataset** (bzw. PHPUnit `@dataProvider`) geschrieben — eine Zeile je Zelle,
+nicht N kopierte Testmethoden. Der Testrumpf setzt den Durchstich ab, das Dataset
+liefert die Zeilen samt erwartetem Ergebnis:
+
+```php
+// API-Payload: genau ein Feld falsch, Rest gültig
+it('lehnt ungültige Anlage ab', function (array $override, int $status, string $feld) {
+    $payload = [...validPayload(), ...$override];         // ein Feld überschrieben
+    $response = $this->postJson('/api/v1/tasks', $payload);
+    expect($response->getStatusCode())->toBe($status);    // exakter Status
+    expect($response->json("errors.$feld"))->not->toBeEmpty();
+    expect($this->db->count('tasks'))->toBe(0);           // KEIN Zustand geschrieben
+})->with([
+    'title fehlt'   => [['title' => null], 422, 'title'],
+    'title zu lang' => [['title' => str_repeat('x', 300)], 422, 'title'],
+    'status Enum'   => [['status' => 'bogus'], 422, 'status'],
+]);
+
+// Authz Rolle × Route: eine Zeile je Zelle → erwarteter HTTP-Status
+it('erzwingt Berechtigung', function (string $rolle, string $method, string $uri, int $status) {
+    actingAsRole($rolle);
+    expect($this->call($method, $uri)->getStatusCode())->toBe($status);
+})->with([
+    ['anonym', 'GET',    '/api/v1/tasks',   401],
+    ['user',   'POST',   '/api/v1/tasks',   403],
+    ['user',   'DELETE', '/api/v1/tasks/99', 403],   // fremdes Objekt (IDOR)
+    ['admin',  'POST',   '/api/v1/tasks',   201],
+]);
+```
+
+Der Zustandsübergang analog: Dataset `[$startZustand, $event, $zielOderNull]`, im
+Rumpf Startzustand seeden, Event absetzen, dann End-Zustand in der DB prüfen — bei
+`reject` explizit, dass der Zustand **unverändert** ist. Jede Matrix-Zeile ist so
+einzeln benannt und einzeln rot/grün.
 
 ---
 

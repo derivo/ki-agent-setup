@@ -38,6 +38,13 @@ Projekt. Richtwert: ein Lauf kostet 30–60 Minuten Agent-Zeit.
    Teilpunkte, kein "im Geiste erfüllt".
 4. Ergebniszeile ins Lauf-Protokoll (unten) eintragen, Fails mit einer Zeile
    Ursache.
+5. **Steht eine einzelne Regel infrage (neu oder verdächtig veraltet): A/B.**
+   Dieselbe Aufgabe zweimal, je in frischer Session — einmal mit der Regel im
+   Kontext, einmal ohne. Fällt der Lauf *ohne* die Regel, trägt die Regel das
+   Verhalten. Besteht er auch ohne, trägt es das Modell und die Regel ist (noch)
+   kein Discriminator. Beide Seiten ins Protokoll; was daraus folgt, steht in
+   [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) („Wann eine Regel wieder
+   verschwindet").
 
 **Die Aufgaben sind unantastbar** — analog zur Test-Regel in
 [TESTS.md](TESTS.md): grün entsteht durch ein besseres Harness, nie durch
@@ -61,6 +68,29 @@ mit Begründung im Commit, nicht während eines Laufs.
   Abstand zwischen Top-Modellen), also mehr als der Effekt, den ein Lauf gerade
   belegen soll.
 - **Rot bei Erst-Lauf** → die Lücke gehört ins Harness, nicht in die Aufgabe.
+
+## Wenn das Set gesättigt ist
+
+Ein Set, das mehrfach hintereinander vollständig grün liefert, misst nichts Neues
+mehr — es belegt nur noch, dass nichts kaputtgegangen ist. Das ist wertvoll, aber
+eine andere Rolle, und sie wird explizit benannt statt als Erfolg gelesen:
+
+- **Gesättigte Aufgaben sind das Regressions-Set.** Sie bleiben und laufen bei
+  jedem fälligen Anlass mit. Was sie *nicht* mehr können: belegen, dass eine neue
+  Regel etwas verbessert — dafür braucht es eine Aufgabe, die ohne die Regel fällt
+  (A/B, siehe [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md), „Wann eine Regel wieder
+  verschwindet").
+- **Neue Aufgaben kommen aus echten Fehlschlägen**, nicht aus Vollständigkeitsdrang:
+  eine Aufgabe entsteht, wenn ein realer Lauf etwas durchgelassen hat — dieselbe
+  Schwelle wie bei neuen Regeln.
+- **Lösbarkeit belegen.** Zu einer neuen Aufgabe gehört eine Referenzlösung, die
+  zeigt, dass sie unter dem Harness bestehbar ist. Ohne sie kann ein Fail auch
+  bedeuten, dass die Aufgabe unfair oder mehrdeutig ist, nicht dass das Harness
+  eine Lücke hat.
+
+Stand 2026-07-23: **E1–E10 sind gesättigt** (zwei Voll-Sweeps 10/10, Protokoll
+unten) → Regressions-Set. **E11** ist von Beginn an Drift-Wächter, kein
+Discriminator.
 
 ---
 

@@ -52,6 +52,11 @@ Minimum Code für die Aufgabe. Keine spekulativen Features, Abstraktionen für
 Single-Use, "Flexibility" die nicht gefragt war, Error-Handling für unmögliche
 Szenarien. 200 Zeilen wo 50 reichen → neu schreiben.
 
+Konkret bei Einzel-Funktionen: keine ungefragte Eingabe-Validierung/Typprüfung
+(der Aufrufer liefert gültige Daten), keine Konfig-Parameter (Locale, Format,
+Währung) auf Verdacht — genau die eine gefragte Sache mit offensichtlichen
+Defaults. Annahmen benennen statt sie als Parameter oder Guard zu verbauen.
+
 Tradeoff: Diese Regeln biasen Richtung Vorsicht statt Tempo. Bei trivialen Tasks
 Urteilsvermögen nutzen.
 

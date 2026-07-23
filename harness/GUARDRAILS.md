@@ -171,3 +171,36 @@ Konfig-Werten, String-Literalen und eingebettetem Diagramm-Code (Mermaid,
 draw.io, PlantUML). Kein `ue`/`ae`/`oe`-Ersatz "zur Sicherheit"; moderne Tools
 sind UTF-8. Ausnahme nur bei nachgewiesenem (getestetem) Tool-Fail — dann Grund
 benennen.
+
+---
+
+## G. UI-Konsistenz (bei Frontend-Arbeit, vor jedem UI-Write)
+
+Dieselbe DRY-/Reference-first-Härte wie im Code gilt für die Oberfläche: **ein**
+Button, **eine** Tabelle, **eine** Abstands-Skala — nicht pro Seite eine leicht
+andere Variante. Wo die Komponenten-Bibliothek und die Token-/Skala-Quelle konkret
+liegen (Component-Verzeichnis, Theme-/Tailwind-Config, Design-Tokens): Stack-Adapter.
+
+### Regel 6 — Komponente wiederverwenden statt neu bauen
+Bevor ein UI-Element entsteht (Button, Tabelle, Modal, Formularfeld, Card, Badge),
+prüfen ob eine kanonische Komponente dafür schon existiert. Existiert sie →
+wiederverwenden, nicht eine zweite, leicht abweichende Variante daneben bauen. Ein
+zweiter Button, der einen bestehenden nachbaut, ist kein Feature, sondern Drift.
+(Das ist Reference-first aus Abschnitt C, auf UI angewandt: **ein** Vorbild, dann
+reuse — nicht N Varianten.) Echt neues Muster → **eine** geteilte Komponente
+anlegen, die zur einzigen Quelle wird; andere nutzen sie, kopieren sie nicht.
+
+### Regel 7 — Maße/Abstände/Farben/Typo aus dem System, nie ad hoc
+Höhen, Breiten, Abstände (Padding/Margin/Gap), Farben, Schriftgrößen und Radien
+kommen aus der **einen** Quelle des Design-Systems (Token/Skala/Theme-Utilities),
+nicht als Magic-Number/Inline-Hex/Einzelfall-`px` pro Seite. Ein `color:#3b7` oder
+`margin:13px` direkt im Markup ist ein Signal: der Wert gehört in die Skala — oder
+es fehlt dort eine Stufe, die zentral ergänzt wird (nicht lokal umgangen).
+
+### Selbstcheck vor "fertig" (UI)
+- Kein dupliziertes Element, das ein bestehendes nachbaut (Regel 6).
+- Keine Inline-Farbe/Magic-Number, wo eine Token-/Skala-Stufe existiert (Regel 7).
+- Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
+
+Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —
+reine API-/CLI-Projekte überspringen Abschnitt G.

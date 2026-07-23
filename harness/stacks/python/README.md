@@ -116,6 +116,29 @@ grün ist, beginnt neue Arbeit.
 
 ---
 
+## UI-Konsistenz (konkretisiert GUARDRAILS.md G)
+
+Gilt, sobald das Projekt eine UI mit eigenen Komponenten hat (Jinja2-Macros/
+Partials, Django-Templates + `{% include %}`/Component-Lib, ggf. + Tailwind; oder
+ein separates JS-Frontend).
+
+- **Kanonische Komponenten:** wiederverwendbare Jinja-Macros/Template-Partials
+  (`{% macro button() %}`, `components/table.html`) — bzw. das UI-Kit des Projekts.
+  Vor neuem Markup dort nachsehen; kein zweiter Button aus rohem `<button class="…">`,
+  wenn ein `button`-Macro existiert.
+- **Tokens/Skala:** die eine Quelle ist die `theme`-Sektion in `tailwind.config.js`
+  (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
+  Inline-`style="…"`, kein Hex direkt im Template; Abstände/Höhen über die
+  Utility-/Token-Skala, nicht Einzelfall-`px`.
+- **Check (Selbstcheck vor "fertig"):** in geänderten Templates grep auf `style="`,
+  Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die ein
+  vorhandenes Macro/Partial nachbauen — jeder Treffer ist ein Finding (Regel 6/7).
+
+Neuer geteilter Baustein nötig → **ein** neues Macro/Partial bzw. eine neue
+Token-Stufe als Quelle; nicht pro Seite kopieren.
+
+---
+
 ## Tests (konkretisiert TESTS.md)
 
 - **Framework:** pytest, Arrange–Act–Assert.

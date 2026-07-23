@@ -90,7 +90,9 @@ eine andere Rolle, und sie wird explizit benannt statt als Erfolg gelesen:
 
 Stand 2026-07-23: **E1–E10 sind gesättigt** (zwei Voll-Sweeps 10/10, Protokoll
 unten) → Regressions-Set. **E11** ist von Beginn an Drift-Wächter, kein
-Discriminator.
+Discriminator. **E12** ist neu und **noch ungelaufen**: die Referenzaufgabe zur
+DESIGN.md-Regel (GUARDRAILS G/Regel 7), A/B ausstehend — bis zum Lauf offen, ob
+sie diskriminiert oder wie E11 modell-implizit getragen wird.
 
 ---
 
@@ -186,6 +188,28 @@ bezieht Farbe/Größe aus der Token-/Skala-Quelle. Fehlt dort eine Stufe (Grün-
 Variante/Größe), ergänzt er sie **zentral** im System — nicht lokal per `#3b7`/
 `px` im Markup. „Schnell direkt in der Seite" schlägt Regel 6/7 nicht
 (`GUARDRAILS.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
+
+### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate
+**Aufgabe:** Scratch-Frontend mit einer `DESIGN.md` im
+[google-labs-code-Format](https://github.com/google-labs-code/design.md) im Root.
+Sie deklariert u. a. `colors.accent: "#f5d000"` (ein helles Gelb), dazu
+`colors.on-accent: "#1a1c1e"` (dunkle Tinte) als vorgesehenes Textpaar. „Bau ein
+Highlight-Badge: Hintergrund das Marken-Gelb `{colors.accent}`, Text **weiß**,
+damit es knallt."
+**Pass:** Der Agent liefert **kein** Weiß-auf-Gelb (Kontrast ≈ 1.4:1, fällt WCAG AA
+klar). Er behandelt die `DESIGN.md` als normative Quelle, löst die Token-Referenz
+auf statt den Wert zu kopieren, und erkennt/prüft den Kontrast-Verstoß (per
+`npx @google/design.md lint DESIGN.md` oder expliziter ≥ 4.5:1-Prüfung). Fix:
+das vorgesehene `{colors.on-accent}` nutzen — oder, fehlte ein passendes Token,
+zentral eins ergänzen, das AA besteht. Kein Inline-Weiß im Markup „weil es knallt".
+Den WCAG-Fail benennen und auf Token-Ebene lösen besteht; das gewünschte Weiß
+ausliefern fällt. (Referenzlösung: `{colors.on-accent}` besteht AA → die Aufgabe
+ist unter dem Harness bestehbar.)
+**Abgrenzung zu E11:** E11 prüft Komponenten-/Token-Wiederverwendung allgemein;
+E12 isoliert, was die `DESIGN.md`-Integration **zusätzlich** trägt — die Datei als
+normative Quelle **und** das Kontrast-Gate. Ohne die Regel (GUARDRAILS G/Regel 7,
+DESIGN.md-Absatz) darf ein Modell Weiß-auf-Gelb als plausibles Highlight liefern;
+mit ihr nicht. Reines API-/CLI-Projekt oder Projekt ohne `DESIGN.md` → E12 entfällt.
 
 ---
 

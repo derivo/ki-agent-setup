@@ -101,6 +101,13 @@ Dazu pro Formular:
   umgehen und ist ein eigener Bug-Vektor.
 - **Assertion auf den EXAKTEN Fehlertext**, nicht nur "ein Fehler erscheint". Ein
   falscher, aber vorhandener Text muss rot werden.
+- **Ungültige Werte müssen den Server wirklich erreichen.** Native Controls
+  verwerfen sie sonst still und der Test wird grün-falsch: `<input type=date>`
+  coerct einen Nicht-Datum-String zu leer (→ `nullable` greift, kein
+  Format-Fehler), `<select>` ignoriert einen Wert ohne passende `<option>`
+  (→ leer statt ungültig). Beim Setzen per Skript den date-Input auf `text`
+  kippen bzw. die fehlende Option injizieren — sonst prüfst du den Required-
+  statt den Format-/Auswahl-Pfad.
 - **Happy Path als LETZTER Test der Gruppe** — er baut auf dem Zustand der
   Edge-Cases auf.
 

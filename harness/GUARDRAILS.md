@@ -187,3 +187,12 @@ Nach jedem Datei-Sweep (sed/perl/Massen-Edit) das Ergebnis prüfen statt
 anzunehmen: `grep -c <muster>` auf 0 bzw. die erwartete Zahl. „Befehl lief durch"
 ist nicht „Befehl hat gewirkt" — ein stummer Fehlschlag (falsches Regex, kein
 Word-Split, falsche sed-Syntax) sieht sonst aus wie Erfolg.
+
+### Regel 8 — Kein zweiter Agent auf demselben Working Tree; vor Commit Zustand prüfen
+Zwei Agenten-Sessions im selben Git-Working-Tree/Branch teilen Dateizustand,
+Commit-Stream und (bei Container-Stacks) DB/Cache — keine Isolation. Beobachtet:
+fremde Sessions setzen laufende Edits zurück, saugen uncommittete Änderungen in
+ihre eigenen Commits, und Test-Runner wechseln `.env`/DB unter dir. Parallel
+arbeiten → jede Session in einen eigenen `git worktree` (eigener Branch). Vor
+jedem Commit `git status` lesen und mit expliziten Pfaden stagen statt `git add .`
+— nie blind committen, was gerade im Tree liegt.

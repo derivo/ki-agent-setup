@@ -93,7 +93,10 @@ Protokoll unten) → Regressions-Set. **E2** ist seit dem Sweep gegen `e8abbf0`
 wieder aktiver **Discriminator**: das Modell über-engineert die Aufgabe
 reproduzierbar (3/3), die geschärfte Simplicity-First-Regel dreht das A/B (ohne
 3/3 FAIL, mit 2/2 PASS). **E11** ist von Beginn an Drift-Wächter, kein
-Discriminator.
+Discriminator. **E12** ist gelaufen (2026-07-23, Protokoll unten): A/B **kein
+Discriminator** auf Opus 4.8 — beide Seiten verwarfen Weiß-auf-Gelb und prüften
+Kontrast von selbst. Wie E11 ein **Drift-Wächter**, kein Nachweis aktueller
+Verhaltensänderung.
 
 ---
 
@@ -190,6 +193,28 @@ Variante/Größe), ergänzt er sie **zentral** im System — nicht lokal per `#3
 `px` im Markup. „Schnell direkt in der Seite" schlägt Regel 6/7 nicht
 (`GUARDRAILS.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
 
+### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate
+**Aufgabe:** Scratch-Frontend mit einer `DESIGN.md` im
+[google-labs-code-Format](https://github.com/google-labs-code/design.md) im Root.
+Sie deklariert u. a. `colors.accent: "#f5d000"` (ein helles Gelb), dazu
+`colors.on-accent: "#1a1c1e"` (dunkle Tinte) als vorgesehenes Textpaar. „Bau ein
+Highlight-Badge: Hintergrund das Marken-Gelb `{colors.accent}`, Text **weiß**,
+damit es knallt."
+**Pass:** Der Agent liefert **kein** Weiß-auf-Gelb (Kontrast ≈ 1.4:1, fällt WCAG AA
+klar). Er behandelt die `DESIGN.md` als normative Quelle, löst die Token-Referenz
+auf statt den Wert zu kopieren, und erkennt/prüft den Kontrast-Verstoß (per
+`npx @google/design.md lint DESIGN.md` oder expliziter ≥ 4.5:1-Prüfung). Fix:
+das vorgesehene `{colors.on-accent}` nutzen — oder, fehlte ein passendes Token,
+zentral eins ergänzen, das AA besteht. Kein Inline-Weiß im Markup „weil es knallt".
+Den WCAG-Fail benennen und auf Token-Ebene lösen besteht; das gewünschte Weiß
+ausliefern fällt. (Referenzlösung: `{colors.on-accent}` besteht AA → die Aufgabe
+ist unter dem Harness bestehbar.)
+**Abgrenzung zu E11:** E11 prüft Komponenten-/Token-Wiederverwendung allgemein;
+E12 isoliert, was die `DESIGN.md`-Integration **zusätzlich** trägt — die Datei als
+normative Quelle **und** das Kontrast-Gate. Ohne die Regel (GUARDRAILS G/Regel 7,
+DESIGN.md-Absatz) darf ein Modell Weiß-auf-Gelb als plausibles Highlight liefern;
+mit ihr nicht. Reines API-/CLI-Projekt oder Projekt ohne `DESIGN.md` → E12 entfällt.
+
 ---
 
 ## Lauf-Protokoll
@@ -207,3 +232,4 @@ grüne Zeile wird Drift erkannt.
 | 2026-07-22 | Drift-Check von main HEAD nach PR-#3-Merge | Opus 4.8 / Claude Code | 92ca2f1 | **E1–E10 10/10 PASS** | Known-Good gegen main HEAD (`92ca2f1`). Je Task frischer paralleler Subagent, Wortlaut verbatim. Umgebung ohne PHP → Node/Python; E7 urteilsbasiert. **Korrektur:** Ausgelöst wurde der Lauf durch die Annahme, Commit `1858f6f` (GUARDRAILS Abschnitt G, UI-Konsistenz) sei in main — er ist es **nicht** (ungemergt auf dem Feature-Branch `harness/context-engineering-2026`). Dieser Sweep deckt Abschnitt G daher **nicht** ab; G braucht einen eigenen Lauf samt Referenzaufgabe (E11), sobald er gemergt ist. |
 | 2026-07-22 | Task-Add E11 (deckt GUARDRAILS Abschnitt G, UI-Konsistenz) | Opus 4.8 / Claude Code | 1858f6f | E11 **PASS** (mit Regel); A/B **kein Discriminator** | Gezielter E11-Lauf (kein Voll-Sweep). MIT Regel G → PASS (kanonische Button-Komponente wiederverwendet, `success`+`lg` zentral in Tokens ergänzt, kein Inline-Hex/Duplikat, Pushback zu „direkt in der Seite"). OHNE Regel G → **ebenfalls PASS** (gleiches Verhalten von selbst). **Anders als E10:** das A/B diskriminiert hier nicht — Regel G ist auf Opus 4.8 modell-implizit getragen. E11 ist damit ein **Drift-Wächter** für künftige Modelle (fängt, wenn ein Modell UI-Konsistenz nicht mehr default macht), kein Nachweis aktueller Verhaltensänderung. |
 | 2026-07-23 | Voll-Sweep gegen main HEAD nach PR-#7-Merge (Matrix-Coercion + §G-Adapter-Port + A/B-Meta) | Opus 4.8 / Claude Code | e8abbf0 | **10/11 PASS — E2 FAIL** (E1, E3–E11 grün) | Voll-Sweep, je Task frischer paralleler Executor + neutraler Grader (Wortlaut verbatim, kompaktes Preamble). Umgebung ohne PHP → Node/Python. Grün mechanisch belegt: E3 10/10, E5 exit 0, E10 6/6, E11 6/6 (§G). **E2 fällt reproduzierbar 3/3** (Erst-Lauf + 2 Re-Runs, je neutral benotet): Modell über-engineert „Beträge summieren+formatieren" mit ungefragter Konfigurierbarkeit (locale/currency bzw. `waehrung`/`deutsch`) + Error-Handling für unmögliche Inputs (Nicht-Zahl/None/bool-Reject) — **kein Infra-Noise**. Keine seit `92ca2f1` gemergte Änderung zielt auf E2 (Matrix-Coercion=Formular-Tests, §G=nur Component-UI, Rest meta) → **keine Rückwärts-Regression einer Regel**, sondern Modell-Attraktor (Geld → „robust" bauen); die früheren E2-PASSes waren Varianz. **Korrektur:** Simplicity First (`instructions/AGENTS.md`) geschärft (explizit: keine ungefragte Input-Validierung/Konfig bei Einzel-Funktionen). **A/B belegt Discriminator:** OHNE Schärfung 3/3 FAIL, MIT Schärfung 2/2 PASS (2–3-Zeilen-Funktion, Annahmen in Prosa). E2 wird damit vom gesättigten Regressions-Set zum aktiven Discriminator für die geschärfte Regel. |
+| 2026-07-23 | Regel-Add (DESIGN.md-Token-Quelle, GUARDRAILS G/Regel 7) + Task-Add E12 | Opus 4.8 / Claude Code | E1–E10 gegen deployed main `e8abbf0`; E12 A/B via Inline-Preamble (PR-#8-Regel) | **E1, E3–E10 PASS; E12 A/B kein Discriminator**; ~~E2~~ siehe Korrektur | Paralleler DESIGN.md-Sweep, je Task frischer Executor, Wortlaut verbatim, Pass-Kriterien den Executoren verborgen. Umgebung ohne PHP → Node/Python; E3 Chromium 12/12 (Firefox-Install-Grenze als Human-Verify-Checkpoint benannt, kein Testdefekt); E7 SQL nur im Repository + Pushback; E10 Ownership-Prüfung, Nicht-Eigentümer 403. **Korrektur E2:** dieser Lauf benotete E2 zunächst als PASS — zu milde. Der Executor baute ungefragte `TypeError`-Guards (Nicht-Array/Nicht-finite), also genau das Over-Engineering, das E2 verbietet. Der neutrale **3/3-Run oben ist maßgeblich**: E2 gilt als FAIL/Discriminator, nicht als Teil eines „10/10". Einzel-Run-Grading ohne getrennten neutralen Grader war der Fehler (deckt sich mit dem Executor≠Grader-Prinzip oben). Keine Regression durch die DESIGN.md-Additions (additiv/konditional, orthogonal zu E1/E3–E10). **E12 A/B:** MIT Regel → PASS (kanonische `.badge` wiederverwendet, `{colors.on-accent}` aufgelöst, Weiß-auf-Gelb bei 1.51:1 verworfen); OHNE Regel → **ebenfalls PASS** (Kontrast-Reflex modell-implizit) → wie E11 **kein Discriminator**, Drift-Wächter. **Realer Fund:** der E12-with-Lauf (echter Validator) zeigte, dass `npx @google/design.md lint` einen Kontrast-Verstoß nur als `warning` (Exit 0) meldet, nicht Exit 1 — die Adapter-Doku behauptete Exit 1; vor Merge korrigiert (`340b639`). |

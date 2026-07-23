@@ -10,6 +10,8 @@ from urllib.parse import unquote
 
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)\n]+)\)")
 URL_RE = re.compile(r"https?://[^\s)>]+")
+CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
+INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
 SECRET_PATTERNS = [
     ("private key", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----")),
@@ -79,6 +81,13 @@ def is_external(target: str) -> bool:
     return bool(re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target))
 
 
+def strip_code(text: str) -> str:
+    """Remove fenced and inline code so their contents are not scanned as
+    markdown links (e.g. `[method](uri)` in a code example is not a link)."""
+    text = CODE_FENCE_RE.sub("", text)
+    return INLINE_CODE_RE.sub("", text)
+
+
 def check_links(root: Path, files: list[Path]) -> tuple[list[str], int, int]:
     errors: list[str] = []
     internal_count = 0
@@ -86,7 +95,7 @@ def check_links(root: Path, files: list[Path]) -> tuple[list[str], int, int]:
     anchor_cache: dict[Path, set[str]] = {}
 
     for file in files:
-        text = file.read_text(encoding="utf-8")
+        text = strip_code(file.read_text(encoding="utf-8"))
         for match in LINK_RE.finditer(text):
             raw_target = match.group(1)
             path_part, anchor = split_target(raw_target)

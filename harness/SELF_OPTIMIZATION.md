@@ -83,6 +83,30 @@ First):
 - **Keine Regel** für einen einmaligen Flüchtigkeitsfehler ohne Muster. Nur fixen.
 - Eine neue Regel ist **konkret und prüfbar** formuliert, nicht "sei sorgfältig".
 
+### Wann eine Regel wieder verschwindet
+
+Jede Regel kodiert eine Annahme darüber, was das Modell *nicht* von selbst kann.
+Annahmen veralten, wenn Modelle besser werden — dann ist die Regel kein Schutz
+mehr, sondern nur noch Context-Kosten. Ein Harness, das Regeln sammelt, aber nie
+welche zurücknimmt, wird mit der Zeit stumpfer statt schärfer.
+
+Das Prüfsignal liefert das A/B aus [EVALS.md](EVALS.md): dieselbe Referenzaufgabe
+einmal mit, einmal ohne die Regel.
+
+- **Ohne Regel gefallen** → die Regel trägt. Sie bleibt.
+- **Ohne Regel ebenfalls bestanden** → kein Discriminator, das Modell trägt das
+  Verhalten implizit. Nicht sofort streichen: als **Drift-Wächter** markieren
+  (mit Datum und Modell im Protokoll) — implizit getragene Regeln brechen bei
+  Modellwechseln zuerst.
+- **Zweites Mal kein Discriminator, über einen Modellwechsel hinweg** → streichen.
+  Die Referenzaufgabe bleibt: sie fängt den Rückfall, falls ein künftiges Modell
+  das Verhalten verliert.
+- **Regel ohne Referenzaufgabe und ohne realen Fehler dahinter** → sie war eine
+  Vermutung, kein Lerneffekt. Streichen (Simplicity First).
+
+Streichen ist derselbe Vorgang wie Ergänzen, nur rückwärts — und ebenso begründet:
+im Commit steht, welcher A/B-Lauf die Entscheidung trägt.
+
 ## Selbst-Review vor "fertig"
 
 Bevor du eine Aufgabe als fertig meldest — besonders bei Edits am Harness selbst

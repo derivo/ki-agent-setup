@@ -24,6 +24,8 @@ Datei:Zeile · Lens · Schwere · Fix), keinen Volltext-Dump von Code oder Gedan
   GUARDRAILS Abschnitt E — Security-Pass.)
 - **Performance** — N+1-Queries, unnötige IO/Allokationen, offensichtliche
   Hotspots. Nur wo es real zählt, keine Mikro-Optimierung.
+- **Sichtbare Qualität** — nur bei UI-Diffs, urteilt am gerenderten Zustand statt
+  am Code (eigener Abschnitt unten).
 
 Weitere Lens je nach Diff ergänzen (z. B. **Daten/Migrations** bei Schema-Änderung,
 **API-Kompatibilität** bei Schnittstellen).
@@ -35,6 +37,7 @@ Diff bestimmen
       │
       ▼
 parallel:  [Korrektheit]  [Security]  [Performance]   ◄─ je 1 Subagent, isoliert
+           (+ [Sichtbare Qualität] bei UI-Diffs)
       │          │            │            │
       └──────────┴─────┬──────┴────────────┘
                        ▼
@@ -61,6 +64,41 @@ parallel:  [Korrektheit]  [Security]  [Performance]   ◄─ je 1 Subagent, isol
 - Bestätigte Funde fließen zurück in die prüfende Schleife
   ([SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)) — und wenn ein Fund eine fehlende
   Regel offenlegt, wird sie ergänzt (Harness Correction).
+
+## Subjektive Ergebnisse: Evaluator statt Selbstbenotung
+
+Wo ein mechanisches Kriterium existiert, entscheidet das Gate. Wo keins existiert
+— Oberfläche, Layout, Wortlaut — greift der Selbstcheck systematisch daneben:
+Wer die Arbeit produziert hat, bewertet sie zuverlässig positiv, auch wenn sie für
+einen Betrachter offensichtlich mittelmäßig ist. Deshalb urteilt hier ein
+**getrennter Agent, der den Code nicht geschrieben hat**.
+
+Und zwar **am gerenderten Zustand, nicht am Diff**: App per Bring-up-Kommando
+hochfahren (siehe „Voraussetzungen" in [AGENT_LOOP.md](AGENT_LOOP.md)), die
+betroffene Seite ansteuern, mit der Oberfläche interagieren — klicken, tippen,
+Leer-/Fehler-/Lang-Zustände auslösen, Viewport wechseln. Ein Screenshot der
+Startseite ist keine Prüfung.
+
+Vier feste Dimensionen, je bestanden/gefallen mit einem Satz Begründung:
+
+- **Handwerk** — Ausrichtung, Abstände, Zustände (hover/focus/disabled/leer/lang);
+  nichts überlappt, nichts ist abgeschnitten.
+- **Konsistenz** — nutzt die kanonischen Komponenten und die Token-Skala
+  (GUARDRAILS Abschnitt G) und fällt nicht aus dem Rest der App heraus.
+- **Funktion** — der Weg durch das Feature ist bedienbar: Fehlerfälle sichtbar,
+  Ladezustände vorhanden, Tastaturbedienung möglich.
+- **Zweckmäßigkeit** — löst, was die Spec versprochen hat, ohne zusätzliche
+  Erfindung.
+
+Eine freie Skala ("wirkt gut") ist keine Bewertung. Der Maßstab ist **kalibriert**:
+eine bestehende, akzeptierte Seite des Projekts ist die Referenz, gegen die
+verglichen wird — gibt es die noch nicht, benennt der Evaluator das und urteilt nur
+über die vier Dimensionen, nicht über "Schönheit".
+
+Das ersetzt den Selbstcheck aus GUARDRAILS G nicht, es ergänzt ihn: dort prüft der
+Produzent regelbasiert seinen eigenen Code (Duplikat? Inline-Hex?) — hier urteilt
+ein Unbeteiligter über das, was am Bildschirm herauskommt. Bei API-/CLI-Projekten
+und reinen Logik-Diffs entfällt die Lens.
 
 ## Prozess prüfen, nicht nur das Ergebnis
 

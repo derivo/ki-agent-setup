@@ -133,8 +133,11 @@ ein separates JS-Frontend).
 - **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
   im Repo-Root, ist sie die normative Quelle. Der Validator ist node-basiert (setzt
   ein vorhandenes Node/`npx` voraus — nur relevant, wenn das Frontend Tailwind/JS
-  nutzt): `npx @google/design.md lint DESIGN.md` (Exit 1 bei Fehlern, inkl. WCAG-AA-
-  Kontrast) vor UI-Write. Tailwind aus ihr generieren statt Werte doppeln:
+  nutzt): `npx @google/design.md lint DESIGN.md` vor UI-Write.
+  **Achtung Exit-Code:** strukturelle Fehler → Exit 1, aber
+  ein **Kontrast-Verstoß kommt nur als `warning` (Exit bleibt 0)** — verifiziert.
+  Exit 0 heißt *nicht* „Kontrast ok"; `findings` lesen und Kontrast-Warnungen als
+  blockierend behandeln. Tailwind aus ihr generieren statt Werte doppeln:
   `npx @google/design.md export --format css-tailwind DESIGN.md` (v4) bzw.
   `--format json-tailwind` (v3) — so bleibt `tailwind.config` deriviert.
 - **Check (Selbstcheck vor "fertig"):** in geänderten Templates grep auf `style="`,

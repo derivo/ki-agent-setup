@@ -122,7 +122,8 @@ Gate → Korrektur, mit selbst-erzwungenen Guardrails und mechanischem
 Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg und Methode in
 dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
 `~/.claude/harness/README.md`, `~/.codex/harness/README.md`,
-`~/.gemini/harness/README.md`, sonst `harness/README.md` im ki-agents-Repo. Danach
+`~/.gemini/harness/README.md`, `~/.config/opencode/harness/README.md`, sonst
+`harness/README.md` im ki-agents-Repo. Danach
 den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
@@ -136,8 +137,8 @@ die terse Arbeitsweise-Regeln oben, dupliziert GUARDRAILS/AGENTS nicht).
 Für Doku-Arbeit (README-Sammlungen, Handbücher, API-Doku) gilt analog das
 **Doc-Harness** (Claims-gegen-Quelle als Gate). Suchreihenfolge:
 `~/.claude/doc-harness/README.md`, `~/.codex/doc-harness/README.md`,
-`~/.gemini/doc-harness/README.md`, sonst `doc-harness/README.md` im
-ki-agents-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
+`~/.gemini/doc-harness/README.md`, `~/.config/opencode/doc-harness/README.md`,
+sonst `doc-harness/README.md` im ki-agents-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
 Struktur** (`docs/README.md`/`docs/CLAUDE.md` im Projekt, Vorlage:
 `doc-harness/DOC_TEMPLATE.md`) — ohne definierte Struktur keine generierte Doku.
 

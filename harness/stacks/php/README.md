@@ -65,11 +65,30 @@ composer quality
 bündelt:
 - `deptrac` — Schicht-/Abhängigkeitsstruktur (`--fail-on-uncovered`),
 - `phpstan` (Laravel: `larastan`) — statische Typanalyse,
-- `php-cs-fixer` — Formatierung (`--dry-run --diff` im Gate),
+- `php-cs-fixer` bzw. `pint` (Laravel) — Formatierung (Prüfmodus im Gate),
 - `pest`/`phpunit` — die Tests.
 
 In `composer.json` als `quality`-Script definieren. Erst wenn es sauber
 durchläuft, gilt "fertig".
+
+**Formatter auf Bestandsprojekten.** Ein Repo, das nie durch den Formatter lief,
+meldet beim ersten `--dry-run`/`--test` hunderte Verstöße in fremden Dateien.
+Das setzt die Regel aus AGENTS.md → "Surgical Changes" nicht außer Kraft, es
+verschiebt nur den Umfang: den eigenen Diff prüfen und sauber halten, das Repo
+nicht. Konkret:
+
+```
+vendor/bin/pint --dirty --test          # nur uncommittete Dateien, prüft nur
+vendor/bin/pint --dirty                 # dieselben Dateien, schreibt
+vendor/bin/pint --diff=main --test      # alles seit Abzweig von main
+```
+
+`--dirty`/`--diff` gehören ins Gate solange das Repo nicht konform ist; erst
+nach einem freigegebenen Sweep ist der repo-weite Lauf sinnvoll. Achtung: der
+Formatter formatiert immer **ganze Dateien**, nicht nur geänderte Zeilen — bei
+einer kleinen Änderung in einer stark abweichenden Bestandsdatei bläht `--dirty`
+den Diff also trotzdem auf. Dann die Format-Änderung dieser Datei als eigenen
+Commit vor die inhaltliche Änderung setzen.
 
 Gibt es eine UI mit eigener Logik, kommt der **E2E-Lauf als zweites, eigenes Gate**
 dazu (langsamer, daher getrennt vom schnellen `quality`): ein Befehl wie

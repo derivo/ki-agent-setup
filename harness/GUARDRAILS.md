@@ -117,6 +117,36 @@ die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z.
 Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
 als „gefixt / nicht reproduzierbar" gewertet.
 
+### Regel — Stochastische Defekte: Rate samt Unsicherheit messen
+Tritt ein Defekt **nicht bei jedem Lauf** auf, ist ein grüner Lauf **kein**
+Fertig-Beleg — ein ungefixter Stand liefert bei kleiner Stichprobe genauso grün.
+Wenn sicher und praktikabel, vor dem Fix eine **Baseline** als
+`Fehlschläge/Läufe` mit benanntem `n` und Bedingungen messen; nach dem Fix unter
+vergleichbarer Exposition wiederholen und **beide Zahlen** melden. `0/n` ist keine
+bewiesene Nullrate, sondern eine endliche Stichprobe.
+
+Ist eine Baseline unsicher, unverhältnismäßig oder nicht mehr reproduzierbar, wird
+der Defekt nicht eigens dafür erneut ausgelöst. Dann vorhandene Evidenz, eine
+sichere deterministische Fixture oder den belegten Ursachenpfad verwenden und die
+fehlende Vorher-/Nachher-Rate benennen. „Gefixt" setzt zusätzlich voraus, dass der
+Fix den belegten Fehlerpfad schließt; nur bessere Sichtbarkeit oder eine nicht
+messbar gesenkte Rate wird als Mitigation ausgewiesen.
+
+### Regel — Messinstrument vor dem Ergebnis prüfen
+Ein neu gebauter Detektor, Test oder Probe wird zuerst gegen **bekannte** Fälle
+geprüft: Positivkontrolle muss anschlagen, Negativkontrolle schweigen. Bei
+stochastischen Instrumenten werden Kontrollen wiederholt und beobachtete
+Fehlalarme/Auslassungen benannt, statt perfekte Erkennung zu behaupten.
+
+Die **behauptete Variable** wird möglichst direkt an ihrer Autorität gemessen.
+Ist nur ein Proxy oder Spiegel verfügbar, müssen Herkunft, Aktualität und Bezug
+zur Zielvariable belegt sein; die Aussage wird auf genau diese Evidenz begrenzt.
+Ein Client-Cache belegt zum Beispiel den Zustand seiner Version oder seines
+Zeitpunkts, nicht ohne erneute Bestätigung den aktuellen Server-/DB-Zustand. Ist
+die Autorität nicht prüfbar, wird das Ergebnis als begründete Inferenz markiert.
+Ein Befund aus einem ungeprüften Instrument ist keine Erkenntnis, sondern eine
+zweite Fehlerquelle.
+
 ### Regel — Verifikation belegen: Evidence, nicht Behauptung
 Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,
 grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".

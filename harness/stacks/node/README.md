@@ -235,14 +235,32 @@ die Zeilen samt erwartetem Ergebnis:
 ```ts
 // API-Payload: genau ein Feld falsch, Rest gültig
 it.each([
-  { name: 'title fehlt',   override: { title: null },                 status: 422, feld: 'title'  },
-  { name: 'title zu lang', override: { title: 'x'.repeat(300) },      status: 422, feld: 'title'  },
-  { name: 'status Enum',   override: { status: 'bogus' },             status: 422, feld: 'status' },
-])('lehnt ungültige Anlage ab: $name', async ({ override, status, feld }) => {
+  {
+    name: 'title fehlt',
+    override: { title: null },
+    status: 422,
+    feld: 'title',
+    fehler: 'Titel ist erforderlich',
+  },
+  {
+    name: 'title zu lang',
+    override: { title: 'x'.repeat(300) },
+    status: 422,
+    feld: 'title',
+    fehler: 'Titel darf höchstens 255 Zeichen lang sein',
+  },
+  {
+    name: 'status Enum',
+    override: { status: 'bogus' },
+    status: 422,
+    feld: 'status',
+    fehler: 'Status ist ungültig',
+  },
+])('lehnt ungültige Anlage ab: $name', async ({ override, status, feld, fehler }) => {
   const payload = { ...validPayload(), ...override };        // ein Feld überschrieben
   const res = await request(app).post('/api/v1/tasks').send(payload);
   expect(res.status).toBe(status);                          // exakter Status
-  expect(res.body.errors?.[feld]).toBeTruthy();
+  expect(res.body.errors?.[feld]).toBe(fehler);             // exakter Fehlertext
   const { rows } = await db.query('SELECT count(*)::int AS n FROM tasks');
   expect(rows[0].n).toBe(0);                                // KEIN Zustand geschrieben
 });

@@ -232,16 +232,26 @@ samt erwartetem Ergebnis:
 
 ```python
 # API-Payload: genau ein Feld falsch, Rest gültig
-@pytest.mark.parametrize("override, status, feld", [
-    pytest.param({"title": None},         422, "title",  id="title fehlt"),
-    pytest.param({"title": "x" * 300},    422, "title",  id="title zu lang"),
-    pytest.param({"status": "bogus"},     422, "status", id="status Enum"),
+@pytest.mark.parametrize("override, status, feld, fehler", [
+    pytest.param(
+        {"title": None}, 422, "title", "Titel ist erforderlich", id="title fehlt"
+    ),
+    pytest.param(
+        {"title": "x" * 300},
+        422,
+        "title",
+        "Titel darf höchstens 255 Zeichen lang sein",
+        id="title zu lang",
+    ),
+    pytest.param(
+        {"status": "bogus"}, 422, "status", "Status ist ungültig", id="status Enum"
+    ),
 ])
-def test_lehnt_ungueltige_anlage_ab(client, db, override, status, feld):
+def test_lehnt_ungueltige_anlage_ab(client, db, override, status, feld, fehler):
     payload = {**valid_payload(), **override}          # ein Feld überschrieben
     response = client.post("/api/v1/tasks", json=payload)
     assert response.status_code == status              # exakter Status
-    assert response.json()["errors"].get(feld)
+    assert response.json()["errors"][feld] == fehler    # exakter Fehlertext
     assert db.execute("SELECT count(*) AS n FROM tasks").fetchone().n == 0  # KEIN Zustand
 
 # Authz Rolle × Route: eine Zeile je Zelle → erwarteter HTTP-Status

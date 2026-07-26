@@ -14,6 +14,18 @@ im **Stack-Adapter** ([`stacks/`](stacks/)). Hier steht das Prinzip.
 
 ---
 
+## 0. Scope-Minimum (vor jedem Write prüfen)
+
+### Regel — Eigene Specs und Tests erweitern den Auftrag nicht
+Bei einer klar umrissenen Einzel-Funktion ist der Aufgabenwortlaut die
+Scope-Grenze. Eine selbst erzeugte Spec oder Testsuite darf nicht nachträglich
+ungefragte Validierung, Typprüfungen, Fehlerpfade oder Konfigurierbarkeit
+„erfordern". Gültige Eingaben werden als gültig behandelt; Annahmen stehen in der
+Abschlussmeldung, nicht als zusätzlicher Guard oder zusätzliches
+Akzeptanzkriterium im Code.
+
+---
+
 ## A. Architektur-Reinheit (vor jedem Write/Edit prüfen)
 
 Abhängigkeiten zeigen nur **nach innen**: Kern/Domäne ← Use Case (Service) ←
@@ -246,7 +258,10 @@ Front-Matter: `colors`/`typography`/`spacing`/`rounded`/`components`, Token-Refs
 die „eine Quelle" oben: Tokens sind **normativ**, die Prosa gibt nur den Kontext.
 Vor jedem UI-Write gelesen, Token-Refs aufgelöst statt Werte dupliziert, Kontrast
 gegen **WCAG AA** (≥ 4.5:1 Text) geprüft. Wo die Datei liegt und mit welchem
-Kommando sie validiert wird: Stack-Adapter.
+Kommando sie validiert wird: Stack-Adapter. Kann das Zielsystem `DESIGN.md` nicht
+direkt konsumieren, erzeugt ein minimales reproduzierbares Build-/Adapter-Kommando
+die Runtime-Tokens aus dieser Quelle. Hex-/Skalenwerte von Hand in CSS/JS zu
+kopieren und nur per Drift-Test zu vergleichen ist keine Token-Auflösung.
 
 Hat das Projekt **Design-Anforderungen, aber (noch) keine** solche Quelle, wird eine
 `DESIGN.md` **nicht eigenmächtig** angelegt. Stattdessen wird die Lücke benannt und

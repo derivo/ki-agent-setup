@@ -81,6 +81,35 @@ bündelt:
 Als `quality`-Target im `Makefile` (bzw. `[tool.hatch.envs]`-Script) definieren.
 Erst wenn es sauber durchläuft, gilt "fertig".
 
+**Formatter auf Bestandsprojekten.** Ein Repo, das nie durch `ruff format` lief,
+meldet beim ersten `--check .` hunderte Verstöße in fremden Dateien. Das setzt die
+Regel aus AGENTS.md → "Surgical Changes" nicht außer Kraft, es verschiebt nur den
+Umfang: den eigenen Diff prüfen und sauber halten, das Repo nicht.
+
+Anders als Laravels `pint` hat `ruff` **keinen eingebauten** "nur geänderte
+Dateien"-Modus — der Dateisatz kommt aus git:
+
+```bash
+# nur was seit HEAD geändert ist (inkl. staged), prüft nur
+files=$(git diff --name-only --diff-filter=ACMR HEAD -- '*.py')
+[ -n "$files" ] && printf '%s\n' "$files" | xargs ruff format --check
+[ -n "$files" ] && printf '%s\n' "$files" | xargs ruff check
+
+# alles seit Abzweig von main
+files=$(git diff --name-only --diff-filter=ACMR main -- '*.py')
+```
+
+Zwei Fallen, beide aus GUARDRAILS Regel 8: `$files` **nicht** unquoted an `xargs`
+weiterreichen (zsh splittet nicht auf Newlines, der ganze Blob wird ein Argument),
+und die `[ -n … ]`-Abfrage stehen lassen — `xargs -r` ist GNU-only und fehlt auf
+macOS, das Verhalten bei Leereingabe unterscheidet sich je Implementierung.
+
+Diese Form gehört ins Gate, solange das Repo nicht konform ist; erst nach einem
+freigegebenen Sweep ist `--check .` sinnvoll. Achtung: der Formatter formatiert immer
+**ganze Dateien**, nicht nur geänderte Zeilen — bei einer kleinen Änderung in einer
+stark abweichenden Bestandsdatei bläht das den Diff trotzdem auf. Dann die
+Format-Änderung dieser Datei als eigenen Commit vor die inhaltliche setzen.
+
 Gibt es eine UI mit eigener Logik, kommt der **E2E-Lauf als zweites, eigenes Gate**
 dazu (langsamer, daher getrennt vom schnellen `quality`): `make e2e`, der **in
 allen konfigurierten Engines (Chromium UND Firefox) grün** sein muss. "Fertig"

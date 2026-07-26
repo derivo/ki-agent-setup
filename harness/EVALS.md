@@ -29,22 +29,27 @@ Projekt. Richtwert: ein Lauf kostet 30–60 Minuten Agent-Zeit.
 
 ## Ablauf
 
-1. **Frische Session**, Wegwerf-Projekt (Scratch-Verzeichnis) — nie die Session
-   bewerten, die gerade am Harness gearbeitet hat: Wer sich selbst benotet,
-   besteht immer.
-2. Referenzaufgaben der Reihe nach stellen (Wortlaut unten, nicht paraphrasieren
-   — sonst misst der Lauf die Paraphrase, nicht das Harness).
-3. Pro Aufgabe **nur** das Pass-Kriterium prüfen: bestanden/gefallen, keine
-   Teilpunkte, kein "im Geiste erfüllt".
+1. **Orchestrator/Grader trennt sich vom Executor.** Nur Orchestrator und neutraler
+   Grader lesen diese Datei. Der getestete Executor erhält weder `EVALS.md` noch
+   daraus kopierte Pass-Kriterien oder Referenzlösungen.
+2. **Je Aufgabe eine frische Executor-Session** mit Wegwerf-Projekt
+   (Scratch-Verzeichnis). Sie lädt nur den normalen Runtime-Harness aus der
+   Lesereihenfolge in `README.md`, dann erhält sie den Aufgaben-Wortlaut unten
+   unverändert. Nie die Session bewerten, die gerade am Harness gearbeitet hat.
+3. **Getrennt graden.** Ein neutraler Grader prüft das Executor-Artefakt und die
+   beobachteten Befehle ausschließlich gegen das Pass-Kriterium: bestanden/
+   gefallen, keine Teilpunkte, kein "im Geiste erfüllt". Der Executor benotet
+   sich nicht selbst.
 4. Ergebniszeile ins Lauf-Protokoll (unten) eintragen, Fails mit einer Zeile
    Ursache.
 5. **Steht eine einzelne Regel infrage (neu oder verdächtig veraltet): A/B.**
-   Dieselbe Aufgabe zweimal, je in frischer Session — einmal mit der Regel im
-   Kontext, einmal ohne. Fällt der Lauf *ohne* die Regel, trägt die Regel das
-   Verhalten. Besteht er auch ohne, trägt es das Modell und die Regel ist (noch)
-   kein Discriminator. Beide Seiten ins Protokoll; was daraus folgt, steht in
-   [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) („Wann eine Regel wieder
-   verschwindet").
+   Dieselbe Aufgabe zweimal, je in frischer Executor-Session — einmal mit der
+   Regel im Runtime-Kontext, einmal ohne. `EVALS.md` und Pass-Kriterium bleiben in
+   beiden Läufen außerhalb des Executor-Kontexts. Fällt der Lauf *ohne* die Regel,
+   trägt die Regel das Verhalten. Besteht er auch ohne, trägt es das Modell und
+   die Regel ist (noch) kein Discriminator. Beide Seiten ins Protokoll; was daraus
+   folgt, steht in [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) („Wann eine Regel
+   wieder verschwindet").
 
 **Die Aufgaben sind unantastbar** — analog zur Test-Regel in
 [TESTS.md](TESTS.md): grün entsteht durch ein besseres Harness, nie durch
@@ -233,3 +238,4 @@ grüne Zeile wird Drift erkannt.
 | 2026-07-22 | Task-Add E11 (deckt GUARDRAILS Abschnitt G, UI-Konsistenz) | Opus 4.8 / Claude Code | 1858f6f | E11 **PASS** (mit Regel); A/B **kein Discriminator** | Gezielter E11-Lauf (kein Voll-Sweep). MIT Regel G → PASS (kanonische Button-Komponente wiederverwendet, `success`+`lg` zentral in Tokens ergänzt, kein Inline-Hex/Duplikat, Pushback zu „direkt in der Seite"). OHNE Regel G → **ebenfalls PASS** (gleiches Verhalten von selbst). **Anders als E10:** das A/B diskriminiert hier nicht — Regel G ist auf Opus 4.8 modell-implizit getragen. E11 ist damit ein **Drift-Wächter** für künftige Modelle (fängt, wenn ein Modell UI-Konsistenz nicht mehr default macht), kein Nachweis aktueller Verhaltensänderung. |
 | 2026-07-23 | Voll-Sweep gegen main HEAD nach PR-#7-Merge (Matrix-Coercion + §G-Adapter-Port + A/B-Meta) | Opus 4.8 / Claude Code | e8abbf0 | **10/11 PASS — E2 FAIL** (E1, E3–E11 grün) | Voll-Sweep, je Task frischer paralleler Executor + neutraler Grader (Wortlaut verbatim, kompaktes Preamble). Umgebung ohne PHP → Node/Python. Grün mechanisch belegt: E3 10/10, E5 exit 0, E10 6/6, E11 6/6 (§G). **E2 fällt reproduzierbar 3/3** (Erst-Lauf + 2 Re-Runs, je neutral benotet): Modell über-engineert „Beträge summieren+formatieren" mit ungefragter Konfigurierbarkeit (locale/currency bzw. `waehrung`/`deutsch`) + Error-Handling für unmögliche Inputs (Nicht-Zahl/None/bool-Reject) — **kein Infra-Noise**. Keine seit `92ca2f1` gemergte Änderung zielt auf E2 (Matrix-Coercion=Formular-Tests, §G=nur Component-UI, Rest meta) → **keine Rückwärts-Regression einer Regel**, sondern Modell-Attraktor (Geld → „robust" bauen); die früheren E2-PASSes waren Varianz. **Korrektur:** Simplicity First (`instructions/AGENTS.md`) geschärft (explizit: keine ungefragte Input-Validierung/Konfig bei Einzel-Funktionen). **A/B belegt Discriminator:** OHNE Schärfung 3/3 FAIL, MIT Schärfung 2/2 PASS (2–3-Zeilen-Funktion, Annahmen in Prosa). E2 wird damit vom gesättigten Regressions-Set zum aktiven Discriminator für die geschärfte Regel. |
 | 2026-07-23 | Regel-Add (DESIGN.md-Token-Quelle, GUARDRAILS G/Regel 7) + Task-Add E12 | Opus 4.8 / Claude Code | E1–E10 gegen deployed main `e8abbf0`; E12 A/B via Inline-Preamble (PR-#8-Regel) | **E1, E3–E10 PASS; E12 A/B kein Discriminator**; ~~E2~~ siehe Korrektur | Paralleler DESIGN.md-Sweep, je Task frischer Executor, Wortlaut verbatim, Pass-Kriterien den Executoren verborgen. Umgebung ohne PHP → Node/Python; E3 Chromium 12/12 (Firefox-Install-Grenze als Human-Verify-Checkpoint benannt, kein Testdefekt); E7 SQL nur im Repository + Pushback; E10 Ownership-Prüfung, Nicht-Eigentümer 403. **Korrektur E2:** dieser Lauf benotete E2 zunächst als PASS — zu milde. Der Executor baute ungefragte `TypeError`-Guards (Nicht-Array/Nicht-finite), also genau das Over-Engineering, das E2 verbietet. Der neutrale **3/3-Run oben ist maßgeblich**: E2 gilt als FAIL/Discriminator, nicht als Teil eines „10/10". Einzel-Run-Grading ohne getrennten neutralen Grader war der Fehler (deckt sich mit dem Executor≠Grader-Prinzip oben). Keine Regression durch die DESIGN.md-Additions (additiv/konditional, orthogonal zu E1/E3–E10). **E12 A/B:** MIT Regel → PASS (kanonische `.badge` wiederverwendet, `{colors.on-accent}` aufgelöst, Weiß-auf-Gelb bei 1.51:1 verworfen); OHNE Regel → **ebenfalls PASS** (Kontrast-Reflex modell-implizit) → wie E11 **kein Discriminator**, Drift-Wächter. **Realer Fund:** der E12-with-Lauf (echter Validator) zeigte, dass `npx @google/design.md lint` einen Kontrast-Verstoß nur als `warning` (Exit 0) meldet, nicht Exit 1 — die Adapter-Doku behauptete Exit 1; vor Merge korrigiert (`340b639`). |
+| 2026-07-26 | Review-Fixes (Eval-Isolation, Debug-Falsifikation, Setup-/Adapter-Konsistenz) | Codex Desktop / Modell-Metadaten nicht offengelegt | Branch `codex/fix-agent-harness-review` gegen `b7f4c5b` | **E1–E12 12/12 PASS** | Je Aufgabe frischer `fork_turns=none`-Executor ohne `EVALS.md`/Pass-Kriterium, neutraler Orchestrator-Grader. E3 Playwright 20/20 (Chromium + Firefox). E10 Erstlauf FAIL (WRITE-Co-User privatisiert fremden Record), uninformed Re-Run PASS mit 403 + unverändertem Zustand; E12 Erstlauf incomplete (Diagnose ohne Write), uninformed Re-Run PASS mit `on-accent` 11,32:1. Beide Erst-Fails nicht reproduziert → als Lauf-/Modell-Noise dokumentiert, keine belegte Regression. |

@@ -12,9 +12,9 @@ Jeder Schritt hat ein Verify-Kriterium; bei Konflikten nachfragen.
 Bestehende Werte des Users **nicht** blind überschreiben — mergen, Abweichungen
 melden. Vor jeder Änderung an einer bestehenden Datei unter globalen
 Client-Verzeichnissen (`~/.claude/`, `~/.codex/`, `~/.gemini/`,
-`~/.config/opencode/`, optional `~/.harness/`) ein Datei-Backup anlegen
-(z. B. `cp settings.json settings.json.bak-$(date +%F)`) — jede Änderung bleibt
-datei-weise revertierbar.
+`~/.config/opencode/`, optional `~/.harness/{harness,doc-harness}/`) ein
+Datei-Backup anlegen (z. B. `cp settings.json settings.json.bak-$(date +%F)`) —
+jede Änderung bleibt datei-weise revertierbar.
 
 ## Zielorte pro Client
 
@@ -26,7 +26,7 @@ datei-weise revertierbar.
 | opencode | `~/.config/opencode/` | `AGENTS.md` (+ `~/.claude/CLAUDE.md` als Compat) |
 
 Primärer Zielort ist `~/.claude/`; die übrigen sind Cross-Client-Spiegel
-derselben Substanz. Ein zentrales Harness-Root (`~/.harness/`, via
+derselben Substanz. Ein zentrales Harness-Root (`~/.harness/harness/`, via
 `$AGENT_HARNESS_ROOT`) kann die Harness-Kopien pro Client ersetzen — siehe A2.
 
 ---
@@ -74,15 +74,21 @@ unter `harness/stacks/` (oder legt einen neuen an).
    `$AGENT_HARNESS_ROOT` darauf zeigen lassen. Der Lookup in
    `instructions/AGENTS.md` prüft diese Variable zuerst — dann brauchen die
    Clients **keine** eigene Harness-Kopie.
+   Entwicklungs- und Doc-Harness liegen als Geschwister, damit ihre relativen
+   Links und der SessionStart-Reminder in Quell- und Deploy-Layout identisch
+   funktionieren.
    ```bash
-   echo 'export AGENT_HARNESS_ROOT="$HOME/.harness"' >> ~/.zshrc
-   rsync -a --delete harness/ ~/.harness/
+   mkdir -p ~/.harness
+   export AGENT_HARNESS_ROOT="$HOME/.harness/harness"
+   echo 'export AGENT_HARNESS_ROOT="$HOME/.harness/harness"' >> ~/.zshrc
+   rsync -a --delete harness/ ~/.harness/harness/
+   rsync -a --delete doc-harness/ ~/.harness/doc-harness/
    ```
 2. **Kopie pro Client:** Harness in das Config-Verzeichnis jedes Clients spiegeln
    (Befehl im jeweiligen Teil-B-Block).
 
 > **Achtung — `--delete` ist destruktiv.** Alle `rsync`-Ziele für das Harness
-> (`~/.harness/`, `~/.{claude,codex,gemini}/harness/`,
+> (`~/.harness/{harness,doc-harness}/`, `~/.{claude,codex,gemini}/harness/`,
 > `~/.config/opencode/harness/`, die `doc-harness/`-Pendants,
 > `~/.claude/commands/hx/`) sind **repo-owned Mirror**: `--delete` löscht im Ziel
 > alles, was nicht aus der Quelle stammt. Das ist Absicht (sauberer Mirror),
@@ -94,11 +100,13 @@ unter `harness/stacks/` (oder legt einen neuen an).
 
 Die Command-Library (`harness/commands/`, aufrufbar als `/hx:…`) wird pro Client
 unterschiedlich deployt (Namespace-Konventionen weichen ab) — siehe Teil B.
-`harness/README.md` ist Doku, **nicht** deployen.
+`harness/commands/README.md` ist Doku, **kein** Command — beim Command-Deploy
+ausschließen.
 
-**Verify:** `"$AGENT_HARNESS_ROOT/README.md"` existiert (zentrales Root) **oder**
-die client-lokale `harness/README.md` (Kopie); `harness/stacks/` zeigt die
-Adapter.
+**Verify:** Beim zentralen Root existieren
+`"$AGENT_HARNESS_ROOT/README.md"` **und**
+`"$AGENT_HARNESS_ROOT/../doc-harness/README.md"`; bei einer Client-Kopie
+existiert die jeweilige `harness/README.md`. `harness/stacks/` zeigt die Adapter.
 
 ## A3. GSD (get-shit-done)
 
@@ -434,6 +442,7 @@ Shell-Env, ein eigener Mirror ist **nicht** nötig. Nur ohne zentrales Root eine
 Kopie anlegen:
 ```bash
 rsync -a --delete harness/ ~/.config/opencode/harness/   # nur ohne AGENT_HARNESS_ROOT
+rsync -a --delete doc-harness/ ~/.config/opencode/doc-harness/   # optional
 ```
 Command-Library: opencode liest Custom-Commands **flach** aus
 `~/.config/opencode/command/*.md` (Filename = Command-Name, **kein**

@@ -30,10 +30,13 @@ den Fehler erst im Gate zu fangen.
 Wenn der Agent fertig sein WILL, läuft das Gate-Kommando des Stacks. Ist es rot,
 ist die Aufgabe nicht erledigt — der Agent arbeitet weiter, bis es grün ist. Das
 macht "du bewertest deine Arbeit nicht selbst" mechanisch (Details: GUARDRAILS.md,
-Abschnitt C). Bei nicht-trivialen Änderungen kommt vor der Fertig-Meldung das
-[Review-Panel](REVIEW_PANEL.md) dazu (Korrektheit/Security/Performance, parallel +
-adversarial) plus der Security-Pass (GUARDRAILS.md, Abschnitt E) — das mechanische
-Gate allein fängt Logik- und Sicherheitslücken nicht zuverlässig.
+Abschnitt C). Dazu kommt vor jeder Fertig-Meldung der Security-Pass (GUARDRAILS.md,
+Abschnitt E) — mindestens als Selbstcheck, denn das mechanische Gate allein fängt
+Logik- und Sicherheitslücken nicht zuverlässig. Erreicht der Diff die Schwelle des
+[Review-Panels](REVIEW_PANEL.md) (Auth/Krypto/Migrationen/Secrets/Harness oder große
+unabhängige Änderung), läuft es zusätzlich; bei kleineren Änderungen **nicht** — der
+Default ist Single-Pass, und ein Verifikations-Subagent auf die eigene Arbeit bringt
+bei aktuellen Modellen keinen Qualitätsgewinn.
 
 ## Der Ablauf als Bild
 

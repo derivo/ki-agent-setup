@@ -65,11 +65,42 @@ composer quality
 bündelt:
 - `deptrac` — Schicht-/Abhängigkeitsstruktur (`--fail-on-uncovered`),
 - `phpstan` (Laravel: `larastan`) — statische Typanalyse,
-- `php-cs-fixer` — Formatierung (`--dry-run --diff` im Gate),
+- `php-cs-fixer` bzw. `pint` (Laravel) — Formatierung (Prüfmodus im Gate),
 - `pest`/`phpunit` — die Tests.
 
 In `composer.json` als `quality`-Script definieren. Erst wenn es sauber
 durchläuft, gilt "fertig".
+
+**Formatter auf Bestandsprojekten.** Ein Repo, das nie durch den Formatter lief,
+meldet beim ersten `--dry-run`/`--test` hunderte Verstöße in fremden Dateien.
+Das setzt die Regel aus AGENTS.md → "Surgical Changes" nicht außer Kraft, es
+verschiebt nur den Umfang: den eigenen Diff prüfen und sauber halten, das Repo
+nicht. Konkret:
+
+```
+vendor/bin/pint --dirty --test          # nur uncommittete Dateien, prüft nur
+vendor/bin/pint --dirty                 # dieselben Dateien, schreibt
+vendor/bin/pint --diff=main --test      # alles seit Abzweig von main
+```
+
+Diese Flags gehören ins Gate solange das Repo nicht konform ist; erst nach einem
+freigegebenen Sweep ist der repo-weite Lauf sinnvoll.
+
+**Falle 1 — `--dirty` im Container meldet stillschweigend Erfolg.** Beide Flags
+lösen die Dateiliste über Git auf. Ist der Formatter in einen Container gemountet,
+der nur das Anwendungsverzeichnis sieht (typisch: `src/` → `/var/www/html`,
+`.git` bleibt im Repo-Root draußen), findet er kein Repository — und meldet dann
+nicht etwa einen Fehler, sondern `PASS, 0 files`. Ein grünes Gate, das nichts
+geprüft hat. Deshalb: **vor dem ersten Verlassen auf `--dirty` einmal beweisen,
+dass das Gate rot werden kann** — Verstoß einbauen, Prüfmodus laufen lassen,
+Exit-Code ≠ 0 sehen, zurückbauen. Geht es nicht, die Dateiliste außerhalb des
+Containers per Git bilden und die Pfade explizit übergeben (Wrapper-Skript im
+Projekt).
+
+**Falle 2 — der Formatter formatiert ganze Dateien**, nicht nur geänderte Zeilen.
+Eine kleine Änderung in einer stark abweichenden Bestandsdatei bläht den Diff
+trotzdem auf. Dann die Format-Änderung dieser Datei als eigenen Commit vor die
+inhaltliche Änderung setzen.
 
 Gibt es eine UI mit eigener Logik, kommt der **E2E-Lauf als zweites, eigenes Gate**
 dazu (langsamer, daher getrennt vom schnellen `quality`): ein Befehl wie

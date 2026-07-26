@@ -51,7 +51,8 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
    das nach Harness-Änderungen und Modell-Updates prüft, ob das Harness seine
    Versprechen noch hält.
 10. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
-   Security / Performance, parallel + adversarial) vor der Fertig-Meldung.
+   Security / Performance, parallel, Funde am Code belegt) — nur bei
+   risikoreichen oder sehr breiten Diffs, nicht als Standardschritt.
 11. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare

@@ -47,13 +47,15 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
 8. **[DEBUG.md](DEBUG.md)** — der hypothesengetriebene Investigations-Loop für
    Bugs, die eine normale Runde überleben: persistenter, falsifizierbarer
    Debug-State, der einen Context-Reset übersteht.
-9. **[EVALS.md](EVALS.md)** — die Messhälfte dazu: festes Referenzaufgaben-Set,
-   das nach Harness-Änderungen und Modell-Updates prüft, ob das Harness seine
-   Versprechen noch hält.
-10. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
+9. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
    Security / Performance, parallel, Funde am Code belegt) — nur bei
    risikoreichen oder sehr breiten Diffs, nicht als Standardschritt.
-11. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+10. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+
+**Nicht Teil des normalen Agent-Kontexts:** [EVALS.md](EVALS.md) ist die
+Maintainer-/Grader-Anleitung für Harness- und Modell-Drift-Checks. Ein getesteter
+Executor liest diese Datei nicht, weil sie Referenzaufgaben und Pass-Kriterien
+enthält; die Trennung ist Teil des Eval-Protokolls.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced

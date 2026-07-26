@@ -32,7 +32,10 @@ fi
 # Nothing to point at → stay silent (never fabricate a path).
 [ -f "${root}/README.md" ] || { printf 'OK'; exit 0; }
 
-doc="${root%/harness}/doc-harness"
+# Dev- and doc-harness are sibling directories in both client-local and central
+# layouts. Derive the sibling from the resolved root instead of assuming a
+# particular basename such as "harness".
+doc="$(dirname "${root%/}")/doc-harness"
 docline=""
 [ -f "${doc}/README.md" ] && docline=" Doku-Arbeit → ${doc}/README.md."
 

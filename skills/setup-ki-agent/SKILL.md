@@ -28,7 +28,8 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 - `README.md` lesen → Überblick, Statusline-Aufbau, Tool-Liste.
 - `APPLY.md` lesen → die verbindlichen Setup-Schritte (0–8 inkl. 7b–7e).
 - Bestehenden Stand erfassen: `~/.claude/settings.json`, `claude plugin list`,
-  vorhandene `~/.claude/CLAUDE.md`, vorhandene `~/.codex/AGENTS.md`. **Nicht**
+  vorhandene `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
+  `~/.codex/harness/`, `~/.agents/skills/hx-*` und `codex mcp list`. **Nicht**
   blind überschreiben — mergen.
 
 ### 2. Setup anwenden (APPLY.md vollständig, inkl. 7b–7e)
@@ -44,7 +45,7 @@ Verify-Kriterium, bevor du weitergehst:
    `AGENTS.md`) sicherstellen.
 8. Zusätzliche Nicht-GSD/caveman-Skills nach `SKILLS.md`/Lockfile herstellen.
 9. Harness und optional doc-harness client-übergreifend hinterlegen; Claude-
-   Commands unter `/hx:*` deployen.
+   Commands unter `/hx:*` und Codex-Skills unter `$hx-*` deployen.
 10. MCP-Kern-Set installieren (Versionen pinnen; Inventar = `MCP_SERVERS.md`).
 11. Security-Basis einrichten (Secret-Scan + Tool-Guard, `security/01`–`02`).
 12. Abschluss-Verifikation.
@@ -85,9 +86,11 @@ Prüfpunkte:
 1. **APPLY.md noch gültig** — Befehle syntaktisch ok; Marketplace-/Quell-Repos
    erreichbar (z. B. `gh api repos/<owner>/<repo>`); keine toten Links; GSD- und
    Skill-Install-Quellen existieren noch (nicht archiviert/umgezogen).
-2. **instructions/ kohärent** — `CLAUDE.md` importiert `@AGENTS.md`; der
-   Codex-Abschnitt bleibt in `AGENTS.md` klar markiert; kein
-   Widerspruch/Duplikat zwischen Basis und Delta.
+2. **instructions/ und Codex-Deploy kohärent** — `CLAUDE.md` importiert
+   `@AGENTS.md`; der Codex-Abschnitt bleibt in `AGENTS.md` klar markiert; kein
+   Widerspruch/Duplikat zwischen Basis und Delta. Codex-Workflows werden als
+   `$hx-*`-Skills ausgerollt; `deploy-codex-harness-skills.sh --check` erkennt
+   veraltete Kopien.
 3. **SKILLS.md** — Inventar vs. `~/.agents/.skill-lock.json`; genannte Quell-Repos
    existieren.
 4. **Statusline-Doku vs. reales Script** — die in README beschriebene Struktur

@@ -195,13 +195,15 @@ konkrete Stack-Details liegen als Adapter unter `harness/stacks/` (z. B.
 [`stacks/php`](harness/stacks/php/README.md) für PHP-Web + DB). Daneben gibt es
 das [`doc-harness/`](doc-harness/README.md) als Workflow für **Doku**-Projekte.
 Codex nutzt dafür `~/.codex/AGENTS.md` und den Harness-Mirror unter
-`~/.codex/harness/`; ein separates `CODEX.md` gibt es in diesem Setup nicht.
+`~/.codex/harness/`; die Harness-Workflows werden als `$hx-*`-Skills unter
+`~/.agents/skills/` hinterlegt. Ein separates `CODEX.md` gibt es in diesem Setup
+nicht.
 
 Für Repo-Pflege gibt es einen no-dependency-Basischeck:
 [`scripts/verify-docs.py`](scripts/verify-docs.py), aufrufbar über
 `make verify-docs`. Er prüft interne Markdown-Links, `git diff --check` und
-Basis-Secret-Patterns; externe URL-Provenance bleibt eine Session-Pflicht nach
-`instructions/AGENTS.md`.
+Basis-Secret-Patterns sowie den Codex-Skill-Deploy und dessen Sync-Check; externe
+URL-Provenance bleibt eine Session-Pflicht nach `instructions/AGENTS.md`.
 
 ---
 

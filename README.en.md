@@ -194,13 +194,14 @@ live as adapters under `harness/stacks/` (e.g.
 [`stacks/php`](harness/stacks/php/README.md) for PHP web + DB). Alongside it,
 [`doc-harness/`](doc-harness/README.md) is the workflow for **documentation**
 projects. Codex uses `~/.codex/AGENTS.md` and the harness mirror under
-`~/.codex/harness/`; this setup does not use a separate `CODEX.md`.
+`~/.codex/harness/`; harness workflows are installed as `$hx-*` skills under
+`~/.agents/skills/`. This setup does not use a separate `CODEX.md`.
 
 For repo maintenance, there is a no-dependency baseline check:
 [`scripts/verify-docs.py`](scripts/verify-docs.py), exposed as
 `make verify-docs`. It checks internal Markdown links, `git diff --check`, and
-basic secret patterns; external URL provenance remains a per-session duty under
-`instructions/AGENTS.md`.
+basic secret patterns plus the Codex skill deploy and its sync check; external
+URL provenance remains a per-session duty under `instructions/AGENTS.md`.
 
 ---
 

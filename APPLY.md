@@ -98,8 +98,8 @@ unter `harness/stacks/` (oder legt einen neuen an).
 > (`harness/stacks/`), **nicht** ins Deploy-Ziel — sonst killt der nächste Sync
 > sie. `$AGENT_HARNESS_ROOT` nie auf einen Pfad mit fremdem Inhalt zeigen.
 
-Die Command-Library (`harness/commands/`, aufrufbar als `/hx:…`) wird pro Client
-unterschiedlich deployt (Namespace-Konventionen weichen ab) — siehe Teil B.
+Die Command-Library (`harness/commands/`) wird pro Client unterschiedlich
+deployt und aufgerufen (Namespace-Konventionen weichen ab) — siehe Teil B.
 `harness/commands/README.md` ist Doku, **kein** Command — beim Command-Deploy
 ausschließen.
 
@@ -346,8 +346,9 @@ direkt; die Codex-Hinweise stehen im markierten Abschnitt darin.
 ln -sf "$(pwd)/instructions/AGENTS.md" ~/.codex/AGENTS.md   # oder kopieren
 ```
 Kein `CODEX.md` anlegen.
-**Verify:** `~/.codex/AGENTS.md` existiert und enthält den Abschnitt
-`Codex-spezifisch`.
+**Verify:** `cmp -s instructions/AGENTS.md ~/.codex/AGENTS.md` ist grün. Damit
+werden auch veraltete Kopien erkannt; ein reiner Existenz- oder Heading-Check
+reicht nicht.
 
 ### B2.2 GSD-Runtime
 Installer (A3) für Runtime „Codex" laufen lassen (Runtime-Daten unter
@@ -359,31 +360,49 @@ Harness-Kopie (falls kein zentrales Root aus A2):
 rsync -a --delete harness/ ~/.codex/harness/
 rsync -a --delete doc-harness/ ~/.codex/doc-harness/   # optional
 ```
-Codex liest Custom-Prompts **flach** aus `~/.codex/prompts/*.md` und kennt **kein**
-`:`-Namespace-Schema. Der Claude-Namespace `/hx:<name>` wird deshalb zum
-Datei-Präfix `hx-<name>` → aufrufbar als `/hx-start`, `/hx-spec` usw. Interne
-Cross-Refs (`/hx:retro` in `eod.md` etc.) per `sed` mitziehen, sonst zeigen sie
-ins Leere. `~/.codex/prompts/` ist flach und **geteilt** — kein
-`rsync --delete` aufs ganze Verzeichnis; stattdessen Delete-by-Präfix:
+
+Codex nutzt für wiederverwendbare Workflows
+[Agent Skills](https://developers.openai.com/codex/skills); Custom Prompts unter
+`~/.codex/prompts/` wurden
+[ab Codex CLI `0.117.0` entfernt](https://github.com/openai/codex/issues/15941).
+Der Deploy-Helper rendert deshalb jede Command-Quelle als explizit aufzurufenden
+Skill unter
+`~/.agents/skills/hx-<name>/SKILL.md`. Aufruf: `$hx-start`, `$hx-spec` usw.
+Interne Claude-Referenzen wie `/hx:retro` werden im generierten Skill zu
+`$hx-retro`; `$ARGUMENTS` bezeichnet dort den Text hinter dem Skill-Namen.
+
+`~/.agents/skills/` ist geteilt. Der Helper besitzt und ersetzt deshalb nur
+Unterordner mit Präfix `hx-`; fremde Skills bleiben unangetastet:
+
 ```bash
-mkdir -p ~/.codex/prompts
-rm -f ~/.codex/prompts/hx-*.md
-for f in harness/commands/*.md; do
-  base=$(basename "$f"); [ "$base" = "README.md" ] && continue
-  sed 's#/hx:#/hx-#g' "$f" > ~/.codex/prompts/hx-"$base"
-done
+# Einmalige Migration vom früheren Prompt-Deploy (nur repo-eigenes Präfix):
+rm -f "${CODEX_HOME:-$HOME/.codex}"/prompts/hx-*.md
+scripts/deploy-codex-harness-skills.sh
 ```
+
 Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
 `~/.codex/harness/README.md`.
 
-**Verify:** `~/.codex/harness/README.md` (oder `$AGENT_HARNESS_ROOT/README.md`)
-existiert; `ls ~/.codex/prompts/` enthält die Commands als `hx-*.md`;
-`grep -rl '/hx:' ~/.codex/prompts/` liefert **nichts** (alle Cross-Refs auf `/hx-`
-umgeschrieben).
+**Verify:** Bei der Client-Kopie ist `diff -qr harness/ ~/.codex/harness/` grün
+(beim zentralen Root entsprechend gegen `$AGENT_HARNESS_ROOT` vergleichen).
+`scripts/deploy-codex-harness-skills.sh --check` bestätigt, dass alle
+`hx-*`-Skills exakt aus den Command-Quellen gerendert wurden und keine veralteten
+Harness-Skills übrig sind. In einer neuen Codex-Session listet `/skills` die
+Skills und `$hx-start` lädt Harness plus Projektstand.
 
 ### B2.4 MCP + Skills
 MCP-Kern-Set (A4) in der Codex-MCP-Config registrieren (Mechanismus: Codex-Doku;
-Inventar: `MCP_SERVERS.md`). Skills (A5) nach Codex-Konvention verlinken.
+Inventar: `MCP_SERVERS.md`). Für reproduzierbare Checks die kanonischen Namen
+`context7`, `github` und `playwright` verwenden. Skills (A5) nach
+Codex-Konvention verlinken.
+
+**Verify:** Alle drei Server sind registriert und aktiviert:
+
+```bash
+for codex_mcp_name in context7 github playwright; do
+  codex mcp get "$codex_mcp_name" --json | grep -q '"enabled": true'
+done
+```
 
 ## B3. Gemini CLI
 

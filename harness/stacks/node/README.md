@@ -95,16 +95,34 @@ files=$(git diff --name-only --diff-filter=ACMR HEAD -- '*.ts' '*.tsx' '*.js')
 files=$(git diff --name-only --diff-filter=ACMR main -- '*.ts' '*.tsx' '*.js')
 ```
 
-Zwei Fallen, beide aus GUARDRAILS Regel 8: `$files` **nicht** unquoted an `xargs`
-weiterreichen (zsh splittet nicht auf Newlines, der ganze Blob wird ein Argument),
-und die `[ -n … ]`-Abfrage stehen lassen — `xargs -r` ist GNU-only und fehlt auf
-macOS, das Verhalten bei Leereingabe unterscheidet sich je Implementierung.
-
 Diese Form gehört ins Gate, solange das Repo nicht konform ist; erst nach einem
-freigegebenen Sweep ist `--check .` sinnvoll. Achtung: der Formatter formatiert immer
-**ganze Dateien**, nicht nur geänderte Zeilen — bei einer kleinen Änderung in einer
-stark abweichenden Bestandsdatei bläht das den Diff trotzdem auf. Dann die
-Format-Änderung dieser Datei als eigenen Commit vor die inhaltliche setzen.
+freigegebenen Sweep ist `--check .` sinnvoll. Drei Fallen:
+
+**Falle 1 — die leere Dateiliste meldet stillschweigend Erfolg.** Der Dateisatz
+kommt aus Git. Erreicht `git` kein Repository — Formatter im Container gemountet,
+der nur das Anwendungsverzeichnis sieht und `.git` draußen lässt; oder `main`
+fehlt lokal (Shallow-Clone in CI) — dann ist `$files` leer, die `[ -n … ]`-Abfrage
+überspringt, und das Gate ist **grün ohne eine einzige geprüfte Datei**. Der
+Guard, der das Leer-Aufrufen verhindert, macht den Fehlschlag also *stumm*.
+Deshalb: **vor dem ersten Verlassen auf diese Form einmal beweisen, dass das Gate
+rot werden kann** — Formatverstoß in eine berührte Datei einbauen, Prüfmodus
+laufen lassen, Exit ≠ 0 sehen, zurückbauen (dasselbe Prinzip wie die
+Negativkontrolle in TESTS.md → „Grün ist nicht gleich gültig"). Wer es härter
+will, lässt das Gate scheitern statt überspringen, wenn `git` kein Repo findet:
+
+```bash
+git rev-parse --git-dir >/dev/null 2>&1 || { echo "kein git-Repo"; exit 1; }
+```
+
+**Falle 2 — Shell-Fallstricke** (GUARDRAILS Regel 8): `$files` **nicht** unquoted
+an `xargs` weiterreichen (zsh splittet nicht auf Newlines, der ganze Blob wird ein
+Argument), und die `[ -n … ]`-Abfrage nicht durch `xargs -r` ersetzen — das ist
+GNU-only und fehlt auf macOS.
+
+**Falle 3 — der Formatter formatiert ganze Dateien**, nicht nur geänderte Zeilen.
+Eine kleine Änderung in einer stark abweichenden Bestandsdatei bläht den Diff
+trotzdem auf. Dann die Format-Änderung dieser Datei als eigenen Commit vor die
+inhaltliche setzen.
 
 Gibt es eine UI mit eigener Logik, kommt der **E2E-Lauf als zweites, eigenes Gate**
 dazu (langsamer, daher getrennt vom schnellen `quality`): `npm run e2e`, der **in

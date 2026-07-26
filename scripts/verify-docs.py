@@ -4,6 +4,7 @@ from __future__ import annotations
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -152,6 +153,103 @@ def check_secrets(root: Path, files: list[Path]) -> list[str]:
     return errors
 
 
+def check_codex_skill_deploy(root: Path) -> list[str]:
+    errors: list[str] = []
+    deploy_script = root / "scripts/deploy-codex-harness-skills.sh"
+    command_root = root / "harness/commands"
+
+    with tempfile.TemporaryDirectory(prefix="hx-codex-skills-") as temp_dir:
+        target_root = Path(temp_dir) / "skills"
+        foreign_skill = target_root / "foreign-skill"
+        stale_skill = target_root / "hx-stale"
+        foreign_skill.mkdir(parents=True)
+        stale_skill.mkdir()
+        (foreign_skill / "SKILL.md").write_text("foreign\n", encoding="utf-8")
+        (stale_skill / "SKILL.md").write_text("stale\n", encoding="utf-8")
+
+        deploy = subprocess.run(
+            [str(deploy_script), str(target_root)],
+            cwd=root,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if deploy.returncode != 0:
+            return [
+                "Codex skill deploy smoke test failed: "
+                + (deploy.stderr.strip() or deploy.stdout.strip())
+            ]
+
+        if not (foreign_skill / "SKILL.md").exists():
+            errors.append("Codex skill deploy removed a foreign skill")
+        if stale_skill.exists():
+            errors.append("Codex skill deploy left a stale hx-* skill")
+
+        expected_names = {
+            f"hx-{source.stem}"
+            for source in command_root.glob("*.md")
+            if source.name != "README.md"
+        }
+        actual_names = {
+            path.name
+            for path in target_root.glob("hx-*")
+            if path.is_dir()
+        }
+        if actual_names != expected_names:
+            errors.append(
+                "Codex skill deploy produced the wrong skill set: "
+                f"expected {sorted(expected_names)}, got {sorted(actual_names)}"
+            )
+
+        for skill_name in sorted(expected_names):
+            skill_file = target_root / skill_name / "SKILL.md"
+            metadata_file = target_root / skill_name / "agents/openai.yaml"
+            if not skill_file.is_file() or not metadata_file.is_file():
+                errors.append(f"Codex skill deploy is incomplete for {skill_name}")
+                continue
+
+            skill_text = skill_file.read_text(encoding="utf-8")
+            metadata_text = metadata_file.read_text(encoding="utf-8")
+            if f"name: {skill_name}" not in skill_text:
+                errors.append(f"Codex skill has wrong frontmatter name: {skill_name}")
+            if "/hx:" in skill_text:
+                errors.append(f"Codex skill contains a Claude-only command: {skill_name}")
+            if "allow_implicit_invocation: false" not in metadata_text:
+                errors.append(f"Codex skill permits implicit invocation: {skill_name}")
+            short_description = re.search(
+                r'^  short_description: "([^"]+)"$', metadata_text, re.MULTILINE
+            )
+            if not short_description or not 25 <= len(short_description.group(1)) <= 64:
+                errors.append(f"Codex skill has invalid UI description: {skill_name}")
+            if f"Use ${skill_name} " not in metadata_text:
+                errors.append(f"Codex skill default prompt omits its invocation: {skill_name}")
+
+            if skill_name in {"hx-pr", "hx-review", "hx-spec"}:
+                if "~/.claude/harness/" in skill_text:
+                    errors.append(f"Codex skill contains a Claude-only harness path: {skill_name}")
+                if "~/.codex/harness/" not in skill_text:
+                    errors.append(f"Codex skill is missing its Codex harness path: {skill_name}")
+            if skill_name in {"hx-eod", "hx-hot-reload"} and "`/clear`" in skill_text:
+                errors.append(f"Codex skill contains Claude's /clear command: {skill_name}")
+
+        check = subprocess.run(
+            [str(deploy_script), "--check", str(target_root)],
+            cwd=root,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if check.returncode != 0:
+            errors.append(
+                "Codex skill sync check failed after deploy: "
+                + (check.stderr.strip() or check.stdout.strip())
+            )
+
+    return errors
+
+
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
     files = markdown_files(root)
@@ -166,6 +264,7 @@ def main() -> int:
     external_url_count = count_external_urls(files)
     errors.extend(link_errors)
     errors.extend(check_secrets(root, files))
+    errors.extend(check_codex_skill_deploy(root))
 
     if errors:
         print("verify-docs: FAILED")
@@ -179,6 +278,7 @@ def main() -> int:
     print(f"- external markdown links counted, not fetched: {external_link_count}")
     print(f"- external URL occurrences counted, not fetched: {external_url_count}")
     print("- secret patterns checked: basic built-in patterns")
+    print("- Codex harness skills: deploy and sync smoke-tested")
     return 0
 
 

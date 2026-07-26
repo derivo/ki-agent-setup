@@ -150,6 +150,8 @@ die terse Arbeitsweise-Regeln oben, dupliziert GUARDRAILS/AGENTS nicht).
 
 Für Doku-Arbeit (README-Sammlungen, Handbücher, API-Doku) gilt analog das
 **Doc-Harness** (Claims-gegen-Quelle als Gate). Suchreihenfolge:
+wenn `$AGENT_HARNESS_ROOT` gesetzt ist, zuerst
+`$AGENT_HARNESS_ROOT/../doc-harness/README.md`, dann
 `~/.claude/doc-harness/README.md`, `~/.codex/doc-harness/README.md`,
 `~/.gemini/doc-harness/README.md`, `~/.config/opencode/doc-harness/README.md`,
 sonst `doc-harness/README.md` im ki-agents-Repo. Generierte Projekt-Doku braucht eine **vorher definierte

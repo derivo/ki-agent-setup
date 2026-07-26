@@ -34,10 +34,11 @@ Regeln für die Schleife:
 - **Ursache fixen, nicht Symptom.** Keine Suppressions, kein Test-/Check-
   Aufweichen, damit es grün aussieht.
 - **Jede Runde mit einer Hypothese starten** ("Fehler X kommt von Y"), nicht
-  blind variieren. Bestätigt die Runde die Hypothese nicht → neue Hypothese,
-  nicht dieselbe Änderung nochmal. Bei zähen, intermittierenden oder über ein
-  Context-Fenster reichenden Bugs greift der vollständige, persistente
-  Investigations-Loop in [DEBUG.md](DEBUG.md).
+  blind variieren. Widerlegt der Lauf sie → neue Hypothese. Ist das Ergebnis nur
+  inkonklusiv, Messung/Blind Spots schärfen statt die Hypothese vorschnell zu
+  verwerfen. Bei zähen, intermittierenden oder über ein Context-Fenster reichenden
+  Bugs greift der vollständige, persistente Investigations-Loop in
+  [DEBUG.md](DEBUG.md).
 
 ## Schleife 2 — Harness Correction (Selbst-Optimierung)
 

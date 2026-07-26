@@ -129,7 +129,7 @@ Smoke pollt, bis er 200 liefert — kein fester Sleep:
 
 ```
 until curl -fsS http://localhost:8000/health >/dev/null; do sleep 0.5; done
-curl -fsS http://localhost:8000/tasks/1 | grep -q '"status"'   # ein Durchstich
+curl -fsS http://localhost:8000/api/v1/tasks/1 | grep -q '"status"'   # ein Durchstich
 ```
 
 Laravel bringt `/up` bereits mit; sonst eine schlanke Route, die DB-Verbindung
@@ -184,7 +184,7 @@ gegen die Test-DB, prüft beide Ebenen (Response UND DB-Zustand):
 it('schreibt den Punktestand korrekt in die Datenbank', function () {
     // Arrange: Datensatz in der Test-DB anlegen
     // Act: echten HTTP-Request absetzen
-    $response = $this->post("/tasks/{$taskId}/complete");
+    $response = $this->post("/api/v1/tasks/{$taskId}/complete");
 
     // Assert 1 — Response
     expect($response->getStatusCode())->toBe(200);
@@ -255,16 +255,26 @@ liefert die Zeilen samt erwartetem Ergebnis:
 
 ```php
 // API-Payload: genau ein Feld falsch, Rest gültig
-it('lehnt ungültige Anlage ab', function (array $override, int $status, string $feld) {
+it('lehnt ungültige Anlage ab', function (
+    array $override,
+    int $status,
+    string $feld,
+    string $fehler
+) {
     $payload = [...validPayload(), ...$override];         // ein Feld überschrieben
     $response = $this->postJson('/api/v1/tasks', $payload);
     expect($response->getStatusCode())->toBe($status);    // exakter Status
-    expect($response->json("errors.$feld"))->not->toBeEmpty();
+    expect($response->json("errors.$feld.0"))->toBe($fehler); // exakter Fehlertext
     expect($this->db->count('tasks'))->toBe(0);           // KEIN Zustand geschrieben
 })->with([
-    'title fehlt'   => [['title' => null], 422, 'title'],
-    'title zu lang' => [['title' => str_repeat('x', 300)], 422, 'title'],
-    'status Enum'   => [['status' => 'bogus'], 422, 'status'],
+    'title fehlt'   => [['title' => null], 422, 'title', 'Titel ist erforderlich'],
+    'title zu lang' => [
+        ['title' => str_repeat('x', 300)],
+        422,
+        'title',
+        'Titel darf höchstens 255 Zeichen lang sein',
+    ],
+    'status Enum'   => [['status' => 'bogus'], 422, 'status', 'Status ist ungültig'],
 ]);
 
 // Authz Rolle × Route: eine Zeile je Zelle → erwarteter HTTP-Status
@@ -299,7 +309,7 @@ Zerlegung (innen → außen):
 2. **Service:** `RedeemReward` Use Case + Test (Berechtigung AC3).
 3. **Infrastructure:** `PdoRewardRepository` (oder Eloquent/Doctrine) +
    Integrationstest.
-4. **Einstiegspunkt:** `POST /rewards/{id}/redeem` + Durchstich-Test
+4. **Einstiegspunkt:** `POST /api/v1/rewards/{id}/redeem` + Durchstich-Test
    (Response + DB-Saldo).
 
 ---

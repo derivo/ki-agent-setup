@@ -49,7 +49,7 @@ Runde N
   hypothesis:            Fehler X kommt von Y, weil …
   falsification_test:    Test/Messung, die Y WIDERLEGEN würde (nicht bloß bestätigen)
   confirming_evidence:   was der Lauf tatsächlich zeigte (roh)
-  verdict:               bestätigt | widerlegt → wandert nach Eliminated
+  verdict:               bestätigt | widerlegt → Eliminated | unklar → Messung schärfen
   blind_spots:           was diese Runde NICHT geprüft hat
 ```
 
@@ -58,8 +58,11 @@ Zwei Regeln machen den Unterschied zum blinden Variieren:
 - **Falsifikation zuerst.** Entwirf die Beobachtung, die die Hypothese
   *widerlegen* würde — nicht die, die sie bequem bestätigt. Eine Hypothese, die
   nichts ausschließt, bringt die Untersuchung nicht voran.
-- **Widerlegtes bleibt tot.** Bestätigt eine Runde die Hypothese nicht, kommt sie
-  nach `Eliminated` — nicht dieselbe Änderung nochmal (deckt sich mit
+- **Nur Widerlegtes bleibt tot.** Eine Hypothese kommt ausschließlich dann nach
+  `Eliminated`, wenn die vorab definierte Falsifikationsbedingung tatsächlich
+  beobachtet wurde. Fehlende Bestätigung ist kein Gegenbeleg: ein inkonklusiver
+  Lauf erhält `unklar`; zuerst Messung/Blind Spots schärfen, dann erneut prüfen.
+  Eine widerlegte Hypothese wird nicht noch einmal durchgespielt (deckt sich mit
   SELF_OPTIMIZATION.md, Schleife 1).
 
 ---

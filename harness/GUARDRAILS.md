@@ -146,8 +146,11 @@ Lücke benannt — nicht stillschweigend übersprungen.
 
 LLM-generierter Code ist überdurchschnittlich oft verwundbar. Das mechanische Gate
 (Abschnitt C) fängt das **nicht** zuverlässig — deshalb ist ein bewusster
-Security-Pass Pflicht, bevor "fertig" gilt. Bei nicht-trivialen Änderungen als
-eigene Lens im [Review-Panel](REVIEW_PANEL.md), mindestens aber als Selbstcheck.
+Security-Pass Pflicht, bevor "fertig" gilt: **immer** mindestens als Selbstcheck
+gegen die Checkliste unten. Erreicht der Diff die Schwelle des
+[Review-Panels](REVIEW_PANEL.md), zusätzlich als eigene Lens darin. Der Selbstcheck
+ist nie optional — die Panel-Schwelle senkt nur die Zahl der Reviewer, nicht die
+Prüftiefe.
 
 ### Regel 4 — Geprüfte Mindest-Checkliste
 - **Injection:** Jede Nutzereingabe, die in SQL/Shell/Pfad/HTML/Template fließt,

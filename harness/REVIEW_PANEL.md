@@ -1,14 +1,28 @@
-# Review-Panel — Multi-Agent-Validierung statt Single-Pass
+# Review-Panel — Multi-Agent-Validierung für risikoreiche Diffs
 
-Ein einzelner Agent, der seinen eigenen Code reviewt, übersieht systematisch das,
-was er beim Schreiben übersehen hat. Stärker: **mehrere Reviewer mit getrennten
-Lenses, parallel, mit adversarialer Gegenprüfung** — eine Validierungskette, bevor
-"fertig" gilt. Das ergänzt das Fertig-Gate (GUARDRAILS C) um eine Urteilsebene,
-die das mechanische Gate nicht liefert.
+Bei **risikoreichen oder sehr breiten** Änderungen reicht der eigene Blick nicht:
+wer schreibt, übersieht dort systematisch, was er beim Schreiben übersehen hat.
+Dagegen hilft **mehrere Reviewer mit getrennten Lenses, parallel, jeder Fund am
+Code belegt** — eine Urteilsebene, die das mechanische Gate nicht liefert.
 
-Wann: bei nicht-trivialen Änderungen vor der Fertig-Meldung, bei PR-Vorbereitung,
-und immer bei Diffs, die Auth, Krypto, Migrationen, Secrets oder das Harness
-berühren. Triviale Änderungen brauchen kein Panel (Simplicity First).
+Das ist ein Werkzeug für den Ausnahmefall, kein Standardschritt: bei normalen
+Änderungen prüft das Modell seine Arbeit selbst, und ein Panel darüber bringt
+nichts (siehe „Wann" gleich darunter).
+
+Wann: **immer** bei Diffs, die Auth, Krypto, Migrationen, Secrets oder das Harness
+berühren — dazu bei großen, wirklich unabhängigen Änderungen (breite
+Multi-File-Arbeit, Massen-Rollout) und bei PR-Vorbereitung.
+
+**Nicht** pauschal bei jeder nicht-trivialen Änderung. Der Default ist Single-Pass
+und spec-gegründet; eine zweite Runde braucht ein **strukturelles Signal**, nicht
+gefühlte Wichtigkeit (`instructions/AGENTS.md` → Review-Default). Aktuelle Modelle
+prüfen und korrigieren ihre Arbeit selbst — ein zusätzlicher Verifikations-Subagent
+auf die eigene Arbeit kostet Tokens ohne Qualitätsgewinn. Ein Panel „zur Sicherheit"
+ist Over-Verification, kein Schutz (Simplicity First).
+
+Das Panel ersetzt nichts, was **außerhalb** des Modells beobachtet wird: das
+mechanische Gate (GUARDRAILS C), der Evidence-Beleg je Akzeptanzkriterium und das
+echte Ausführen (`/hx:verify`) bleiben unabhängig von dieser Schwelle Pflicht.
 
 ## Die Lenses
 
@@ -44,18 +58,23 @@ parallel:  [Korrektheit]  [Security]  [Performance]   ◄─ je 1 Subagent, isol
             Funde einsammeln (dedupliziert)
                        │
                        ▼
-      adversariale Gegenprüfung pro Fund   ◄─ zweiter Agent versucht zu WIDERLEGEN
-      (Default: refuted=true bei Unsicherheit)
+      Fund am Code belegen (Datei:Zeile)   ◄─ Beleg entscheidet, nicht Abstimmung
+      (Unsicherheit → melden UND als unsicher markieren)
                        │
                        ▼
-      nur bestätigte Funde → Bericht (Datei:Zeile · Lens · Schwere · Fix)
+      Bericht: belegte Funde zuerst, unsichere getrennt darunter
+      (Datei:Zeile · Lens · Schwere · Fix)
 ```
 
 ## Regeln
 
-- **Adversarial verifizieren, nicht bestätigen.** Der Gegenprüf-Schritt ist
-  angewiesen, den Fund zu *widerlegen*. Übersteht er das nicht, fällt er raus.
-  Das killt plausible-aber-falsche Funde.
+- **Alles melden, in einem getrennten Pass filtern.** Ein Fund wird am Code belegt
+  (Datei:Zeile, Repro-Schritt); hält der Beleg nicht, fällt er raus. Bei
+  Unsicherheit wird der Fund **gemeldet und als unsicher markiert**, nicht
+  unterdrückt. Ein „im Zweifel widerlegt"-Default bringt aktuelle Modelle dazu,
+  Anweisungen zur Zurückhaltung wörtlich zu nehmen und insgesamt *weniger* zu
+  melden — echte Bugs verschwinden dann mit den falschen. Filtern ist ein eigener
+  Schritt, keine Voreinstellung im Finden.
 - **Keine Scope-Creep, kein Lob.** Eine Zeile pro echtem Fund, nach Schwere. Stil-
   Nits nur, wenn sie die Bedeutung ändern.
 - **Ein reproduzierbarer Fund schlägt ein architektonisches Bauchgefühl.**
@@ -107,17 +126,18 @@ und reinen Logik-Diffs entfällt die Lens.
 
 Ein sauberer End-Diff und ein grünes Gate sagen nicht, ob der *Weg* dorthin korrekt
 war — ob die Spec wirklich umgesetzt wurde oder ob der Agent das Ziel verfehlt und
-das Gate zufällig getroffen hat. Bei nicht-trivialer agentischer Arbeit prüft
-mindestens eine Lens die **Trajektorie**: Folgt die Umsetzung Spec und Plan? Sind
+das Gate zufällig getroffen hat. Läuft ein Panel, prüft mindestens eine Lens die
+**Trajektorie**: Folgt die Umsetzung Spec und Plan? Sind
 die Zwischenentscheidungen belegt? Wurde ein Akzeptanzkriterium still umgangen?
 Reine Outcome-Review übersieht das.
 
 Mehr Reviewer sind nicht automatisch besser: Lässt man identische Judges nur
 abstimmen oder "debattieren", verstärkt sich gemeinsamer Bias, statt korrigiert zu
-werden. Der Schutz liegt in **getrennten, unabhängigen Lenses** und im adversarialen
-Widerlegen — nicht in Wiederholung derselben Perspektive.
+werden. Der Schutz liegt in **getrennten, unabhängigen Lenses** und im **Beleg am
+Code** — nicht in Wiederholung derselben Perspektive und nicht in einer weiteren
+Abstimmungsrunde.
 
 ## Aufruf
-Per [`commands/review.md`](commands/README.md) (`/hx:review`) oder direkt im Loop vor
-der Fertig-Meldung. Bei großen Batch-Änderungen können die Lens-Agents in
+Per [`commands/review.md`](commands/README.md) (`/hx:review`) oder direkt im Loop,
+wenn ein Diff die Schwelle oben erreicht. Bei großen Batch-Änderungen können die Lens-Agents in
 isolierten Worktrees laufen, jeder testet E2E vor dem Zusammenführen.

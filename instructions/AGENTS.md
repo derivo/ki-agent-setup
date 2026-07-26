@@ -65,6 +65,15 @@ Nur anfassen was nötig ist. Kein "Verbessern" von angrenzendem Code. Style des
 Bestands matchen. Orphans aus eigenen Änderungen entfernen, fremden Dead-Code nur
 erwähnen — nicht löschen. Jede geänderte Zeile rückführbar auf User-Request.
 
+**Formatter nur auf berührte Dateien.** Vor "fertig" den Formatter des Stacks im
+Prüfmodus auf den eigenen Diff laufen lassen (`--dirty` bzw. `--diff=<base>` oder
+Äquivalent) und Verstöße *im eigenen Diff* beheben. Ist das Repo insgesamt nicht
+formatter-konform, ändert das nichts an dieser Pflicht — es verbietet nur den
+repo-weiten Lauf. Ein Sweep über fremde Dateien ist eine eigene Aufgabe mit
+eigener Freigabe und eigenem Commit, nie Nebenwirkung eines Feature-Diffs
+(sonst ertrinkt die inhaltliche Änderung im Format-Rauschen und `git blame`
+zeigt auf den Sweep).
+
 ### Consistency First
 Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleiche
 Bausteine für gleiche Zwecke (Buttons/UI, Fehlerbehandlung, API-Shapes, Naming).

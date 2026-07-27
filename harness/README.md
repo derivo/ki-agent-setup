@@ -52,6 +52,11 @@ Ein Agent, der hier startet, liest in dieser Reihenfolge:
    risikoreichen oder sehr breiten Diffs, nicht als Standardschritt.
 10. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
 
+**On demand, nicht in der Reihenfolge:** [ENGINEERING.md](ENGINEERING.md) —
+Referenz-Doc zu Prinzipien und Mustern (das *Warum* hinter Simplicity,
+Consistency, Modularität), gelesen wenn eine Design-Entscheidung ansteht.
+[linklist.md](linklist.md) — die kuratierte Linkliste hinter `/hx:linklist`.
+
 **Nicht Teil des normalen Agent-Kontexts:** [EVALS.md](EVALS.md) ist die
 Maintainer-/Grader-Anleitung für Harness- und Modell-Drift-Checks. Ein getesteter
 Executor liest diese Datei nicht, weil sie Referenzaufgaben und Pass-Kriterien
@@ -121,4 +126,4 @@ SessionStart-Hook, der beim Session-Start einen kurzen Reminder (Lookup +
 Ablauf + Fertig-Kriterium) in den Kontext injiziert. Er blockiert nichts und
 gatet nichts; er macht nur den ohnehin in `instructions/AGENTS.md` stehenden
 Pointer salient, damit der Agent das Harness nicht überliest. Deploy +
-Registrierung: [`APPLY.md`](../APPLY.md) → Abschnitt 7c.
+Registrierung: [`APPLY.md`](../APPLY.md) → Abschnitt B1.6.

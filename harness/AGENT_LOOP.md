@@ -115,7 +115,7 @@ belegt Bereitschaft nicht. (Konkreter Kanal + Marker: Stack-Adapter.)
 
 Der Context ist knapp, nicht gratis: mit steigender Token-Zahl steigt die Konfusion
 (Context-Rot), nicht linear die Qualität. Ziel ist die kleinste Menge
-hoch-signalhafter Tokens, nicht das größtmögliche Fenster. Vier Hebel, um das über
+hoch-signalhafter Tokens, nicht das größtmögliche Fenster. Fünf Hebel, um das über
 lange Läufe zu halten (der durable State oben ist der erste davon):
 
 - **Note-Taking als externes Gedächtnis.** Fortschritt/offene Punkte/Kern-
@@ -126,6 +126,14 @@ lange Läufe zu halten (der durable State oben ist der erste davon):
   Queries, Ticket-IDs) und erst bei Bedarf nachladen — nicht ganze Dateien/Ergebnisse
   auf Vorrat in den Context ziehen. Ordnerstruktur/Namen leiten den Agenten zum
   richtigen Ort (deckt sich mit "Context-Budget schlank" in `../instructions/AGENTS.md`).
+- **Tool-Ausgabe an der Quelle kürzen.** Ein Gate/Befehl, der Roh-Output in Massen
+  erzeugt, wird **produzentenseitig** reduziert, *bevor* er ins Fenster landet — nicht
+  voll aufnehmen und danach aufräumen (das ist der Reset-Hebel unten, reaktiv und
+  teurer). Konkret: grep-verankern (`grep -c`, `| grep -E 'FAIL|error'`), mit
+  `tail`/`head` begrenzen, knappen Reporter wählen (Dot-/Summary- statt Voll-Log),
+  aggregieren/subsamplen. So landet nur das hoch-signalhafte Ergebnis statt tausend
+  Zeilen Log — dieselbe Disziplin wie die grep-Zähler als Evidenz (`GUARDRAILS.md`
+  Abschnitt C). Konkrete Flags je Werkzeug: Stack-Adapter.
 - **Reset vor Compaction am Fenster-Limit.** Naht das Limit, ist der sauberere Weg ein
   **frischer Context**, der sich aus dem durablen State (Git-Log + Progress-Log) neu
   aufbaut — nicht ein weiterverdichteter Verlauf. Compaction erhält zwar Kontinuität,

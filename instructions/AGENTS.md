@@ -140,7 +140,7 @@ Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg und Methode in
 dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
 `~/.claude/harness/README.md`, `~/.codex/harness/README.md`,
 `~/.gemini/harness/README.md`, `~/.config/opencode/harness/README.md`, sonst
-`harness/README.md` im ki-agents-Repo. Danach
+`harness/README.md` im ki-agent-setup-Repo. Danach
 den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
@@ -157,7 +157,7 @@ wenn `$AGENT_HARNESS_ROOT` gesetzt ist, zuerst
 `$AGENT_HARNESS_ROOT/../doc-harness/README.md`, dann
 `~/.claude/doc-harness/README.md`, `~/.codex/doc-harness/README.md`,
 `~/.gemini/doc-harness/README.md`, `~/.config/opencode/doc-harness/README.md`,
-sonst `doc-harness/README.md` im ki-agents-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
+sonst `doc-harness/README.md` im ki-agent-setup-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
 Struktur** (`docs/README.md`/`docs/CLAUDE.md` im Projekt, Vorlage:
 `doc-harness/DOC_TEMPLATE.md`) — ohne definierte Struktur keine generierte Doku.
 
@@ -206,7 +206,7 @@ Codex-spezifischen Hinweise hier und bleiben klar auf Codex begrenzt.
 
 - GSD-Runtime-Daten liegen unter `~/.codex/get-shit-done`.
 - Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
-  `~/.codex/harness/README.md`, sonst `harness/README.md` im `ki-agents`-Repo.
+  `~/.codex/harness/README.md`, sonst `harness/README.md` im `ki-agent-setup`-Repo.
   Vor Feature-/Code-Arbeit den dortigen Einstieg und den passenden Stack-Adapter
   lesen.
 - Wenn verschachtelte Codex-Läufe nicht nach `~/.codex` schreiben können, via

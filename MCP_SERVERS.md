@@ -7,7 +7,7 @@ Config, keine no-auth-Server aus dem Netz.
 
 Diese Datei ist zugleich das **secret-freie Inventar** des Setups: `mcp.json`
 wird (wegen Tokens/Pfaden) nicht versioniert — reproduziert wird aus den Tabellen
-hier ([`APPLY.md`](APPLY.md) Schritt 7d installiert das Kern-Set). Ändert sich
+hier ([`APPLY.md`](APPLY.md) A4 installiert das Kern-Set). Ändert sich
 der installierte Server-Bestand dauerhaft, diese Datei nachziehen.
 
 ## Kern-Set — hoher Tagesnutzen (wird in APPLY 7d reproduziert)

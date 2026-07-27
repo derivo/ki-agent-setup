@@ -1,4 +1,4 @@
-# ki-agents
+# ki-agent-setup
 
 🇩🇪 Deutsch | [🇬🇧 English](README.en.md)
 
@@ -26,12 +26,12 @@ Dann im KI-Client:
 > Lies `APPLY.md` und wende das Setup auf diese Maschine an.
 
 Oder den autonomen Bootstrap-Skill nutzen
-([`skills/setup-ki-agent/SKILL.md`](skills/setup-ki-agent/SKILL.md)) — er
+([`skills/ki-agent-setup/SKILL.md`](skills/ki-agent-setup/SKILL.md)) — er
 orchestriert das ganze Setup aus `APPLY.md` selbstständig. Einmalig verfügbar
 machen:
 
 ```bash
-ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
+ln -s "$(pwd)/skills/ki-agent-setup" ~/.claude/skills/ki-agent-setup
 ```
 
 Setup ändern → `APPLY.md` anpassen, committen, auf anderen Maschinen pullen.
@@ -68,9 +68,10 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
 - **Statusline** (`gsd-statusline.js`), **Hooks** und `settings.json` — eigene
   Claude-Code-Mechanismen.
 
-Entsprechend ist [`APPLY.md`](APPLY.md) primär auf Claude Code zugeschnitten
-(`claude plugin …`, `~/.claude/`); die client-übergreifende Ebene wird zusätzlich auf
-andere Clients ausgerollt (Schritt 7 → `~/.codex/`, `~/.gemini/` …).
+Entsprechend ist [`APPLY.md`](APPLY.md) zweiteilig: Teil A beschreibt den
+gemeinsamen Kern, Teil B pro Client die Ablage und die client-eigene Mechanik
+(B1 `~/.claude/`, B2 `~/.codex/`, B3 `~/.gemini/`, B4 `~/.config/opencode/`).
+Primärer Zielort ist Claude Code.
 
 ---
 
@@ -93,12 +94,12 @@ mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 
 - **MCP-Server** — kuratierte, sicherheitsbewusste Empfehlungen (context7, GitHub,
   Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md). Das Kern-Set wird beim Setup
-  mitinstalliert (`APPLY.md` Schritt 7d); die Datei ist zugleich das secret-freie
+  mitinstalliert (`APPLY.md` A4); die Datei ist zugleich das secret-freie
   Inventar.
 - **Sicherheit** — Hardening-Layer um den Agenten (Secret-Scan, Tool-Block-Hook,
   Logging-Proxy, Egress, Supply-Chain, Sandbox, Prompt-Injection):
   [`security/`](security/README.md). Die Basis-Kontrollen (Secret-Scan,
-  Tool-Guard) sind Teil des Setups (`APPLY.md` Schritt 7e).
+  Tool-Guard) sind Teil des Setups (`APPLY.md` A6).
 
 ---
 
@@ -143,8 +144,8 @@ flowchart TD
     README["README.md<br/>Überblick + Quellen"]:::doc
 
     subgraph SETUP[" Setup-Reproduktion "]
-        SKILL["skills/setup-ki-agent<br/>autonomer Bootstrap"]:::skill
-        APPLY["APPLY.md<br/>Setup-Schritte 0–8 + Verify"]:::core
+        SKILL["skills/ki-agent-setup<br/>autonomer Bootstrap"]:::skill
+        APPLY["APPLY.md<br/>Teil A Kern + Teil B pro Client + Verify"]:::core
         SKILL -->|liest und führt aus| APPLY
     end
 
@@ -167,7 +168,7 @@ flowchart TD
         LOOP["AGENT_LOOP.md"]:::doc
         SELF["SELF_OPTIMIZATION.md"]:::doc
         FEAT["feature.md<br/>Runbook"]:::doc
-        PHPAD["stacks/php<br/>PHP Web+DB Adapter"]:::skill
+        PHPAD["stacks/<br/>Adapter: php · node · python"]:::skill
         HREADME --> ROADMAP & GUARD & SPECW & PHPAD
         SPECW --> FEATT
         LOOP --> GUARD & TESTS & SPECW & SELF

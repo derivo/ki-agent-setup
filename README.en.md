@@ -1,4 +1,4 @@
-# ki-agents
+# ki-agent-setup
 
 [🇩🇪 Deutsch](README.md) | 🇬🇧 English
 
@@ -26,11 +26,11 @@ Then in the AI client:
 > Read `APPLY.md` and apply the setup to this machine.
 
 Or use the autonomous bootstrap skill
-([`skills/setup-ki-agent/SKILL.md`](skills/setup-ki-agent/SKILL.md)) — it
+([`skills/ki-agent-setup/SKILL.md`](skills/ki-agent-setup/SKILL.md)) — it
 orchestrates the whole setup from `APPLY.md` on its own. Make it available once:
 
 ```bash
-ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
+ln -s "$(pwd)/skills/ki-agent-setup" ~/.claude/skills/ki-agent-setup
 ```
 
 Change the setup → edit `APPLY.md`, commit, pull on other machines.
@@ -67,9 +67,10 @@ two layers:
 - **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
   Claude Code mechanisms.
 
-Accordingly, [`APPLY.md`](APPLY.md) is primarily tailored to Claude Code
-(`claude plugin …`, `~/.claude/`); the cross-client layer is additionally rolled
-out to other clients (step 7 → `~/.codex/`, `~/.gemini/` …).
+Accordingly, [`APPLY.md`](APPLY.md) has two parts: part A describes the shared
+core, part B describes per client where that substance goes and which
+client-specific plumbing comes with it (B1 `~/.claude/`, B2 `~/.codex/`,
+B3 `~/.gemini/`, B4 `~/.config/opencode/`). Claude Code is the primary target.
 
 ---
 
@@ -92,12 +93,12 @@ GitHub source per skill: [`SKILLS.md`](SKILLS.md).
 
 - **MCP servers** — curated, security-conscious recommendations (context7, GitHub,
   Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md). The core set is installed as
-  part of the setup (`APPLY.md` step 7d); the file doubles as the secret-free
+  part of the setup (`APPLY.md` A4); the file doubles as the secret-free
   inventory.
 - **Security** — hardening layer around the agent (secret scanning, tool block
   hook, logging proxy, egress, supply chain, sandbox, prompt injection):
   [`security/`](security/README.md). The base controls (secret scan, tool guard)
-  are part of the setup (`APPLY.md` step 7e).
+  are part of the setup (`APPLY.md` A6).
 
 ---
 
@@ -142,8 +143,8 @@ flowchart TD
     README["README.md<br/>overview + sources"]:::doc
 
     subgraph SETUP[" Setup reproduction "]
-        SKILL["skills/setup-ki-agent<br/>autonomous bootstrap"]:::skill
-        APPLY["APPLY.md<br/>setup steps 0–8 + verify"]:::core
+        SKILL["skills/ki-agent-setup<br/>autonomous bootstrap"]:::skill
+        APPLY["APPLY.md<br/>part A core + part B per client + verify"]:::core
         SKILL -->|reads and runs| APPLY
     end
 
@@ -166,7 +167,7 @@ flowchart TD
         LOOP["AGENT_LOOP.md"]:::doc
         SELF["SELF_OPTIMIZATION.md"]:::doc
         FEAT["feature.md<br/>runbook"]:::doc
-        PHPAD["stacks/php<br/>PHP web+DB adapter"]:::skill
+        PHPAD["stacks/<br/>adapters: php · node · python"]:::skill
         HREADME --> ROADMAP & GUARD & SPECW & PHPAD
         SPECW --> FEATT
         LOOP --> GUARD & TESTS & SPECW & SELF

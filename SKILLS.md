@@ -15,7 +15,7 @@ Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 > dieses Repos: nach Skill-Änderungen eine Kopie sichern (privates Backup).
 > Sonst ist bei Maschinenverlust nur die Quellenliste hier rekonstruierbar,
 > nicht der geprüfte Stand (analog zur Known-Good-Tabelle der Plugins in
-> `APPLY.md` Schritt 2).
+> `APPLY.md` B1.2).
 
 Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) und caveman
 (`caveman:*`, Plugin).
@@ -27,6 +27,7 @@ Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) und caveman
 | Skill | Quelle (GitHub) | Zweck |
 |---|---|---|
 | `ui-ux-pro-max` | `nextlevelbuilder/ui-ux-pro-max-skill` | UI/UX-Design-Intelligenz (Styles, Paletten, Fonts) |
+| `frontend-design` | `anthropics/skills` | Produktionsreife Frontend-Interfaces (gleichnamiges Claude-Plugin existiert zusätzlich, siehe `APPLY.md` B1.2) |
 | `web-design-guidelines` | `vercel-labs/agent-skills` | UI-Code gegen Web Interface Guidelines prüfen |
 | `web-quality-audit` | `addyosmani/web-quality-skills` | Audit: Performance, A11y, SEO, Best Practices |
 | `accessibility` | `addyosmani/web-quality-skills` | WCAG 2.2 Audit & Verbesserung |

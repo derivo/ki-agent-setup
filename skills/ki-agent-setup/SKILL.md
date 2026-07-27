@@ -1,11 +1,11 @@
 ---
-name: setup-ki-agent
-description: Bootet das lokale KI-Agent-Setup aus diesem Repo autonom zusammen. Use when the user checks out the ki-agents repo on a (new) machine and wants the Claude Code setup plus cross-client instructions/harness mirrors assembled, synced, or updated — e.g. "bau mein KI-Agent-Setup auf", "wende ki-agents an", "richte den Agenten ein", "sync mein Setup". Reads APPLY.md, installs plugins, configures ~/.claude and ~/.codex/AGENTS.md, verifies, and can drop the harness docs into a dev project.
+name: ki-agent-setup
+description: Bootet das lokale KI-Agent-Setup aus diesem Repo autonom zusammen. Use when the user checks out the ki-agent-setup repo on a (new) machine and wants the Claude Code setup plus cross-client instructions/harness mirrors assembled, synced, or updated — e.g. "bau mein KI-Agent-Setup auf", "wende ki-agent-setup an", "richte den Agenten ein", "sync mein Setup". Reads APPLY.md, installs plugins, configures ~/.claude and ~/.codex/AGENTS.md, verifies, and can drop the harness docs into a dev project.
 ---
 
-# setup-ki-agent
+# ki-agent-setup
 
-Dieser Skill macht das ki-agents-Repo selbst-anwendend: Ein Agent liest ihn nach
+Dieser Skill macht das ki-agent-setup-Repo selbst-anwendend: Ein Agent liest ihn nach
 dem Checkout und baut das lokale Claude-Code-Setup plus die
 client-übergreifenden Arbeitsregeln/Harness-Mirrors autonom zusammen — Plugins,
 globale Config, GSD, caveman, Statusline, Arbeitsregeln. Optional verdrahtet er
@@ -26,13 +26,14 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 ### 1. Orientieren
 - Repo-Wurzel finden (dort liegen `README.md`, `APPLY.md`, `harness/`).
 - `README.md` lesen → Überblick, Statusline-Aufbau, Tool-Liste.
-- `APPLY.md` lesen → die verbindlichen Setup-Schritte (0–8 inkl. 7b–7e).
+- `APPLY.md` lesen → die verbindlichen Setup-Schritte (Teil A = gemeinsamer Kern
+  A1–A6, Teil B = Block des einzurichtenden Clients B1–B4).
 - Bestehenden Stand erfassen: `~/.claude/settings.json`, `claude plugin list`,
   vorhandene `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.codex/harness/`, `~/.agents/skills/hx-*` und `codex mcp list`. **Nicht**
   blind überschreiben — mergen.
 
-### 2. Setup anwenden (APPLY.md vollständig, inkl. 7b–7e)
+### 2. Setup anwenden (APPLY.md vollständig: Teil A + der passende Teil-B-Block)
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
 Verify-Kriterium, bevor du weitergehst:
 1. Marketplaces registrieren.
@@ -113,8 +114,8 @@ Damit der Skill per Name aufrufbar ist, muss er in einem von Claude Code
 gescannten Skill-Verzeichnis liegen:
 
 ```bash
-ln -s "$(pwd)/skills/setup-ki-agent" ~/.claude/skills/setup-ki-agent
+ln -s "$(pwd)/skills/ki-agent-setup" ~/.claude/skills/ki-agent-setup
 ```
 
 Alternativ ohne Installation: dem Client sagen
-*"lies `skills/setup-ki-agent/SKILL.md` und führ es aus"*.
+*"lies `skills/ki-agent-setup/SKILL.md` und führ es aus"*.

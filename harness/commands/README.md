@@ -40,7 +40,7 @@ scripts/deploy-codex-harness-skills.sh --check
 > `--delete` ist destruktiv: `~/.claude/commands/hx/` ist ein repo-owned Mirror.
 > Der Codex-Helper löscht entsprechend vorhandene `~/.agents/skills/hx-*`; der
 > Migrationsbefehl entfernt alte `prompts/hx-*.md`. Vor erstem Sync auf vorhandene
-> Daten prüfen — siehe Guardrail in [`APPLY.md`](../../APPLY.md) Schritt 7c.
+> Daten prüfen — siehe Guardrail in [`APPLY.md`](../../APPLY.md) A2.
 
 ## Commands
 

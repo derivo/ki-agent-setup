@@ -5,7 +5,7 @@ Read-only: dieser Command ändert nichts, er lädt und berichtet.
    `$AGENT_HARNESS_ROOT/README.md`, dann `~/.claude/harness/README.md`,
    `~/.codex/harness/README.md`, `~/.gemini/harness/README.md`,
    `~/.config/opencode/harness/README.md`, sonst `harness/README.md` im
-   ki-agents-Repo. Nichts gefunden → melden, nicht raten.
+   ki-agent-setup-Repo. Nichts gefunden → melden, nicht raten.
 2. **Kern laden** — `README.md` (Lesereihenfolge) und `GUARDRAILS.md` lesen.
    Passenden **Stack-Adapter** unter `stacks/` für das aktuelle Projekt wählen;
    passt keiner, das benennen (generelle Methode gilt, Adapter ggf. anlegen).

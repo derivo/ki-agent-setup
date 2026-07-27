@@ -17,6 +17,7 @@ jede fail-closed (im Zweifel blocken/fragen), mit Audit-Trail.
 | Keine Sicht auf Requests / Egress-Exfil | Logging-Proxy / LLM-Gateway | [03-request-proxy.md](03-request-proxy.md) |
 | Daten-Exfil über Netzwerk | Egress-Allowlist + Sandbox | [04-egress.md](04-egress.md) |
 | Verwundbare Skills/MCP-Server | Supply-Chain-Audit | [05-supply-chain.md](05-supply-chain.md) |
+| Vergiftete oder still geänderte Tool-Beschreibung (Tool-Poisoning, Rug-Pull) | Beschreibung bei Freigabe hashen, periodisch dagegen prüfen | [05-supply-chain.md](05-supply-chain.md) |
 | Autonome Läufe ohne Isolation | Sandbox / VM | [06-sandbox.md](06-sandbox.md) |
 | Prompt-Injection / Goal-Hijacking | Untrusted-Content-Disziplin | [07-prompt-injection.md](07-prompt-injection.md) |
 

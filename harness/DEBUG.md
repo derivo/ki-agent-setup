@@ -67,6 +67,20 @@ Zwei Regeln machen den Unterschied zum blinden Variieren:
 
 ---
 
+## Regression mit bekanntem grünem Stand — erst eingrenzen, dann raten
+
+Lief das Symptom bei einem früheren Stand nachweislich grün und ist bei HEAD rot,
+liegt die Ursache im **Delta** dazwischen. Dann grenzt binäre Suche über die
+Historie (`git bisect`, oder ein Differential-Vergleich gegen den letzten grünen
+Stand) den schuldigen Commit schneller ein als reines Hypothesen-Raten.
+Voraussetzung ist ein reproduzierbares Rot/Grün-Signal (Test/Gate/Repro-Schritt),
+das je Schritt automatisch urteilen kann — ohne das degeneriert bisect zum Raten.
+Der gefundene Commit ist die **belegte** Hypothese und läuft dann durch den
+Checkpoint oben (Falsifikation, Regressionstest). Bisect liefert das *Wo*, der
+Checkpoint das *Warum* — es ergänzt die Falsifikation, ersetzt sie nicht.
+
+---
+
 ## Erst messbar machen, dann raten
 
 Bei Performance-/Latenz-/Timing-Bugs steht am Anfang **Instrumentierung**, nicht

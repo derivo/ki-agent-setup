@@ -306,7 +306,8 @@ die, wird das als offene Lücke gemeldet, nicht durch eine erfundene ersetzt.
 - Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
 - Gibt es eine `DESIGN.md`/Token-Quelle: Werte lösen deren Tokens auf, Kontrast ≥ WCAG AA.
 - Derivate (`tokens.json`/`theme.css`/`tailwind.config`) sind aus `DESIGN.md` erzeugt, nicht von Hand angeglichen.
-- Jede populierte Token-Sektion erscheint im Export; unbekannte Sektion/Sub-Token/Theme-Syntax gegen `spec` geprüft, nicht angenommen.
+- Jede populierte Token-Sektion erscheint im Export — außer `components`, das kein Target darstellen kann; `lint` **und** `export` gelaufen, nicht nur einer.
+- Unbekannte Sektion/Sub-Token/Theme-Syntax gegen `spec` geprüft, nicht angenommen.
 - Absichtlich fehlende Sektion steht als `omitted:` in der `DESIGN.md`, nicht nur im Kopf des Autors.
 - Design-Anforderung, aber keine `DESIGN.md`/Token-Quelle → Erstellen vorgeschlagen und gefragt, nicht eigenmächtig angelegt.
 

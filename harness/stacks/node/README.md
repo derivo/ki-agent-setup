@@ -197,6 +197,10 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   erfundenes `background`/`color` liefert `warning` bei **Exit 0** (verifiziert) — und
   weil `components` nirgends exportiert wird, ist der Lint die *einzige* Prüfung
   dafür. `warnings > 0` hier als blockierend behandeln.
+- **Der `lint` belegt keine exportierbare Datei.** Verifiziert an v0.3.0: ein
+  Token-Name, der `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt (`Background_Primary`), lässt
+  `lint` mit **Exit 0** passieren, während `export` mit `INVALID_TOKEN_NAME` und
+  **Exit 1** bricht. Deshalb gehören beide Kommandos ins Gate, nicht nur der Lint.
 - **`diff` als Regressions-Werkzeug bei Änderungen an `DESIGN.md`:**
   `npx @google/design.md diff <alt> DESIGN.md` liefert JSON mit
   `added`/`removed`/`modified` je Token-Gruppe (Exit 0, an v0.3.0 verifiziert). Vor dem

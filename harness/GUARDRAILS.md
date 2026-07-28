@@ -260,6 +260,27 @@ Front-Matter: `colors`/`typography`/`spacing`/`rounded`/`components`, Token-Refs
 aufgelöst statt Werte dupliziert, Kontrast gegen **WCAG AA** (≥ 4.5:1 Text) geprüft.
 Wo die Datei liegt und mit welchem Kommando sie validiert wird: Stack-Adapter.
 
+Das Format ist **`version: alpha`** — die Spec kann sich ändern. Deshalb wird nicht
+aus dem Gedächtnis geschrieben: die Schema-Wahrheit kommt per `npx @google/design.md spec`
+(≈ 15 KB, on-demand, nicht im Harness dupliziert), bevor eine unbekannte Sektion,
+ein Sub-Token oder ein Theme-Modus entsteht. Angenommene Syntax ist genauso eine
+Erfindung wie ein angenommener Farbwert.
+
+Fehlt eine Sektion in einer **vorhandenen** `DESIGN.md` mit Absicht, wird das dort
+deklariert statt offen zu bleiben — `omitted:` nimmt Sektionsnamen und optional einen
+Grund:
+```yaml
+omitted:
+  - spacing
+  - section: rounded
+    reason: "No rounded corners defined in brand book"
+```
+Das ist die maschinenlesbare Form von „Lücke benannt statt erfunden". (Beobachtet an
+v0.3.0: die Lint-Meldung wechselt von „will fall back to agent defaults" zu
+„intentionally omitted" — beide bleiben `info`, es unterdrückt also keine Severity,
+sondern dokumentiert die Absicht. Nicht zu verwechseln mit dem Fall weiter unten, dass
+das Projekt **gar keine** `DESIGN.md` hat.)
+
 **Richtung der Autorität:** `DESIGN.md` ist die *geschriebene* Quelle; die
 Runtime-Artefakte (`tokens.json`, `theme.css`, `tailwind.config`) sind daraus
 *deriviert*. Bei Widerspruch gewinnt `DESIGN.md`, und das Derivat wird neu erzeugt
@@ -285,6 +306,8 @@ die, wird das als offene Lücke gemeldet, nicht durch eine erfundene ersetzt.
 - Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
 - Gibt es eine `DESIGN.md`/Token-Quelle: Werte lösen deren Tokens auf, Kontrast ≥ WCAG AA.
 - Derivate (`tokens.json`/`theme.css`/`tailwind.config`) sind aus `DESIGN.md` erzeugt, nicht von Hand angeglichen.
+- Jede populierte Token-Sektion erscheint im Export; unbekannte Sektion/Sub-Token/Theme-Syntax gegen `spec` geprüft, nicht angenommen.
+- Absichtlich fehlende Sektion steht als `omitted:` in der `DESIGN.md`, nicht nur im Kopf des Autors.
 - Design-Anforderung, aber keine `DESIGN.md`/Token-Quelle → Erstellen vorgeschlagen und gefragt, nicht eigenmächtig angelegt.
 
 Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —

@@ -11,6 +11,7 @@ jeder Link genau **einmal**, in dem Block, wo er thematisch hingehört.
 
 ## Agent-Setup & Methode
 - [design.md (google-labs-code)](https://github.com/google-labs-code/design.md) — Format-Spec, um ein Design-System maschinenlesbar an AI-Agents zu geben (Token-YAML + Prosa); im Harness als kanonische Token-Quelle verankert (GUARDRAILS Abschnitt G).
+- [Design Tokens Format Module 2025.10 (W3C DTCG)](https://www.designtokens.org/tr/2025.10/format/) — Final Community Group Report (28.10.2025, keine W3C Recommendation), definiert Design-Tokens als `$value`/`$type`-JSON; im Harness das Austauschformat, von dem das Token-Modell der `DESIGN.md` abstammt.
 - [skills.sh](https://skills.sh) — Open Agent Skills Directory: wiederverwendbare Agent-Skills per Kommando finden und installieren.
 
 ## UI-Komponenten-Bibliotheken

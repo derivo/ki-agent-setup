@@ -276,7 +276,7 @@ omitted:
     reason: "No rounded corners defined in brand book"
 ```
 Das ist die maschinenlesbare Form von „Lücke benannt statt erfunden". (Beobachtet an
-v0.3.0: die Lint-Meldung wechselt von „will fall back to agent defaults" zu
+0.3.0 und 0.4.0: die Lint-Meldung wechselt von „will fall back to agent defaults" zu
 „intentionally omitted" — beide bleiben `info`, es unterdrückt also keine Severity,
 sondern dokumentiert die Absicht. Nicht zu verwechseln mit dem Fall weiter unten, dass
 das Projekt **gar keine** `DESIGN.md` hat.)

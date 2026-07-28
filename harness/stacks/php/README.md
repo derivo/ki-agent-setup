@@ -172,7 +172,7 @@ Filament, ggf. + Tailwind).
   die einzige Prüfung dafür.
 - **Der `lint` belegt keine exportierbare Datei:** ein Token-Name, der
   `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt, passiert `lint` mit **Exit 0**, bricht aber
-  `export` mit `INVALID_TOKEN_NAME` und **Exit 1** (an v0.3.0 verifiziert). Beide
+  `export` mit `INVALID_TOKEN_NAME` und **Exit 1** (an 0.3.0 und 0.4.0 verifiziert). Beide
   Kommandos ins Gate, nicht nur den Lint.
 - **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
   zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte

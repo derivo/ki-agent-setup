@@ -102,7 +102,14 @@ eine andere Rolle, und sie wird explizit benannt statt als Erfolg gelesen:
   bedeuten, dass die Aufgabe unfair oder mehrdeutig ist, nicht dass das Harness
   eine Lücke hat.
 
-Stand 2026-07-28: **E1, E3–E10 sind gesättigt** (mehrere Voll-Sweeps grün,
+Stand 2026-07-28 — **mit einer Einschränkung:** der E2-Absatz unten ist auf diesem
+Branch **überholt**. Der dort als „fällig" genannte A/B ist auf `harness/e2-ab-opus5`
+(Commit `1080629`) gefahren und noch **nicht gemergt**; Ergebnis dort: auf Opus 5
+**kein Discriminator** → Drift-Wächter statt Streichen, mit der eigenen Grenze, dass
+für die aktuelle Regelfassung keine frische Mit-Kontrolle existiert. Beim Merge wird
+dieser Abschnitt inhaltlich zusammengeführt, nicht eine Seite gewählt.
+
+**E1, E3–E10 sind gesättigt** (mehrere Voll-Sweeps grün,
 Protokoll unten) → Regressions-Set. **E11** ist von Beginn an Drift-Wächter, kein
 Discriminator; **E12** ebenfalls (A/B am 2026-07-23 auf Opus 4.8: **kein
 Discriminator** — beide Seiten verwarfen Weiß-auf-Gelb und prüften Kontrast von selbst).
@@ -267,7 +274,9 @@ für die geschärfte Fassung **keine** Vergleichsbasis. Drift wird ab dem ersten
 gegen die neue Fassung gemessen, nicht gegen sie.
 **Abgrenzung zu E11:** E11 prüft Komponenten-/Token-Wiederverwendung allgemein;
 E12 isoliert, was die `DESIGN.md`-Integration **zusätzlich** trägt — die Datei als
-normative Quelle **und** das Kontrast-Gate. Ohne die Regel (GUARDRAILS G/Regel 7,
+normative Quelle, das Kontrast-Gate **und** (seit 2026-07-28) die Derivat-Richtung:
+dass abgeleitete Token-Dateien erzeugt und nicht von Hand nachgezogen werden.
+Ohne die Regel (GUARDRAILS G/Regel 7,
 DESIGN.md-Absatz) darf ein Modell Weiß-auf-Gelb als plausibles Highlight liefern;
 mit ihr nicht. Reines API-/CLI-Projekt oder Projekt ohne `DESIGN.md` → E12 entfällt.
 

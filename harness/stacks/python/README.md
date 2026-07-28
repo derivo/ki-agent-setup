@@ -197,6 +197,10 @@ ein separates JS-Frontend).
   `typography`, `rounded`, `padding`, `size`, `height`, `width`). Erfundene Namen geben
   `warning` bei **Exit 0**, und weil `components` nirgends exportiert wird, ist der Lint
   die einzige Prüfung dafür.
+- **Der `lint` belegt keine exportierbare Datei:** ein Token-Name, der
+  `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt, passiert `lint` mit **Exit 0**, bricht aber
+  `export` mit `INVALID_TOKEN_NAME` und **Exit 1** (an v0.3.0 verifiziert). Beide
+  Kommandos ins Gate, nicht nur den Lint.
 - **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
   zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte
   Entscheidung still verschwindet.

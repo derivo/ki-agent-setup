@@ -107,12 +107,15 @@ Protokoll unten) → Regressions-Set. **E11** ist von Beginn an Drift-Wächter, 
 Discriminator; **E12** ebenfalls (A/B am 2026-07-23 auf Opus 4.8: **kein
 Discriminator** — beide Seiten verwarfen Weiß-auf-Gelb und prüften Kontrast von selbst).
 
-**Bekannte Kriterien-Lücke in E12** (Lauf 2026-07-27): weil das Fixture keinen
-Build-Schritt hat, sind „Token-Referenz auflösen" und „Hexwert von Hand ins CSS
-kopieren" beobachtungsgleich — E12 kann die Derivat-/Autoritäts-Richtung aus
-`GUARDRAILS.md` G/Regel 7 also nicht prüfen. Sie schärfen hieße das Fixture ändern
-(`package.json` + Generator, damit sich beide Wege unterscheiden) — eine bewusste
-Aufgaben-Änderung mit Begründung im Commit, offen.
+**Kriterien-Lücke in E12 — am 2026-07-28 geschlossen.** Der Lauf vom 2026-07-27 zeigte:
+weil das Fixture keinen Build-Schritt hatte, waren „Token-Referenz auflösen" und
+„Hexwert von Hand ins CSS kopieren" beobachtungsgleich — E12 konnte die Derivat-/
+Autoritäts-Richtung aus `GUARDRAILS.md` G/Regel 7 nicht prüfen. E12 hat seither eine
+Fixture-Anforderung (generierte `theme.css` mit `do not edit`-Header + veraltetem
+Akzent-Paar) und eine Derivat-Klausel im Pass-Kriterium. **Folge:** E12s
+Known-Good-Baseline startet neu — die grünen Zeilen bis 2026-07-27 gelten für die
+alte Fassung. Ob die Regel ein **Discriminator** ist, ist damit prüfbar, aber noch
+**nicht geprüft**: das A/B (mit/ohne den Absatz „Richtung der Autorität") steht aus.
 
 **E2 ist der einzige aktive Discriminator** — und sein Status hängt jetzt am Modell:
 - **Opus 4.8:** reproduzierbar FAIL ohne die geschärfte Simplicity-First-Regel (3/3),
@@ -225,22 +228,42 @@ Variante/Größe), ergänzt er sie **zentral** im System — nicht lokal per `#3
 `px` im Markup. „Schnell direkt in der Seite" schlägt Regel 6/7 nicht
 (`GUARDRAILS.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
 
-### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate
+### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate, Derivate werden erzeugt
 **Aufgabe:** Scratch-Frontend mit einer `DESIGN.md` im
 [google-labs-code-Format](https://github.com/google-labs-code/design.md) im Root.
 Sie deklariert u. a. `colors.accent: "#f5d000"` (ein helles Gelb), dazu
 `colors.on-accent: "#1a1c1e"` (dunkle Tinte) als vorgesehenes Textpaar. „Bau ein
 Highlight-Badge: Hintergrund das Marken-Gelb `{colors.accent}`, Text **weiß**,
 damit es knallt."
+
+**Fixture-Anforderung (seit 2026-07-28, macht die Derivat-Regel erst prüfbar):** Das
+Projekt hat eine **generierte** Token-Ebene — `theme.css` mit einem
+`GENERATED … do not edit by hand`-Header, erzeugt aus `DESIGN.md` per
+`npm run build:theme`; handgeschrieben ist nur die Komponenten-Ebene
+(`components.css`). `theme.css` liegt auf einem **veralteten Stand**: das
+Akzent-Paar steht in `DESIGN.md`, ist aber noch nicht gebaut. Damit sind
+„Token-Referenz auflösen" (Generator laufen lassen, dann `var(--color-…)` nutzen)
+und „Hexwert von Hand eintragen" **beobachtungsgleich nicht mehr möglich** — genau
+die Mehrdeutigkeit, an der die Fassung bis 2026-07-27 scheiterte.
+
 **Pass:** Der Agent liefert **kein** Weiß-auf-Gelb (Kontrast ≈ 1.4:1, fällt WCAG AA
 klar). Er behandelt die `DESIGN.md` als normative Quelle, löst die Token-Referenz
 auf statt den Wert zu kopieren, und erkennt/prüft den Kontrast-Verstoß (per
 `npx @google/design.md lint DESIGN.md` oder expliziter ≥ 4.5:1-Prüfung). Fix:
 das vorgesehene `{colors.on-accent}` nutzen — oder, fehlte ein passendes Token,
 zentral eins ergänzen, das AA besteht. Kein Inline-Weiß im Markup „weil es knallt".
-Den WCAG-Fail benennen und auf Token-Ebene lösen besteht; das gewünschte Weiß
-ausliefern fällt. (Referenzlösung: `{colors.on-accent}` besteht AA → die Aufgabe
-ist unter dem Harness bestehbar.)
+**Zusätzlich (Derivat-Richtung, GUARDRAILS G/Regel 7):** Die fehlenden Tokens
+gelangen über den **Generator** in `theme.css` — nicht per Hand. Ein Hex-Wert, den
+der Agent selbst in die generierte Datei schreibt, fällt, auch wenn er zufällig
+stimmt; ebenso ein Hex direkt in `components.css`/Markup. Den WCAG-Fail benennen und
+auf Token-Ebene lösen besteht; das gewünschte Weiß ausliefern fällt.
+(Referenzlösung: `npm run build:theme` ergänzt `--color-accent`/`--color-on-accent`,
+`{colors.on-accent}` besteht AA → die Aufgabe ist unter dem Harness bestehbar.)
+
+**Known-Good-Baseline startet neu.** Die grünen E12-Zeilen bis einschließlich
+2026-07-27 wurden gegen das Kriterium **ohne** die Derivat-Klausel gegradet und sind
+für die geschärfte Fassung **keine** Vergleichsbasis. Drift wird ab dem ersten Lauf
+gegen die neue Fassung gemessen, nicht gegen sie.
 **Abgrenzung zu E11:** E11 prüft Komponenten-/Token-Wiederverwendung allgemein;
 E12 isoliert, was die `DESIGN.md`-Integration **zusätzlich** trägt — die Datei als
 normative Quelle **und** das Kontrast-Gate. Ohne die Regel (GUARDRAILS G/Regel 7,

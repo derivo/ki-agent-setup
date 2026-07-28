@@ -281,10 +281,20 @@ Das ist die maschinenlesbare Form von „Lücke benannt statt erfunden". (Beobac
 sondern dokumentiert die Absicht. Nicht zu verwechseln mit dem Fall weiter unten, dass
 das Projekt **gar keine** `DESIGN.md` hat.)
 
-**Richtung der Autorität:** `DESIGN.md` ist die *geschriebene* Quelle; die
-Runtime-Artefakte (`tokens.json`, `theme.css`, `tailwind.config`) sind daraus
-*deriviert*. Bei Widerspruch gewinnt `DESIGN.md`, und das Derivat wird neu erzeugt
-statt von Hand angeglichen. Austauschformat nach außen ist das
+**Richtung der Autorität — gilt nur gegenüber den eigenen Derivaten:** `DESIGN.md`
+ist die *geschriebene* Quelle; die Runtime-Artefakte (`tokens.json`, `theme.css`,
+`tailwind.config`) sind daraus *deriviert*. Bei Widerspruch gewinnt `DESIGN.md`, und
+das Derivat wird neu erzeugt statt von Hand angeglichen.
+
+**Diese Rangfolge sagt nichts über bestehende Design-Vorgaben des Projekts.** Ein
+`STYLEGUIDE.md`, `docs/design-*`, die Projekt-`CLAUDE.md`/`AGENTS.md` oder die Doku
+der Komponenten-Bibliothek werden von einer `DESIGN.md` **nicht** überstimmt und nicht
+verdrängt — auch nicht mit dem Argument, Tokens seien normativ. Das oben („Tokens sind
+normativ, die Prosa gibt nur den Kontext") ordnet ausschließlich das Verhältnis
+*innerhalb* der `DESIGN.md`, nicht `DESIGN.md` gegen fremde Dokumente. Wie ein
+Widerspruch zwischen beiden behandelt wird, steht unten.
+
+Austauschformat nach außen ist das
 **[W3C-DTCG-Format](https://www.designtokens.org/tr/2025.10/format/)**
 (`$value`/`$type`-JSON) — kein selbst erfundenes Schema; das Token-Modell der
 `DESIGN.md` stammt davon ab (typisierte Gruppen, `{path.to.token}`-Refs). Kann das
@@ -293,12 +303,34 @@ reproduzierbares Build-/Adapter-Kommando die Runtime-Tokens aus dieser Quelle
 (Kommando: Stack-Adapter). Hex-/Skalenwerte von Hand in CSS/JS zu kopieren und nur
 per Drift-Test zu vergleichen ist keine Token-Auflösung.
 
+### Bestand zuerst — nichts vorschlagen in einen besetzten Platz
+
+**Vor** dem Vorschlag einer `DESIGN.md` und vor dem ersten UI-Write wird nachgesehen,
+ob das Projekt seine Design-Vorgaben **schon irgendwo** hat. Nicht nur in
+maschinenlesbarer Form: `STYLEGUIDE.md`, `docs/design-*`, `CONTRIBUTING.md`, die
+Projekt-`CLAUDE.md`/`AGENTS.md`, ein Design-Kapitel im README, die Doku der
+Komponenten-Bibliothek, Theme-/Token-Configs, Figma-/Brand-Exporte. Prosa-Vorgaben
+zählen **genauso** als bestehende Vorgabe wie eine Token-Datei — sie sind nur schlechter
+prüfbar, nicht weniger gültig.
+
+Was dort steht, gilt weiter. Es wird nicht ignoriert, weil es „nicht das Format" ist,
+und nicht ersetzt, weil eine `DESIGN.md` es maschinenlesbar wiederholen könnte.
+
+**Widerspruch wird vorgelegt, nicht aufgelöst.** Sagt eine bestehende Vorgabe etwas
+anderes als die `DESIGN.md` (oder als der Vorschlag für eine), entscheidet **keine der
+beiden Seiten automatisch**: beide Fundstellen werden mit Datei und Zeile benannt, der
+Konflikt beschrieben, und der Nutzer entscheidet, was gilt und ob die Vorgabe migriert,
+bleibt oder fällt. Bis zur Entscheidung wird nichts überschrieben — weder die alte
+Vorgabe noch die `DESIGN.md`. (Das ist „Mehrere Interpretationen möglich → vorlegen,
+nicht stillschweigend wählen", `instructions/AGENTS.md`.)
+
 Hat das Projekt **Design-Anforderungen, aber (noch) keine** solche Quelle, wird eine
 `DESIGN.md` **nicht eigenmächtig** angelegt. Stattdessen wird die Lücke benannt und
 das Erstellen **vorgeschlagen** — mit Freigabe des Nutzers (deckt sich mit „nicht
-Angefordertes nur mit expliziter Freigabe", `instructions/AGENTS.md`). Bis dahin
-gilt die vorhandene Token-/Theme-Quelle des Projekts als „eine Quelle"; fehlt auch
-die, wird das als offene Lücke gemeldet, nicht durch eine erfundene ersetzt.
+Angefordertes nur mit expliziter Freigabe", `instructions/AGENTS.md`). Bis dahin gilt
+die vorhandene Quelle des Projekts — Token-/Theme-Config **oder** Prosa-Vorgabe — als
+„eine Quelle"; fehlt auch die, wird das als offene Lücke gemeldet, nicht durch eine
+erfundene ersetzt.
 
 ### Selbstcheck vor "fertig" (UI)
 - Kein dupliziertes Element, das ein bestehendes nachbaut (Regel 6).
@@ -310,6 +342,8 @@ die, wird das als offene Lücke gemeldet, nicht durch eine erfundene ersetzt.
 - Unbekannte Sektion/Sub-Token/Theme-Syntax gegen `spec` geprüft, nicht angenommen.
 - Absichtlich fehlende Sektion steht als `omitted:` in der `DESIGN.md`, nicht nur im Kopf des Autors.
 - Design-Anforderung, aber keine `DESIGN.md`/Token-Quelle → Erstellen vorgeschlagen und gefragt, nicht eigenmächtig angelegt.
+- Bestehende Vorgaben gesucht **und benannt** (auch Prosa: `STYLEGUIDE.md`, `docs/design-*`, Projekt-`CLAUDE.md`, Component-Doku) — vor Vorschlag und vor UI-Write.
+- Widerspruch zwischen Bestand und `DESIGN.md` → beide Fundstellen vorgelegt, Entscheidung beim Nutzer; nichts überschrieben.
 
 Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —
 reine API-/CLI-Projekte überspringen Abschnitt G.

@@ -251,17 +251,26 @@ nicht als Magic-Number/Inline-Hex/Einzelfall-`px` pro Seite. Ein `color:#3b7` od
 `margin:13px` direkt im Markup ist ein Signal: der Wert gehört in die Skala — oder
 es fehlt dort eine Stufe, die zentral ergänzt wird (nicht lokal umgangen).
 
-Deklariert das Projekt sein Design-System **maschinenlesbar** — eine `DESIGN.md`
-im [google-labs-code-Format](https://github.com/google-labs-code/design.md) (YAML-
+Deklariert das Projekt sein Design-System **maschinenlesbar**, ist das gesetzte
+Format eine `DESIGN.md` im
+[google-labs-code-Format](https://github.com/google-labs-code/design.md) (YAML-
 Front-Matter: `colors`/`typography`/`spacing`/`rounded`/`components`, Token-Refs wie
-`{colors.primary}`), oder ein äquivalenter Token-Export —, dann ist **diese Datei**
-die „eine Quelle" oben: Tokens sind **normativ**, die Prosa gibt nur den Kontext.
-Vor jedem UI-Write gelesen, Token-Refs aufgelöst statt Werte dupliziert, Kontrast
-gegen **WCAG AA** (≥ 4.5:1 Text) geprüft. Wo die Datei liegt und mit welchem
-Kommando sie validiert wird: Stack-Adapter. Kann das Zielsystem `DESIGN.md` nicht
-direkt konsumieren, erzeugt ein minimales reproduzierbares Build-/Adapter-Kommando
-die Runtime-Tokens aus dieser Quelle. Hex-/Skalenwerte von Hand in CSS/JS zu
-kopieren und nur per Drift-Test zu vergleichen ist keine Token-Auflösung.
+`{colors.primary}`) — dann ist **diese Datei** die „eine Quelle" oben: Tokens sind
+**normativ**, die Prosa gibt nur den Kontext. Vor jedem UI-Write gelesen, Token-Refs
+aufgelöst statt Werte dupliziert, Kontrast gegen **WCAG AA** (≥ 4.5:1 Text) geprüft.
+Wo die Datei liegt und mit welchem Kommando sie validiert wird: Stack-Adapter.
+
+**Richtung der Autorität:** `DESIGN.md` ist die *geschriebene* Quelle; die
+Runtime-Artefakte (`tokens.json`, `theme.css`, `tailwind.config`) sind daraus
+*deriviert*. Bei Widerspruch gewinnt `DESIGN.md`, und das Derivat wird neu erzeugt
+statt von Hand angeglichen. Austauschformat nach außen ist das
+**[W3C-DTCG-Format](https://www.designtokens.org/tr/2025.10/format/)**
+(`$value`/`$type`-JSON) — kein selbst erfundenes Schema; das Token-Modell der
+`DESIGN.md` stammt davon ab (typisierte Gruppen, `{path.to.token}`-Refs). Kann das
+Zielsystem `DESIGN.md` nicht direkt konsumieren, erzeugt ein minimales
+reproduzierbares Build-/Adapter-Kommando die Runtime-Tokens aus dieser Quelle
+(Kommando: Stack-Adapter). Hex-/Skalenwerte von Hand in CSS/JS zu kopieren und nur
+per Drift-Test zu vergleichen ist keine Token-Auflösung.
 
 Hat das Projekt **Design-Anforderungen, aber (noch) keine** solche Quelle, wird eine
 `DESIGN.md` **nicht eigenmächtig** angelegt. Stattdessen wird die Lücke benannt und
@@ -275,6 +284,7 @@ die, wird das als offene Lücke gemeldet, nicht durch eine erfundene ersetzt.
 - Keine Inline-Farbe/Magic-Number, wo eine Token-/Skala-Stufe existiert (Regel 7).
 - Neuer Wert nötig → als neue zentrale Stufe, nicht als lokaler Sonderfall.
 - Gibt es eine `DESIGN.md`/Token-Quelle: Werte lösen deren Tokens auf, Kontrast ≥ WCAG AA.
+- Derivate (`tokens.json`/`theme.css`/`tailwind.config`) sind aus `DESIGN.md` erzeugt, nicht von Hand angeglichen.
 - Design-Anforderung, aber keine `DESIGN.md`/Token-Quelle → Erstellen vorgeschlagen und gefragt, nicht eigenmächtig angelegt.
 
 Diese Regeln greifen nur, wenn das Projekt eine UI mit eigenen Komponenten hat —

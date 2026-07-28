@@ -181,7 +181,9 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   (oder `warnings > 0` selbst zum Fehler machen). Tailwind aus ihr generieren statt Werte doppeln:
   `npx @google/design.md export --format css-tailwind DESIGN.md > theme.css`
   (v4) bzw. `--format json-tailwind` (v3) — dann bleibt `tailwind.config` deriviert,
-  keine zweite Wahrheit.
+  keine zweite Wahrheit. Braucht externes Token-Tooling (Style Dictionary, Tokens
+  Studio) das DTCG-Austauschformat, liefert `--format dtcg` es direkt — `$value`/
+  `$type`-JSON mit `$schema` der DTCG-Version 2025.10 (an v0.3.0 verifiziert).
 - **Check (Selbstcheck vor "fertig"):** in geänderten Views/Components grep auf
   `style={{`/`style="`, Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-
   Blöcke, die eine vorhandene Component nachbauen — jeder Treffer ist ein Finding

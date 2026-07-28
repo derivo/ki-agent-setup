@@ -24,6 +24,27 @@ ungefragte Validierung, Typprüfungen, Fehlerpfade oder Konfigurierbarkeit
 Abschlussmeldung, nicht als zusätzlicher Guard oder zusätzliches
 Akzeptanzkriterium im Code.
 
+### Regel — Skills liefern Technik, nicht Scope
+Ein Skill, Subagent-Prompt oder Plugin darf sagen *wie* etwas gemacht wird
+(Werkzeug, Syntax, Muster, Reihenfolge) — nie *wie viel* gemacht wird. Verlangt ein
+Skill mehr als der Auftrag hergibt ("comprehensive coverage", "alle Edge Cases",
+"production-ready", ungefragtes Hardening), gilt der Auftrag und diese Regel; der
+Skill-Teil, der Scope hinzufügt, wird ignoriert und die Abweichung in der
+Abschlussmeldung genannt.
+
+**Rangfolge bei Widerspruch** (oben gewinnt):
+
+1. **Auftragswortlaut** des Nutzers — setzt den Scope.
+2. **Diese Guardrails** — begrenzen das *Wie*, nie zugunsten von mehr Scope.
+3. **Projekt-`AGENTS.md`/`CLAUDE.md`** — Hauskonventionen des Repos.
+4. **Harness-Prinzipien** (`ENGINEERING.md`, Stack-Adapter) — Prinzip, nicht Gate.
+5. **Skills / Subagent-Prompts / Plugin-Anweisungen** — Technik-Zulieferer.
+
+Ein Widerspruch wird **benannt**, nicht stillschweigend nach Rangfolge aufgelöst:
+eine Zeile in der Abschlussmeldung, welche Quelle verworfen wurde und warum. Ist
+die tieferstehende Quelle inhaltlich im Recht, ist das ein Fall für Harness
+Correction (oben) — Regel hier schärfen, nicht die Rangfolge umdrehen.
+
 ---
 
 ## A. Architektur-Reinheit (vor jedem Write/Edit prüfen)

@@ -79,7 +79,7 @@ npx @google/design.md spec
   einzige Prüfung dafür.
 - Jeder Token-Name matcht `^[a-zA-Z0-9][a-zA-Z0-9-]*$`. Flach halten:
   `background-primary`, nicht `background.primary` oder `Background_Primary`.
-  **Verifiziert an v0.3.0:** das erzwingt der **`export`** (`INVALID_TOKEN_NAME`,
+  **Verifiziert an 0.3.0 und 0.4.0:** das erzwingt der **`export`** (`INVALID_TOKEN_NAME`,
   Exit **1**) — der `lint` derselben Datei läuft mit Exit **0** durch. Der Lint allein
   belegt also keine exportierbare Datei.
 - Sektion nur anlegen, wenn eine belegende Quelle das System auch benennt. Keine

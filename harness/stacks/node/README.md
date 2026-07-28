@@ -183,7 +183,7 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   (v4) bzw. `--format json-tailwind` (v3) — dann bleibt `tailwind.config` deriviert,
   keine zweite Wahrheit. Braucht externes Token-Tooling (Style Dictionary, Tokens
   Studio) das DTCG-Austauschformat, liefert `--format dtcg` es direkt — `$value`/
-  `$type`-JSON mit `$schema` der DTCG-Version 2025.10 (an v0.3.0 verifiziert).
+  `$type`-JSON mit `$schema` der DTCG-Version 2025.10 (an 0.3.0 und 0.4.0 verifiziert).
 - **Export-Ausgabe prüfen, nicht den Exit-Code** (zweite Instanz derselben Falle):
   jede populierte Token-Sektion muss ihre Familie emittieren — `colors` → `--color-*`,
   `typography.<n>.fontFamily` → `--font-*`, `.fontSize` → `--text-*`, `rounded` →
@@ -197,15 +197,16 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   erfundenes `background`/`color` liefert `warning` bei **Exit 0** (verifiziert) — und
   weil `components` nirgends exportiert wird, ist der Lint die *einzige* Prüfung
   dafür. `warnings > 0` hier als blockierend behandeln.
-- **Der `lint` belegt keine exportierbare Datei.** Verifiziert an v0.3.0: ein
+- **Der `lint` belegt keine exportierbare Datei.** Verifiziert an 0.3.0 und 0.4.0: ein
   Token-Name, der `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt (`Background_Primary`), lässt
   `lint` mit **Exit 0** passieren, während `export` mit `INVALID_TOKEN_NAME` und
   **Exit 1** bricht. Deshalb gehören beide Kommandos ins Gate, nicht nur der Lint.
 - **`diff` als Regressions-Werkzeug bei Änderungen an `DESIGN.md`:**
-  `npx @google/design.md diff <alt> DESIGN.md` liefert JSON mit
-  `added`/`removed`/`modified` je Token-Gruppe (Exit 0, an v0.3.0 verifiziert). Vor dem
-  Ersetzen einer bestehenden `DESIGN.md` damit prüfen, ob eine akzeptierte Entscheidung
-  still verschwindet.
+  `npx @google/design.md diff <alt> DESIGN.md` liefert JSON mit den Top-Level-Keys
+  `tokens` (je Gruppe `added`/`removed`/`modified`), `findings` und **`regression`**
+  (Exit 0, an 0.3.0 und 0.4.0 verifiziert). Vor dem Ersetzen einer bestehenden
+  `DESIGN.md` damit prüfen, ob eine akzeptierte Entscheidung still verschwindet — der
+  `regression`-Key ist genau dafür da, nicht der Exit-Code.
 - **Check (Selbstcheck vor "fertig"):** in geänderten Views/Components grep auf
   `style={{`/`style="`, Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-
   Blöcke, die eine vorhandene Component nachbauen — jeder Treffer ist ein Finding

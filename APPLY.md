@@ -195,6 +195,44 @@ PreToolUse-Guard; ein Test-Commit mit Dummy-Secret wird geblockt.
 
 ---
 
+## A7. Externe Tool-Stände, gegen die das Harness verifiziert hat
+
+Manche Harness-Regeln behaupten **beobachtetes Werkzeug-Verhalten** — Exit-Codes,
+Severity-Stufen, Export-Familien. Solche Aussagen haben ein Verfallsdatum: das Tool
+kann sich ändern, die committete Behauptung bleibt stehen. Deshalb hier dieselbe
+Known-Good-Mechanik wie bei den Plugins (B1.2): geprüfter Stand + Datum, ein Kommando
+zum Erkennen von Drift, bewusste Aktualisierung nach erneuter Prüfung.
+
+| Tool | Known-Good (Stand 2026-07-28) | Drift erkennen |
+|---|---|---|
+| `@google/design.md` (npm) | `0.4.0` | `npx --yes @google/design.md --version` |
+
+**Was daran hängt:** `harness/GUARDRAILS.md` Abschnitt G/Regel 7 und der
+`DESIGN.md`-Block der drei Stack-Adapter. Verifiziert und unter `0.4.0` reproduziert:
+Kontrast-Verstoß und ungültiges `components`-Sub-Token als `warning` bei **Exit 0**;
+ungültiger Token-Name lässt `lint` mit Exit 0 passieren, bricht `export` mit
+`INVALID_TOKEN_NAME` und **Exit 1**; `components` emittiert unter keinem Export-Target;
+`omitted:` wechselt die Lint-Meldung, beide Zustände bleiben `info`.
+
+**Warum das nötig ist — der Anlass, aus dem dieser Abschnitt entstand:** Die
+Adapter-Kommandos rufen `npx --yes @google/design.md` **ungepinnt** auf, ziehen also
+`latest`. Am 2026-07-28 fiel auf, dass `0.4.0` (Release 2026-07-27) bereits latest war,
+während dieselben Proben zuvor `v0.3.0` gemeldet hatten — die Provenance-Angaben im
+Harness waren dadurch kurzzeitig unsicher. Alle Befunde wurden gegen `@0.4.0` gepinnt
+reproduziert und halten.
+
+**Prüf-Anlass (kein Cron, bewusst):** Die npm-Release-Kadenz ist grob monatlich (0.1.0
+2026-04-21 → 0.4.0 2026-07-27) und der Trigger ist die **Version**, nicht ein neuer
+Upstream-Commit — Commits sind Rauschen, Releases sind das, was Verhalten ändert. Beim
+`/harness-sync` und bei Arbeit an Abschnitt G die Version gegen die Tabelle prüfen;
+weicht sie ab, die vier obigen Proben wiederholen, bevor die Tabelle neu gesetzt wird.
+
+**Offene Alternative:** Statt Known-Good könnte man die Kommandos in den Adaptern hart
+pinnen (`@google/design.md@0.4.0`). Das friert das Verhalten ein, verlangt aber, dass
+jemand das Pin pflegt. Known-Good folgt dem Muster, das dieses Setup schon nutzt.
+
+---
+
 # TEIL B — Pro Client
 
 Jeder Block sagt, was **dieser** Client zu tun hat: wohin er die Substanz aus

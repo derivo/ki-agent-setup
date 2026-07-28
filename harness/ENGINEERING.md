@@ -126,8 +126,17 @@ Konventionsdateien.
   liegen im Promille- bis Prozentbereich.
 - Publisher-Adoption dagegen ~8,7 % der Tranco-Top-1000 — genau die Asymmetrie, wegen
   der Schritt 3 nicht durch Schritt "viele machen es" ersetzbar ist.
-- Ergebnis: für Sichtbarkeit/SEO **nicht** anlegen. Anlegen, sobald ein konkreter
-  Abnehmer benannt ist — dann gegen dessen Doku bauen, nicht gegen die Spec allein.
+- Ergebnis der Prüfung: für Sichtbarkeit/SEO ist **keine** Wirkung belegt.
+
+`llms.txt` ist trotzdem **gesetzter Hausstandard** — Teil der Web-Baseline neben
+`robots.txt` und `sitemap.xml` (`../instructions/AGENTS.md` → Konventionen). Das ist
+eine **Baseline-Entscheidung, keine Evidenz-Aussage**: begründet mit
+Vollständigkeit und nahezu null Erstellungskosten, nicht mit gemessenem Nutzen. Die
+Prüfreihenfolge oben bleibt davon unberührt und gilt für jedes *andere*
+Konventions-Artefakt — eine gesetzte Entscheidung ersetzt den Test nicht, sie
+überspringt ihn bewusst an einer benannten Stelle. Damit die Datei nicht zum Fall
+"Doku ≠ Realität" wird (Schritt 4), wird sie aus der echten Struktur generiert und
+nicht von Hand gepflegt.
 
 ---
 

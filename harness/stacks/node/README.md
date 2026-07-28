@@ -184,6 +184,24 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   keine zweite Wahrheit. Braucht externes Token-Tooling (Style Dictionary, Tokens
   Studio) das DTCG-Austauschformat, liefert `--format dtcg` es direkt — `$value`/
   `$type`-JSON mit `$schema` der DTCG-Version 2025.10 (an v0.3.0 verifiziert).
+- **Export-Ausgabe prüfen, nicht den Exit-Code** (zweite Instanz derselben Falle):
+  jede populierte Token-Sektion muss ihre Familie emittieren — `colors` → `--color-*`,
+  `typography.<n>.fontFamily` → `--font-*`, `.fontSize` → `--text-*`, `rounded` →
+  `--radius-*`, `spacing` → `--spacing-*`. Fehlt eine, ist die Front-Matter falsch
+  geformt, obwohl der Export mit **Exit 0** durchläuft. **Ausnahme, verifiziert:**
+  `components` emittiert **kein** Target (weder `css-tailwind` noch `dtcg`) — beide
+  sind Token-Ebenen. Das ist Target-Limitation, kein Schema-Fehler; nicht „reparieren"
+  durch Löschen der Sektion.
+- **`components`-Sub-Tokens nur aus dem Schema.** Gültig sind `backgroundColor`,
+  `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, `width`. Ein
+  erfundenes `background`/`color` liefert `warning` bei **Exit 0** (verifiziert) — und
+  weil `components` nirgends exportiert wird, ist der Lint die *einzige* Prüfung
+  dafür. `warnings > 0` hier als blockierend behandeln.
+- **`diff` als Regressions-Werkzeug bei Änderungen an `DESIGN.md`:**
+  `npx @google/design.md diff <alt> DESIGN.md` liefert JSON mit
+  `added`/`removed`/`modified` je Token-Gruppe (Exit 0, an v0.3.0 verifiziert). Vor dem
+  Ersetzen einer bestehenden `DESIGN.md` damit prüfen, ob eine akzeptierte Entscheidung
+  still verschwindet.
 - **Check (Selbstcheck vor "fertig"):** in geänderten Views/Components grep auf
   `style={{`/`style="`, Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-
   Blöcke, die eine vorhandene Component nachbauen — jeder Treffer ist ein Finding

@@ -160,6 +160,19 @@ Filament, ggf. + Tailwind).
   behandeln. Tailwind aus ihr generieren statt Werte doppeln:
   `npx @google/design.md export --format css-tailwind DESIGN.md`
   (v4) bzw. `--format json-tailwind` (v3) — so bleibt `tailwind.config` deriviert.
+- **Export-Ausgabe prüfen, nicht den Exit-Code** (dieselbe Falle wie beim Lint): jede
+  populierte Token-Sektion muss ihre Familie emittieren (`colors` → `--color-*`,
+  `typography` → `--font-*`/`--text-*`, `rounded` → `--radius-*`, `spacing` →
+  `--spacing-*`). Fehlt eine, ist die Front-Matter falsch geformt, obwohl der Export
+  mit **Exit 0** durchläuft. Verifizierte Ausnahme: `components` emittiert **kein**
+  Target — Token-Ebenen können es nicht darstellen, das ist Limitation, kein Fehler.
+- **`components`-Sub-Tokens nur aus dem Schema** (`backgroundColor`, `textColor`,
+  `typography`, `rounded`, `padding`, `size`, `height`, `width`). Erfundene Namen geben
+  `warning` bei **Exit 0**, und weil `components` nirgends exportiert wird, ist der Lint
+  die einzige Prüfung dafür.
+- **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
+  zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte
+  Entscheidung still verschwindet.
 - **Check (Selbstcheck vor "fertig"):** in geänderten Views grep auf `style="`,
   Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die eine
   vorhandene `<x-…>`-Komponente nachbauen — jeder Treffer ist ein Finding (Regel 6/7).

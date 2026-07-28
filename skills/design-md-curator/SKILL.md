@@ -20,6 +20,15 @@ dieser Skill.
 Betroffen wird nur `DESIGN.md`. Produktquellen, Konfiguration, Dependencies und
 generierte Dateien bleiben unangetastet (Surgical Changes).
 
+**Bestehende Vorgaben verdrängt dieser Skill nicht.** Hat das Projekt seine
+Design-Sprache schon irgendwo — `STYLEGUIDE.md`, `docs/design-*`, `CONTRIBUTING.md`,
+Projekt-`CLAUDE.md`/`AGENTS.md`, Design-Kapitel im README, Doku der
+Komponenten-Bibliothek —, ist das eine gültige Vorgabe, auch wenn sie Prosa ist und
+nicht dieses Format hat. Widerspricht sie dem, was hier entstehen würde, **hält der
+Skill an**: beide Fundstellen mit Datei und Zeile vorlegen, den Konflikt beschreiben,
+Entscheidung des Nutzers abwarten. Nicht hinterher melden, nicht selbst zugunsten des
+maschinenlesbaren Formats entscheiden (GUARDRAILS G → „Bestand zuerst").
+
 ## 1. Modus wählen
 
 **Repo-Modus** — lokale Quellen vorhanden. Er darf normative Werte, Token-*Namen*,

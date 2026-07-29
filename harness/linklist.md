@@ -1,3 +1,5 @@
+> **Lade wenn:** `/hx:linklist` wurde aufgerufen oder eine Quelle wird gesucht.
+
 # Linklist — kuratierte Grundlagen-Quellen
 
 Nachschlage-Liste stabiler externer Quellen, auf die sich Setup/Harness stützen
@@ -10,7 +12,7 @@ jeder Link genau **einmal**, in dem Block, wo er thematisch hingehört.
   auflösbare Links werden nicht aufgenommen (siehe Skill).
 
 ## Agent-Setup & Methode
-- [design.md (google-labs-code)](https://github.com/google-labs-code/design.md) — Format-Spec, um ein Design-System maschinenlesbar an AI-Agents zu geben (Token-YAML + Prosa); im Harness als kanonische Token-Quelle verankert (GUARDRAILS Abschnitt G).
+- [design.md (google-labs-code)](https://github.com/google-labs-code/design.md) — Format-Spec, um ein Design-System maschinenlesbar an AI-Agents zu geben (Token-YAML + Prosa); im Harness als kanonische Token-Quelle verankert (`GUARDRAILS_UI.md`, Abschnitt G).
 - [Design Tokens Format Module 2025.10 (W3C DTCG)](https://www.designtokens.org/tr/2025.10/format/) — Final Community Group Report (28.10.2025, keine W3C Recommendation), definiert Design-Tokens als `$value`/`$type`-JSON; im Harness das Austauschformat, von dem das Token-Modell der `DESIGN.md` abstammt.
 - [skills.sh](https://skills.sh) — Open Agent Skills Directory: wiederverwendbare Agent-Skills per Kommando finden und installieren.
 - [ui-skills (ibelick)](https://github.com/ibelick/ui-skills) — Agent-Skills für Design-Engineering-Aufgaben (`npx ui-skills`); Herkunft unseres `skills/design-md-curator` (adaptiert aus dessen `create-design-md`, nicht übernommen).

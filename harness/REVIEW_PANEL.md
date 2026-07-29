@@ -1,3 +1,6 @@
+> **Lade wenn:** der Diff erreicht die Panel-Schwelle (unten definiert) — kein
+> Standardschritt.
+
 # Review-Panel — Multi-Agent-Validierung für risikoreiche Diffs
 
 Bei **risikoreichen oder sehr breiten** Änderungen reicht der eigene Blick nicht:
@@ -103,7 +106,8 @@ Vier feste Dimensionen, je bestanden/gefallen mit einem Satz Begründung:
 - **Handwerk** — Ausrichtung, Abstände, Zustände (hover/focus/disabled/leer/lang);
   nichts überlappt, nichts ist abgeschnitten.
 - **Konsistenz** — nutzt die kanonischen Komponenten und die Token-Skala
-  (GUARDRAILS Abschnitt G) und fällt nicht aus dem Rest der App heraus. Gibt es
+  ([GUARDRAILS_UI.md](GUARDRAILS_UI.md), Abschnitt G) und fällt nicht aus dem Rest
+  der App heraus. Gibt es
   eine `DESIGN.md`/Token-Quelle, wird der gerenderte Zustand gegen deren Tokens
   geprüft (Farben/Typo/Abstände/Radien aufgelöst, Kontrast ≥ WCAG AA), nicht nur
   gegen den Gesamteindruck.

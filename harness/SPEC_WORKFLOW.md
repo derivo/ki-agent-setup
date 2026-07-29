@@ -1,3 +1,5 @@
+> **Lade wenn:** aus einer groben Idee soll eine zerlegte, testbare Spec werden.
+
 # Spec-Workflow — von der Idee zur zerlegten Aufgabe
 
 Diese Datei bringt dem Agenten bei, WIE aus einer groben Idee testbare

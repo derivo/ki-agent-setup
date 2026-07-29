@@ -6,9 +6,11 @@ Read-only: dieser Command ändert nichts, er lädt und berichtet.
    `~/.codex/harness/README.md`, `~/.gemini/harness/README.md`,
    `~/.config/opencode/harness/README.md`, sonst `harness/README.md` im
    ki-agent-setup-Repo. Nichts gefunden → melden, nicht raten.
-2. **Kern laden** — `README.md` (Lesereihenfolge) und `GUARDRAILS.md` lesen.
-   Passenden **Stack-Adapter** unter `stacks/` für das aktuelle Projekt wählen;
-   passt keiner, das benennen (generelle Methode gilt, Adapter ggf. anlegen).
+2. **Tier 1 laden — nur das** — `GUARDRAILS.md` plus den passenden
+   **Stack-Adapter** unter `stacks/`; passt keiner, das benennen (generelle Methode
+   gilt, Adapter ggf. anlegen). Die Trigger-Tabelle in `README.md` sagt, was
+   *sonst* wann nachgeladen wird — Tier-2-Dateien hier **nicht** vorsorglich
+   mitlesen, das ist der Zweck der Tabelle.
    Doku-Projekt → stattdessen den Doc-Harness über die Suchreihenfolge aus den
    globalen Instructions laden.
 3. **Projektstand erfassen** —

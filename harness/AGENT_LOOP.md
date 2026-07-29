@@ -1,3 +1,6 @@
+> **Lade wenn:** die Arbeit ist mehrschrittig (Spec → Test → Code → Gate → Korrektur),
+> nicht ein einzelner Edit.
+
 # Agent-Loop — der orchestrierte Ablauf
 
 Die Leitplanken ([GUARDRAILS.md](GUARDRAILS.md), die globalen Instructions, die

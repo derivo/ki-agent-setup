@@ -1,3 +1,5 @@
+> **Lade wenn:** ein Bug hat eine normale Runde überlebt.
+
 # Debuggen — der hypothesengetriebene Investigations-Loop
 
 Der normale Loop ([SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md), Schleife 1) fixt

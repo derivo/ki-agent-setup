@@ -163,6 +163,13 @@ Struktur** (`docs/README.md`/`docs/CLAUDE.md` im Projekt, Vorlage:
 
 ## Testing — Pflichtstandard Edge Cases
 
+**Benannte Ausnahme zum Scope-Minimum.** *Simplicity First* oben und
+`harness/GUARDRAILS.md` §0 verbieten, Specs/Tests eigenmächtig um Fehlerpfade zu
+erweitern. Für **UI-Formulare** gilt hier bewusst das Gegenteil: die Matrix unten
+ist gesetzt und gilt als angefordert, ohne dass sie im Auftrag stehen muss.
+Begrenzt auf Formular-Eingaben — kein Freibrief für ungefragte Fehlerpfade in
+anderer Logik.
+
 UI-Formular (E2E / Widget / Browser) → vollständige Edge-Case-Matrix. Prinzip:
 **immer genau ein Feld falsch, alle anderen korrekt** — durch alle Felder rotieren.
 

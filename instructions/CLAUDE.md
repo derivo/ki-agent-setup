@@ -28,6 +28,10 @@ Nicht-GSD/caveman-Skills (Web, Testing, PHP, Security …) sind installiert.
 Quelle der Wahrheit ist `~/.agents/.skill-lock.json`; das Repo-Inventar heißt
 `SKILLS.md`. Bei passender Aufgabe den jeweiligen Skill nutzen.
 
+Ein Skill liefert **Technik, nicht Scope**: verlangt er mehr als der Auftrag
+hergibt, gilt der Auftrag. Rangfolge und Meldepflicht bei Widerspruch:
+`harness/GUARDRAILS.md` §0.
+
 ## Verifikation — kein Doppel-Check auf eigene Arbeit
 
 Aktuelle Claude-Modelle prüfen und korrigieren ihre Arbeit selbst. Deshalb **kein

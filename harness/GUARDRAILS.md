@@ -129,6 +129,15 @@ die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z.
 Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
 als „gefixt / nicht reproduzierbar" gewertet.
 
+Ist der Defekt an eine Umgebung gebunden, die der Agent nicht selbst fahren kann
+(fremder Browser, fremdes OS, Gerät des Nutzers), ersetzt eine andere Umgebung die
+Reproduktion NICHT. Dann werden Messwerte aus der betroffenen Umgebung angefordert
+(Konsolen-Snippet, Log, Ausschnitt) und die Beobachtung zuerst in Klassen zerlegt —
+bei Rendering-Befunden Geometrie gegen Paint gegen Umgebungs-Chrome. Ein Mechanismus
+wird erst benannt, wenn die Messung die anderen Klassen ausschließt; bis dahin gilt
+der Befund als offen, auch wenn ein Fix plausibel wirkt. Ein vermuteter Mechanismus
+gehört nicht in ein dauerhaftes Artefakt (PR-Body, Commit, Doku).
+
 ### Regel — Stochastische Defekte: Rate samt Unsicherheit messen
 Tritt ein Defekt **nicht bei jedem Lauf** auf, ist ein grüner Lauf **kein**
 Fertig-Beleg — ein ungefixter Stand liefert bei kleiner Stichprobe genauso grün.

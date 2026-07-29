@@ -65,7 +65,8 @@ organisch (steht so in APPLY.md).
 
 ### 4. Harness optional einsetzen
 Soll ein PHP/Slim-Projekt nach dem Harness entwickelt werden:
-- `harness/README.md` lesen → Einstiegspunkt + Lesereihenfolge.
+- `harness/README.md` lesen → Einstiegspunkt + Trigger-Tabelle (Tier 1 immer,
+  Rest gegen Trigger).
 - Die Doku-Dateien (`ROADMAP`, `GUARDRAILS`, `SPEC_WORKFLOW`, `FEATURE_TEMPLATE`,
   `TESTS`, `AGENT_LOOP`, `feature`) ins Zielprojekt übernehmen oder dort
   referenzieren.

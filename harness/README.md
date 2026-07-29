@@ -23,44 +23,60 @@ generellen Methode und legt bei Bedarf einen neuen Adapter an.
 
 ---
 
-## Dateien & Lesereihenfolge
+## Dateien & Lade-Trigger
 
-Ein Agent, der hier startet, liest in dieser Reihenfolge:
+**Es gibt keine Lesereihenfolge, die man immer durchläuft.** Das ganze Set sind
+rund 60 KB Methode plus ein Stack-Adapter — als Pflichtlektüre vor jedem Write
+wären das ~25k Token, auch für einen Ein-Zeilen-Fix. Kontext, der für die
+Aufgabe nichts entscheidet, verdrängt Kontext, der etwas entscheidet.
 
-1. **[ROADMAP.md](ROADMAP.md)** — die fünf Reifephasen. Klärt, auf welcher
-   Sprosse das Projekt steht und wie autonom du arbeiten darfst.
-2. **[GUARDRAILS.md](GUARDRAILS.md)** — die harten Regeln (Architektur-Reinheit,
-   sensible Daten/Secrets, das Fertig-Kriterium). Gelten immer, in jeder Phase.
-3. **[SPEC_WORKFLOW.md](SPEC_WORKFLOW.md)** — wie aus einer groben Idee eine
-   zerlegte, testbare Spec wird.
-4. **[FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md)** — die Form einer fertigen Spec.
-   Daneben **[ADR_TEMPLATE.md](ADR_TEMPLATE.md)** — die Form eines Architecture
-   Decision Record für architektonisch signifikante Entscheidungen, die beim
-   Schärfen der Spec anfallen.
-5. **[TESTS.md](TESTS.md)** — die Teststrategie (Unit für den Kern, Durchstich-
-   Test mit Zustands-Assertion).
-6. **[AGENT_LOOP.md](AGENT_LOOP.md)** — der Ablauf, der alles verbindet:
-   Spec → Test → Code → Gate → Korrektur.
-7. **[SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)** — das Herz: die prüfende
-   Schleife (wiederholen bis verifiziert) und wie das Harness aus jedem Fehler
-   schärfer wird (Harness Correction).
-8. **[DEBUG.md](DEBUG.md)** — der hypothesengetriebene Investigations-Loop für
-   Bugs, die eine normale Runde überleben: persistenter, falsifizierbarer
-   Debug-State, der einen Context-Reset übersteht.
-9. **[REVIEW_PANEL.md](REVIEW_PANEL.md)** — Multi-Agent-Review (Korrektheit /
-   Security / Performance, parallel, Funde am Code belegt) — nur bei
-   risikoreichen oder sehr breiten Diffs, nicht als Standardschritt.
-10. **[feature.md](feature.md)** — das Runbook für einen einzelnen Feature-Lauf.
+Deshalb gilt: **Tier 1 immer, alles andere gegen seinen Trigger.** Jede Datei
+trägt oben eine `Lade wenn:`-Zeile — die reicht, um zu entscheiden, ohne die
+Datei zu lesen.
 
-**On demand, nicht in der Reihenfolge:** [ENGINEERING.md](ENGINEERING.md) —
-Referenz-Doc zu Prinzipien und Mustern (das *Warum* hinter Simplicity,
-Consistency, Modularität), gelesen wenn eine Design-Entscheidung ansteht.
-[linklist.md](linklist.md) — die kuratierte Linkliste hinter `/hx:linklist`.
+### Tier 1 — bei jeder Code-Arbeit, vor dem ersten Write
 
-**Nicht Teil des normalen Agent-Kontexts:** [EVALS.md](EVALS.md) ist die
-Maintainer-/Grader-Anleitung für Harness- und Modell-Drift-Checks. Ein getesteter
-Executor liest diese Datei nicht, weil sie Referenzaufgaben und Pass-Kriterien
-enthält; die Trennung ist Teil des Eval-Protokolls.
+| Datei | Größe | Warum immer |
+|---|---|---|
+| **[GUARDRAILS.md](GUARDRAILS.md)** | ~4,0k Token | Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. Gelten in jeder Phase. |
+| **passender [Stack-Adapter](stacks/)** | ~4,5k Token | Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. |
+
+Das ist das Minimum — rund 8,5k Token. Wer mehr lädt, braucht dafür einen
+Trigger aus der nächsten Tabelle.
+
+### Tier 2 — gegen Trigger nachladen
+
+| Datei | Größe | Lade wenn |
+|---|---|---|
+| [AGENT_LOOP.md](AGENT_LOOP.md) | ~2,4k | Die Arbeit ist mehrschrittig (Spec → Test → Code → Gate → Korrektur), nicht ein einzelner Edit. |
+| [TESTS.md](TESTS.md) | ~4,0k | Tests werden geschrieben oder umgebaut — Teststrategie, Durchstich, Zustands-Assertion. |
+| [SPEC_WORKFLOW.md](SPEC_WORKFLOW.md) | ~0,8k | Aus einer groben Idee soll eine zerlegte, testbare Spec werden. |
+| [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) | ~0,5k | Eine Spec wird tatsächlich geschrieben (Form des Ergebnisses). |
+| [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | ~0,7k | Eine architektonisch signifikante Entscheidung fällt an und wird festgehalten. |
+| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~2,1k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). API-/CLI-Projekte nie. |
+| [ENGINEERING.md](ENGINEERING.md) | ~2,0k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren). |
+| [DEBUG.md](DEBUG.md) | ~1,2k | Ein Bug hat eine normale Runde überlebt — hypothesengetriebener Loop mit persistentem Debug-State. |
+| [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) | ~1,7k | Eine Regel soll geschärft werden (Harness Correction) oder die prüfende Schleife greift nicht. |
+| [REVIEW_PANEL.md](REVIEW_PANEL.md) | ~1,9k | Der Diff erreicht die Panel-Schwelle (dort definiert) — nicht als Standardschritt. |
+| [ROADMAP.md](ROADMAP.md) | ~1,0k | Der Autonomiegrad ist unklar: wie weit darf ohne Rückfrage gearbeitet werden. |
+| [feature.md](feature.md) | ~0,7k | Ein kompletter Feature-Lauf wird abgearbeitet (Runbook). |
+| [linklist.md](linklist.md) | ~0,8k | `/hx:linklist` wurde aufgerufen oder eine Quelle wird gesucht. |
+
+### Nie im Executor-Kontext
+
+[EVALS.md](EVALS.md) (~9,7k Token) ist die Maintainer-/Grader-Anleitung für
+Harness- und Modell-Drift-Checks. Ein getesteter Executor liest diese Datei
+nicht, weil sie Referenzaufgaben und Pass-Kriterien enthält; die Trennung ist
+Teil des Eval-Protokolls. Ebenso: die **nicht** zum Projekt passenden
+Stack-Adapter.
+
+### Was die Tabelle nicht erlaubt
+
+Ein Trigger ist eine Eigenschaft der Aufgabe, keine Geschmacksfrage. „Sicherheitshalber
+alles laden" ist genauso ein Verstoß wie das Gate zu überspringen — beides tauscht
+eine prüfbare Entscheidung gegen ein Gefühl. Umgekehrt gilt: trifft ein Trigger zu,
+wird die Datei **ganz** gelesen, nicht überflogen. Unsicher, ob ein Trigger greift →
+die `Lade wenn:`-Kopfzeile der Datei lesen (eine Zeile), dann entscheiden.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced

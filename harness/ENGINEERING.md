@@ -1,3 +1,6 @@
+> **Lade wenn:** eine Design-Entscheidung steht an — Modularität, Kohäsion/Kopplung,
+> Interface-Richtung, Fehler-Shape, Wann-abstrahieren.
+
 # Engineering — Prinzipien & Muster
 
 Referenz-Doc, on-demand gelesen. Expandiert die terse Arbeitsweise-Regeln aus

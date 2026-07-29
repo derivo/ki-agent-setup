@@ -144,6 +144,12 @@ dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
 den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
+**Nicht das ganze Harness laden.** Pflicht sind nur `GUARDRAILS.md` und der zum
+Projekt passende Stack-Adapter; alles Weitere wird gegen seinen Trigger
+nachgeladen (Tabelle in `harness/README.md`, `Lade wenn:`-Zeile im Kopf jeder
+Datei). Vorsorglich alles zu lesen ist ein Verstoß gegen „Context-Budget schlank"
+oben, nicht Gründlichkeit.
+
 Engineering-Prinzipien (Modularität, Kohäsion/Kopplung, Interface-/Dependency-
 Richtung, Fehler-Shape, Wann-abstrahieren) sind vertieft in `harness/ENGINEERING.md`
 — gleiche Lookup-Reihenfolge wie oben, Referenz-Doc (on-demand gelesen, expandiert

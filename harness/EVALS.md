@@ -1,3 +1,6 @@
+> **Lade wenn:** du bist Maintainer oder Grader eines Eval-Laufs. **Nie im
+> Executor-Kontext** — die Datei enthält Aufgaben und Pass-Kriterien.
+
 # Evals — das Harness messen, nicht nur korrigieren
 
 [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) schärft das Harness, wenn ein Fehler
@@ -34,7 +37,8 @@ Projekt. Richtwert: ein Lauf kostet 30–60 Minuten Agent-Zeit.
    daraus kopierte Pass-Kriterien oder Referenzlösungen.
 2. **Je Aufgabe eine frische Executor-Session** mit Wegwerf-Projekt
    (Scratch-Verzeichnis). Sie lädt nur den normalen Runtime-Harness aus der
-   Lesereihenfolge in `README.md`, dann erhält sie den Aufgaben-Wortlaut unten
+   Tier-1-Regel plus Trigger-Tabelle aus `README.md`, dann erhält sie den
+   Aufgaben-Wortlaut unten
    unverändert. Nie die Session bewerten, die gerade am Harness gearbeitet hat.
 3. **Getrennt graden.** Ein neutraler Grader prüft das Executor-Artefakt und die
    beobachteten Befehle ausschließlich gegen das Pass-Kriterium: bestanden/
@@ -110,7 +114,7 @@ Discriminator** — beide Seiten verwarfen Weiß-auf-Gelb und prüften Kontrast 
 **Kriterien-Lücke in E12 — am 2026-07-28 geschlossen.** Der Lauf vom 2026-07-27 zeigte:
 weil das Fixture keinen Build-Schritt hatte, waren „Token-Referenz auflösen" und
 „Hexwert von Hand ins CSS kopieren" beobachtungsgleich — E12 konnte die Derivat-/
-Autoritäts-Richtung aus `GUARDRAILS.md` G/Regel 7 nicht prüfen. E12 hat seither eine
+Autoritäts-Richtung aus `GUARDRAILS_UI.md` G/Regel 7 nicht prüfen. E12 hat seither eine
 Fixture-Anforderung (generierte `theme.css` mit `do not edit`-Header + veraltetem
 Akzent-Paar) und eine Derivat-Klausel im Pass-Kriterium. **Folge:** E12s
 Known-Good-Baseline startet neu — die grünen Zeilen bis 2026-07-27 gelten für die
@@ -249,7 +253,7 @@ Inline-Hex/Magic-Number daneben: Er verwendet die kanonische Komponente wieder u
 bezieht Farbe/Größe aus der Token-/Skala-Quelle. Fehlt dort eine Stufe (Grün-
 Variante/Größe), ergänzt er sie **zentral** im System — nicht lokal per `#3b7`/
 `px` im Markup. „Schnell direkt in der Seite" schlägt Regel 6/7 nicht
-(`GUARDRAILS.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
+(`GUARDRAILS_UI.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
 
 ### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate, Derivate werden erzeugt
 **Aufgabe:** Scratch-Frontend mit einer `DESIGN.md` im
@@ -275,7 +279,7 @@ auf statt den Wert zu kopieren, und erkennt/prüft den Kontrast-Verstoß (per
 `npx @google/design.md lint DESIGN.md` oder expliziter ≥ 4.5:1-Prüfung). Fix:
 das vorgesehene `{colors.on-accent}` nutzen — oder, fehlte ein passendes Token,
 zentral eins ergänzen, das AA besteht. Kein Inline-Weiß im Markup „weil es knallt".
-**Zusätzlich (Derivat-Richtung, GUARDRAILS G/Regel 7):** Die fehlenden Tokens
+**Zusätzlich (Derivat-Richtung, GUARDRAILS_UI G/Regel 7):** Die fehlenden Tokens
 gelangen über den **Generator** in `theme.css` — nicht per Hand. Ein Hex-Wert, den
 der Agent selbst in die generierte Datei schreibt, fällt, auch wenn er zufällig
 stimmt; ebenso ein Hex direkt in `components.css`/Markup. Den WCAG-Fail benennen und
@@ -291,9 +295,45 @@ gegen die neue Fassung gemessen, nicht gegen sie.
 E12 isoliert, was die `DESIGN.md`-Integration **zusätzlich** trägt — die Datei als
 normative Quelle, das Kontrast-Gate **und** (seit 2026-07-28) die Derivat-Richtung:
 dass abgeleitete Token-Dateien erzeugt und nicht von Hand nachgezogen werden.
-Ohne die Regel (GUARDRAILS G/Regel 7,
+Ohne die Regel (GUARDRAILS_UI G/Regel 7,
 DESIGN.md-Absatz) darf ein Modell Weiß-auf-Gelb als plausibles Highlight liefern;
 mit ihr nicht. Reines API-/CLI-Projekt oder Projekt ohne `DESIGN.md` → E12 entfällt.
+
+### E13 — Kontext-Budget: Tier 1 reicht für einen Trivial-Task
+**Aufgabe:** Scratch-Projekt mit vollständig deployter Harness-Kopie (alle Dateien
+unter `harness/` erreichbar, SessionStart-Reminder aktiv) und einem offensichtlichen
+Ein-Zeilen-Defekt — z. B. eine Off-by-one in einer Hilfsfunktion, die ein
+vorhandener Test bereits rot meldet. Auftrag wörtlich: „Der Test `test_slice_end`
+ist rot. Behebe die Ursache."
+
+**Pass:** Der Agent liest **höchstens** Tier 1 (`GUARDRAILS.md` + den zum Projekt
+passenden Stack-Adapter) und behebt den Defekt. Kein Read auf `TESTS.md`,
+`AGENT_LOOP.md`, `SPEC_WORKFLOW.md`, `FEATURE_TEMPLATE.md`, `REVIEW_PANEL.md`,
+`SELF_OPTIMIZATION.md`, `ROADMAP.md`, `GUARDRAILS_UI.md`, einen fremden
+Stack-Adapter oder `EVALS.md`. Gemessen wird an den **tatsächlichen Read-Aufrufen**
+im Transcript, nicht an der Selbstauskunft des Agenten.
+
+**Fail-Beispiele:** „Ich lese erst mal das ganze Harness durch" (Tier-2-Dateien
+ohne zutreffenden Trigger); Lesen des `python`-Adapters in einem Node-Projekt;
+Öffnen von `EVALS.md`.
+
+**Nicht-Fail:** eine Tier-2-Datei, deren Trigger tatsächlich greift — wenn der Fix
+einen Test *ändern* muss, ist `TESTS.md` legitim. Der Grader bewertet den Trigger,
+nicht die Anzahl.
+
+**Was die Aufgabe isoliert:** ob die Trigger-Tabelle in `harness/README.md`
+tatsächlich als Ladeschranke wirkt oder nur als Inhaltsverzeichnis gelesen wird.
+Sie ist damit ein **Kosten**-Eval, kein Korrektheits-Eval: alle bisherigen
+Aufgaben messen, ob der Agent das Richtige *tut*, E13 misst, was ihn das an
+Kontext kostet. Ein Lauf, der den Fix korrekt liefert und dabei 25k Token
+Methode zieht, ist ein **Fail** — genau der Zustand, den die Tabelle beseitigen
+soll.
+
+**A/B-Hinweis:** Der Diskriminator ist die Tabelle plus die `Lade wenn:`-Köpfe.
+Ohne-Variante = `harness/README.md` in der Fassung vor 2026-07-29 („Ein Agent, der
+hier startet, liest in dieser Reihenfolge: 1. … 10. …"). Ob das auf aktuellen
+Modellen überhaupt diskriminiert, ist **ungemessen** — bis ein Lauf vorliegt, ist
+E13 eine Hypothese, kein Beleg.
 
 ---
 

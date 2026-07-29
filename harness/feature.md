@@ -1,3 +1,5 @@
+> **Lade wenn:** ein kompletter Feature-Lauf wird abgearbeitet.
+
 # Feature-Loop — das Runbook
 
 Diese Datei ist das Runbook für einen einzelnen Feature-Lauf. Sie kann direkt als

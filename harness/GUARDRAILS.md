@@ -45,6 +45,21 @@ eine Zeile in der Abschlussmeldung, welche Quelle verworfen wurde und warum. Ist
 die tieferstehende Quelle inhaltlich im Recht, ist das ein Fall für Harness
 Correction (oben) — Regel hier schärfen, nicht die Rangfolge umdrehen.
 
+**Eine `DESIGN.md` hat in dieser Rangfolge keinen eigenen Rang.** Abschnitt G
+(Regel 7) setzt nur die *Form* — `DESIGN.md` ist das gesetzte Format, und Tokens
+sind normativ *innerhalb* dieser Datei. Als Guardrail begrenzt das das *Wie*
+(Rang 2) und macht die Datei nicht zur höherrangigen **Inhalts**quelle gegenüber
+anderen Design-Vorgaben des Projekts. Ein inhaltlicher Widerspruch zwischen
+`DESIGN.md` und einem `STYLEGUIDE.md`, `docs/design-*` oder einem Design-Kapitel
+wird von dieser Rangfolge deshalb **nicht** entschieden — sie ordnet Scope- und
+Wie-Quellen, nicht die Frage, welcher Design-*Inhalt* richtig ist. Das gilt auch
+dort, wo die konkurrierende Quelle selbst einen Rang hat (Projekt-`CLAUDE.md`/
+`AGENTS.md`, Rang 3): ein höherer Rang setzt sie nicht automatisch durch, weil der
+Rang über Scope und Vorgehen entscheidet, nicht über den Farbwert. Der Fall geht an
+„Bestand zuerst — nichts vorschlagen in einen besetzten Platz" (Abschnitt G) —
+beide Fundstellen mit Datei und Zeile benennen, der Nutzer entscheidet, bis dahin
+wird nichts überschrieben.
+
 ---
 
 ## A. Architektur-Reinheit (vor jedem Write/Edit prüfen)

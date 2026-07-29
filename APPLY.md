@@ -339,18 +339,34 @@ zeigt Model-/Context-Zeile + Pfad + git-branch.
 Alle Hook-Skripte liegen in `~/.claude/hooks/`. Registrieren (Pfade auf reales
 `$HOME` anpassen):
 - **SessionStart:** `gsd-check-update.js`, `gsd-session-state.sh`,
-  `caveman-activate.js`, `harness-activate.sh` (siehe B1.6)
-- **UserPromptSubmit:** `caveman-mode-tracker.js`
+  `harness-activate.sh` (siehe B1.6)
 - **PreToolUse** (`Write|Edit`): `gsd-prompt-guard.js`, `gsd-read-guard.js`,
   `gsd-workflow-guard.js` — (`Bash`): `gsd-validate-commit.sh`
 - **PostToolUse:** (`Bash|Edit|Write|MultiEdit|Agent|Task`) `gsd-context-monitor.js`;
   (`Read`) `gsd-read-injection-scanner.js`; (`Write|Edit`) `gsd-phase-boundary.sh`
 
-`gsd-*`-Hooks kommen aus dem GSD-Installer (A3/B1.3), `caveman-*`-Hooks aus dem
-caveman-Plugin (B1.2). Laufen Hooks ohne PATH, den absoluten Node-Pfad eintragen
-(`command -v node`) statt bloßes `node`. Tool-Guard-Hook aus A6 hier ergänzen.
+`gsd-*`-Hooks kommen aus dem GSD-Installer (A3/B1.3). Laufen Hooks ohne PATH, den
+absoluten Node-Pfad eintragen (`command -v node`) statt bloßes `node`.
+Tool-Guard-Hook aus A6 hier ergänzen.
 
-**Verify:** Neue Session zeigt caveman-Aktivierung und GSD-Update-Check.
+**Plugin-eigene Hooks nicht zusätzlich in `settings.json` eintragen.** Ein Plugin
+registriert seine Hooks selbst über den `hooks`-Key seiner `.claude-plugin/plugin.json`;
+Claude Code führt Plugin-Hooks **und** `settings.json`-Hooks aus. Steht dasselbe
+Skript an beiden Stellen, läuft es **zweimal pro Auslöser** und injiziert seine
+Ausgabe doppelt in den Kontext. Betrifft hier `caveman` (B1.2), das
+`caveman-activate.js` als SessionStart und `caveman-mode-tracker.js` als
+UserPromptSubmit mitbringt — beide gehören **nicht** in `settings.json`. Frühere
+Fassungen dieses Abschnitts schrieben genau das vor; wer danach eingerichtet hat,
+entfernt die Einträge (Backup vorher).
+
+**Verify:** `caveman-activate` und `caveman-mode-tracker` sind in `settings.json`
+**nicht** registriert; eine neue Session zeigt den caveman-Aktivierungsblock
+**genau einmal** und den GSD-Update-Check. Doppelte Blöcke = Doppel-Registrierung.
+
+```bash
+# Doppel-Registrierung erkennen: liefert Treffer -> Eintrag aus settings.json entfernen
+grep -c 'caveman-activate\|caveman-mode-tracker' ~/.claude/settings.json
+```
 
 ### B1.6 Harness + Commands + Reminder
 Harness-Kopie (falls kein zentrales Root aus A2):

@@ -58,6 +58,13 @@ liest sie vor dem Anwenden. Übernommene Einträge bekommen `**Status:** überno
 (<commit>)`, verworfene `**Status:** verworfen — <Grund>`. Nichts wird gelöscht: eine
 verworfene Idee, die wiederkommt, ist selbst ein Signal.
 
+**Der Weg ins Repo läuft dort, nicht hier.** `/hx:retro` Schritt 5 bündelt die
+freigegebenen Einträge in **einen** Branch + PR gegen das Setup-Repo — mit sauberem
+Tree, Gate-Lauf und eigener Freigabe für den Push. Genau deshalb tut dieser Command
+davon nichts: beim Parken ist der Working Tree per Definition dirty, das Repo unter
+dir ist meist das Projekt und nicht `ki-agent-setup`, und eine geparkte Idee ist noch
+keine formulierte Regel, aus der ein PR werden könnte.
+
 ## Nicht Aufgabe dieses Commands
 
 - **Die Änderung machen.** Das ist die gebündelte Session danach.

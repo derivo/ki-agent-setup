@@ -34,15 +34,22 @@ Deshalb gilt: **Tier 1 immer, alles andere gegen seinen Trigger.** Jede Datei
 trägt oben eine `Lade wenn:`-Zeile — die reicht, um zu entscheiden, ohne die
 Datei zu lesen.
 
-### Tier 1 — bei jeder Code-Arbeit, vor dem ersten Write
+### Tier 1 — vor dem ersten Write an einem Auftrags-Artefakt und vor jeder Fertig-Meldung
 
-| Datei | Größe | Warum immer |
+| Datei | Größe | Wann |
 |---|---|---|
-| **[GUARDRAILS.md](GUARDRAILS.md)** | ~4,0k Token | Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. Gelten in jeder Phase. |
-| **passender [Stack-Adapter](stacks/)** | ~4,5k Token | Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. |
+| **[GUARDRAILS.md](GUARDRAILS.md)** | ~4,0k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. |
+| **passender [Stack-Adapter](stacks/)** | ~4,5k Token | **Sobald Code entsteht.** Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. Reine Spec-/Planungsarbeit ohne Zielstack: entfällt. |
 
-Das ist das Minimum — rund 8,5k Token. Wer mehr lädt, braucht dafür einen
-Trigger aus der nächsten Tabelle.
+Das Minimum ist damit ~4,0k Token für reine Spec-Arbeit, ~8,5k sobald Code
+entsteht. Wer mehr lädt, braucht dafür einen Trigger aus der nächsten Tabelle.
+
+**„Code" wäre hier die falsche Grenze**, und zwar aus einem konkreten Grund:
+`GUARDRAILS.md` Abschnitt 0 heißt „Eigene Specs und Tests erweitern den Auftrag
+nicht" — eine Regel über Spec-Artefakte. Hinge Tier 1 an Code, schlösse der
+Trigger genau den Fall aus, für den die Regel geschrieben wurde. Dasselbe gilt für
+Abschnitt C (Evidence je Akzeptanzkriterium) und E (Security-Pass): beide hängen
+an der **Fertig-Meldung**, nicht am Schreiben von Code.
 
 ### Tier 2 — gegen Trigger nachladen
 

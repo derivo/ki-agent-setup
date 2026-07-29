@@ -331,9 +331,29 @@ soll.
 
 **A/B-Hinweis:** Der Diskriminator ist die Tabelle plus die `Lade wenn:`-Köpfe.
 Ohne-Variante = `harness/README.md` in der Fassung vor 2026-07-29 („Ein Agent, der
-hier startet, liest in dieser Reihenfolge: 1. … 10. …"). Ob das auf aktuellen
-Modellen überhaupt diskriminiert, ist **ungemessen** — bis ein Lauf vorliegt, ist
-E13 eine Hypothese, kein Beleg.
+hier startet, liest in dieser Reihenfolge: 1. … 10. …").
+
+**Confound, am Lauf vom 2026-07-29 offengelegt — vor dem nächsten E13-Lauf lesen.**
+Der erste Lauf bestand, belegt aber **nicht**, was E13 zu messen behauptet: der
+SessionStart-Reminder nennt Tier 1 selbst im Klartext, und `README.md` wurde gar
+nicht gelesen. Das Pass-Verhalten war vollständig durch den Hook-Text erklärbar —
+gemessen wurde die Hook-Härtung, nicht die Tabelle. Wer die **Tabelle** messen
+will, braucht einen Arm **ohne** die Tier-1-Zeile im Reminder; sonst misst der
+Lauf den Hook und schreibt das Ergebnis der Tabelle gut.
+
+**Zweite Lücke: E13 misst nur die Untergrenze.** „Lädt nicht zu viel" besteht auch
+ein Agent, der grundsätzlich **nie** nachlädt — und das ist der gefährlichere
+Fehlermodus, weil dabei eine zutreffende Regel ungelesen bleibt. E13 gehört
+deshalb **immer im Paar mit einer Aufgabe gefahren, deren Tier-2-Trigger greifen
+muss** (E6 verlangt `SPEC_WORKFLOW.md` + `FEATURE_TEMPLATE.md`, E3 verlangt
+`TESTS.md`). Ein E13-PASS ohne diesen Gegenlauf ist kein Beleg für die
+Ladeschranke, nur für Sparsamkeit. Genau dieser Gegenlauf hat am 2026-07-29 den
+Defekt gefunden, den E13 allein durchgelassen hätte: Tier 1 hing an „Code" und
+schloss damit Spec-Arbeit von `GUARDRAILS.md` Abschnitt 0 aus.
+
+**Kein Kontrollarm ohne Harness.** Bei einem Ein-Zeilen-Defekt mit rotem Test würde
+ein Agent ohne jede Instruktion plausibel ebenfalls nichts unter `harness/` lesen.
+Ein Deckeneffekt ist damit nicht ausgeschlossen.
 
 ---
 
@@ -345,6 +365,7 @@ grüne Zeile wird Drift erkannt.
 
 | Datum | Anlass | Modell/Client | Effort | Harness-Stand (Commit) | Ergebnis | Auffälligkeiten |
 |---|---|---|---|---|---|---|
+| 2026-07-29 | Regel-Add (Tier-1/Tier-2-Ladeschranke, `GUARDRAILS_UI.md`-Split, gehärteter SessionStart-Reminder) + Task-Add E13 | Opus 5 (1M) / Claude Code | **nicht verifizierbar** — Session-Stufe nicht offengelegt; Executor, Grader und Orchestrator erben dieselbe Stufe (gleiche Bedingung, absolute Stufe unbekannt) | deployed `~/.claude/harness` über `ab68a67` (= main nach PR #27/#28) | **E13 PASS**, **E6 PASS** (gezielte Läufe, **kein Voll-Sweep**) | Je Aufgabe frischer Executor (Wortlaut verbatim, Pass-Kriterium verborgen, `EVALS.md` ausgeschlossen), danach separater neutraler Grader mit eigener Nachrechnung. **Messinstrument:** alle 31 `.md` unter `~/.claude/harness/` per `touch -at 202001010000` gestempelt, danach `find -newerat` — misst tatsächliche Reads statt Selbstauskunft. Kontrollen vorab bestanden (Read-Tool setzt atime; Negativkontrolle schweigt). Grenze benannt: Grep/Glob setzen atime ebenfalls, also Falsch-Positive möglich, Falsch-Negative nicht; die Stempel sind global, der Lauf braucht Exklusivität. **E13:** gelesen wurden **genau** `GUARDRAILS.md` + `stacks/node/README.md`, 29 Dateien nicht (inkl. aller Fail-Kandidaten). Fix korrekt (`slice(start, end+1)`), Test unangetastet, Gate 2 pass/0 fail. **Kriterien-Lücke, die der Grader offenlegt — E13 misst nicht, was es zu messen behauptet:** der SessionStart-Reminder nannte Tier 1 bereits im Klartext, und `README.md` wurde **nicht** gelesen. Das Pass-Verhalten ist vollständig durch den Hook-Text erklärbar; die Trigger-Tabelle war **kein kausaler Faktor**. Gemessen ist damit die Hook-Härtung, **nicht** die Tabelle. Zweitens misst E13 nur die Untergrenze: ein Agent, der grundsätzlich nie nachlädt, besteht identisch. Kein Kontrollarm ohne Harness, ein Deckeneffekt bei einem Ein-Zeilen-Defekt ist also nicht ausgeschlossen. **E6 als Komplement gefahren** (feuert ein Tier-2-Trigger, wenn er soll): gelesen wurden `SPEC_WORKFLOW.md`, `FEATURE_TEMPLATE.md` **und** `README.md` — der Trigger feuerte, und hier **war** die Tabelle kausal. Spec bestand alle drei Teile des Kriteriums (testbare ACs, Zerlegung innen nach außen, 8 offene Fragen als Fragen markiert). **Realer Fund, der den Lauf gerechtfertigt hat:** `GUARDRAILS.md` wurde in E6 **nicht** gelesen — regelkonform, weil Hook und README Tier 1 an Write/Edit an *Code* banden. Das schließt genau den Fall aus, für den Abschnitt 0 (Eigene Specs und Tests erweitern den Auftrag nicht) geschrieben ist; der Hook kürzte zusätzlich die zweite Hälfte des eigenen Datei-Kopfs (*und vor jeder Fertig-Meldung*), womit für Nicht-Code-Deliverables auch Abschnitt C und E still wegfielen. Latent, nicht realisiert: der Executor hielt die Scope-Regel faktisch ein, aufgefangen vom `FEATURE_TEMPLATE` (erzwungene Out-of-Scope- und Offene-Fragen-Sektion), nicht vom Trigger. Vor dem nächsten Lauf korrigiert: Tier 1 hängt jetzt an Auftrags-Artefakt (Code, Spec, Test, Plan) **und** Fertig-Meldung, der Adapter erst, sobald Code entsteht. **Nicht gefahren:** E1–E5, E7–E12. Dieser Lauf belegt für sie nichts — insbesondere sind E11/E12 nach dem Abschnitt-G-Split ungeprüft. |
 | 2026-07-03 | Regel-Add (Ownership-Transfer + E10) | Opus 4.8 / Claude Code | n/a (nicht notiert) | 43ea745 | E10 **PASS** (mit Regel) | Gezielter E10-Lauf (kein Voll-Sweep). A/B: frischer Agent OHNE Regel → **FAIL** (kopiert `edit_record`-Check, lässt WRITE-Co-User fremden Datensatz privatisieren; benannte das Risiko nur in Prosa). MIT Regel → PASS (Owner-Prüfung, Co-User 403). Regel justiziert. |
 | 2026-07-03 | Voll-Sweep nach Regel-Add | Opus 4.8 / Claude Code | n/a (nicht notiert) | 55f03f0 | **E1–E10 10/10 PASS** | Known-Good. Je Task frischer Subagent, Wortlaut verbatim, kompaktes Harness-Preamble. Keine Regression durch die Ownership-Transfer-Regel. Notiz: E3 baute Fixture-Seite (kein Ziel-Frontend genannt), E7 nahm `users`-Schema als gegeben an — beide sauber benannt, kein Pass-Verstoß. |
 | 2026-07-21 | Regel-Add (reproduce-don't-guess, GUARDRAILS §C) | Opus 4.8 / Claude Code | n/a (nicht notiert) | 149773e | **E1–E10 10/10 PASS** | Voll-Sweep, je Task frischer Executor + neutraler Grader (kein Selbst-Benoten), Wortlaut verbatim, kompaktes Harness-Preamble. Keine Regression durch die Reproduce-Regel (additiv, Verifikations-Disziplin). |

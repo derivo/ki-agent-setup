@@ -1,6 +1,11 @@
 Rückblick auf diese Session — sichere, was dauerhaft wert ist, und route es ans
 richtige Ziel. Kein neues Silo: pro Erkenntnis genau **ein** Ziel.
 
+0. **Geparkte Einträge mitnehmen:** `cat ~/.agents/harness-inbox.md` (falls vorhanden) —
+   alles mit `Status: geparkt` wird hier neben den Session-Erkenntnissen bewertet, sonst
+   wird die Inbox eine Halde. Übernommene/verworfene Einträge im Status nachziehen
+   (siehe `/hx:park`).
+
 1. **Session durchgehen** und Erkenntnisse sammeln:
    - Getroffene Entscheidungen (+ Begründung).
    - Überraschungen / Gotchas / falsche Annahmen.

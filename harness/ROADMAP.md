@@ -1,3 +1,6 @@
+> **Lade wenn:** der Autonomiegrad ist unklar — wie weit darf ohne Rückfrage
+> gearbeitet werden.
+
 # Harness-Roadmap — die fünf Reifephasen
 
 Ein Harness ist kein Zustand, sondern eine Leiter. Es gibt fünf Phasen, in denen

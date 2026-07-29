@@ -1,3 +1,7 @@
+> **Tier 1 — immer, wenn das Projekt dieser Stack ist.** Zusammen mit
+> [`../../GUARDRAILS.md`](../../GUARDRAILS.md). Die anderen Adapter werden **nicht**
+> gelesen.
+
 # Stack-Adapter: Node/TypeScript (Web + relationale DB)
 
 Füllt die generelle Harness-Methode (`../../`) mit den konkreten Werten für
@@ -172,7 +176,7 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   Theme-Objekt) bzw. die `theme`-Sektion in `tailwind.config.{js,ts}` (Farben,
   Spacing, Radien, Schrift). Keine Inline-`style={{…}}`/`style="…"`, kein Hex direkt
   im JSX/Template; Abstände/Höhen über die Token-/Utility-Skala, nicht Einzelfall-`px`.
-- **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
+- **`DESIGN.md` als Token-Quelle (`GUARDRAILS_UI.md` G/Regel 7):** liegt eine `DESIGN.md`
   im Repo-Root, ist sie die normative Quelle. Vor UI-Write validieren und ins Gate
   hängen: `npx @google/design.md lint DESIGN.md`. **Achtung Exit-Code:** strukturelle
   Fehler → Exit 1, aber ein **Kontrast-Verstoß kommt nur als `warning` (Exit bleibt

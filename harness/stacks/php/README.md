@@ -1,3 +1,7 @@
+> **Tier 1 — immer, wenn das Projekt dieser Stack ist.** Zusammen mit
+> [`../../GUARDRAILS.md`](../../GUARDRAILS.md). Die anderen Adapter werden **nicht**
+> gelesen.
+
 # Stack-Adapter: PHP (Web + relationale DB)
 
 Füllt die generelle Harness-Methode (`../../`) mit den konkreten Werten für
@@ -150,7 +154,7 @@ Filament, ggf. + Tailwind).
   (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
   Inline-`style="…"`, kein Hex direkt im Markup; Abstände/Höhen über die
   Utility-/Token-Skala, nicht als Einzelfall-`px`.
-- **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
+- **`DESIGN.md` als Token-Quelle (`GUARDRAILS_UI.md` G/Regel 7):** liegt eine `DESIGN.md`
   im Repo-Root, ist sie die normative Quelle. Der Validator ist node-basiert (setzt
   ein vorhandenes Node/`npx` voraus — bei Laravel für den Asset-Build ohnehin da):
   `npx @google/design.md lint DESIGN.md` vor UI-Write bzw. in den Asset-Build hängen.

@@ -1,3 +1,7 @@
+> **Tier 1 — immer, wenn das Projekt dieser Stack ist.** Zusammen mit
+> [`../../GUARDRAILS.md`](../../GUARDRAILS.md). Die anderen Adapter werden **nicht**
+> gelesen.
+
 # Stack-Adapter: Python (Web + relationale DB)
 
 Füllt die generelle Harness-Methode (`../../`) mit den konkreten Werten für
@@ -177,7 +181,7 @@ ein separates JS-Frontend).
   (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
   Inline-`style="…"`, kein Hex direkt im Template; Abstände/Höhen über die
   Utility-/Token-Skala, nicht Einzelfall-`px`.
-- **`DESIGN.md` als Token-Quelle (GUARDRAILS G/Regel 7):** liegt eine `DESIGN.md`
+- **`DESIGN.md` als Token-Quelle (`GUARDRAILS_UI.md` G/Regel 7):** liegt eine `DESIGN.md`
   im Repo-Root, ist sie die normative Quelle. Der Validator ist node-basiert (setzt
   ein vorhandenes Node/`npx` voraus — nur relevant, wenn das Frontend Tailwind/JS
   nutzt): `npx @google/design.md lint DESIGN.md` vor UI-Write.

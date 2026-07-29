@@ -46,6 +46,7 @@ for source_file in "$command_root"/*.md; do
     hx-eod) skill_action="close the workday and preserve project state" ;;
     hx-hot-reload) skill_action="preserve context before starting a fresh session" ;;
     hx-linklist) skill_action="show the curated harness link list" ;;
+    hx-park) skill_action="park a harness idea without interrupting the work" ;;
     hx-pr) skill_action="prepare a verified pull request" ;;
     hx-retro) skill_action="capture and route durable session learnings" ;;
     hx-review) skill_action="review a diff using the harness review threshold" ;;
@@ -71,6 +72,12 @@ for source_file in "$command_root"/*.md; do
       "Interpret \`\$ARGUMENTS\` below as any text supplied after \`\$$skill_name\` in the user's invocation." \
       ""
     case "$skill_name" in
+      hx-park)
+        sed \
+          -e 's#/hx:#$hx-#g' \
+          -e 's#`/harness-sync`#der Harness-Sync#g' \
+          "$source_file"
+        ;;
       hx-pr|hx-review|hx-spec)
         sed \
           -e 's#/hx:#$hx-#g' \

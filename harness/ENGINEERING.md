@@ -87,6 +87,57 @@ diese?"* Ist die Antwort „viele, quer verteilt", stimmt der Schnitt nicht.
 - **Sichtbares Verhalten end-to-end belegen** (Fertig-Definition in `AGENTS.md`),
   nicht nur Unit-Ebene.
 
+## 7. Externe Konventionen — erst Konsument, dann Artefakt
+
+Ein publiziertes Konventions-Artefakt (Manifest, Metadaten-Datei, maschinenlesbarer
+Index) ist erst dann eine Anforderung, wenn ein **Konsument es nachweislich liest**.
+"Es gibt eine Spec" und "andere publizieren es auch" belegen das nicht — beides ist
+Angebot, kein Bedarf. Adoptionszahlen messen die Publisher-Seite und beantworten die
+Frage deshalb nie.
+
+Prüfreihenfolge, bevor so ein Artefakt gebaut oder gepflegt wird:
+
+1. **Formaler Status** — Standard (RFC/W3C) oder Proposal? Ein Proposal verpflichtet
+   keinen Anbieter zu irgendwas.
+2. **Konsument benannt** — *wer* liest es? Eine Zusage oder Doku des Konsumenten
+   zählt, eine Ankündigung oder ein Blog-Post über die Konvention nicht.
+3. **Abruf-Signal messbar** — wird die Datei in den eigenen Server-Logs geholt, und
+   von wem? Fehlt das Signal, ist die Annahme widerlegt, nicht offen.
+4. **Pflegekosten** — veraltet das Artefakt still, wenn die Quelle sich ändert? Dann
+   ist es schlechter als keins (Doku ≠ Realität, `../doc-harness/README.md`).
+
+Fallen 2 und 3 negativ aus, ist das Artefakt YAGNI (§5): nicht bauen — und die
+Entscheidung mit Belegdatum notieren, damit sie nicht alle drei Monate neu
+diskutiert wird.
+
+**Wann es umgekehrt gebaut wird:** wenn ein Konsument **benannt und prüfbar** ist —
+eigenes Tooling, das die Datei liest; eine Integration, die das Format dokumentiert
+verlangt; ein Abnehmer, der es zusagt. Dann ist Schritt 2 erfüllt und das Artefakt
+gehört zum Deliverable. Nicht ausreichend ist die Nähe zum Thema: dass eine Site
+KI-Inhalte anbietet oder verarbeitet, macht aus ihr noch keinen Leser fremder
+Konventionsdateien.
+
+**Fallbeispiel `llms.txt`** (Stand Juli 2026, Quellen in [linklist.md](linklist.md)):
+
+- Status: informelle Spec (Jeremy Howard, Sept. 2024), explizit kein RFC/W3C.
+- Search: Google nutzt die Datei nicht — sie hilft und schadet den Rankings nicht.
+- Abruf-Signal: Server-Log-Analyse über 137.000 Domains (Mai 2026) — 97 % der Dateien
+  bekommen null Requests; die stärkste Abrufergruppe sind SEO-Tools, KI-Retrieval-Bots
+  liegen im Promille- bis Prozentbereich.
+- Publisher-Adoption dagegen ~8,7 % der Tranco-Top-1000 — genau die Asymmetrie, wegen
+  der Schritt 3 nicht durch Schritt "viele machen es" ersetzbar ist.
+- Ergebnis der Prüfung: für Sichtbarkeit/SEO ist **keine** Wirkung belegt.
+
+`llms.txt` ist trotzdem **gesetzter Hausstandard** — Teil der Web-Baseline neben
+`robots.txt` und `sitemap.xml` (`../instructions/AGENTS.md` → Konventionen). Das ist
+eine **Baseline-Entscheidung, keine Evidenz-Aussage**: begründet mit
+Vollständigkeit und nahezu null Erstellungskosten, nicht mit gemessenem Nutzen. Die
+Prüfreihenfolge oben bleibt davon unberührt und gilt für jedes *andere*
+Konventions-Artefakt — eine gesetzte Entscheidung ersetzt den Test nicht, sie
+überspringt ihn bewusst an einer benannten Stelle. Damit die Datei nicht zum Fall
+"Doku ≠ Realität" wird (Schritt 4), wird sie aus der echten Struktur generiert und
+nicht von Hand gepflegt.
+
 ---
 
 *Pflege: Ergänzungen hier statt in `AGENTS.md` (dort nur die terse Regel + Pointer).

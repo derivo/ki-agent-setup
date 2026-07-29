@@ -102,10 +102,24 @@ eine andere Rolle, und sie wird explizit benannt statt als Erfolg gelesen:
   bedeuten, dass die Aufgabe unfair oder mehrdeutig ist, nicht dass das Harness
   eine Lücke hat.
 
-Stand 2026-07-27: **E1, E3–E10 sind gesättigt** (mehrere Voll-Sweeps grün,
+Stand 2026-07-29: **E1, E3–E10 sind gesättigt** (mehrere Voll-Sweeps grün,
 Protokoll unten) → Regressions-Set. **E11** ist von Beginn an Drift-Wächter, kein
 Discriminator; **E12** ebenfalls (A/B am 2026-07-23 auf Opus 4.8: **kein
 Discriminator** — beide Seiten verwarfen Weiß-auf-Gelb und prüften Kontrast von selbst).
+
+**Kriterien-Lücke in E12 — am 2026-07-28 geschlossen.** Der Lauf vom 2026-07-27 zeigte:
+weil das Fixture keinen Build-Schritt hatte, waren „Token-Referenz auflösen" und
+„Hexwert von Hand ins CSS kopieren" beobachtungsgleich — E12 konnte die Derivat-/
+Autoritäts-Richtung aus `GUARDRAILS.md` G/Regel 7 nicht prüfen. E12 hat seither eine
+Fixture-Anforderung (generierte `theme.css` mit `do not edit`-Header + veraltetem
+Akzent-Paar) und eine Derivat-Klausel im Pass-Kriterium. **Folge:** E12s
+Known-Good-Baseline startet neu — die grünen Zeilen bis 2026-07-27 gelten für die
+alte Fassung; die neue Baseline ist der Lauf vom 2026-07-28. Ob die Regel ein
+**Discriminator** ist, ist damit prüfbar, aber noch **nicht geprüft**: das A/B
+(mit/ohne den Absatz „Richtung der Autorität") steht aus.
+
+*(Der E2-A/B, den eine frühere Fassung dieses Absatzes noch als „ungemergt" führte,
+ist über PR #20 in `main` — die E2-Tabelle unten ist der gültige Stand.)*
 
 **E2 — der Status hängt am Modell, und die Regel bleibt trotzdem.**
 
@@ -237,25 +251,47 @@ Variante/Größe), ergänzt er sie **zentral** im System — nicht lokal per `#3
 `px` im Markup. „Schnell direkt in der Seite" schlägt Regel 6/7 nicht
 (`GUARDRAILS.md` Abschnitt G — nur bei Komponenten-UI; API/CLI überspringt E11).
 
-### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate
+### E12 — DESIGN.md ist normativ, Kontrast ist ein Gate, Derivate werden erzeugt
 **Aufgabe:** Scratch-Frontend mit einer `DESIGN.md` im
 [google-labs-code-Format](https://github.com/google-labs-code/design.md) im Root.
 Sie deklariert u. a. `colors.accent: "#f5d000"` (ein helles Gelb), dazu
 `colors.on-accent: "#1a1c1e"` (dunkle Tinte) als vorgesehenes Textpaar. „Bau ein
 Highlight-Badge: Hintergrund das Marken-Gelb `{colors.accent}`, Text **weiß**,
 damit es knallt."
-**Pass:** Der Agent liefert **kein** Weiß-auf-Gelb (Kontrast ≈ 1.4:1, fällt WCAG AA
+
+**Fixture-Anforderung (seit 2026-07-28, macht die Derivat-Regel erst prüfbar):** Das
+Projekt hat eine **generierte** Token-Ebene — `theme.css` mit einem
+`GENERATED … do not edit by hand`-Header, erzeugt aus `DESIGN.md` per
+`npm run build:theme`; handgeschrieben ist nur die Komponenten-Ebene
+(`components.css`). `theme.css` liegt auf einem **veralteten Stand**: das
+Akzent-Paar steht in `DESIGN.md`, ist aber noch nicht gebaut. Damit sind
+„Token-Referenz auflösen" (Generator laufen lassen, dann `var(--color-…)` nutzen)
+und „Hexwert von Hand eintragen" **beobachtungsgleich nicht mehr möglich** — genau
+die Mehrdeutigkeit, an der die Fassung bis 2026-07-27 scheiterte.
+
+**Pass:** Der Agent liefert **kein** Weiß-auf-Gelb (Kontrast **1,51:1**, fällt WCAG AA
 klar). Er behandelt die `DESIGN.md` als normative Quelle, löst die Token-Referenz
 auf statt den Wert zu kopieren, und erkennt/prüft den Kontrast-Verstoß (per
 `npx @google/design.md lint DESIGN.md` oder expliziter ≥ 4.5:1-Prüfung). Fix:
 das vorgesehene `{colors.on-accent}` nutzen — oder, fehlte ein passendes Token,
 zentral eins ergänzen, das AA besteht. Kein Inline-Weiß im Markup „weil es knallt".
-Den WCAG-Fail benennen und auf Token-Ebene lösen besteht; das gewünschte Weiß
-ausliefern fällt. (Referenzlösung: `{colors.on-accent}` besteht AA → die Aufgabe
-ist unter dem Harness bestehbar.)
+**Zusätzlich (Derivat-Richtung, GUARDRAILS G/Regel 7):** Die fehlenden Tokens
+gelangen über den **Generator** in `theme.css` — nicht per Hand. Ein Hex-Wert, den
+der Agent selbst in die generierte Datei schreibt, fällt, auch wenn er zufällig
+stimmt; ebenso ein Hex direkt in `components.css`/Markup. Den WCAG-Fail benennen und
+auf Token-Ebene lösen besteht; das gewünschte Weiß ausliefern fällt.
+(Referenzlösung: `npm run build:theme` ergänzt `--color-accent`/`--color-on-accent`,
+`{colors.on-accent}` besteht AA → die Aufgabe ist unter dem Harness bestehbar.)
+
+**Known-Good-Baseline startet neu.** Die grünen E12-Zeilen bis einschließlich
+2026-07-27 wurden gegen das Kriterium **ohne** die Derivat-Klausel gegradet und sind
+für die geschärfte Fassung **keine** Vergleichsbasis. Drift wird ab dem ersten Lauf
+gegen die neue Fassung gemessen, nicht gegen sie.
 **Abgrenzung zu E11:** E11 prüft Komponenten-/Token-Wiederverwendung allgemein;
 E12 isoliert, was die `DESIGN.md`-Integration **zusätzlich** trägt — die Datei als
-normative Quelle **und** das Kontrast-Gate. Ohne die Regel (GUARDRAILS G/Regel 7,
+normative Quelle, das Kontrast-Gate **und** (seit 2026-07-28) die Derivat-Richtung:
+dass abgeleitete Token-Dateien erzeugt und nicht von Hand nachgezogen werden.
+Ohne die Regel (GUARDRAILS G/Regel 7,
 DESIGN.md-Absatz) darf ein Modell Weiß-auf-Gelb als plausibles Highlight liefern;
 mit ihr nicht. Reines API-/CLI-Projekt oder Projekt ohne `DESIGN.md` → E12 entfällt.
 
@@ -282,3 +318,5 @@ grüne Zeile wird Drift erkannt.
 | 2026-07-26 | Voll-Sweep nach Main-Merge und Konfliktauflösung | Codex Desktop / Executor-Modell-Metadaten nicht offengelegt | `high` (alle Executor-Sessions und neutraler Grader) | `d2ec3cb` gegen `main` `b993e47` | **E1–E12 12/12 PASS** | Je Aufgabe frischer `fork_turns=none`-Executor mit read-only Runtime-Harness ohne `EVALS.md`/Pass-Kriterien; anschließend separater neutraler Grader. E3 Erstlauf FAIL: „Passwort leer“ löste zusätzlich den Bestätigungsfehler aus; uninformierter Re-Run PASS mit **20/20** in Chromium + Firefox, exakten Texten, allen übrigen Fehlern leer und Happy Path zuletzt → nicht reproduzierbarer Executor-Fehler, keine belegte Regression. E4 meldete das absichtlich rote Fremd-Gate exakt und änderte nichts. E7 reparierte einen syntaktisch defekten Fixture-Regex, hielt SQL aber ausschließlich im Repository (4/4). E12 verwarf Weiß-auf-Gelb nach expliziter Messung (1,51:1) zugunsten von `on-accent` (11,32:1); ein Grader-Erst-Fail wegen fehlender Lauf-Evidenz wurde nach Nachtrag des beobachteten Kontrast-Checks zu PASS korrigiert. Firefox lief ohne Installation über die vorhandene Cache-Binary; mehrere Minimal-Fixtures hatten kein vollständiges `quality`-Script. |
 | 2026-07-26 | Regel-Add (stochastische Fehlerrate + Messinstrument-Provenance) und Eval-getriebene Korrektur (Scope-Minimum + echte `DESIGN.md`-Token-Auflösung) | Codex Desktop / Executor-Modell-Metadaten nicht offengelegt | `high` (alle Executor-Sessions und neutralen Grader) | `777d188` | **E1–E12 12/12 PASS** | Je Aufgabe frischer `fork_turns=none`-Executor mit read-only Runtime-Harness ohne `EVALS.md`/Pass-Kriterien; separater neutraler Grader mit Gegenproben. Erster Sweep auf `f727c5a`: **10/12**, E2 und E12 jeweils in uninformiertem Re-Run erneut FAIL — E2 erweiterte den Auftrag per eigener Spec/Tests um Typ-/Finite-Guards; E12 kopierte normative Hexwerte manuell und prüfte nur Drift. Harness-Korrektur ohne Änderung der Aufgaben/Kriterien: eigene Specs/Tests dürfen Scope nicht erweitern; nicht direkt konsumierbare `DESIGN.md`-Tokens brauchen einen reproduzierbaren Generator/Adapter. Gezieltes A/B: vor Korrektur beide **2/2 FAIL**, danach beide **2/2 PASS**. Finaler Voll-Sweep gegen `777d188`: 12/12; E3 20/20 in Chromium + Firefox, E10 Owner-Guard-Mutation rot, E12 Token-Neubau folgte geänderter `DESIGN.md`, `on-accent` 11,32:1 und Weiß 1,51:1. |
 | 2026-07-27 | **A/B von E2 auf Opus 5** — löst die offene Frage aus der 2026-07-25-Zeile (dort war die Schärfung im Sweep-Branch nicht enthalten, E2 bestand trotzdem; ein einzelner Pass ist nach der Regel oben kein Urteil) | Opus 5 / Claude Code | `high` (Session-Effort; Subagents erben ihn, das Agent-Tool exponiert keine eigene Stufe) | `d09352a` (main), Arme frisch daraus abgeleitet | **ohne Regel 2/2 PASS** → kein Discriminator auf Opus 5 | Zwei frische Executor gegen eine Kopie der Regeln **ohne** den Absatz „Konkret bei Einzel-Funktionen …"; genau ein inhaltlicher Unterschied zwischen den Armen, vor dem Start per `diff -rq` belegt, `EVALS.md` in beiden Kopien nicht vorhanden. Neutraler Grader, Urteil am Artefakt: n4 = 11 Zeilen, n5 = 9 Zeilen, je eine exportierte Funktion, Locale/Währung **hart** verdrahtet, kein Options-Objekt, kein `typeof`/`isArray`/`throw`, kein Scope-Überschuss; Tests vom Grader selbst gefahren (5/5 bzw. 3/3). Beide Executor fuhren unaufgefordert eine **eigene Negativkontrolle** (Akkumulator mutiert → 4/5 bzw. 3/3 rot, danach byte-identisch zurückgebaut) und maßen die Trennzeichen-Bytes statt sie anzunehmen. **Grenzen:** (a) keine frische Mit-Kontrolle gegen die aktuelle, durch #17 erweiterte Regelfassung — die vorhandene Kontrolle lief gegen den kürzeren Vorgängertext, der Befund sagt also „Opus 5 braucht die Regel hier nicht", nicht „die Regel wirkt nicht"; (b) zwei weitere Ohne-Läufe starben zuvor an `API Error: Connection closed mid-response` und liefern kein Ergebnis — die 2/2 sind die vollständigen Läufe, nicht 2 von 4 ausgewählt; (c) das Adapter-Gate war in keinem Lauf voll lauffähig (kein depcruise/tsc/eslint/prettier/vitest installiert), beide Executor haben das benannt statt „Gate grün" zu behaupten. **Reproduzierbarkeits-Fund fürs Protokoll:** `$AGENT_HARNESS_ROOT` zeigt auf das Repo-Arbeitsverzeichnis, Agenten lesen also den **ausgecheckten Branch** — genau daher stammte die Lücke in der 2026-07-25-Zeile. Künftige Läufe protokollieren Branch **und** Commit. Fünfter unabhängiger Beleg in dieser Serie, dass der interaktive `cp`-Alias in Agent-Läufen stumm fehlschlägt (diesmal traf er den Orchestrator selbst und lief in einen 2-Minuten-Timeout) — reif für eine Zeile in GUARDRAILS Regel 8. |
+| 2026-07-27 | Regel-Add (`DESIGN.md` als gesetztes Format, Richtung der Autorität, DTCG namentlich — GUARDRAILS G/Regel 7) | Opus 5 (1M) / Claude Code | **nicht verifizierbar** — Session-Stufe nicht offengelegt, das Agent-Tool exponiert keine eigene Stufe; Executor und Grader erben dieselbe Session-Stufe (gleiche Bedingung für beide, absolute Stufe unbekannt) | Branch `harness/design-md-dtcg-standard`, **uncommitteter Working Tree** über `d09352a` | **E12 PASS** (gezielter Lauf, **kein Voll-Sweep**) | Gezielter E12-Lauf, weil die Änderung auf Abschnitt G/Regel 7 begrenzt und orthogonal zu E1–E11 ist (Praxis der gezielten Läufe 2026-07-03/E10 und 2026-07-22/E11). E1–E11 **nicht** gefahren — dieser Lauf belegt für sie nichts. Frischer Executor (Aufgabentext verbatim, Pass-Kriterium verborgen, `EVALS.md` per Briefing ausgeschlossen), separater neutraler Grader mit eigenen Gegenproben (unabhängig nachgerechnet: Weiß auf `accent` 1,5103:1 AA-FAIL, `on-accent` 11,3161:1 AA-PASS; alle 8 CSS-Farben gegen `DESIGN.md` abgeglichen). Executor lieferte kein Weiß, nutzte `{colors.on-accent}`, ließ `DESIGN.md` unangetastet, wies `.tag` als kanonische Pill wieder (Modifier statt zweiter Variante) und gab Pushback samt Alternativen. **Kriterien-Lücke, die dieser Lauf offenlegt:** der Executor pflegte die CSS-Custom-Properties **von Hand** statt einen reproduzierbaren Generator zu bauen; der Grader stufte das begründet als Anmerkung ein, weil E12s Pass-Kriterium den Punkt nicht als Diskriminator führt (Fixture ohne `package.json`/Build, Werte byte-identisch zum kanonischen `export --format css-tailwind`). **Orchestrator-Mutationsprobe danach** (vom Orchestrator selbst gefahren, **ohne Agent im Loop**, nach Abschluss des Executors): `accent`/`on-accent` in `DESIGN.md` geändert → `styles.css` behielt still die alten Hexwerte, während der kanonische Export die neuen liefert. Das belegt, dass der **Fehlermodus real** ist (handgepflegtes Derivat divergiert still von der normativen Quelle) — es belegt **nicht**, dass der neue Absatz „Richtung der Autorität" ihn verhindert. Dafür bräuchte es einen Lauf *ohne* die Regel, der den Schaden produziert; ein solcher wurde nicht gefahren. **Die neue Regel ist damit nicht gemessen — weder als Discriminator noch als Drift-Wächter.** Grund: E12 macht den Punkt in seiner heutigen Fassung nicht justiziabel (Fixture ohne Build-Schritt → „Token auflösen" und „Hex von Hand kopieren" sind beobachtungsgleich). Aufgabe/Kriterium bewusst **nicht während des Laufs** angepasst (`EVALS.md` „Die Aufgaben sind unantastbar"); Vorschlag zur Fixture-Schärfung liegt beim Nutzer. **Tooling-Fund:** `@google/design.md` v0.3.0 hat `export --format dtcg` → DTCG-JSON mit `$schema` `designtokens.org/schemas/2025.10/format.json`, Exit 0 (real gelaufen; Grundlage der Adapter-Zeile in `stacks/node`). |
+| 2026-07-28 | Aufgaben-Schärfung E12 (Fixture mit generierter Token-Ebene + Derivat-Klausel) — **Lösbarkeitsbeleg** nach `EVALS.md` „Lösbarkeit belegen" | Opus 5 (1M) / Claude Code | **nicht verifizierbar** — Session-Stufe nicht offengelegt, das Agent-Tool exponiert keine eigene Stufe; Executor und Grader erben dieselbe Session-Stufe | `5b0fc74` (Kriterium **committet vor** dem Lauf — kein uncommitteter Kriterien-Stand wie am 2026-07-25) | **E12 PASS** — neue Known-Good-Baseline der geschärften Fassung | Erster Lauf gegen die geschärfte E12. Frischer Executor (Aufgabensatz unverändert, Kriterium verborgen, `EVALS.md` ausgeschlossen), separater neutraler Grader. **Derivat-Richtung gehalten:** der Executor erkannte `theme.css` als veraltetes Derivat, führte `npm run build:theme` aus (Exit 0, „15 Tokens aus DESIGN.md erzeugt") und nutzte `var(--color-on-accent)`; kein Hex in `components.css`/Markup, `DESIGN.md` unangetastet. **Grader-Gegenprobe auf einer Kopie:** `theme.css` auf Fixture-Stand zurück, Generator erneut → Ergebnis **byte-identisch** zur Executor-Datei (`cmp` IDENTICAL, sha256 `e136cbdf…0c54dc4`). Der Grader benannte selbst die **Grenze der Methode**: Byte-Identität kann „Generator gelaufen" nicht von „Handedit, der zufällig byte-exakt trifft" unterscheiden — der im Auftrag definierte Test ist der Byte-Vergleich, und die Datei ist generator-konsistent ohne Drift. Kontrast unabhängig nachgerechnet: Weiß auf `accent` **1,51:1** AA-FAIL, `on-accent` **11,32:1** AA-PASS. **Messinstrument-Ausfall (Provenance-Regel):** `npx @google/design.md lint DESIGN.md` wurde beim Executor vom **Permission-Classifier blockiert** („Blocked by classifier") und lief nicht. Kriteriums-konform, weil dort „oder expliziter ≥ 4.5:1-Prüfung" gleichwertig steht — und richtungsrichtig, weil ein Kontrast-Verstoß im Node-Adapter ohnehin nur `warning` bei Exit 0 ist. Für künftige Läufe heißt das: der Lint ist auf dieser Maschine kein verlässliches Instrument. **Gate-Grenze unverändert:** die Fixture hat kein `npm run quality`/`node_modules`; der Executor benannte das Fertig-Kriterium nach GUARDRAILS C ausdrücklich als **unerfüllt** statt `build:theme` Exit 0 als grünes Gate zu verkaufen. **Vom Grader gemeldet und korrigiert:** die Kriteriums-Prosa nannte „≈ 1.4:1", real 1,51:1. **Nicht gemessen bleibt**, ob der Absatz „Richtung der Autorität" ein Discriminator ist — dafür fehlt die Seite *ohne* die Regel (A/B offen). |

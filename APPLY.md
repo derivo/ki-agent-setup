@@ -242,7 +242,7 @@ reproduziert und halten.
 **Prüf-Anlass (kein Cron, bewusst):** Die npm-Release-Kadenz ist grob monatlich (0.1.0
 2026-04-21 → 0.4.0 2026-07-27) und der Trigger ist die **Version**, nicht ein neuer
 Upstream-Commit — Commits sind Rauschen, Releases sind das, was Verhalten ändert. Beim
-`/harness-sync` und bei Arbeit an Abschnitt G die Version gegen die Tabelle prüfen;
+`/hx:sync` (Schritt 3) und bei Arbeit an Abschnitt G die Version gegen die Tabelle prüfen;
 weicht sie ab, die vier obigen Proben wiederholen, bevor die Tabelle neu gesetzt wird.
 
 **Offene Alternative:** Statt Known-Good könnte man die Kommandos in den Adaptern hart

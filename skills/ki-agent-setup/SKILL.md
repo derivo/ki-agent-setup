@@ -40,7 +40,9 @@ Verify-Kriterium, bevor du weitergehst:
 2. Plugins installieren (caveman + die drei `claude-plugins-official`-Plugins).
 3. GSD installieren (eigener Installer, kein Marketplace-Plugin).
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
-5. Hooks eintragen (GSD-Guards, caveman-Aktivierung).
+5. Hooks eintragen (GSD-Guards, Tool-Guard). **Plugin-eigene Hooks nicht** —
+   `caveman-activate`/`caveman-mode-tracker` bringt das Plugin selbst mit, ein
+   zweiter Eintrag in `settings.json` lässt sie doppelt feuern (`APPLY.md` B1.5).
 6. Globale Settings setzen (Deutsch, Thinking, effort high, Theme …).
 7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`, inkl. Codex-Abschnitt in
    `AGENTS.md`) sicherstellen.

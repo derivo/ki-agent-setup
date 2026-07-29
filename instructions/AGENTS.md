@@ -193,6 +193,11 @@ Zusätzlich:
 - Controller schlank — Geschäftslogik in Services / Actions.
 - Migrations mit Rollback (`down()` / Alembic `downgrade()`).
 - API-Routen versioniert (`/api/v1/...`).
+- **Web-Baseline** — eine ausgelieferte Website bringt `robots.txt`, `sitemap.xml`
+  und `llms.txt` mit. Hausstandard, gesetzt: nicht pro Projekt neu abwägen, aber
+  auch nicht mit gemessener Wirkung begründen (Stand + Belege:
+  `harness/ENGINEERING.md` §7). Inhalte aus der echten Struktur generieren, nicht
+  von Hand pflegen — eine veraltete Datei ist schlechter als keine.
 
 **Laravel-spezifisch:**
 - Eloquent: `$fillable` / `$guarded` korrekt setzen.

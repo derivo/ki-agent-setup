@@ -5,13 +5,13 @@ description: Erstellt oder aktualisiert eine `DESIGN.md` (google-labs-Format) au
 
 # design-md-curator
 
-Eine `DESIGN.md` ist nach `harness/GUARDRAILS.md` Abschnitt G/Regel 7 die **normative
+Eine `DESIGN.md` ist nach `harness/GUARDRAILS_UI.md` (Abschnitt G/Regel 7) die **normative
 Quelle** für Farben, Typo, Abstände und Radien. Dieser Skill baut sie — aus Evidenz,
 nicht aus Geschmack.
 
 ## Voraussetzung: die Freigabe liegt vor
 
-**Dieser Skill legt keine `DESIGN.md` von sich aus an.** GUARDRAILS G/Regel 7 sagt:
+**Dieser Skill legt keine `DESIGN.md` von sich aus an.** GUARDRAILS_UI G/Regel 7 sagt:
 hat ein Projekt Design-Anforderungen aber keine Quelle, wird die Lücke *benannt* und
 das Erstellen *vorgeschlagen* — angelegt wird sie erst mit Freigabe des Nutzers. Dieser
 Skill ist der Schritt **danach**. Ohne Freigabe ist der richtige Zug die Meldung, nicht

@@ -1,3 +1,6 @@
+> **Lade wenn:** eine Regel soll geschärft werden (Harness Correction), oder die
+> prüfende Schleife greift nicht.
+
 # Selbst-Optimierung — die prüfende Schleife & ihr Lerneffekt
 
 Das Herz des Harness sind zwei ineinandergreifende Schleifen. Die erste prüft und

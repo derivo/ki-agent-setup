@@ -1,3 +1,5 @@
+> **Lade wenn:** eine Spec wird tatsächlich geschrieben (Form des Ergebnisses).
+
 # Feature-Template — die Form einer fertigen Spec
 
 Jede Feature-Spec folgt dieser Struktur. Sie ist das Ergebnis von Stufe 2 des

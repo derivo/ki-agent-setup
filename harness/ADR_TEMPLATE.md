@@ -1,3 +1,6 @@
+> **Lade wenn:** eine architektonisch signifikante Entscheidung fällt an und wird
+> festgehalten.
+
 # ADR-Template — die Form eines Architecture Decision Record
 
 Ein ADR (Architecture Decision Record) hält **eine** architektonisch

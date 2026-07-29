@@ -183,7 +183,7 @@ ladbar**:
 | Skill | Zweck |
 |---|---|
 | [`ki-agent-setup`](skills/ki-agent-setup/SKILL.md) | dieses `APPLY.md` autonom anwenden — Setup bootstrappen bzw. syncen |
-| [`design-md-curator`](skills/design-md-curator/SKILL.md) | eine `DESIGN.md` aus Repo-/URL-Evidenz erstellen und gegen `GUARDRAILS.md` G validieren |
+| [`design-md-curator`](skills/design-md-curator/SKILL.md) | eine `DESIGN.md` aus Repo-/URL-Evidenz erstellen und gegen `GUARDRAILS_UI.md` G validieren |
 | [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
 
 Sie werden **verlinkt**, nicht über die `skills`-CLI installiert. Ziel-Verzeichnis ist
@@ -225,7 +225,7 @@ zum Erkennen von Drift, bewusste Aktualisierung nach erneuter Prüfung.
 |---|---|---|
 | `@google/design.md` (npm) | `0.4.0` | `npx --yes @google/design.md --version` |
 
-**Was daran hängt:** `harness/GUARDRAILS.md` Abschnitt G/Regel 7 und der
+**Was daran hängt:** `harness/GUARDRAILS_UI.md` (Abschnitt G/Regel 7) und der
 `DESIGN.md`-Block der drei Stack-Adapter. Verifiziert und unter `0.4.0` reproduziert:
 Kontrast-Verstoß und ungültiges `components`-Sub-Token als `warning` bei **Exit 0**;
 ungültiger Token-Name lässt `lint` mit Exit 0 passieren, bricht `export` mit

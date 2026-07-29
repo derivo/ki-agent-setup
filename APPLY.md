@@ -173,6 +173,24 @@ ist client-spezifisch (Teil B).
 **Verify:** Das Skills-Verzeichnis des Clients zeigt die gewünschten
 Nicht-GSD-Skills; `/find-skills` o. ä. ist aufrufbar.
 
+### A5.1 Repo-eigene Skills (`skills/`)
+
+Diese Skills gehören **diesem Repo** und stehen deshalb nicht im Lockfile aus A5 —
+ihre Quelle ist das Verzeichnis `skills/`, kein fremdes GitHub-Repo. Ohne den
+Kopier-Schritt in Teil B liegen sie nur im Checkout und sind für den Agenten **nicht
+ladbar**:
+
+| Skill | Zweck |
+|---|---|
+| [`ki-agent-setup`](skills/ki-agent-setup/SKILL.md) | dieses `APPLY.md` autonom anwenden — Setup bootstrappen bzw. syncen |
+| [`design-md-curator`](skills/design-md-curator/SKILL.md) | eine `DESIGN.md` aus Repo-/URL-Evidenz erstellen und gegen `GUARDRAILS.md` G validieren |
+| [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
+
+Sie werden **verlinkt**, nicht über die `skills`-CLI installiert. Ziel-Verzeichnis ist
+client-spezifisch (Teil B). Namenskollision vermeiden: ein repo-eigener Skill darf
+nicht so heißen wie einer aus dem Lockfile (`SKILLS.md`) — der Link würde dessen
+Eintrag stumm ersetzen.
+
 ## A6. Security-Basis (Kontrollen 1–2)
 
 Der Hardening-Layer steht in [`security/`](security/README.md). Die als
@@ -371,8 +389,45 @@ zeigt eine `HARNESS AKTIV …`-Zeile.
 ### B1.7 MCP + Skills
 MCP-Kern-Set (A4) via `claude mcp add …` registrieren. Skills (A5) landen in
 `~/.claude/skills/`.
-**Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls ~/.claude/skills/`
-zeigt die Nicht-GSD-Skills.
+
+Repo-eigene Skills (A5.1) kommen in dasselbe Verzeichnis — **pro Skill ein Symlink
+in den Checkout**, aus dem Repo-Root heraus:
+```bash
+for skill_dir in "$PWD"/skills/*/; do
+  ln -sfn "${skill_dir%/}" "$HOME/.claude/skills/$(basename "$skill_dir")"
+done
+```
+Symlink statt Kopie aus zwei Gründen: `~/.claude/skills/` besteht auf dieser
+Maschine ohnehin aus Symlinks pro Skill (die Lockfile-Skills zeigen von dort nach
+`~/.agents/skills/`), und ein Link in den Checkout kann nicht veralten — was im Repo
+geändert wird, ist sofort scharf. Denselben Weg geht B2.1 für `AGENTS.md`. `-n`
+verhindert, dass der Link bei erneutem Lauf *in* das bestehende Ziel gelegt wird;
+die Schleife ist damit idempotent.
+
+**Nie `rsync -a --delete` auf `~/.claude/skills/` selbst.** Dort liegen die
+Symlinks auf alle Lockfile-Skills aus A5 — ein Sync mit Löschen entfernt sie
+sämtlich. Wiederherstellbar ist das (die Skills selbst liegen in
+`~/.agents/skills/`), aber bis zum Neu-Verlinken sieht Claude keinen davon.
+
+Tradeoff, benennen statt verschweigen: die Schleife liest die Liste beim Deploy aus
+dem Repo, kann also nur anlegen und aktualisieren — **nie aufräumen**. Wird ein
+repo-eigener Skill umbenannt oder gelöscht (passiert: `af9a506` hat
+`skills/setup-ki-agent` → `skills/ki-agent-setup` umbenannt), bleibt der alte Link
+liegen und zeigt ins Leere; er muss von Hand gelöscht werden. Ein Präfix-Namespace,
+den der Deploy löschen dürfte (wie `hx-` bei Codex, B2.3), ginge nicht ohne die
+`name:`-Frontmatter umzuschreiben — dafür ist der Fall zu klein. Zweiter Preis des
+Links: der Checkout muss an seinem Pfad bleiben (`~/code/ki-agent-setup`).
+
+Die anderen Clients werden hier **bewusst nicht** verdrahtet: die Links liegen unter
+`~/.claude/skills/`, nicht im geteilten `~/.agents/skills/`, das mit dem
+Codex-Helper (B2.3) schon einen Besitzer hat — Codex sieht sie also nicht. Die
+`SKILL.md`-Dateien sind außerdem Claude-Prosa ohne die Codex-Metadaten. Repo-eigene
+Skills dort auszurollen ist eine eigene Entscheidung.
+
+**Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
+zeigt die Nicht-GSD-Skills und die drei Links aus A5.1 (`ki-agent-setup`,
+`design-md-curator`, `linklist-curator`) auf den Checkout;
+`head -2 ~/.claude/skills/design-md-curator/SKILL.md` ist über den Link lesbar.
 
 ## B2. Codex CLI
 

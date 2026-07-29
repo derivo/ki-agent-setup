@@ -22,6 +22,19 @@ Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) und caveman
 
 ---
 
+## Repo-eigene Skills
+
+Diese stammen **nicht** aus einem fremden Repo und stehen nicht im Lockfile — sie
+gehören diesem Setup-Repo. Ausgerollt werden sie per Symlink in den Checkout, nicht
+über die `skills`-CLI: `APPLY.md` A5.1 (Inhalt) und B1.7 (Link-Schritt). Ohne diesen
+Schritt liegen sie nur im Checkout und sind nicht ladbar.
+
+| Skill | Quelle | Zweck |
+|---|---|---|
+| `ki-agent-setup` | dieses Repo, `skills/ki-agent-setup/` | `APPLY.md` autonom anwenden — Setup bootstrappen bzw. syncen |
+| `design-md-curator` | dieses Repo, `skills/design-md-curator/` | `DESIGN.md` aus Repo-/URL-Evidenz erstellen, gegen `GUARDRAILS.md` G validieren |
+| `linklist-curator` | dieses Repo, `skills/linklist-curator/` | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
+
 ## Web / Frontend / Design / SEO
 
 | Skill | Quelle (GitHub) | Zweck |

@@ -53,6 +53,7 @@ scripts/deploy-codex-harness-skills.sh --check
 | [`/hx:commit`](commit.md) | `$hx-commit` | Pre-Commit-Check + atomarer, konventioneller Commit | GUARDRAILS, Pre-Commit-Check |
 | [`/hx:pr`](pr.md) | `$hx-pr` | PR vorbereiten: Gate grün, AC-Abdeckung, Branch/PR | AGENT_LOOP, feature.md |
 | [`/hx:retro`](retro.md) | `$hx-retro` | Session-Rückblick: Gelerntes klassifizieren, ans richtige Ziel routen, freigegebene Harness-Änderungen gebündelt als Branch + PR | SELF_OPTIMIZATION, Memory/GSD/TheBrain, park.md |
+| [`/hx:sync`](sync.md) | `$hx-sync` | Lokales Setup auf den Repo-Stand bringen (Repo → Maschine) | APPLY.md, Skill `ki-agent-setup` |
 | [`/hx:park`](park.md) | `$hx-park` | Harness-Idee mitten in der Arbeit parken (maschinenlokale Inbox, ändert nichts) | retro.md, SELF_OPTIMIZATION |
 | [`/hx:hot-reload`](hot-reload.md) | `$hx-hot-reload` | Retro + Zustand sichern + Session-Neustart vorbereiten | retro.md |
 | [`/hx:eod`](eod.md) | `$hx-eod` | Tagesabschluss: retro + Arbeitsstand/Commit-Check + State + Übergabe an morgen | retro.md, commit.md, Arbeits-Tracking |

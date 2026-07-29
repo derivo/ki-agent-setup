@@ -53,8 +53,8 @@ Ansehen: `cat ~/.agents/harness-inbox.md` (kein eigener Command — die Inbox is
 Datei, nicht ein Werkzeug).
 
 Abgearbeitet wird sie **gebündelt**, in einer bewussten Harness-Session: `/hx:retro`
-zieht die geparkten Einträge neben den Session-Erkenntnissen mit heran, `/harness-sync`
-liest sie vor dem Anwenden. Übernommene Einträge bekommen `**Status:** übernommen
+zieht die geparkten Einträge neben den Session-Erkenntnissen mit heran, [`/hx:sync`](sync.md)
+zeigt sie vor dem Anwenden an. Übernommene Einträge bekommen `**Status:** übernommen
 (<commit>)`, verworfene `**Status:** verworfen — <Grund>`. Nichts wird gelöscht: eine
 verworfene Idee, die wiederkommt, ist selbst ein Signal.
 

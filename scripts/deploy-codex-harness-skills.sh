@@ -52,6 +52,7 @@ for source_file in "$command_root"/*.md; do
     hx-review) skill_action="review a diff using the harness review threshold" ;;
     hx-spec) skill_action="turn a feature request into a testable specification" ;;
     hx-start) skill_action="load the harness and current project state" ;;
+    hx-sync) skill_action="apply the repo state to this machine" ;;
     hx-verify) skill_action="verify changes through observed end-to-end behavior" ;;
     *)
       echo "Missing Codex skill metadata for $skill_name" >&2

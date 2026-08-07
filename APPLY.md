@@ -273,10 +273,12 @@ liegen. Liegt dort schon eine `CLAUDE.md`, mergen statt überschreiben.
 ```bash
 claude plugin marketplace add DietrichGebert/ponytail
 claude plugin marketplace add JuliusBrussee/caveman
+claude plugin marketplace add openai/codex-plugin-cc
 claude plugin marketplace add anthropics/claude-plugins-official
 
 claude plugin install ponytail@ponytail
 claude plugin install caveman@caveman
+claude plugin install codex@openai-codex
 claude plugin install claude-md-management@claude-plugins-official
 claude plugin install frontend-design@claude-plugins-official
 claude plugin install playwright@claude-plugins-official
@@ -287,7 +289,9 @@ Prosa-Kompression, bleibt aber **inaktiv** — die beiden greifen auf
 unterschiedliche Achsen (was gebaut wird vs. wie geredet wird), sollten aber
 nicht gleichzeitig laufen, weil beide jeden Turn in den Kontext injizieren. Die
 drei `@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege,
-Frontend-Design und Playwright-Browser-Automatisierung.
+Frontend-Design und Playwright-Browser-Automatisierung. `codex` bindet die
+Codex-CLI in Claude Code ein (Review, adversariales Review, Delegation über
+`/codex:*`) — es setzt eine installierte `codex`-CLI voraus (Teil B2).
 
 caveman auf „installiert, aber aus" setzen:
 ```bash
@@ -309,6 +313,7 @@ Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 |---|---|---|
 | `ponytail@ponytail` | `4.8.4` (Marketplace-HEAD `16f29800fd26`) | 2026-08-07 |
 | `caveman@caveman` | `25d22f864ad6` | 2026-08-07 |
+| `codex@openai-codex` | `1.0.3` | 2026-08-07 |
 | `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-06-30 |
 | `frontend-design@claude-plugins-official` | `61c0597779bd` | 2026-06-30 |
 | `playwright@claude-plugins-official` | `d53f6ca4cdb0` | 2026-06-30 |
@@ -318,9 +323,17 @@ sind keine Semver-Tags — der Upstream-Marketplace vergibt keine stabilen Versi
 `ponytail` ist das einzige Plugin hier mit eigener Semver-Angabe in seiner
 `plugin.json`; der Hash daneben ist der Marketplace-Stand, gegen den geprüft wurde.
 
-**Verify:** `claude plugin marketplace list` zeigt `ponytail`, `caveman` **und**
-`claude-plugins-official`; `claude plugin list` zeigt alle fünf als enabled,
-Versionen gemäß Tabelle (oder Abweichung bewusst dokumentiert).
+**Verify:** `claude plugin marketplace list` zeigt `ponytail`, `caveman`,
+`openai-codex` **und** `claude-plugins-official` (der Marketplace registriert
+sich als `openai-codex`, nicht unter dem Repo-Namen); `claude plugin list` zeigt
+alle sechs als enabled, Versionen gemäß Tabelle (oder Abweichung bewusst
+dokumentiert).
+
+**Nicht Teil dieses Setups:** Plugins aus einem lokalen Verzeichnis-Marketplace
+statt aus GitHub (auf der Ursprungsmaschine `thebrain`). Sie hängen an
+maschinenlokalen Pfaden und sind aus diesem Repo nicht reproduzierbar —
+`claude plugin list` kann deshalb mehr zeigen als die Tabelle oben. Kein Fehler,
+solange die Tabellen-Einträge vollständig sind.
 
 ### B1.3 GSD-Runtime
 Installer (A3) für Runtime „Claude Code" laufen lassen.
@@ -637,7 +650,7 @@ Kern (Teil A), unabhängig vom Client:
 
 Pro eingerichtetem Client zusätzlich der Verify-Block seines Abschnitts in Teil B.
 Für Claude Code speziell:
-- `claude plugin list` → ponytail, caveman + die drei
+- `claude plugin list` → ponytail, caveman, codex + die drei
   `claude-plugins-official`-Plugins enabled.
 - Neue Session: ponytail-Mode aktiv, caveman still (kein Aktivierungsblock),
   GSD-Statusline sichtbar; in einem `.planning/`-Projekt zeigt die Statusline den

@@ -10,11 +10,9 @@ Clients** abarbeiten, der eingerichtet wird (mehrere Clients → mehrere Blöcke
 Jeder Schritt hat ein Verify-Kriterium; bei Konflikten nachfragen.
 
 Bestehende Werte des Users **nicht** blind überschreiben — mergen, Abweichungen
-melden. Vor jeder Änderung an einer bestehenden Datei unter globalen
-Client-Verzeichnissen (`~/.claude/`, `~/.codex/`, `~/.gemini/`,
-`~/.config/opencode/`, optional `~/.harness/{harness,doc-harness}/`) ein
-Datei-Backup anlegen (z. B. `cp settings.json settings.json.bak-$(date +%F)`) —
-jede Änderung bleibt datei-weise revertierbar.
+melden. Das betrifft alle globalen Client-Verzeichnisse (`~/.claude/`,
+`~/.codex/`, `~/.gemini/`, `~/.config/opencode/`, optional
+`~/.harness/{harness,doc-harness}/`).
 
 ## Zielorte pro Client
 
@@ -392,7 +390,7 @@ Ausgabe doppelt in den Kontext. Betrifft hier beide Modus-Plugins aus B1.2:
 `caveman-activate.js` (SessionStart) und `caveman-mode-tracker.js`
 (UserPromptSubmit) — keines davon gehört in `settings.json`. Frühere Fassungen
 dieses Abschnitts schrieben genau das vor; wer danach eingerichtet hat, entfernt
-die Einträge (Backup vorher).
+die Einträge.
 
 **Verify:** keines der fünf Skripte ist in `settings.json` registriert; eine neue
 Session zeigt den ponytail-Aktivierungsblock **genau einmal** und den
@@ -432,7 +430,6 @@ chmod +x ~/.claude/hooks/harness-activate.sh
 #   { "hooks": [ { "type": "command",
 #                  "command": "bash \"$HOME/.claude/hooks/harness-activate.sh\"",
 #                  "timeout": 5 } ] }
-# Vorher Backup: cp ~/.claude/settings.json ~/.claude/settings.json.bak-$(date +%F)
 ```
 Der Hook resolved den Root wie `instructions/AGENTS.md` (zuerst
 `$AGENT_HARNESS_ROOT`, sonst `~/.claude/harness`); fehlt der Root, bleibt er still.

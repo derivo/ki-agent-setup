@@ -116,8 +116,12 @@ UI), nicht nur über Unit-Tests.
   auflösbare URLs werden entfernt und das wird benannt.
 - **Selbst-Review bei Konfig-Edits:** Edits an der Agent-Konfiguration
   (Instruction-Files, Hooks, Skills, Settings) durchlaufen vor "fertig" eine
-  adversariale Selbst-Review des eigenen Diffs. Backup / Datei-Level-Revertierbarkeit
-  sicherstellen.
+  adversariale Selbst-Review des eigenen Diffs. Vor dem Edit muss ein Weg zurück
+  existieren — welcher, entscheidet der Kontext: git-Historie der Quelldatei,
+  Snapshot, oder als letzte Wahl eine Kopie daneben. Eine `.bak`-Kopie ist die
+  schwächste Variante, weil sie niemand aufräumt und sie mit der Zeit neben der
+  scharfen Datei verwechselbar wird; wo die Quelle im Repo liegt und von dort
+  gespiegelt wird, ist die git-Historie der Weg zurück.
 - **Context-Budget schlank:** Pointer statt Volltext-Zitate, Zustand in Dateien
   auslagern. Tool-Output begrenzen (`head`/`grep`/`--stat`/Redirect), damit kein
   einzelner Befehl die Folge-Schritte mit Volltext flutet.

@@ -63,7 +63,10 @@ two layers:
   ([`SKILLS.md`](SKILLS.md)).
 
 **Claude-Code-specific** — the plumbing that wires it into Claude Code:
-- **caveman** — token-compressed communication (~75 % fewer tokens).
+- **ponytail** — solution minimalism (YAGNI ladder, stdlib/native before a new
+  dependency); the active mode.
+- **caveman** — token-compressed communication; installed but set to
+  `defaultMode: off`.
 - **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
   Claude Code mechanisms.
 
@@ -79,11 +82,12 @@ B3 `~/.gemini/`, B4 `~/.config/opencode/`). Claude Code is the primary target.
 | Tool | Source | Type | Purpose |
 |---|---|---|---|
 | **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
-| **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra |
+| **ponytail** | `DietrichGebert/ponytail` | plugin (marketplace) | solution minimalism, levels lite/full/ultra — **active** |
+| **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra — installed but off |
 
 Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
 
-### Additional skills (not from GSD/caveman)
+### Additional skills (not from GSD or the plugins)
 
 Separately installed skills (web, testing, PHP, security …), managed by a skill
 manager with the lockfile `~/.agents/.skill-lock.json`. Full inventory with the
@@ -155,7 +159,7 @@ flowchart TD
     end
 
     SKILLS["SKILLS.md<br/>skill inventory + sources"]:::doc
-    TOOLS(["~/.claude<br/>plugins · GSD · caveman · hooks · statusline"]):::target
+    TOOLS(["~/.claude<br/>plugins · GSD · ponytail · hooks · statusline"]):::target
 
     subgraph HARN[" harness/ — dev workflow (general, global) "]
         HREADME["README.md"]:::doc
@@ -210,6 +214,7 @@ URL provenance remains a per-session duty under `instructions/AGENTS.md`.
 
 ### Tools & plugins
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, install pin in `APPLY.md` (predecessor `gsd-build/get-shit-done` archived)
+- ponytail: https://github.com/DietrichGebert/ponytail
 - caveman: https://github.com/JuliusBrussee/caveman
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 

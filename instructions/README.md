@@ -6,7 +6,7 @@ Regelsätze.
 
 ```
 AGENTS.md   ← gemeinsame Basis. Standard; Codex-Hinweise sind klar markiert.
-CLAUDE.md   ← Claude-only-Delta (GSD, caveman, Skills) + importiert AGENTS.md
+CLAUDE.md   ← Claude-only-Delta (GSD, ponytail, Skills) + importiert AGENTS.md
 ```
 
 `CLAUDE.md` bindet die Basis über die Claude-Code-Import-Syntax `@AGENTS.md` ein —

@@ -52,7 +52,7 @@ Die portablen Anweisungen liegen geschichtet in [`instructions/`](instructions/)
 - `instructions/AGENTS.md` — client-übergreifende Basis (Arbeitsweise, Testing,
   Konventionen, Harness-Pointer) plus klar markierte Codex-Hinweise. **Quelle der
   Wahrheit** für alle Clients.
-- `instructions/CLAUDE.md` — Claude-Delta (GSD, caveman, Skills), importiert die
+- `instructions/CLAUDE.md` — Claude-Delta (GSD, ponytail, Skills), importiert die
   Basis via `@AGENTS.md`.
 
 Der `@AGENTS.md`-Import ist **Claude-spezifisch** — nur Claude Code expandiert ihn
@@ -153,7 +153,7 @@ ergänzt/entfernt, die secret-freie Tabelle dort nachziehen.
 
 **Verify:** Die MCP-Liste des Clients zeigt die Kern-Set-Server als verbunden.
 
-## A5. Zusätzliche Skills (nicht aus GSD/caveman)
+## A5. Zusätzliche Skills (nicht aus GSD oder den Plugins)
 
 Vollständiges Inventar mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 Verwaltung über die `skills`-CLI (`vercel-labs/skills`, Registry
@@ -271,35 +271,55 @@ liegen. Liegt dort schon eine `CLAUDE.md`, mergen statt überschreiben.
 
 ### B1.2 Plugin-Marketplaces + Plugins
 ```bash
+claude plugin marketplace add DietrichGebert/ponytail
 claude plugin marketplace add JuliusBrussee/caveman
 claude plugin marketplace add anthropics/claude-plugins-official
 
+claude plugin install ponytail@ponytail
 claude plugin install caveman@caveman
 claude plugin install claude-md-management@claude-plugins-official
 claude plugin install frontend-design@claude-plugins-official
 claude plugin install playwright@claude-plugins-official
 ```
-`caveman` liefert die Kompressions-Modi + Hooks (B1.5). Die drei
-`@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege, Frontend-Design und
-Playwright-Browser-Automatisierung.
+`ponytail` liefert den Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor
+neuer Dependency) + Hooks (B1.5) und ist der **aktive** Modus. `caveman` liefert
+Prosa-Kompression, bleibt aber **inaktiv** — die beiden greifen auf
+unterschiedliche Achsen (was gebaut wird vs. wie geredet wird), sollten aber
+nicht gleichzeitig laufen, weil beide jeden Turn in den Kontext injizieren. Die
+drei `@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege,
+Frontend-Design und Playwright-Browser-Automatisierung.
+
+caveman auf „installiert, aber aus" setzen:
+```bash
+mkdir -p ~/.config/caveman
+printf '{\n  "defaultMode": "off"\n}\n' > ~/.config/caveman/config.json
+rm -f ~/.claude/.caveman-active
+```
+`caveman-activate.js` liest diesen `defaultMode` und überspringt bei `off` die
+Aktivierung vollständig; der Per-Turn-Reminder in `caveman-mode-tracker.js` hängt
+am Flag `~/.claude/.caveman-active` und schweigt ohne es. `/caveman lite|full|ultra`
+holt caveman jederzeit für die laufende Session zurück, ohne die Config zu ändern.
 
 **Version-Pinning:** `claude plugin install`/`marketplace add` haben **kein**
 Version-/Ref-Flag — die installierte Version ist der git-HEAD zum
 Install-Zeitpunkt. Hartes Pinning wie bei GSD ist per CLI nicht möglich.
 Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 
-| Plugin | Known-Good (Stand 2026-06-30) |
-|---|---|
-| `caveman@caveman` | `25d22f864ad6` |
-| `claude-md-management@claude-plugins-official` | `1.0.0` |
-| `frontend-design@claude-plugins-official` | `61c0597779bd` |
-| `playwright@claude-plugins-official` | `d53f6ca4cdb0` |
+| Plugin | Known-Good | geprüft |
+|---|---|---|
+| `ponytail@ponytail` | `4.8.4` (Marketplace-HEAD `16f29800fd26`) | 2026-08-07 |
+| `caveman@caveman` | `25d22f864ad6` | 2026-08-07 |
+| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-06-30 |
+| `frontend-design@claude-plugins-official` | `61c0597779bd` | 2026-06-30 |
+| `playwright@claude-plugins-official` | `d53f6ca4cdb0` | 2026-06-30 |
 
 Bewusste Aktualisierung: nach Prüfung diese Tabelle neu setzen. Reine git-Hashes
 sind keine Semver-Tags — der Upstream-Marketplace vergibt keine stabilen Versionen.
+`ponytail` ist das einzige Plugin hier mit eigener Semver-Angabe in seiner
+`plugin.json`; der Hash daneben ist der Marketplace-Stand, gegen den geprüft wurde.
 
-**Verify:** `claude plugin marketplace list` zeigt `caveman` **und**
-`claude-plugins-official`; `claude plugin list` zeigt alle vier als enabled,
+**Verify:** `claude plugin marketplace list` zeigt `ponytail`, `caveman` **und**
+`claude-plugins-official`; `claude plugin list` zeigt alle fünf als enabled,
 Versionen gemäß Tabelle (oder Abweichung bewusst dokumentiert).
 
 ### B1.3 GSD-Runtime
@@ -353,20 +373,26 @@ Tool-Guard-Hook aus A6 hier ergänzen.
 registriert seine Hooks selbst über den `hooks`-Key seiner `.claude-plugin/plugin.json`;
 Claude Code führt Plugin-Hooks **und** `settings.json`-Hooks aus. Steht dasselbe
 Skript an beiden Stellen, läuft es **zweimal pro Auslöser** und injiziert seine
-Ausgabe doppelt in den Kontext. Betrifft hier `caveman` (B1.2), das
-`caveman-activate.js` als SessionStart und `caveman-mode-tracker.js` als
-UserPromptSubmit mitbringt — beide gehören **nicht** in `settings.json`. Frühere
-Fassungen dieses Abschnitts schrieben genau das vor; wer danach eingerichtet hat,
-entfernt die Einträge (Backup vorher).
+Ausgabe doppelt in den Kontext. Betrifft hier beide Modus-Plugins aus B1.2:
+`ponytail` bringt `ponytail-activate.js` (SessionStart), `ponytail-mode-tracker.js`
+(UserPromptSubmit) und `ponytail-subagent.js` (SubagentStart) mit, `caveman`
+`caveman-activate.js` (SessionStart) und `caveman-mode-tracker.js`
+(UserPromptSubmit) — keines davon gehört in `settings.json`. Frühere Fassungen
+dieses Abschnitts schrieben genau das vor; wer danach eingerichtet hat, entfernt
+die Einträge (Backup vorher).
 
-**Verify:** `caveman-activate` und `caveman-mode-tracker` sind in `settings.json`
-**nicht** registriert; eine neue Session zeigt den caveman-Aktivierungsblock
-**genau einmal** und den GSD-Update-Check. Doppelte Blöcke = Doppel-Registrierung.
+**Verify:** keines der fünf Skripte ist in `settings.json` registriert; eine neue
+Session zeigt den ponytail-Aktivierungsblock **genau einmal** und den
+GSD-Update-Check. Doppelte Blöcke = Doppel-Registrierung.
 
 ```bash
 # Doppel-Registrierung erkennen: liefert Treffer -> Eintrag aus settings.json entfernen
-grep -c 'caveman-activate\|caveman-mode-tracker' ~/.claude/settings.json
+grep -c 'ponytail-activate\|ponytail-mode-tracker\|ponytail-subagent\|caveman-activate\|caveman-mode-tracker' ~/.claude/settings.json
 ```
+
+Die Modus-Plugins schreiben ihren Zustand in Flag-Dateien unter `~/.claude/`
+(`.ponytail-active`, `.caveman-active`) — die sind Laufzeit-Zustand, nicht Teil
+dieses Repos und werden nicht mitgespiegelt.
 
 ### B1.6 Harness + Commands + Reminder
 Harness-Kopie (falls kein zentrales Root aus A2):
@@ -611,9 +637,11 @@ Kern (Teil A), unabhängig vom Client:
 
 Pro eingerichtetem Client zusätzlich der Verify-Block seines Abschnitts in Teil B.
 Für Claude Code speziell:
-- `claude plugin list` → caveman + die drei `claude-plugins-official`-Plugins enabled.
-- Neue Session: caveman-Mode aktiv, GSD-Statusline sichtbar; in einem
-  `.planning/`-Projekt zeigt die Statusline den GSD-State.
+- `claude plugin list` → ponytail, caveman + die drei
+  `claude-plugins-official`-Plugins enabled.
+- Neue Session: ponytail-Mode aktiv, caveman still (kein Aktivierungsblock),
+  GSD-Statusline sichtbar; in einem `.planning/`-Projekt zeigt die Statusline den
+  GSD-State.
 
 Bei Abweichungen oder fehlenden Quellen melden statt raten.
 

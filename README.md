@@ -56,7 +56,10 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   — Deutsch, Think-before-Coding, Simplicity-First, Surgical-Changes,
   Ehrlichkeits-/Verifikations-Disziplin, Edge-Case-Testpflicht.
 - [`harness/`](harness/README.md) — genereller, stack-agnostischer
-  Software-Entwicklungs-Workflow (Spec → Test → Code → Gate, Self-Optimization).
+  Software-Entwicklungs-Workflow (Spec → Test → Code → Gate, Self-Optimization)
+  samt Command-Library ([`harness/commands/`](harness/commands/README.md), 12
+  Commands): in Claude Code namespaced als `/hx:start`, `/hx:spec`, `/hx:review`
+  …, in Codex als `$hx-*`-Skills.
 - [`doc-harness/`](doc-harness/README.md) — Workflow für Doku-Projekte.
 - **GSD (get-shit-done)** — Phasen-/Roadmap-Workflow, Single-Source-of-Truth;
   der Installer unterstützt mehrere Runtimes.
@@ -68,6 +71,8 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   Dependency); der aktive Modus.
 - **caveman** — Token-komprimierte Kommunikation; installiert, aber per Config
   auf `defaultMode: off`.
+- **codex** — die Codex-CLI aus Claude Code heraus nutzen: Review, adversariales
+  Review, Delegation (`/codex:*`).
 - **Statusline** (`gsd-statusline.js`), **Hooks** und `settings.json` — eigene
   Claude-Code-Mechanismen.
 
@@ -85,8 +90,14 @@ Primärer Zielort ist Claude Code.
 | **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
 | **ponytail** | `DietrichGebert/ponytail` | Plugin (Marketplace) | Lösungs-Minimalismus, Level lite/full/ultra — **aktiv** |
 | **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra — installiert, aber aus |
+| **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Codex-CLI aus Claude Code: Review, adversariales Review, Delegation |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
+
+**Nicht Teil des reproduzierbaren Setups:** Plugins aus einem lokalen
+Verzeichnis-Marketplace statt aus GitHub (aktuell `thebrain`). Sie hängen an
+maschinenlokalen Pfaden und lassen sich aus diesem Repo nicht wiederherstellen —
+`claude plugin list` zeigt sie deshalb, `APPLY.md` installiert sie nicht.
 
 ### Zusätzliche Skills (nicht aus GSD oder den Plugins)
 
@@ -122,7 +133,7 @@ voller Pfad │ git-branch                                   (dim)
 
 Beispiel:
 ```
-Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
+Opus 5 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
 [▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Di 21:00  │  $225
 /Users/you/code/myproject │ main
 v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ myproject
@@ -163,20 +174,16 @@ flowchart TD
     TOOLS(["~/.claude<br/>Plugins · GSD · ponytail · Hooks · Statusline"]):::target
 
     subgraph HARN[" harness/ — Dev-Workflow (generell, global) "]
-        HREADME["README.md"]:::doc
-        ROADMAP["ROADMAP.md<br/>5 Phasen"]:::doc
-        GUARD["GUARDRAILS.md<br/>harte Regeln"]:::doc
-        SPECW["SPEC_WORKFLOW.md"]:::doc
-        FEATT["FEATURE_TEMPLATE.md"]:::doc
-        TESTS["TESTS.md"]:::doc
-        LOOP["AGENT_LOOP.md"]:::doc
-        SELF["SELF_OPTIMIZATION.md"]:::doc
-        FEAT["feature.md<br/>Runbook"]:::doc
+        HREADME["README.md<br/>Einstieg + Trigger-Tabelle"]:::doc
+        GUARD["GUARDRAILS.md · GUARDRAILS_UI.md<br/>Tier 1 — harte Regeln"]:::doc
         PHPAD["stacks/<br/>Adapter: php · node · python"]:::skill
-        HREADME --> ROADMAP & GUARD & SPECW & PHPAD
-        SPECW --> FEATT
-        LOOP --> GUARD & TESTS & SPECW & SELF
-        FEAT --> LOOP & FEATT & TESTS
+        FLOW["SPEC_WORKFLOW.md · FEATURE_TEMPLATE.md<br/>AGENT_LOOP.md · TESTS.md · feature.md<br/>Spec → Test → Code → Gate"]:::doc
+        REF["ENGINEERING.md · REVIEW_PANEL.md · DEBUG.md<br/>SELF_OPTIMIZATION.md · ROADMAP.md · EVALS.md<br/>ADR_TEMPLATE.md · linklist.md"]:::doc
+        CMDS["commands/ → /hx:*<br/>12 Slash-Commands"]:::skill
+        HHOOK["hooks/harness-activate.sh<br/>SessionStart-Reminder"]:::skill
+        HREADME -->|Pflicht| GUARD & PHPAD
+        HREADME -->|gegen Trigger| FLOW & REF
+        HREADME --- CMDS & HHOOK
     end
 
     README -. Einstieg .-> SKILL
@@ -218,6 +225,7 @@ URL-Provenance bleibt eine Session-Pflicht nach `instructions/AGENTS.md`.
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install-Pin siehe `APPLY.md` (Vorgänger `gsd-build/get-shit-done` archiviert)
 - ponytail: https://github.com/DietrichGebert/ponytail
 - caveman: https://github.com/JuliusBrussee/caveman
+- codex (Claude-Code-Plugin): https://github.com/openai/codex-plugin-cc
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 
 ### Skill-Quellen (siehe `SKILLS.md`)

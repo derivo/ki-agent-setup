@@ -8,7 +8,7 @@ description: Bootet das lokale KI-Agent-Setup aus diesem Repo autonom zusammen. 
 Dieser Skill macht das ki-agent-setup-Repo selbst-anwendend: Ein Agent liest ihn nach
 dem Checkout und baut das lokale Claude-Code-Setup plus die
 client-übergreifenden Arbeitsregeln/Harness-Mirrors autonom zusammen — Plugins,
-globale Config, GSD, caveman, Statusline, Arbeitsregeln. Optional verdrahtet er
+globale Config, GSD, ponytail, Statusline, Arbeitsregeln. Optional verdrahtet er
 das Entwicklungs-Harness in ein Zielprojekt.
 
 Der Skill **dupliziert keine Details**. Er ist der Orchestrator; die
@@ -37,16 +37,18 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
 Verify-Kriterium, bevor du weitergehst:
 1. Marketplaces registrieren.
-2. Plugins installieren (caveman + die drei `claude-plugins-official`-Plugins).
+2. Plugins installieren (ponytail + caveman + die drei
+   `claude-plugins-official`-Plugins) und caveman auf `defaultMode: off` setzen.
 3. GSD installieren (eigener Installer, kein Marketplace-Plugin).
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
 5. Hooks eintragen (GSD-Guards, Tool-Guard). **Plugin-eigene Hooks nicht** —
-   `caveman-activate`/`caveman-mode-tracker` bringt das Plugin selbst mit, ein
+   ponytail und caveman bringen ihre Aktivierungs-/Tracker-Hooks selbst mit, ein
    zweiter Eintrag in `settings.json` lässt sie doppelt feuern (`APPLY.md` B1.5).
 6. Globale Settings setzen (Deutsch, Thinking, effort high, Theme …).
 7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`, inkl. Codex-Abschnitt in
    `AGENTS.md`) sicherstellen.
-8. Zusätzliche Nicht-GSD/caveman-Skills nach `SKILLS.md`/Lockfile herstellen.
+8. Zusätzliche Skills außerhalb von GSD und den Plugins nach
+   `SKILLS.md`/Lockfile herstellen.
 9. Harness und optional doc-harness client-übergreifend hinterlegen; Claude-
    Commands unter `/hx:*` und Codex-Skills unter `$hx-*` deployen.
 10. MCP-Kern-Set installieren (Versionen pinnen; Inventar = `MCP_SERVERS.md`).

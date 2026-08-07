@@ -1,6 +1,6 @@
 # Skills-Inventar
 
-Skills, die **nicht** aus GSD oder caveman stammen — separat installiert und Teil
+Skills, die **nicht** aus GSD oder den Plugins stammen — separat installiert und Teil
 des Setups. Sie werden über einen Skill-Manager verwaltet, dessen Lockfile unter
 `~/.agents/.skill-lock.json` liegt und nach `~/.claude/skills/` verlinkt/kopiert.
 Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
@@ -17,8 +17,8 @@ Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 > nicht der geprüfte Stand (analog zur Known-Good-Tabelle der Plugins in
 > `APPLY.md` B1.2).
 
-Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) und caveman
-(`caveman:*`, Plugin).
+Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) sowie die
+Plugin-eigenen Skills von ponytail (`ponytail:*`) und caveman (`caveman:*`).
 
 ---
 

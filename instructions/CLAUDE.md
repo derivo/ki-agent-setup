@@ -16,15 +16,31 @@ Projekte mit `.planning/` nutzen GSD als Single-Source-of-Truth (Struktur siehe
 - In-Session bei 3+ Schritten: `TaskCreate`-Tool nutzen.
 - GSD-Skills/Commands (`gsd-*`, `gsd:*`) für Phasen-Workflow.
 
-## caveman
+## ponytail
 
-Token-komprimierte Kommunikation aktiv (Level via `/caveman lite|full|ultra`).
-Code, Commits, PRs und Security-Warnungen immer normal schreiben — nur Fließtext
-komprimieren.
+Lösungs-Minimalismus aktiv (Level via `/ponytail lite|full|ultra`, Default
+`full`). Vor jedem Code die Leiter, erste haltende Sprosse gewinnt: nötig? → im
+Bestand vorhanden? → stdlib? → native Plattform? → bereits installierte
+Dependency? → eine Zeile? → erst dann das Minimum, das funktioniert. Das ergänzt
+*Simplicity First* aus `AGENTS.md` um die Sprossen stdlib/native/Bestands-
+Dependency; die Leiter verkürzt die Lösung, nie das Lesen.
+
+Zwei Stellen, an denen die Hausregeln vorgehen — Rangfolge wie in
+`harness/GUARDRAILS.md` §0:
+- Die knappe Ausgabe („höchstens drei Zeilen") ersetzt **keinen** Evidence-Beleg
+  je Akzeptanzkriterium (`GUARDRAILS.md` C).
+- „Ein Check reicht" ersetzt **nicht** die Edge-Case-Matrix für UI-Formulare
+  (`AGENTS.md` → Testing).
+
+caveman ist installiert, aber per `~/.config/caveman/config.json` auf
+`defaultMode: off`. Prosa-Kompression läuft nicht mehr per Default; `/caveman
+lite|full|ultra` holt sie bei Bedarf für die Session zurück. Nicht beide
+gleichzeitig aktiv fahren.
 
 ## Skills
 
-Nicht-GSD/caveman-Skills (Web, Testing, PHP, Security …) sind installiert.
+Skills außerhalb von GSD und den Plugins (Web, Testing, PHP, Security …) sind
+installiert.
 Quelle der Wahrheit ist `~/.agents/.skill-lock.json`; das Repo-Inventar heißt
 `SKILLS.md`. Bei passender Aufgabe den jeweiligen Skill nutzen.
 

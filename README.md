@@ -64,7 +64,10 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   ([`SKILLS.md`](SKILLS.md)).
 
 **Claude-Code-spezifisch** — die Mechanik, die das in Claude Code einklinkt:
-- **caveman** — Token-komprimierte Kommunikation (~75 % weniger Tokens).
+- **ponytail** — Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor neuer
+  Dependency); der aktive Modus.
+- **caveman** — Token-komprimierte Kommunikation; installiert, aber per Config
+  auf `defaultMode: off`.
 - **Statusline** (`gsd-statusline.js`), **Hooks** und `settings.json` — eigene
   Claude-Code-Mechanismen.
 
@@ -80,11 +83,12 @@ Primärer Zielort ist Claude Code.
 | Tool | Quelle | Typ | Zweck |
 |---|---|---|---|
 | **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
-| **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra |
+| **ponytail** | `DietrichGebert/ponytail` | Plugin (Marketplace) | Lösungs-Minimalismus, Level lite/full/ultra — **aktiv** |
+| **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra — installiert, aber aus |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
 
-### Zusätzliche Skills (nicht aus GSD/caveman)
+### Zusätzliche Skills (nicht aus GSD oder den Plugins)
 
 Separat installierte Skills (Web, Testing, PHP, Security …), verwaltet über einen
 Skill-Manager mit Lockfile `~/.agents/.skill-lock.json`. Vollständiges Inventar
@@ -156,7 +160,7 @@ flowchart TD
     end
 
     SKILLS["SKILLS.md<br/>Skill-Inventar + Quellen"]:::doc
-    TOOLS(["~/.claude<br/>Plugins · GSD · caveman · Hooks · Statusline"]):::target
+    TOOLS(["~/.claude<br/>Plugins · GSD · ponytail · Hooks · Statusline"]):::target
 
     subgraph HARN[" harness/ — Dev-Workflow (generell, global) "]
         HREADME["README.md"]:::doc
@@ -212,6 +216,7 @@ URL-Provenance bleibt eine Session-Pflicht nach `instructions/AGENTS.md`.
 
 ### Tools & Plugins
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install-Pin siehe `APPLY.md` (Vorgänger `gsd-build/get-shit-done` archiviert)
+- ponytail: https://github.com/DietrichGebert/ponytail
 - caveman: https://github.com/JuliusBrussee/caveman
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 

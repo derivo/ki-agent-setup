@@ -55,7 +55,10 @@ two layers:
   German output, think-before-coding, simplicity-first, surgical changes,
   honesty/verification discipline, mandatory edge-case testing.
 - [`harness/`](harness/README.md) — general, stack-agnostic software-development
-  workflow (spec → test → code → gate, self-optimization).
+  workflow (spec → test → code → gate, self-optimization) plus its command
+  library ([`harness/commands/`](harness/commands/README.md), 12 commands):
+  namespaced as `/hx:start`, `/hx:spec`, `/hx:review` … in Claude Code, as
+  `$hx-*` skills in Codex.
 - [`doc-harness/`](doc-harness/README.md) — workflow for documentation projects.
 - **GSD (get-shit-done)** — phase/roadmap workflow, single source of truth; the
   installer supports multiple runtimes.
@@ -67,6 +70,8 @@ two layers:
   dependency); the active mode.
 - **caveman** — token-compressed communication; installed but set to
   `defaultMode: off`.
+- **codex** — drive the Codex CLI from Claude Code: review, adversarial review,
+  delegation (`/codex:*`).
 - **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
   Claude Code mechanisms.
 
@@ -84,8 +89,14 @@ B3 `~/.gemini/`, B4 `~/.config/opencode/`). Claude Code is the primary target.
 | **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
 | **ponytail** | `DietrichGebert/ponytail` | plugin (marketplace) | solution minimalism, levels lite/full/ultra — **active** |
 | **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra — installed but off |
+| **codex** | `openai/codex-plugin-cc` | plugin (marketplace) | Codex CLI from Claude Code: review, adversarial review, delegation |
 
 Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
+
+**Not part of the reproducible setup:** plugins from a local directory
+marketplace rather than GitHub (currently `thebrain`). They depend on
+machine-local paths and cannot be restored from this repo — `claude plugin list`
+shows them, `APPLY.md` does not install them.
 
 ### Additional skills (not from GSD or the plugins)
 
@@ -121,7 +132,7 @@ full path │ git branch                                     (dim)
 
 Example:
 ```
-Opus 4.8 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
+Opus 5 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
 [▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Tue 21:00  │  $225
 /Users/you/code/myproject │ main
 v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ myproject
@@ -162,20 +173,16 @@ flowchart TD
     TOOLS(["~/.claude<br/>plugins · GSD · ponytail · hooks · statusline"]):::target
 
     subgraph HARN[" harness/ — dev workflow (general, global) "]
-        HREADME["README.md"]:::doc
-        ROADMAP["ROADMAP.md<br/>5 phases"]:::doc
-        GUARD["GUARDRAILS.md<br/>hard rules"]:::doc
-        SPECW["SPEC_WORKFLOW.md"]:::doc
-        FEATT["FEATURE_TEMPLATE.md"]:::doc
-        TESTS["TESTS.md"]:::doc
-        LOOP["AGENT_LOOP.md"]:::doc
-        SELF["SELF_OPTIMIZATION.md"]:::doc
-        FEAT["feature.md<br/>runbook"]:::doc
+        HREADME["README.md<br/>entry point + trigger table"]:::doc
+        GUARD["GUARDRAILS.md · GUARDRAILS_UI.md<br/>tier 1 — hard rules"]:::doc
         PHPAD["stacks/<br/>adapters: php · node · python"]:::skill
-        HREADME --> ROADMAP & GUARD & SPECW & PHPAD
-        SPECW --> FEATT
-        LOOP --> GUARD & TESTS & SPECW & SELF
-        FEAT --> LOOP & FEATT & TESTS
+        FLOW["SPEC_WORKFLOW.md · FEATURE_TEMPLATE.md<br/>AGENT_LOOP.md · TESTS.md · feature.md<br/>spec → test → code → gate"]:::doc
+        REF["ENGINEERING.md · REVIEW_PANEL.md · DEBUG.md<br/>SELF_OPTIMIZATION.md · ROADMAP.md · EVALS.md<br/>ADR_TEMPLATE.md · linklist.md"]:::doc
+        CMDS["commands/ → /hx:*<br/>12 slash commands"]:::skill
+        HHOOK["hooks/harness-activate.sh<br/>SessionStart reminder"]:::skill
+        HREADME -->|always| GUARD & PHPAD
+        HREADME -->|on trigger| FLOW & REF
+        HREADME --- CMDS & HHOOK
     end
 
     README -. entry .-> SKILL
@@ -216,6 +223,7 @@ URL provenance remains a per-session duty under `instructions/AGENTS.md`.
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, install pin in `APPLY.md` (predecessor `gsd-build/get-shit-done` archived)
 - ponytail: https://github.com/DietrichGebert/ponytail
 - caveman: https://github.com/JuliusBrussee/caveman
+- codex (Claude Code plugin): https://github.com/openai/codex-plugin-cc
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 
 ### Skill sources (see `SKILLS.md`)

@@ -88,8 +88,8 @@ die `Lade wenn:`-Kopfzeile der Datei lesen (eine Zeile), dann entscheiden.
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced
 unter `/hx:start`, `/hx:spec`, `/hx:review`, `/hx:verify`, `/hx:commit`,
-`/hx:pr`, `/hx:retro`, `/hx:hot-reload`, `/hx:eod`, damit sie nicht mit
-Built-ins kollidieren.
+`/hx:pr`, `/hx:retro`, `/hx:sync`, `/hx:park`, `/hx:hot-reload`, `/hx:eod`,
+`/hx:linklist`, damit sie nicht mit Built-ins kollidieren.
 
 Dann den passenden **Stack-Adapter** unter [`stacks/`](stacks/) lesen — er füllt
 die generellen Platzhalter (Schichten, Gate-Befehl, Test-Framework) mit den

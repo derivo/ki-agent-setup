@@ -48,6 +48,26 @@ Ein Skill liefert **Technik, nicht Scope**: verlangt er mehr als der Auftrag
 hergibt, gilt der Auftrag. Rangfolge und Meldepflicht bei Widerspruch:
 `harness/GUARDRAILS.md` §0.
 
+## Background-Subagents — Prompt frei halten
+
+Lange, unabhängige oder recherche-lastige Aufgaben laufen per Default als
+**Background-Subagent**, damit der Prompt für weitere Eingaben frei bleibt.
+Model pro Aufgabe wählen: eng umrissene mechanische Arbeit → kleineres Model
+(Haiku), komplexe Arbeit → Session-Model erben. Kleine oder stark
+kontext-abhängige Aufgaben bleiben im Hauptthread — ein Subagent startet ohne
+Gesprächskontext; bei kurzen Aufgaben ist er Overhead plus Qualitätsverlust,
+kein Gewinn.
+
+- **Der Chat ist die Queue.** Neue Aufgaben jederzeit als Nachricht reingeben,
+  auch während laufender Arbeit — sie werden gequeued und beim nächsten Zug
+  aufgenommen. Kein Statusfile als Eingabekanal: Dateien werden nicht
+  überwacht, ein Eintrag dort löst nichts aus.
+- **Stand sichtbar im bestehenden Tracking** (`AGENTS.md` → Arbeits-Tracking):
+  in-Session `TaskCreate`, projektseitig `.planning/` bzw. Worklog. Kein
+  eigenes Statusfile-Format erfinden.
+- **Parallele Datei-Arbeit nur in eigenen Worktrees** (`GUARDRAILS.md` H,
+  Regel 10); Fan-out-Ergebnisse zentral verifizieren (`GUARDRAILS.md` C).
+
 ## Verifikation — kein Doppel-Check auf eigene Arbeit
 
 Aktuelle Claude-Modelle prüfen und korrigieren ihre Arbeit selbst. Deshalb **kein

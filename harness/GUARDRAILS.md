@@ -208,6 +208,28 @@ die Autorität nicht prüfbar, wird das Ergebnis als begründete Inferenz markie
 Ein Befund aus einem ungeprüften Instrument ist keine Erkenntnis, sondern eine
 zweite Fehlerquelle.
 
+### Regel — Messlauf-Umfang vor der Zahl prüfen
+Bevor eine Lauf-Zahl (Tests grün/rot, Treffer, Fundstellen) als Baseline oder
+Beleg dient: prüfen, ob der Lauf die Grundgesamtheit **überhaupt erfasst hat**.
+Fail-fast (`maxFailures`, `-x`), Marker-/Pfad-Filter und abweichende Aufrufformen
+kürzen den Umfang still — die Zahl sieht dann aus wie ein Ergebnis, ist aber eine
+Teilmenge. Ein „did not run" in der Zusammenfassung ist kein Nebensatz, sondern
+sagt, dass die Messung nicht stattgefunden hat.
+
+Ebenso ordnet ein **geteiltes Log** bei parallelen Läufen keine Zeile einem
+einzelnen Fall zu. Wer aus fremdem Output auf den eigenen Fall schließt, misst
+das falsche Instrument — die Zuordnung braucht eine fallgebundene Quelle
+(eigener Mitschnitt, isolierter Lauf, korrelierende Id).
+
+### Regel — Lauf-Konfiguration gehört an den Lauf
+Konfiguration, die ein einzelner Verifikationslauf braucht (erhöhte Limits,
+abgeschaltete Guards, Test-Feature-Flags), wird **am Lauf** gesetzt — nicht in
+eine geteilte Umgebungsdatei (`.env`, Shell-Profil, committete Defaults)
+geschrieben. Sonst verändert sie stillschweigend jeden anderen Lauf, der dieselbe
+Umgebung liest, und die Regression taucht dort auf, wo niemand sie sucht. Braucht
+eine Suite die Abweichung dauerhaft, gehört sie in deren dokumentierte
+Vorbedingung, nicht in die gemeinsame Umgebung.
+
 ### Regel — Verifikation belegen: Evidence, nicht Behauptung
 Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,
 grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".

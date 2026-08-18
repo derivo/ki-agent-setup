@@ -254,6 +254,36 @@ jemand das Pin pflegt. Known-Good folgt dem Muster, das dieses Setup schon nutzt
 Jeder Block sagt, was **dieser** Client zu tun hat: wohin er die Substanz aus
 Teil A legt und welche client-eigene Mechanik dazukommt.
 
+## B0. Vorbedingung — nur installierte Clients bespielen
+
+**Vor jedem Teil-B-Block prüfen, ob dessen CLI überhaupt existiert.** Fehlt sie,
+wird der Block **übersprungen und das gemeldet** — nicht deployt:
+
+```bash
+command -v claude codex gemini opencode
+```
+
+Ein vorhandenes Config-Verzeichnis ist **kein** Beleg. `~/.codex/` entsteht auch
+durch einen früheren Sync, eine deinstallierte CLI oder ein Plugin; danach sieht
+ein Existenz-Check den Ordner und deployt weiter ins Leere. Geprüft wird die
+**CLI**, nicht ihr Datenverzeichnis (`GUARDRAILS.md` C, „Vorhandensein ≠
+Verhalten").
+
+Der Anlass ist beobachtet, nicht theoretisch: auf der Ursprungsmaschine trugen
+`~/.codex/` einen vollständigen Harness-Mirror, eine `AGENTS.md` und zwölf
+`hx-*`-Skills — ohne installierte `codex`-CLI. Jeder Sync hielt sie aktuell, kein
+Prozess las sie je.
+
+**Nicht-Installation ist nicht der einzige Grund zu überspringen.** Ein Client
+kann installiert und trotzdem bewusst abgewählt sein. Das ist eine Entscheidung
+pro Maschine und gehört **nicht** hierher — dieses Dokument beschreibt alle
+Clients für alle Maschinen. Wer abwählt, hält das lokal fest (Notiz im
+Client-Delta, `MEMORY.md` o. Ä.) und meldet die Abweichung beim Sync.
+
+**Verify:** Für jeden bespielten Client liefert `command -v <cli>` einen Pfad;
+für jeden übersprungenen nennt der Sync-Bericht ihn als übersprungen mit Grund
+(nicht installiert / abgewählt).
+
 ## B1. Claude Code (Primärziel)
 
 Ziel-Verzeichnis: `~/.claude/`. Reichster Client — Plugins, Hooks, Statusline,

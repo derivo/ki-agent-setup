@@ -28,10 +28,14 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 - `README.md` lesen → Überblick, Statusline-Aufbau, Tool-Liste.
 - `APPLY.md` lesen → die verbindlichen Setup-Schritte (Teil A = gemeinsamer Kern
   A1–A6, Teil B = Block des einzurichtenden Clients B1–B4).
-- Bestehenden Stand erfassen: `~/.claude/settings.json`, `claude plugin list`,
-  vorhandene `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
-  `~/.codex/harness/`, `~/.agents/skills/hx-*` und `codex mcp list`. **Nicht**
-  blind überschreiben — mergen.
+- **Welche Clients überhaupt bespielt werden** (`APPLY.md` B0): `command -v
+  claude codex gemini opencode`. Wer keine CLI hat, bekommt keinen Teil-B-Block —
+  ein vorhandenes Config-Verzeichnis zählt nicht als Beleg.
+- Bestehenden Stand der **bespielten** Clients erfassen:
+  `~/.claude/settings.json`, `claude plugin list`, vorhandene
+  `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.codex/harness/`,
+  `~/.agents/skills/hx-*` und `codex mcp list`. **Nicht** blind überschreiben —
+  mergen.
 
 ### 2. Setup anwenden (APPLY.md vollständig: Teil A + der passende Teil-B-Block)
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte

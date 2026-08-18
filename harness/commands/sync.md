@@ -32,7 +32,10 @@ zusätzlich anfallen. Bei Widerspruch gewinnt `APPLY.md`.
    reproduzierte Verhaltensproben, und die gelten erst nach erneuter Prüfung.
 
 4. **Setup anwenden** — Skill `ki-agent-setup` bzw. `APPLY.md` Teil A + den
-   Teil-B-Block jedes einzurichtenden Clients. Dabei gilt unverändert:
+   Teil-B-Block jedes einzurichtenden Clients. Welche das sind, entscheidet
+   `APPLY.md` B0: nur Clients mit auffindbarer CLI, ein vorhandenes
+   Config-Verzeichnis zählt nicht. Übersprungene Clients gehören in den Bericht
+   (Schritt 6). Dabei gilt unverändert:
    - Bestehende User-Werte **mergen**, nicht blind überschreiben.
    - `rsync --delete` nur auf repo-owned Spiegel (`APPLY.md` A2 Guardrail) —
      **nie** auf `~/.claude/skills/`, dort liegen fremde Symlinks.

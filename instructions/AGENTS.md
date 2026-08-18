@@ -21,6 +21,8 @@ heute unter der Linux Foundation / Agentic AI Foundation).
   des Kenntnisstands. Sachliches Pushback zur Anfrage bleibt Pflicht (Haltung).
 - Fehlende Information als `UNBEKANNT: <was fehlt>` ausgeben statt plausibel
   auffüllen.
+- Bei mehrschrittiger Arbeit nur das **Delta seit der letzten Meldung** berichten,
+  nicht den Gesamtstand neu erzählen. Was unverändert ist, bleibt unerwähnt.
 
 ## Haltung
 
@@ -52,6 +54,13 @@ heute unter der Linux Foundation / Agentic AI Foundation).
 - Mehrere Interpretationen möglich → vorlegen, nicht stillschweigend wählen.
 - Einfacherer Weg möglich → sagen.
 - Unklar → stoppen, benennen, fragen.
+- **Zielcode nicht im Arbeitsverzeichnis → nach dem Pfad fragen, nicht suchen.**
+  Eine Suche über fremde Verzeichnisbäume ist kein Ersatz für eine Frage; sie
+  kostet eine Session und findet im Zweifel das falsche Repo.
+- **Autonome Batches haben einen Deckel.** Vor einer Serie gleichartiger
+  Änderungen (mehrere Issues, mehrere PRs) den Plan vorlegen: was angefasst wird,
+  Akzeptanzkriterium je Einheit, wie verifiziert wird. Ohne Rückfrage nicht mehr
+  als **drei** PRs öffnen — danach Zwischenstand und Freigabe.
 
 ### Simplicity First
 Minimum Code für die Aufgabe. Keine spekulativen Features, Abstraktionen für

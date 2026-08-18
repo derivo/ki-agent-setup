@@ -309,9 +309,9 @@ Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 
 | Plugin | Known-Good | geprüft |
 |---|---|---|
-| `ponytail@ponytail` | `4.8.4` (Marketplace-HEAD `16f29800fd26`) | 2026-08-07 |
-| `caveman@caveman` | `25d22f864ad6` | 2026-08-07 |
-| `codex@openai-codex` | `1.0.3` | 2026-08-07 |
+| `ponytail@ponytail` | `4.9.0` (Marketplace-HEAD `2ed6c52c9d7e`) | 2026-08-18 |
+| `caveman@caveman` | `0d95a81d35a9` | 2026-08-18 |
+| `codex@openai-codex` | `1.0.6` (Marketplace-HEAD `db52e28f4d9d`) | 2026-08-18 |
 | `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-06-30 |
 | `frontend-design@claude-plugins-official` | `61c0597779bd` | 2026-06-30 |
 | `playwright@claude-plugins-official` | `d53f6ca4cdb0` | 2026-06-30 |

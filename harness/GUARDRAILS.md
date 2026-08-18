@@ -230,6 +230,28 @@ Umgebung liest, und die Regression taucht dort auf, wo niemand sie sucht. Brauch
 eine Suite die Abweichung dauerhaft, gehört sie in deren dokumentierte
 Vorbedingung, nicht in die gemeinsame Umgebung.
 
+### Regel — Vorhandensein ≠ Verhalten: keine Aussage ohne Verifizierung
+Dass ein Symbol im Quelltext oder Bundle **existiert** — eine registrierte Direktive,
+ein exportierter Name, eine Route, ein Feature-Flag —, belegt sein **Verhalten**
+nicht. Wrapper, Overrides und Guards kehren die Bedeutung um: eine registrierte
+Direktive kann unbedingt werfen, eine vorhandene Route 403 liefern, ein gesetztes
+Flag von einer späteren Zuweisung überschrieben werden. Statisches Lesen ist keine
+Verifikation, sondern der Grund für den nächsten Messschritt.
+
+Deshalb: Aussagen über **Ursache oder Verhalten** brauchen einen Laufzeit- oder
+Log-Beweis — beobachtete Ausgabe, Konsolenmeldung, Server-Log, Exit-Code, Testname
+plus Ergebnis. Solange der fehlt, wird die Aussage als Annahme gekennzeichnet
+(„Vermutung, nicht belegt: …"), im Chat wie im dauerhaften Artefakt, und nicht im
+selben Ton wie ein gegateter Messwert geschrieben. Wer zwischen belegter Zahl und
+plausibler Erklärung nicht unterscheidbar formuliert, liefert die Erklärung als
+Ergebnis aus.
+
+Gilt in beide Richtungen: „vorhanden, also erlaubt" ist so unbelegt wie „nicht
+gefunden, also nicht vorhanden" (dazu Regel — Abwesenheit so streng belegen wie
+Anwesenheit). Schlägt eine spätere Messung die Ableitung, wird die Korrektur dort
+nachgezogen, wo die Aussage steht — auch in Plan- und Register-Dateien, sonst erbt
+die nächste Session die falsche Ursache.
+
 ### Regel — Verifikation belegen: Evidence, nicht Behauptung
 Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,
 grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".

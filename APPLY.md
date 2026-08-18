@@ -442,7 +442,8 @@ rsync -a --delete harness/ ~/.claude/harness/
 rsync -a --delete doc-harness/ ~/.claude/doc-harness/   # optional
 ```
 Command-Library mit Namespace-Unterordner `hx/` (→ `/hx:start`, `/hx:spec`,
-`/hx:review`, `/hx:verify`, `/hx:commit`, `/hx:pr`, `/hx:retro`, `/hx:sync`,
+`/hx:review`, `/hx:env`, `/hx:verify`, `/hx:commit`, `/hx:pr`, `/hx:retro`,
+`/hx:sync`,
 `/hx:park`, `/hx:hot-reload`, `/hx:eod`, `/hx:linklist`; `review`/`verify`
 kollidieren sonst mit Built-in-Skills):
 ```bash

@@ -4,6 +4,12 @@ Committe die aktuellen Änderungen — sauber und atomar, kein blinder `git add 
    Doku/Tests zur Änderung passend? Abweichungen dem User **anzeigen**.
 2. **Diff sichten** — nur zusammengehörige Änderungen in einen Commit. Mehrere
    Themen → mehrere Commits.
+   Dabei den eigenen Ballast rausnehmen, solange er noch ungestaged ist:
+   erklärende Kommentarblöcke, die den Code wiederholen; Abstraktionen mit einem
+   einzigen Aufrufer; Doku zu Dingen, die niemand gefragt hat (GUARDRAILS §0,
+   *Simplicity First*). Das betrifft **nur den eigenen Diff** — fremder Code wird
+   erwähnt, nicht aufgeräumt (*Surgical Changes*). Für den geführten Durchgang:
+   Skill `simplify`.
 3. **Message** im Conventional-Commit-Format (`feat:`/`fix:`/`docs:`/`refactor:`
    …), Englisch, beschreibt das *Warum*. Keine generische „update".
 4. **Nur committen, nicht pushen** — außer der User verlangt Push ausdrücklich

@@ -350,6 +350,21 @@ anzunehmen: `grep -c <muster>` auf 0 bzw. die erwartete Zahl. „Befehl lief dur
 ist nicht „Befehl hat gewirkt" — ein stummer Fehlschlag (falsches Regex, kein
 Word-Split, falsche sed-Syntax) sieht sonst aus wie Erfolg.
 
+**Strukturierte Formate prüft ihr Parser, nicht `grep`.** Wird YAML-Frontmatter,
+JSON, TOML oder eine Config bearbeitet, ist die Verifikation ein **Parse-Lauf des
+Zielformats**. `grep`/`wc` zählen Zeichen und sehen deshalb keinen Syntaxbruch.
+Ist kein Parser der Umgebung verfügbar, wird mindestens die verletzte
+Format-Invariante geprüft (öffnendes Quote braucht ein schließendes, Klammern
+balancieren) — nicht ersatzweise etwas Zählbares.
+
+Struktur-Proxys belegen **Wohlgeformtheit nicht**: Marker-Anzahl, Feldanzahl,
+Zeilenzahl des Rumpfs, Mindestlänge eines Werts. Beobachtet am 2026-08-18 beim
+Kürzen von Agent-Beschreibungen: der Schnitt entfernte das schließende `"` eines
+gequoteten `description:`-Werts. Vier solcher Proxys meldeten grün, während die
+Datei für den Loader ungültig war und der Agent aus der Registry fiel. Der Defekt
+fiel nicht bei der Prüfung auf, sondern erst, als das Werkzeug ihn vermisste —
+also außerhalb der Schleife, die ihn hätte fangen sollen.
+
 ### Regel 10 — Kein zweiter Agent auf demselben Working Tree; vor Commit Zustand prüfen
 Zwei Agenten-Sessions im selben Git-Working-Tree/Branch teilen Dateizustand,
 Commit-Stream und (bei Container-Stacks) DB/Cache — keine Isolation. Beobachtet:

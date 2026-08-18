@@ -43,6 +43,7 @@ for source_file in "$command_root"/*.md; do
   skill_name="hx-${source_name%.md}"
   case "$skill_name" in
     hx-commit) skill_action="commit current changes safely and atomically" ;;
+    hx-env) skill_action="settle the environment contract before deploy work" ;;
     hx-eod) skill_action="close the workday and preserve project state" ;;
     hx-hot-reload) skill_action="preserve context before starting a fresh session" ;;
     hx-linklist) skill_action="show the curated harness link list" ;;

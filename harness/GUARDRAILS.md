@@ -208,6 +208,17 @@ die Autorität nicht prüfbar, wird das Ergebnis als begründete Inferenz markie
 Ein Befund aus einem ungeprüften Instrument ist keine Erkenntnis, sondern eine
 zweite Fehlerquelle.
 
+**Artefakte des Instruments sind kein Befund.** Werkzeuge verändern das
+beobachtete System: ein Browser-Automat injiziert eigene Stylesheets und
+CSP-Meldungen, ein Test-Runner setzt Umgebungsvariablen, ein Profiler verlangsamt
+den Pfad, den er misst. Solche Spuren stammen vom Messaufbau und werden **vor**
+der Bewertung abgezogen — sonst wird das Werkzeug als Fehler des Systems
+gemeldet. Erkennungsregel: verschwindet die Meldung, wenn derselbe Pfad ohne das
+Werkzeug läuft, gehört sie dem Werkzeug. Beobachtet mit Playwright-injizierten
+CSP-/Stylesheet-Warnungen, die zweimal als Befund verfolgt und wieder verworfen
+werden mussten. Umgekehrt gilt die Vorsicht genauso: „ist bestimmt nur das
+Tooling" ohne diese Probe ist ebenfalls unbelegt.
+
 ### Regel — Messlauf-Umfang vor der Zahl prüfen
 Bevor eine Lauf-Zahl (Tests grün/rot, Treffer, Fundstellen) als Baseline oder
 Beleg dient: prüfen, ob der Lauf die Grundgesamtheit **überhaupt erfasst hat**.

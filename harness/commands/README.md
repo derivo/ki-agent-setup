@@ -49,6 +49,7 @@ scripts/deploy-codex-harness-skills.sh --check
 | [`/hx:start`](start.md) | `$hx-start` | Session-Start: Harness laden, Projektstand erfassen, bereit melden | Tier 1 (GUARDRAILS + Stack-Adapter), Trigger-Tabelle in README |
 | [`/hx:spec`](spec.md) | `$hx-spec` | Idee → geschärfte, testbare Feature-Spec | SPEC_WORKFLOW, FEATURE_TEMPLATE |
 | [`/hx:review`](review.md) | `$hx-review` | Multi-Agent-Review-Panel über den Diff | REVIEW_PANEL |
+| [`/hx:audit`](audit.md) | `$hx-audit` | Drift-Audit über den **Bestand**: Architektur- und Design-System-Verstöße belegt melden, ohne Auto-Fix | GUARDRAILS A + G, ADR_TEMPLATE, Stack-Adapter |
 | [`/hx:env`](env.md) | `$hx-env` | Umgebungs-Vertrag vor Deploy-/Infra-Arbeit klären: Zugänge prüfen, Grenzen benennen | GUARDRAILS C + D, Regel 10 |
 | [`/hx:verify`](verify.md) | `$hx-verify` | App wirklich starten, Verhalten end-to-end beobachten | TESTS, GUARDRAILS C |
 | [`/hx:commit`](commit.md) | `$hx-commit` | Pre-Commit-Check + atomarer, konventioneller Commit | GUARDRAILS, Pre-Commit-Check |

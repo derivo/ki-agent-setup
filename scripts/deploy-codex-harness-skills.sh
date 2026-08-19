@@ -42,6 +42,7 @@ for source_file in "$command_root"/*.md; do
 
   skill_name="hx-${source_name%.md}"
   case "$skill_name" in
+    hx-audit) skill_action="audit existing code for architecture and design drift" ;;
     hx-commit) skill_action="commit current changes safely and atomically" ;;
     hx-env) skill_action="settle the environment contract before deploy work" ;;
     hx-eod) skill_action="close the workday and preserve project state" ;;
@@ -77,29 +78,29 @@ for source_file in "$command_root"/*.md; do
       hx-park)
         sed \
           -e 's#/hx:#$hx-#g' \
-          -e 's#`/harness-sync`#der Harness-Sync#g' \
-          "$source_file"
-        ;;
-      hx-pr|hx-review|hx-spec)
-        sed \
-          -e 's#/hx:#$hx-#g' \
           -e 's#~/.claude/harness/#~/.codex/harness/#g' \
+          -e 's#`/harness-sync`#der Harness-Sync#g' \
           "$source_file"
         ;;
       hx-hot-reload)
         sed \
           -e 's#/hx:#$hx-#g' \
+          -e 's#~/.claude/harness/#~/.codex/harness/#g' \
           -e 's#jetzt `/clear` auszuführen#jetzt einen neuen Codex-Task/-Chat zu starten#g' \
           "$source_file"
         ;;
       hx-eod)
         sed \
           -e 's#/hx:#$hx-#g' \
+          -e 's#~/.claude/harness/#~/.codex/harness/#g' \
           -e 's#(`/clear` + weitermachen)#(neuer Codex-Task/-Chat + weitermachen)#g' \
           "$source_file"
         ;;
       *)
-        sed 's#/hx:#$hx-#g' "$source_file"
+        sed \
+          -e 's#/hx:#$hx-#g' \
+          -e 's#~/.claude/harness/#~/.codex/harness/#g' \
+          "$source_file"
         ;;
     esac
   } > "$skill_root/SKILL.md"

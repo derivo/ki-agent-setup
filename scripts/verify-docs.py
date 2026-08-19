@@ -225,11 +225,10 @@ def check_codex_skill_deploy(root: Path) -> list[str]:
             if f"Use ${skill_name} " not in metadata_text:
                 errors.append(f"Codex skill default prompt omits its invocation: {skill_name}")
 
-            if skill_name in {"hx-pr", "hx-review", "hx-spec"}:
-                if "~/.claude/harness/" in skill_text:
-                    errors.append(f"Codex skill contains a Claude-only harness path: {skill_name}")
-                if "~/.codex/harness/" not in skill_text:
-                    errors.append(f"Codex skill is missing its Codex harness path: {skill_name}")
+            if "~/.claude/harness/" in skill_text:
+                errors.append(f"Codex skill contains a Claude-only harness path: {skill_name}")
+            if skill_name in {"hx-pr", "hx-review", "hx-spec"} and "~/.codex/harness/" not in skill_text:
+                errors.append(f"Codex skill is missing its Codex harness path: {skill_name}")
             if skill_name in {"hx-eod", "hx-hot-reload"} and "`/clear`" in skill_text:
                 errors.append(f"Codex skill contains Claude's /clear command: {skill_name}")
 

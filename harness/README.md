@@ -60,7 +60,7 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 | [SPEC_WORKFLOW.md](SPEC_WORKFLOW.md) | ~0,8k | Aus einer groben Idee soll eine zerlegte, testbare Spec werden. |
 | [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) | ~0,5k | Eine Spec wird tatsächlich geschrieben (Form des Ergebnisses). |
 | [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | ~0,7k | Eine architektonisch signifikante Entscheidung fällt an und wird festgehalten. |
-| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~2,1k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). API-/CLI-Projekte nie. |
+| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~2,4k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). API-/CLI-Projekte nie. |
 | [ENGINEERING.md](ENGINEERING.md) | ~2,0k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren). |
 | [DEBUG.md](DEBUG.md) | ~1,2k | Ein Bug hat eine normale Runde überlebt — hypothesengetriebener Loop mit persistentem Debug-State. |
 | [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) | ~1,7k | Eine Regel soll geschärft werden (Harness Correction) oder die prüfende Schleife greift nicht. |
@@ -87,9 +87,9 @@ die `Lade wenn:`-Kopfzeile der Datei lesen (eine Zeile), dann entscheiden.
 
 Dazu die **[Command-Library](commands/README.md)** (`commands/`) — wiederverwendbare
 Slash-Commands. Im empfohlenen globalen Claude-Code-Deploy liegen sie namespaced
-unter `/hx:start`, `/hx:spec`, `/hx:review`, `/hx:env`, `/hx:verify`, `/hx:commit`,
-`/hx:pr`, `/hx:retro`, `/hx:sync`, `/hx:park`, `/hx:hot-reload`, `/hx:eod`,
-`/hx:linklist`, damit sie nicht mit Built-ins kollidieren.
+unter `/hx:start`, `/hx:spec`, `/hx:review`, `/hx:audit`, `/hx:env`, `/hx:verify`,
+`/hx:commit`, `/hx:pr`, `/hx:retro`, `/hx:sync`, `/hx:park`, `/hx:hot-reload`,
+`/hx:eod`, `/hx:linklist`, damit sie nicht mit Built-ins kollidieren.
 
 Dann den passenden **Stack-Adapter** unter [`stacks/`](stacks/) lesen — er füllt
 die generellen Platzhalter (Schichten, Gate-Befehl, Test-Framework) mit den

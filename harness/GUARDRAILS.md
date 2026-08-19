@@ -219,6 +219,23 @@ CSP-/Stylesheet-Warnungen, die zweimal als Befund verfolgt und wieder verworfen
 werden mussten. Umgekehrt gilt die Vorsicht genauso: „ist bestimmt nur das
 Tooling" ohne diese Probe ist ebenfalls unbelegt.
 
+### Regel — Prüfmittel nicht aus derselben Quelle wie das Prüfobjekt
+Eine Prüfung, deren Erwartung aus derselben Quelle stammt wie das Prüfobjekt, ist
+tautologisch und bleibt auch dann grün, wenn die Quelle verschwindet. Beobachtet:
+`assertSee(__('careers.detail.expectation_text'))` — fehlt der Schlüssel, liefern
+View **und** Assertion den Schlüsselnamen, der Test bestätigt nur sich selbst.
+Tragfähig wird er erst, wenn die Existenz separat geprüft (`Lang::has`) und
+zusätzlich negativ auf den Schlüsselnamen assertet wird.
+
+Ebenso muss ein Test die Grenze auf dem Pfad treffen, auf dem sie **wirkt**.
+Beobachtet: ein Fake-Upload von 11 MB bestätigte die Framework-Regel
+`max:10240` grün, während die Laufzeit-Grenze `upload_max_filesize` im echten
+Upload vorher abbrach — die geprüfte Fehlermeldung war in beiden Umgebungen
+unerreichbar, der grüne Test behauptete einen Schutz, den es nicht gab. Ein Fake,
+der die Schicht überspringt, die die Grenze durchsetzt, belegt die Grenze nicht;
+dann gehört die Invariante zwischen App-Grenze und Laufzeit-Grenze selbst in
+einen Test.
+
 ### Regel — Messlauf-Umfang vor der Zahl prüfen
 Bevor eine Lauf-Zahl (Tests grün/rot, Treffer, Fundstellen) als Baseline oder
 Beleg dient: prüfen, ob der Lauf die Grundgesamtheit **überhaupt erfasst hat**.

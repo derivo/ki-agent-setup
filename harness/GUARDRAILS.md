@@ -401,3 +401,19 @@ ihre eigenen Commits, und Test-Runner wechseln `.env`/DB unter dir. Parallel
 arbeiten → jede Session in einen eigenen `git worktree` (eigener Branch). Vor
 jedem Commit `git status` lesen und mit expliziten Pfaden stagen statt `git add .`
 — nie blind committen, was gerade im Tree liegt.
+
+### Regel 11 — Remote-Zustand nur nach `fetch`; lokales `main` ist ein Cache
+Aussagen über „gemergt", „gestrandet", „ohne PR", „verloren" brauchen ein
+`git fetch` unmittelbar davor und den Vergleich gegen `origin/<default>` — nie
+gegen lokales `main`, das beliebig alt sein darf. Ohne fetch lautet die Antwort
+„unbekannt", nicht „nicht gemergt". Beobachtet: lokales `main` lag 93 Commits
+hinter `origin/main`; daraus wurde „fünf Commits ohne PR, Ein-Platten-Risiko"
+gemeldet — alle fünf lagen längst auf `origin/main`. Zweimal beobachtet, davor
+schon mit `git branch --no-merged main` ohne fetch, wo ein über PR gemergter
+Branch als gestrandet gemeldet wurde.
+
+`git branch --contains` und `--no-merged` sind ebenfalls erst nach fetch
+aussagekräftig. PR-/Issue-Nummern kommen aus `gh`-Output, nicht aus dem
+Gedächtnis. Und wer fremde Arbeit „retten" will, prüft zuerst, ob sie inhaltlich
+schon auf dem Remote liegt: ein Sammel-Branch, dessen `git status` leer bleibt,
+ist der Beleg, dass es nichts zu retten gab.

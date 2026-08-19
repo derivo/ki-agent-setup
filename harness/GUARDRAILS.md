@@ -221,11 +221,12 @@ Tooling" ohne diese Probe ist ebenfalls unbelegt.
 
 ### Regel — Prüfmittel nicht aus derselben Quelle wie das Prüfobjekt
 Eine Prüfung, deren Erwartung aus derselben Quelle stammt wie das Prüfobjekt, ist
-tautologisch und bleibt auch dann grün, wenn die Quelle verschwindet. Beobachtet:
-`assertSee(__('careers.detail.expectation_text'))` — fehlt der Schlüssel, liefern
-View **und** Assertion den Schlüsselnamen, der Test bestätigt nur sich selbst.
-Tragfähig wird er erst, wenn die Existenz separat geprüft (`Lang::has`) und
-zusätzlich negativ auf den Schlüsselnamen assertet wird.
+tautologisch und bleibt auch dann grün, wenn die Quelle verschwindet. Beobachtet
+an einer Übersetzungs-Assertion der Form `assertSee(__('<key>'))` — fehlt der
+Schlüssel, liefern View **und** Assertion den Schlüsselnamen, der Test bestätigt
+nur sich selbst. Tragfähig wird er erst, wenn die Existenz separat geprüft wird
+(im Laravel-Fall `Lang::has`) und zusätzlich negativ auf den Schlüsselnamen
+assertet wird.
 
 Ebenso muss ein Test die Grenze auf dem Pfad treffen, auf dem sie **wirkt**.
 Beobachtet: ein Fake-Upload von 11 MB bestätigte die Framework-Regel

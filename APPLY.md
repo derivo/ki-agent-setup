@@ -339,17 +339,29 @@ Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 
 | Plugin | Known-Good | geprüft |
 |---|---|---|
-| `ponytail@ponytail` | `4.9.0` (Marketplace-HEAD `2ed6c52c9d7e`) | 2026-08-18 |
-| `caveman@caveman` | `0d95a81d35a9` | 2026-08-18 |
-| `codex@openai-codex` | `1.0.6` (Marketplace-HEAD `db52e28f4d9d`) | 2026-08-18 |
-| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-06-30 |
-| `frontend-design@claude-plugins-official` | `61c0597779bd` | 2026-06-30 |
-| `playwright@claude-plugins-official` | `d53f6ca4cdb0` | 2026-06-30 |
+| `ponytail@ponytail` | `4.9.0` (Marketplace-HEAD `2ed6c52c9d7e`) | 2026-08-19 |
+| `caveman@caveman` | `99a9aa2f5a45` | 2026-08-19 |
+| `codex@openai-codex` | `1.0.6` (Marketplace-HEAD `db52e28f4d9d`) | 2026-08-19 |
+| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-08-19 |
+| `frontend-design@claude-plugins-official` | `unknown` (siehe unten) | 2026-08-19 |
+| `playwright@claude-plugins-official` | `unknown` (siehe unten) | 2026-08-19 |
 
-Bewusste Aktualisierung: nach Prüfung diese Tabelle neu setzen. Reine git-Hashes
-sind keine Semver-Tags — der Upstream-Marketplace vergibt keine stabilen Versionen.
-`ponytail` ist das einzige Plugin hier mit eigener Semver-Angabe in seiner
-`plugin.json`; der Hash daneben ist der Marketplace-Stand, gegen den geprüft wurde.
+Bewusste Aktualisierung: `claude plugin marketplace update <name>` (ohne Namen:
+alle), dann `claude plugin update <plugin>@<marketplace>`, danach diese Tabelle
+gegen `claude plugin list` neu setzen. Reine git-Hashes sind keine Semver-Tags —
+der Upstream-Marketplace vergibt keine stabilen Versionen; wo eine Semver-Angabe
+steht, stammt sie aus der `plugin.json` des Plugins, der Hash daneben ist der
+Marketplace-Stand, gegen den geprüft wurde.
+
+**`unknown` ist bei `frontend-design` und `playwright` der korrekte Eintrag, keine
+Drift.** Ihre `plugin.json` führt kein `version`-Feld — `claude-md-management` aus
+demselben Marketplace führt eins, es liegt also am Plugin, nicht am Bezugsweg. Ein
+git-Hash kann dort auch nicht einspringen: `claude-plugins-official` liegt anders
+als die übrigen Marketplaces **nicht** als git-Repo vor, sondern als Snapshot —
+erkennbar an `.gcs-sha` im Marketplace-Verzeichnis statt eines `.git`. Es gibt für
+diese beiden also keinen Identifier pro Plugin. Die Hashes, die hier früher
+standen, bezeichneten nichts Prüfbares; wer sie wieder einträgt, dokumentiert eine
+Genauigkeit, die es nicht gibt.
 
 **Verify:** `claude plugin marketplace list` zeigt `ponytail`, `caveman`,
 `openai-codex` **und** `claude-plugins-official` (der Marketplace registriert

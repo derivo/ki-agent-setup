@@ -121,6 +121,26 @@ die vorhandene Quelle des Projekts — Token-/Theme-Config **oder** Prosa-Vorgab
 „eine Quelle"; fehlt auch die, wird das als offene Lücke gemeldet, nicht durch eine
 erfundene ersetzt.
 
+### Nachweis statt Zusicherung
+
+Regel 6 und 7 werden vor der Fertig-Meldung **belegt**, nicht zugesichert
+([GUARDRAILS.md](GUARDRAILS.md) C → „Verifikation belegen"). Je berührter
+UI-Einheit eine Zeile:
+
+- **wiederverwendet** → welche Komponente/Token-Stufe, mit `Datei:Zeile` der
+  Verwendung. „Bestehende Patterns genutzt" ohne Fundstelle zählt nicht.
+- **neu angelegt** → warum keine bestehende passte und wo die neue Einheit als
+  Quelle liegt. Sie ist ab dann die kanonische, nicht eine zweite Variante.
+
+Eine **bewusste** Abweichung von Regel 6 oder 7 ist kein Nebensatz in der
+Abschlussmeldung, sondern eine festgehaltene Entscheidung: ADR nach
+[ADR_TEMPLATE.md](ADR_TEMPLATE.md) — „bewusste Abweichung von einer
+GUARDRAILS-Regel" steht dort bereits als Anlass. Ohne ADR gibt es keine
+Abweichung, dann gilt die Regel.
+
+Das ersetzt den mechanischen Check des Stack-Adapters nicht: der fängt Inline-Hex
+und Magic-Number, nicht die zweite Komponente, die eine bestehende nachbaut.
+
 ### Selbstcheck vor "fertig" (UI)
 - Kein dupliziertes Element, das ein bestehendes nachbaut (Regel 6).
 - Keine Inline-Farbe/Magic-Number, wo eine Token-/Skala-Stufe existiert (Regel 7).
@@ -133,3 +153,5 @@ erfundene ersetzt.
 - Design-Anforderung, aber keine `DESIGN.md`/Token-Quelle → Erstellen vorgeschlagen und gefragt, nicht eigenmächtig angelegt.
 - Bestehende Vorgaben gesucht **und benannt** (auch Prosa: `STYLEGUIDE.md`, `docs/design-*`, Projekt-`CLAUDE.md`, Component-Doku) — vor Vorschlag und vor UI-Write.
 - Widerspruch zwischen Bestand und `DESIGN.md` → beide Fundstellen vorgelegt, Entscheidung beim Nutzer; nichts überschrieben.
+- Wiederverwendung je berührter UI-Einheit mit `Datei:Zeile` belegt — nicht zugesichert.
+- Bewusste Abweichung von Regel 6/7 → ADR angelegt, nicht nur in der Meldung erwähnt.

@@ -70,6 +70,7 @@ bündelt:
 - `deptrac` — Schicht-/Abhängigkeitsstruktur (`--fail-on-uncovered`),
 - `phpstan` (Laravel: `larastan`) — statische Typanalyse,
 - `php-cs-fixer` bzw. `pint` (Laravel) — Formatierung (Prüfmodus im Gate),
+- `composer design:check` — Ad-hoc-Werte im UI (siehe UI-Konsistenz unten),
 - `pest`/`phpunit` — die Tests.
 
 In `composer.json` als `quality`-Script definieren. Erst wenn es sauber
@@ -181,9 +182,26 @@ Filament, ggf. + Tailwind).
 - **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
   zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte
   Entscheidung still verschwindet.
-- **Check (Selbstcheck vor "fertig"):** in geänderten Views grep auf `style="`,
-  Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-Blöcke, die eine
-  vorhandene `<x-…>`-Komponente nachbauen — jeder Treffer ist ein Finding (Regel 6/7).
+- **Regel 7 gehört ins Gate, nicht in den Selbstcheck.** Was ein `grep` entscheiden
+  kann, wird mechanisch geprüft — sonst bleibt es Selbstauskunft. Als
+  `design:check`-Script in `composer.json`, im `quality`-Bündel:
+
+  ```bash
+  files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
+    | grep -E '\.(blade\.php|css)$' | sort -u )
+  [ -n "$files" ] && printf '%s\n' "$files" \
+    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' && exit 1
+  exit 0
+  ```
+
+  Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
+  ist der häufigste Verstoß und steht in keinem `git diff HEAD` (am Snippet
+  verifiziert). Es gilt dieselbe Leer-Listen-Falle wie beim Formatter oben: einmal beweisen, dass
+  der Check rot werden **kann**. Treffer in Kommentaren oder generierten Assets sind
+  False Positives — Pfade ausnehmen, nicht das Muster aufweichen.
+- **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die eine
+  vorhandene `<x-…>`-Komponente nachbauen. Ob zwei Bausteine denselben Zweck haben,
+  entscheidet kein `grep` — das prüft `/hx:audit` über den Bestand.
 
 Neuer geteilter Baustein nötig → **eine** neue Component/Token-Stufe anlegen, die
 zur Quelle wird; nicht pro Seite kopieren.

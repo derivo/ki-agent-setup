@@ -77,6 +77,7 @@ bündelt (als `quality`-Script in `package.json`):
 - `tsc --noEmit` — statische Typanalyse,
 - `eslint .` — Lint (inkl. `import/no-restricted-paths` als zweite Schicht-Grenze),
 - `prettier --check .` — Formatierung,
+- `npm run design:check` — Ad-hoc-Werte im UI (siehe UI-Konsistenz unten),
 - `vitest run` (oder `jest`) — die Tests.
 
 Erst wenn es sauber durchläuft, gilt "fertig".
@@ -211,10 +212,27 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   (Exit 0, an 0.3.0 und 0.4.0 verifiziert). Vor dem Ersetzen einer bestehenden
   `DESIGN.md` damit prüfen, ob eine akzeptierte Entscheidung still verschwindet — der
   `regression`-Key ist genau dafür da, nicht der Exit-Code.
-- **Check (Selbstcheck vor "fertig"):** in geänderten Views/Components grep auf
-  `style={{`/`style="`, Inline-Hex (`#[0-9a-fA-F]{3,6}`) und rohe `<button`/`<table`-
-  Blöcke, die eine vorhandene Component nachbauen — jeder Treffer ist ein Finding
-  (Regel 6/7).
+- **Regel 7 gehört ins Gate, nicht in den Selbstcheck.** Ein Muster, das ein `grep`
+  entscheiden kann, wird mechanisch geprüft — sonst bleibt es Selbstauskunft. Als
+  `design:check`-Script in `package.json`, im `quality`-Bündel:
+
+  ```bash
+  files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
+    | grep -E '\.(tsx|jsx|css)$' | sort -u )
+  [ -n "$files" ] && printf '%s\n' "$files" \
+    | xargs grep -nE 'style=\{\{|style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' && exit 1
+  exit 0
+  ```
+
+  Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
+  ist der häufigste Verstoß und steht noch in keinem `git diff HEAD` (am Snippet
+  verifiziert: untracked → Exit 1). Es gilt dieselbe Leer-Listen-Falle wie beim
+  Formatter oben (Falle 1): einmal beweisen, dass der Check rot werden **kann**. Treffer in Kommentaren oder
+  `DESIGN.md`-Ableitungen sind False Positives — Pfade ausnehmen, nicht das Muster
+  aufweichen.
+- **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die eine
+  vorhandene Component nachbauen. Ob zwei Bausteine denselben Zweck haben, kann kein
+  `grep` entscheiden — das ist der Teil, den `/hx:audit` über den Bestand prüft.
 
 Neuer geteilter Baustein nötig → **eine** neue Component/Token-Stufe anlegen, die
 zur Quelle wird; nicht pro Seite kopieren.

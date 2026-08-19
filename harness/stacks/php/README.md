@@ -189,16 +189,29 @@ Filament, ggf. + Tailwind).
   ```bash
   files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
     | grep -E '\.(blade\.php|css)$' | sort -u )
-  [ -n "$files" ] && printf '%s\n' "$files" \
-    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' && exit 1
+  if [ -z "$files" ]; then exit 0; fi
+  hits=$(printf '%s\n' "$files" \
+    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' \
+    | sed -e 's/{{--.*--}}//g' -e 's/<!--.*-->//g' -e 's#/\*.*\*/##g' \
+    | grep -E 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' || true)
+  if [ -n "$hits" ]; then printf '%s\n' "$hits"; exit 1; fi
   exit 0
   ```
 
   Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
   ist der häufigste Verstoß und steht in keinem `git diff HEAD` (am Snippet
   verifiziert). Es gilt dieselbe Leer-Listen-Falle wie beim Formatter oben: einmal beweisen, dass
-  der Check rot werden **kann**. Treffer in Kommentaren oder generierten Assets sind
-  False Positives — Pfade ausnehmen, nicht das Muster aufweichen.
+  der Check rot werden **kann**.
+
+  Der `sed`-Schritt schneidet **einzeilige Kommentarspannen** aus der Trefferzeile
+  und bewertet erst danach — ein Hex in `{{-- … --}}`, `<!-- … -->` oder `/* … */`
+  ist keine Ad-hoc-Farbe. Steht auf derselben Zeile zusätzlich ein echter Verstoß,
+  bleibt der Treffer rot (am Snippet verifiziert). Zwei Grenzen bleiben und werden
+  nicht kaschiert: ein **mehrzeiliger** Kommentar wird weiter gemeldet, und
+  generierte Assets gehören über den **Pfad** ausgenommen, nicht über das Muster.
+  Die `if`-Form statt `[ … ] && …` ist nicht Kosmetik: der Check hat jetzt zwei
+  Stufen (greppen, Kommentare schneiden, erneut bewerten), und eine `&&`-Kette bildet
+  das nicht ab.
 - **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die eine
   vorhandene `<x-…>`-Komponente nachbauen. Ob zwei Bausteine denselben Zweck haben,
   entscheidet kein `grep` — das prüft `/hx:audit` über den Bestand.

@@ -219,6 +219,23 @@ CSP-/Stylesheet-Warnungen, die zweimal als Befund verfolgt und wieder verworfen
 werden mussten. Umgekehrt gilt die Vorsicht genauso: „ist bestimmt nur das
 Tooling" ohne diese Probe ist ebenfalls unbelegt.
 
+### Regel — Prüfmittel nicht aus derselben Quelle wie das Prüfobjekt
+Eine Prüfung, deren Erwartung aus derselben Quelle stammt wie das Prüfobjekt, ist
+tautologisch und bleibt auch dann grün, wenn die Quelle verschwindet. Beobachtet:
+`assertSee(__('careers.detail.expectation_text'))` — fehlt der Schlüssel, liefern
+View **und** Assertion den Schlüsselnamen, der Test bestätigt nur sich selbst.
+Tragfähig wird er erst, wenn die Existenz separat geprüft (`Lang::has`) und
+zusätzlich negativ auf den Schlüsselnamen assertet wird.
+
+Ebenso muss ein Test die Grenze auf dem Pfad treffen, auf dem sie **wirkt**.
+Beobachtet: ein Fake-Upload von 11 MB bestätigte die Framework-Regel
+`max:10240` grün, während die Laufzeit-Grenze `upload_max_filesize` im echten
+Upload vorher abbrach — die geprüfte Fehlermeldung war in beiden Umgebungen
+unerreichbar, der grüne Test behauptete einen Schutz, den es nicht gab. Ein Fake,
+der die Schicht überspringt, die die Grenze durchsetzt, belegt die Grenze nicht;
+dann gehört die Invariante zwischen App-Grenze und Laufzeit-Grenze selbst in
+einen Test.
+
 ### Regel — Messlauf-Umfang vor der Zahl prüfen
 Bevor eine Lauf-Zahl (Tests grün/rot, Treffer, Fundstellen) als Baseline oder
 Beleg dient: prüfen, ob der Lauf die Grundgesamtheit **überhaupt erfasst hat**.
@@ -384,3 +401,19 @@ ihre eigenen Commits, und Test-Runner wechseln `.env`/DB unter dir. Parallel
 arbeiten → jede Session in einen eigenen `git worktree` (eigener Branch). Vor
 jedem Commit `git status` lesen und mit expliziten Pfaden stagen statt `git add .`
 — nie blind committen, was gerade im Tree liegt.
+
+### Regel 11 — Remote-Zustand nur nach `fetch`; lokales `main` ist ein Cache
+Aussagen über „gemergt", „gestrandet", „ohne PR", „verloren" brauchen ein
+`git fetch` unmittelbar davor und den Vergleich gegen `origin/<default>` — nie
+gegen lokales `main`, das beliebig alt sein darf. Ohne fetch lautet die Antwort
+„unbekannt", nicht „nicht gemergt". Beobachtet: lokales `main` lag 93 Commits
+hinter `origin/main`; daraus wurde „fünf Commits ohne PR, Ein-Platten-Risiko"
+gemeldet — alle fünf lagen längst auf `origin/main`. Zweimal beobachtet, davor
+schon mit `git branch --no-merged main` ohne fetch, wo ein über PR gemergter
+Branch als gestrandet gemeldet wurde.
+
+`git branch --contains` und `--no-merged` sind ebenfalls erst nach fetch
+aussagekräftig. PR-/Issue-Nummern kommen aus `gh`-Output, nicht aus dem
+Gedächtnis. Und wer fremde Arbeit „retten" will, prüft zuerst, ob sie inhaltlich
+schon auf dem Remote liegt: ein Sammel-Branch, dessen `git status` leer bleibt,
+ist der Beleg, dass es nichts zu retten gab.

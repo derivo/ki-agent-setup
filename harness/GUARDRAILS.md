@@ -86,6 +86,11 @@ Musst du beim Schreiben eine dieser Regeln brechen, ist das ein Design-Signal: d
 Verantwortung liegt in der falschen Schicht. (Konkrete verbotene Importe/Aufrufe
 je Stack: Adapter.)
 
+Wird eine Grenze **bewusst** verlassen (Zwang eines Fremdsystems, Migrationsphase),
+ist das eine festgehaltene Entscheidung, keine stille Ausnahme: ADR nach
+[ADR_TEMPLATE.md](ADR_TEMPLATE.md), das die betroffene Grenze benennt. Ohne ADR gilt
+die Regel — eine Ausnahme, die nur in der Abschlussmeldung steht, ist keine.
+
 ---
 
 ## B. Sensible Daten & Secrets (hart)

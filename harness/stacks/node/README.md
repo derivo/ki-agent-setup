@@ -219,17 +219,29 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   ```bash
   files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
     | grep -E '\.(tsx|jsx|css)$' | sort -u )
-  [ -n "$files" ] && printf '%s\n' "$files" \
-    | xargs grep -nE 'style=\{\{|style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' && exit 1
+  if [ -z "$files" ]; then exit 0; fi
+  hits=$(printf '%s\n' "$files" \
+    | xargs grep -nE 'style=\{\{|style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' \
+    | sed -e 's#/\*.*\*/##g' \
+    | grep -E 'style=\{\{|style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' || true)
+  if [ -n "$hits" ]; then printf '%s\n' "$hits"; exit 1; fi
   exit 0
   ```
 
   Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
   ist der häufigste Verstoß und steht noch in keinem `git diff HEAD` (am Snippet
   verifiziert: untracked → Exit 1). Es gilt dieselbe Leer-Listen-Falle wie beim
-  Formatter oben (Falle 1): einmal beweisen, dass der Check rot werden **kann**. Treffer in Kommentaren oder
-  `DESIGN.md`-Ableitungen sind False Positives — Pfade ausnehmen, nicht das Muster
-  aufweichen.
+  Formatter oben (Falle 1): einmal beweisen, dass der Check rot werden **kann**.
+
+  Der `sed`-Schritt schneidet **einzeilige Blockkommentare** aus der Trefferzeile
+  und bewertet erst danach — das deckt `{/* … */}` in JSX und `/* … */` in CSS ab.
+  `//`-Zeilenkommentare werden bewusst **nicht** gefiltert: das Muster fräse sonst
+  auch alles hinter einem `http://` weg und verschluckte echte Verstöße auf
+  derselben Zeile (am Snippet verifiziert — ein False Negative wiegt schwerer als
+  der False Positive, den es behebt). Mehrzeilige Kommentare und generierte Assets
+  bleiben Sache der **Pfad**-Ausnahme, nicht des Musters. Die `if`-Form statt `[ … ] && …` ist nicht Kosmetik: der Check hat jetzt zwei
+  Stufen (greppen, Kommentare schneiden, erneut bewerten), und eine `&&`-Kette bildet
+  das nicht ab.
 - **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die eine
   vorhandene Component nachbauen. Ob zwei Bausteine denselben Zweck haben, kann kein
   `grep` entscheiden — das ist der Teil, den `/hx:audit` über den Bestand prüft.

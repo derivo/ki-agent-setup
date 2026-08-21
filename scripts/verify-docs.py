@@ -14,6 +14,7 @@ URL_RE = re.compile(r"https?://[^\s)>]+")
 CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
+COMMAND_COUNT_RE = re.compile(r"\b(\d+)\s+(?:slash[- ])?commands\b", re.IGNORECASE)
 SECRET_PATTERNS = [
     ("private key", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----")),
     ("aws access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
@@ -247,9 +248,6 @@ def check_codex_skill_deploy(root: Path) -> list[str]:
             )
 
     return errors
-
-
-COMMAND_COUNT_RE = re.compile(r"\b(\d+)\s+(?:slash[- ])?commands\b", re.IGNORECASE)
 
 
 def actual_command_count(root: Path) -> int:

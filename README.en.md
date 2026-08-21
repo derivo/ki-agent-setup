@@ -56,7 +56,7 @@ two layers:
   honesty/verification discipline, mandatory edge-case testing.
 - [`harness/`](harness/README.md) — general, stack-agnostic software-development
   workflow (spec → test → code → gate, self-optimization) plus its command
-  library ([`harness/commands/`](harness/commands/README.md), 12 commands):
+  library ([`harness/commands/`](harness/commands/README.md), 14 commands):
   namespaced as `/hx:start`, `/hx:spec`, `/hx:review` … in Claude Code, as
   `$hx-*` skills in Codex.
 - [`doc-harness/`](doc-harness/README.md) — workflow for documentation projects.
@@ -178,7 +178,7 @@ flowchart TD
         PHPAD["stacks/<br/>adapters: php · node · python"]:::skill
         FLOW["SPEC_WORKFLOW.md · FEATURE_TEMPLATE.md<br/>AGENT_LOOP.md · TESTS.md · feature.md<br/>spec → test → code → gate"]:::doc
         REF["ENGINEERING.md · REVIEW_PANEL.md · DEBUG.md<br/>SELF_OPTIMIZATION.md · ROADMAP.md · EVALS.md<br/>ADR_TEMPLATE.md · linklist.md"]:::doc
-        CMDS["commands/ → /hx:*<br/>12 slash commands"]:::skill
+        CMDS["commands/ → /hx:*<br/>14 slash commands"]:::skill
         HHOOK["hooks/harness-activate.sh<br/>SessionStart reminder"]:::skill
         HREADME -->|always| GUARD & PHPAD
         HREADME -->|on trigger| FLOW & REF

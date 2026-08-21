@@ -21,7 +21,6 @@ wenigen Codex-spezifischen Hinweise dort in einem eigenen Abschnitt.
   Copilot, Windsurf, Aider, Zed u. a.
 - **Claude Code** liest `AGENTS.md` ebenfalls, bevorzugt aber `CLAUDE.md` (reichere
   Memory-Hierarchie, `@`-Imports).
-- **Gemini CLI** nutzt `GEMINI.md`.
 - **opencode** liest `~/.config/opencode/AGENTS.md` (global) und zusätzlich
   `~/.claude/CLAUDE.md` als Compat — expandiert dabei aber **keine**
   `@AGENTS.md`-Imports. Deshalb braucht opencode die Basis direkt als eigene
@@ -35,7 +34,6 @@ wenigen Codex-spezifischen Hinweise dort in einem eigenen Abschnitt.
 |---|---|---|
 | Claude Code | `~/.claude/CLAUDE.md` (+ `~/.claude/AGENTS.md`) | beide Dateien kopieren; `CLAUDE.md` importiert `AGENTS.md` |
 | Codex CLI | `~/.codex/AGENTS.md` | `AGENTS.md` kopieren oder symlinken; der Codex-Abschnitt bleibt darin |
-| Gemini CLI | `~/.gemini/GEMINI.md` | aus `AGENTS.md` ableiten / symlinken |
 | opencode | `~/.config/opencode/AGENTS.md` | `AGENTS.md` kopieren/symlinken (kein `@`-Import) |
 | Cursor u. a. | projektweit `AGENTS.md` | im Projekt ablegen |
 

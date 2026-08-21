@@ -20,8 +20,10 @@ melden. Das betrifft alle globalen Client-Verzeichnisse (`~/.claude/`,
 |---|---|---|
 | Claude Code (Primär) | `~/.claude/` | `CLAUDE.md` (+ `AGENTS.md` via `@`-Import) |
 | Codex CLI | `~/.codex/` | `AGENTS.md` |
-| Gemini CLI | `~/.gemini/` | `GEMINI.md` |
 | opencode | `~/.config/opencode/` | `AGENTS.md` (+ `~/.claude/CLAUDE.md` als Compat) |
+
+> Die Gemini CLI wurde von Google am 2026-06-18 sunsettet (GSD-Installer lehnt
+> die Runtime ab); Zeile aus der Tabelle entfernt, Details in B3.
 
 Primärer Zielort ist `~/.claude/`; die übrigen sind Cross-Client-Spiegel
 derselben Substanz. Ein zentrales Harness-Root (`~/.harness/harness/`, via
@@ -32,7 +34,7 @@ derselben Substanz. Ein zentrales Harness-Root (`~/.harness/harness/`, via
 ## 0. Voraussetzungen
 
 - `node`, `git`, SSH-Zugang zu GitHub (für Marketplace-/Git-Installationen).
-- Die CLI des Clients, der eingerichtet wird (`claude`, `codex`, `gemini`,
+- Die CLI des Clients, der eingerichtet wird (`claude`, `codex`,
   `opencode`).
 - **Verify:** `node --version`, `git --version` und `<client> --version` liefern
   Werte.
@@ -54,8 +56,8 @@ Die portablen Anweisungen liegen geschichtet in [`instructions/`](instructions/)
   Basis via `@AGENTS.md`.
 
 Der `@AGENTS.md`-Import ist **Claude-spezifisch** — nur Claude Code expandiert ihn
-(beide Dateien müssen im selben Verzeichnis liegen). Codex, Gemini und opencode
-lesen `AGENTS.md` bzw. `GEMINI.md` direkt; für sie ist die Basis die einzige
+(beide Dateien müssen im selben Verzeichnis liegen). Codex und opencode lesen
+`AGENTS.md` direkt; für sie ist die Basis die einzige
 regeltragende Datei. Wohin welcher Client welche Datei kopiert: Teil B.
 
 ## A2. Harness + Doc-Harness
@@ -111,24 +113,32 @@ existiert die jeweilige `harness/README.md`. `harness/stacks/` zeigt die Adapter
 GSD ist **kein** Marketplace-Plugin, sondern ein eigener Installer. Er liefert
 Hooks (`gsd-*`), Skills/Commands (`gsd-*`, `gsd:*`) und die Statusline und legt
 seine Runtime-Daten im Config-Verzeichnis des gewählten Clients ab
-(`~/.claude/get-shit-done/`, `~/.codex/get-shit-done/`,
-`~/.config/opencode/get-shit-done/`, …).
+(`~/.claude/get-shit-done/`, `~/.codex/get-shit-done/`; seit 1.11 für opencode
+`~/.config/opencode/gsd-core/`). Skills, Agents und Hooks liegen daneben direkt
+im Config-Verzeichnis (`<config>/skills/gsd-*` usw.).
 
-Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-06-27: `1.6.0`):
+Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-08-21:
+`1.11.0`, setzt **Node ≥ 24** voraus):
 ```bash
-npx @opengsd/gsd-core@1.6.0
+npx @opengsd/gsd-core@1.11.0
 ```
-Der Installer fragt Runtime (Claude Code, Codex, Gemini, opencode …) und global
-vs. lokal ab — pro einzurichtendem Client einmal laufen lassen. Dateien **nicht**
-von Hand aus `agents/`/`commands/` kopieren; der Installer ist für die
-Cross-Runtime-Kompatibilität nötig.
+Nicht-interaktiv geht es mit Flags: `--global` plus je einer Runtime-Flag
+(`--claude`, `--codex`, `--opencode`, `--antigravity`, …) — pro einzurichtendem
+Client einmal laufen lassen. Dateien **nicht** von Hand aus `agents/`/`commands/`
+kopieren; der Installer ist für die Cross-Runtime-Kompatibilität nötig. Der
+Installer überspringt eine bereits konfigurierte Statusline
+(`--force-statusline` zum Ersetzen) und registriert bei opencode selbst einen
+`gsd`-MCP-Eintrag in der `opencode.json`. Findet er lokal veränderte GSD-Dateien,
+rettet er sie nach `gsd-local-patches/` im Config-Verzeichnis statt sie zu
+überschreiben — dort prüfen und per `/gsd-update --reapply` mergen oder löschen.
 
 Hinweis: Das frühere Upstream-Repo `gsd-build/get-shit-done` ist archiviert;
 Nachfolger ist `open-gsd/gsd-core` (npm `@opengsd/gsd-core`). Updates über den
 `gsd-update`-Skill bzw. durch bewusstes Aktualisieren dieses Pins nach Prüfung.
 
-**Verify:** Im Config-Verzeichnis des Clients existiert `get-shit-done/`; der
-`gsd-help`-Skill ist verfügbar.
+**Verify:** Im Config-Verzeichnis des Clients existiert die Runtime
+(`get-shit-done/`, opencode seit 1.11: `gsd-core/`) mit passender `VERSION`;
+der `gsd-help`-Skill ist verfügbar.
 
 ## A4. MCP-Server (Kern-Set)
 
@@ -145,7 +155,7 @@ reproduzierten Setup. Pro Server:
   Produktions-Credentials).
 
 Der **Registrierungs-Mechanismus unterscheidet sich pro Client** (Claude:
-`claude mcp add`; Codex/Gemini/opencode: jeweilige Config-Datei) — Details in der
+`claude mcp add`; Codex/opencode: jeweilige Config-Datei) — Details in der
 Client-Doku, Server-Inventar in `MCP_SERVERS.md`. Wird ein Server dauerhaft
 ergänzt/entfernt, die secret-freie Tabelle dort nachziehen.
 
@@ -260,7 +270,7 @@ Teil A legt und welche client-eigene Mechanik dazukommt.
 wird der Block **übersprungen und das gemeldet** — nicht deployt:
 
 ```bash
-command -v claude codex gemini opencode
+command -v claude codex opencode
 ```
 
 Ein vorhandenes Config-Verzeichnis ist **kein** Beleg. `~/.codex/` entsteht auch
@@ -377,7 +387,9 @@ solange die Tabellen-Einträge vollständig sind.
 
 ### B1.3 GSD-Runtime
 Installer (A3) für Runtime „Claude Code" laufen lassen.
-**Verify:** `~/.claude/hooks/gsd-statusline.js` existiert.
+**Verify:** `~/.claude/hooks/gsd-statusline.js` existiert (Kopfkommentar trägt
+die `gsd-hook-version`); bei Update überspringt der Installer eine bereits
+konfigurierte Statusline mit Hinweis.
 
 ### B1.4 Globale Einstellungen (`~/.claude/settings.json`)
 Top-Level-Keys setzen (mit Bestehenden mergen):
@@ -410,13 +422,18 @@ zeigt Model-/Context-Zeile + Pfad + git-branch.
 
 ### B1.5 Hooks (`~/.claude/settings.json`)
 Alle Hook-Skripte liegen in `~/.claude/hooks/`. Registrieren (Pfade auf reales
-`$HOME` anpassen):
+`$HOME` anpassen) — Stand GSD 1.11, Matcher wie vom Installer gesetzt:
 - **SessionStart:** `gsd-check-update.js`, `gsd-session-state.sh`,
   `harness-activate.sh` (siehe B1.6)
-- **PreToolUse** (`Write|Edit`): `gsd-prompt-guard.js`, `gsd-read-guard.js`,
-  `gsd-workflow-guard.js` — (`Bash`): `gsd-validate-commit.sh`
+- **PreToolUse:** (`Write|Edit`) `gsd-prompt-guard.js`, `gsd-read-guard.js`;
+  (`Bash|Edit|Write|MultiEdit`) `gsd-workflow-guard.js`; (`Bash`)
+  `gsd-validate-commit.sh`; (`Write|Edit|MultiEdit`) `gsd-worktree-path-guard.js`;
+  (`Agent|Task`) `gsd-agent-isolation-guard.js`; (`Write`) `gsd-write-guard.js`
 - **PostToolUse:** (`Bash|Edit|Write|MultiEdit|Agent|Task`) `gsd-context-monitor.js`;
-  (`Read`) `gsd-read-injection-scanner.js`; (`Write|Edit`) `gsd-phase-boundary.sh`
+  (`Read`) `gsd-read-injection-scanner.js`; (`Write|Edit`) `gsd-phase-boundary.sh`;
+  (`Bash`) `gsd-graphify-update.sh`
+- **PreCompact / Stop / SubagentStop:** je `gsd-context-monitor.js`
+- **FileChanged** (`config.json`): `gsd-config-reload.js`
 
 `gsd-*`-Hooks kommen aus dem GSD-Installer (A3/B1.3). Laufen Hooks ohne PATH, den
 absoluten Node-Pfad eintragen (`command -v node`) statt bloßes `node`.
@@ -540,7 +557,9 @@ reicht nicht.
 
 ### B2.2 GSD-Runtime
 Installer (A3) für Runtime „Codex" laufen lassen (Runtime-Daten unter
-`~/.codex/get-shit-done`).
+`~/.codex/get-shit-done`). Der Installer registriert seine Codex-Hooks selbst
+(UserPromptSubmit via `hooks.json`) — nichts davon doppelt in eigene Configs
+eintragen.
 
 ### B2.3 Harness + Commands
 Harness-Kopie (falls kein zentrales Root aus A2):
@@ -592,35 +611,23 @@ for codex_mcp_name in context7 github playwright; do
 done
 ```
 
-## B3. Gemini CLI
+## B3. Antigravity CLI — Nachfolger der sunsetteten Gemini CLI
 
-Ziel-Verzeichnis: `~/.gemini/`. Gemini nutzt `GEMINI.md`.
+> **Gemini CLI ist tot.** Google hat sie am 2026-06-18 sunsettet; der
+> GSD-Installer lehnt die Runtime „Gemini" ab und verweist auf den Nachfolger
+> **Antigravity CLI** (`--antigravity`). Eine bestehende `~/.gemini/`-Instanz
+> bleibt als Leiche stehen (alte Agents/Commands/Harness-Mirror), wird aber von
+> keinem Prozess mehr bespielt und nicht gelöscht — Aufräumen ist eine eigene,
+> lokale Entscheidung.
 
-### B3.1 Instructions
-`~/.gemini/GEMINI.md` aus der Basis `instructions/AGENTS.md` ableiten
-(kopieren/symlinken).
-**Verify:** `~/.gemini/GEMINI.md` existiert und deckt die Arbeitsweise ab.
+Deploy für Antigravity ist hier noch nicht ausgearbeitet: Instructions-Ablage,
+Config-Pfad und MCP-Mechanismus sind UNBEKANNT, bis der Installer einmal für
+diese Runtime gelaufen ist. Erst beobachten und dokumentieren, nicht raten.
+Erster Anlauf dafür:
 
-### B3.2 GSD-Runtime
-Installer (A3) für Runtime „Gemini" laufen lassen.
-
-### B3.3 Harness
-Harness-Kopie (falls kein zentrales Root aus A2):
 ```bash
-rsync -a --delete harness/ ~/.gemini/harness/
-rsync -a --delete doc-harness/ ~/.gemini/doc-harness/   # optional
+npx @opengsd/gsd-core@1.11.0 --global --antigravity
 ```
-Der Harness-Pointer steht bereits in der abgeleiteten `GEMINI.md`.
-**Verify:** `~/.gemini/harness/README.md` (oder `$AGENT_HARNESS_ROOT/README.md`)
-existiert.
-
-> **Offen:** Deploy der `/hx:…`-Command-Library für Gemini ist noch nicht
-> festgelegt (Geminis Custom-Command-Mechanismus weicht ab). Bei Bedarf ergänzen
-> und hier dokumentieren, statt ungeprüft ein Schema anzunehmen.
-
-### B3.4 MCP + Skills
-MCP-Kern-Set (A4) in der Gemini-MCP-Config registrieren (Mechanismus: Gemini-Doku;
-Inventar: `MCP_SERVERS.md`). Skills (A5) nach Gemini-Konvention verlinken.
 
 ## B4. opencode
 
@@ -639,9 +646,12 @@ cp instructions/AGENTS.md ~/.config/opencode/AGENTS.md   # oder symlinken
 Harness-Pointer.
 
 ### B4.2 GSD-Runtime
-Installer (A3) für Runtime „opencode" laufen lassen (Runtime-Daten unter
-`~/.config/opencode/get-shit-done`).
-**Verify:** `~/.config/opencode/get-shit-done/` existiert.
+Installer (A3) für Runtime „opencode" laufen lassen. Seit GSD 1.11 liegen die
+Runtime-Daten unter `~/.config/opencode/gsd-core/`, Skills/Agents/Hooks direkt
+im Config-Verzeichnis; der Installer trägt zusätzlich einen `gsd`-MCP-Eintrag in
+die `opencode.json` ein.
+**Verify:** `~/.config/opencode/gsd-core/VERSION` enthält den gepinnten Stand;
+`opencode mcp list` zeigt den `gsd`-Server.
 
 ### B4.3 Harness + Commands
 Harness ist über `$AGENT_HARNESS_ROOT` (A2) bereits erreichbar — opencode erbt die
@@ -683,8 +693,8 @@ opencode-Konvention.
 Kern (Teil A), unabhängig vom Client:
 - `"$AGENT_HARNESS_ROOT/README.md"` **oder** die client-lokale Harness-Kopie
   vorhanden; `harness/stacks/` zeigt die Adapter.
-- GSD-Runtime im Config-Verzeichnis des Clients (`get-shit-done/`); `gsd-help`
-  verfügbar.
+- GSD-Runtime im Config-Verzeichnis des Clients (`get-shit-done/`, opencode:
+  `gsd-core/`); `gsd-help` verfügbar.
 - MCP-Kern-Set aus `MCP_SERVERS.md` verbunden.
 - Security-Basis aktiv: gitleaks im Pre-Commit, Tool-Guard-Hook registriert.
 

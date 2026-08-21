@@ -10,13 +10,13 @@ wird (wegen Tokens/Pfaden) nicht versioniert — reproduziert wird aus den Tabel
 hier ([`APPLY.md`](APPLY.md) A4 installiert das Kern-Set). Ändert sich
 der installierte Server-Bestand dauerhaft, diese Datei nachziehen.
 
-## Kern-Set — hoher Tagesnutzen (wird in APPLY 7d reproduziert)
+## Kern-Set — hoher Tagesnutzen (wird in APPLY.md A4 reproduziert)
 
 | Server | Quelle | Nutzen |
 |---|---|---|
 | **context7** | [upstash/context7](https://github.com/upstash/context7) (★58k) | Aktuelle Library-/Framework-Doku direkt im Kontext — gegen veraltetes Modellwissen. Größter Daily-ROI. |
 | **GitHub MCP** | [github/github-mcp-server](https://github.com/github/github-mcp-server) (★31k, offiziell) | PRs, Issues, Repos, Actions direkt steuern. |
-| **Playwright MCP** | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (★34k, offiziell) | Live-Browser: Tests, Screenshots, E2E-Verify — passt zu `/verify`. |
+| **Playwright MCP** | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (★34k, offiziell) | Live-Browser: Tests, Screenshots, E2E-Verify — passt zu `/hx:verify`. |
 
 ## Entwicklung (lokaler Dev-Stack)
 
@@ -26,6 +26,8 @@ Für PHP/Laravel + MySQL/MariaDB + Docker.
 |---|---|---|
 | **dbhub** (Datenbank) | [bytebase/dbhub](https://github.com/bytebase/dbhub) (★3k) | MySQL/MariaDB/Postgres/SQL Server abfragen — Schema, Tabellen, Queries. Zero-dependency, **read-only by default**. |
 | **Docker MCP** | [ckreiling/mcp-server-docker](https://github.com/ckreiling/mcp-server-docker) (★723) | Container inspizieren, **Logs streamen**, compose verwalten — passt zur Docker-Dev-Umgebung. Deckt auch „Logs analysieren" für Container ab. |
+| **Sentry MCP** | (offiziell, falls Sentry im Einsatz) | Fehler/Issues aus dem Monitoring in den Kontext. |
+| **Reference-Server** (fetch, memory, time …) | [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) (★87k, offiziell) | Selektiv einzelne nehmen (z. B. `fetch`), nicht alle. |
 
 > **Docker-MCP-Setup (macOS/Docker-Desktop):** läuft via `uvx
 > mcp-server-docker` (braucht `uv`: `brew install uv`). Docker Desktop hat **kein**
@@ -38,8 +40,6 @@ Für PHP/Laravel + MySQL/MariaDB + Docker.
 > Den Pfad mit `docker context inspect --format '{{.Endpoints.docker.Host}}'`
 > bestätigen. **Achtung:** der Server kann Container nicht nur lesen, sondern auch
 > stoppen/entfernen — nur in vertrauenswürdiger Umgebung, Tool-Output untrusted.
-| **Sentry MCP** | (offiziell, falls Sentry im Einsatz) | Fehler/Issues aus dem Monitoring in den Kontext. |
-| **Reference-Server** (fetch, memory, time …) | [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) (★87k, offiziell) | Selektiv einzelne nehmen (z. B. `fetch`), nicht alle. |
 
 ### E-Mail-Testing & Log-Analyse — ehrliche Einordnung
 - **Mailpit** ([axllent/mailpit](https://github.com/axllent/mailpit), ★9.7k) ist ein

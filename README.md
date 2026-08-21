@@ -57,7 +57,7 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   Ehrlichkeits-/Verifikations-Disziplin, Edge-Case-Testpflicht.
 - [`harness/`](harness/README.md) — genereller, stack-agnostischer
   Software-Entwicklungs-Workflow (Spec → Test → Code → Gate, Self-Optimization)
-  samt Command-Library ([`harness/commands/`](harness/commands/README.md), 12
+  samt Command-Library ([`harness/commands/`](harness/commands/README.md), 14
   Commands): in Claude Code namespaced als `/hx:start`, `/hx:spec`, `/hx:review`
   …, in Codex als `$hx-*`-Skills.
 - [`doc-harness/`](doc-harness/README.md) — Workflow für Doku-Projekte.
@@ -179,7 +179,7 @@ flowchart TD
         PHPAD["stacks/<br/>Adapter: php · node · python"]:::skill
         FLOW["SPEC_WORKFLOW.md · FEATURE_TEMPLATE.md<br/>AGENT_LOOP.md · TESTS.md · feature.md<br/>Spec → Test → Code → Gate"]:::doc
         REF["ENGINEERING.md · REVIEW_PANEL.md · DEBUG.md<br/>SELF_OPTIMIZATION.md · ROADMAP.md · EVALS.md<br/>ADR_TEMPLATE.md · linklist.md"]:::doc
-        CMDS["commands/ → /hx:*<br/>12 Slash-Commands"]:::skill
+        CMDS["commands/ → /hx:*<br/>14 Slash-Commands"]:::skill
         HHOOK["hooks/harness-activate.sh<br/>SessionStart-Reminder"]:::skill
         HREADME -->|Pflicht| GUARD & PHPAD
         HREADME -->|gegen Trigger| FLOW & REF

@@ -26,8 +26,8 @@ generellen Methode und legt bei Bedarf einen neuen Adapter an.
 ## Dateien & Lade-Trigger
 
 **Es gibt keine Lesereihenfolge, die man immer durchläuft.** Das ganze Set sind
-rund 60 KB Methode plus ein Stack-Adapter — als Pflichtlektüre vor jedem Write
-wären das ~25k Token, auch für einen Ein-Zeilen-Fix. Kontext, der für die
+rund 115 KB Methode plus ein Stack-Adapter — als Pflichtlektüre vor jedem Write
+wären das ~34k Token, auch für einen Ein-Zeilen-Fix. Kontext, der für die
 Aufgabe nichts entscheidet, verdrängt Kontext, der etwas entscheidet.
 
 Deshalb gilt: **Tier 1 immer, alles andere gegen seinen Trigger.** Jede Datei
@@ -38,10 +38,10 @@ Datei zu lesen.
 
 | Datei | Größe | Wann |
 |---|---|---|
-| **[GUARDRAILS.md](GUARDRAILS.md)** | ~4,0k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. |
-| **passender [Stack-Adapter](stacks/)** | ~4,5k Token | **Sobald Code entsteht.** Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. Reine Spec-/Planungsarbeit ohne Zielstack: entfällt. |
+| **[GUARDRAILS.md](GUARDRAILS.md)** | ~6k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. |
+| **passender [Stack-Adapter](stacks/)** | ~5k Token | **Sobald Code entsteht.** Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. Reine Spec-/Planungsarbeit ohne Zielstack: entfällt. |
 
-Das Minimum ist damit ~4,0k Token für reine Spec-Arbeit, ~8,5k sobald Code
+Das Minimum ist damit ~6k Token für reine Spec-Arbeit, ~11k sobald Code
 entsteht. Wer mehr lädt, braucht dafür einen Trigger aus der nächsten Tabelle.
 
 **„Code" wäre hier die falsche Grenze**, und zwar aus einem konkreten Grund:
@@ -71,7 +71,7 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 
 ### Nie im Executor-Kontext
 
-[EVALS.md](EVALS.md) (~9,7k Token) ist die Maintainer-/Grader-Anleitung für
+[EVALS.md](EVALS.md) (~11,5k Token) ist die Maintainer-/Grader-Anleitung für
 Harness- und Modell-Drift-Checks. Ein getesteter Executor liest diese Datei
 nicht, weil sie Referenzaufgaben und Pass-Kriterien enthält; die Trennung ist
 Teil des Eval-Protokolls. Ebenso: die **nicht** zum Projekt passenden

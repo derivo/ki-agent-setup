@@ -14,6 +14,7 @@ URL_RE = re.compile(r"https?://[^\s)>]+")
 CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
+COMMAND_COUNT_RE = re.compile(r"\b(\d+)\s+(?:slash[- ])?commands\b", re.IGNORECASE)
 SECRET_PATTERNS = [
     ("private key", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----")),
     ("aws access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
@@ -249,6 +250,28 @@ def check_codex_skill_deploy(root: Path) -> list[str]:
     return errors
 
 
+def actual_command_count(root: Path) -> int:
+    return len([
+        path for path in (root / "harness/commands").glob("*.md")
+        if path.name != "README.md"
+    ])
+
+
+def check_command_counts(root: Path) -> tuple[list[str], int]:
+    actual = actual_command_count(root)
+    errors: list[str] = []
+    for name in ("README.md", "README.en.md"):
+        text = (root / name).read_text(encoding="utf-8")
+        for match in COMMAND_COUNT_RE.finditer(text):
+            claimed = int(match.group(1))
+            if claimed != actual:
+                errors.append(
+                    f"{name}: claims {claimed} harness commands, "
+                    f"harness/commands/ has {actual}"
+                )
+    return errors, actual
+
+
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
     files = markdown_files(root)
@@ -264,6 +287,8 @@ def main() -> int:
     errors.extend(link_errors)
     errors.extend(check_secrets(root, files))
     errors.extend(check_codex_skill_deploy(root))
+    command_count_errors, command_count = check_command_counts(root)
+    errors.extend(command_count_errors)
 
     if errors:
         print("verify-docs: FAILED")
@@ -277,6 +302,7 @@ def main() -> int:
     print(f"- external markdown links counted, not fetched: {external_link_count}")
     print(f"- external URL occurrences counted, not fetched: {external_url_count}")
     print("- secret patterns checked: basic built-in patterns")
+    print(f"- command counts: {command_count} harness commands match README claims")
     print("- Codex harness skills: deploy and sync smoke-tested")
     return 0
 

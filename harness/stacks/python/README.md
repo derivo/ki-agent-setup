@@ -216,17 +216,29 @@ ein separates JS-Frontend).
   ```bash
   files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
     | grep -E '\.(html|jinja|css)$' | sort -u )
-  [ -n "$files" ] && printf '%s\n' "$files" \
-    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' && exit 1
+  if [ -z "$files" ]; then exit 0; fi
+  hits=$(printf '%s\n' "$files" \
+    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' \
+    | sed -e 's/{#.*#}//g' -e 's/<!--.*-->//g' -e 's#/\*.*\*/##g' \
+    | grep -E 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' || true)
+  if [ -n "$hits" ]; then printf '%s\n' "$hits"; exit 1; fi
   exit 0
   ```
 
   Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
   ist der häufigste Verstoß und steht in keinem `git diff HEAD` (am Snippet
   verifiziert). Läuft der Check gegen eine leere Dateiliste, ist er **grün ohne geprüfte Datei** —
-  einmal beweisen, dass er rot werden **kann**. Treffer in Kommentaren oder
-  generierten Assets sind False Positives: Pfade ausnehmen, nicht das Muster
-  aufweichen.
+  einmal beweisen, dass er rot werden **kann**.
+
+  Der `sed`-Schritt schneidet **einzeilige Kommentarspannen** aus der Trefferzeile
+  und bewertet erst danach: Jinja `{# … #}`, HTML `<!-- … -->`, CSS `/* … */`. Der
+  Jinja-Fall ist hier der wichtigste — `{#` und `#}` enthalten selbst das
+  Doppelkreuz, an dem das Hex-Muster hängt. Steht auf derselben Zeile zusätzlich ein
+  echter Verstoß, bleibt der Treffer rot (am Snippet verifiziert). Mehrzeilige
+  Kommentare und generierte Assets bleiben Sache der **Pfad**-Ausnahme, nicht des
+  Musters. Die `if`-Form statt `[ … ] && …` ist nicht Kosmetik: der Check hat jetzt
+  zwei Stufen (greppen, Kommentare schneiden, erneut bewerten), und eine `&&`-Kette
+  bildet das nicht ab.
 - **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die ein
   vorhandenes Macro/Partial nachbauen. Ob zwei Bausteine denselben Zweck haben,
   entscheidet kein `grep` — das prüft `/hx:audit` über den Bestand.

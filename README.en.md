@@ -68,8 +68,6 @@ two layers:
 **Claude-Code-specific** — the plumbing that wires it into Claude Code:
 - **ponytail** — solution minimalism (YAGNI ladder, stdlib/native before a new
   dependency); the active mode.
-- **caveman** — token-compressed communication; installed but set to
-  `defaultMode: off`.
 - **codex** — drive the Codex CLI from Claude Code: review, adversarial review,
   delegation (`/codex:*`).
 - **Statusline** (`gsd-statusline.js`), **hooks**, and `settings.json` — native
@@ -88,7 +86,6 @@ B3 `~/.gemini/`, B4 `~/.config/opencode/`). Claude Code is the primary target.
 |---|---|---|---|
 | **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
 | **ponytail** | `DietrichGebert/ponytail` | plugin (marketplace) | solution minimalism, levels lite/full/ultra — **active** |
-| **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | token-compressed communication, levels lite/full/ultra — installed but off |
 | **codex** | `openai/codex-plugin-cc` | plugin (marketplace) | Codex CLI from Claude Code: review, adversarial review, delegation |
 
 Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
@@ -227,7 +224,6 @@ URL provenance remains a per-session duty under `instructions/AGENTS.md`.
 ### Tools & plugins
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, install pin in `APPLY.md` (predecessor `gsd-build/get-shit-done` archived)
 - ponytail: https://github.com/DietrichGebert/ponytail
-- caveman: https://github.com/JuliusBrussee/caveman
 - codex (Claude Code plugin): https://github.com/openai/codex-plugin-cc
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 

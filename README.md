@@ -69,8 +69,6 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
 **Claude-Code-spezifisch** — die Mechanik, die das in Claude Code einklinkt:
 - **ponytail** — Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor neuer
   Dependency); der aktive Modus.
-- **caveman** — Token-komprimierte Kommunikation; installiert, aber per Config
-  auf `defaultMode: off`.
 - **codex** — die Codex-CLI aus Claude Code heraus nutzen: Review, adversariales
   Review, Delegation (`/codex:*`).
 - **Statusline** (`gsd-statusline.js`), **Hooks** und `settings.json` — eigene
@@ -89,7 +87,6 @@ Primärer Zielort ist Claude Code.
 |---|---|---|---|
 | **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
 | **ponytail** | `DietrichGebert/ponytail` | Plugin (Marketplace) | Lösungs-Minimalismus, Level lite/full/ultra — **aktiv** |
-| **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Token-komprimierte Kommunikation, Level lite/full/ultra — installiert, aber aus |
 | **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Codex-CLI aus Claude Code: Review, adversariales Review, Delegation |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
@@ -229,7 +226,6 @@ URL-Provenance bleibt eine Session-Pflicht nach `instructions/AGENTS.md`.
 ### Tools & Plugins
 - GSD (get-shit-done): https://github.com/open-gsd/gsd-core — npm `@opengsd/gsd-core`, Install-Pin siehe `APPLY.md` (Vorgänger `gsd-build/get-shit-done` archiviert)
 - ponytail: https://github.com/DietrichGebert/ponytail
-- caveman: https://github.com/JuliusBrussee/caveman
 - codex (Claude-Code-Plugin): https://github.com/openai/codex-plugin-cc
 - Anthropic Skills (webapp-testing): https://github.com/anthropics/skills
 

@@ -32,10 +32,8 @@ Zwei Stellen, an denen die Hausregeln vorgehen — Rangfolge wie in
 - „Ein Check reicht" ersetzt **nicht** die Edge-Case-Matrix für UI-Formulare
   (`AGENTS.md` → Testing).
 
-caveman ist installiert, aber per `~/.config/caveman/config.json` auf
-`defaultMode: off`. Prosa-Kompression läuft nicht mehr per Default; `/caveman
-lite|full|ultra` holt sie bei Bedarf für die Session zurück. Nicht beide
-gleichzeitig aktiv fahren.
+caveman ist bewusst nicht Teil dieses Setups (`APPLY.md` B1.2). Wer es einzeln
+nachrüstet, fährt es nicht gleichzeitig mit ponytail aktiv.
 
 ## Skills
 

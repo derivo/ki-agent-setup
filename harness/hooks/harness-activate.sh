@@ -13,7 +13,7 @@
 # that harness/README.md leaves the door open for.
 #
 # Contract: Claude Code injects a SessionStart hook's stdout into the session
-# context (same mechanism the caveman-activate hook uses). Keep the output
+# context (the same mechanism plugin SessionStart hooks use). Keep the output
 # short — it is paid for on every session start.
 #
 # Lookup mirrors instructions/AGENTS.md: prefer $AGENT_HARNESS_ROOT, else the

@@ -18,7 +18,7 @@ Quelle pro Skill = GitHub-Repo, damit das Inventar reproduzierbar bleibt.
 > `APPLY.md` B1.2).
 
 Nicht hier gelistet: GSD-Skills (`gsd-*`, eigener Installer) sowie die
-Plugin-eigenen Skills von ponytail (`ponytail:*`) und caveman (`caveman:*`).
+Plugin-eigenen Skills von ponytail (`ponytail:*`).
 
 ---
 

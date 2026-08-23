@@ -41,13 +41,13 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
 Arbeite APPLY.md Schritt für Schritt ab und prüfe je Schritt das dort genannte
 Verify-Kriterium, bevor du weitergehst:
 1. Marketplaces registrieren.
-2. Plugins installieren (ponytail + caveman + die drei
-   `claude-plugins-official`-Plugins) und caveman auf `defaultMode: off` setzen.
+2. Plugins installieren (ponytail + die drei `claude-plugins-official`-Plugins
+   + `codex`). `caveman` gehört bewusst nicht dazu — Begründung in `APPLY.md` B1.2.
 3. GSD installieren (eigener Installer, kein Marketplace-Plugin).
 4. Statusline aktivieren (`gsd-statusline.js`, Pfad auf reales `$HOME`).
 5. Hooks eintragen (GSD-Guards, Tool-Guard). **Plugin-eigene Hooks nicht** —
-   ponytail und caveman bringen ihre Aktivierungs-/Tracker-Hooks selbst mit, ein
-   zweiter Eintrag in `settings.json` lässt sie doppelt feuern (`APPLY.md` B1.5).
+   ponytail bringt seine Aktivierungs-/Tracker-Hooks selbst mit, ein zweiter
+   Eintrag in `settings.json` lässt sie doppelt feuern (`APPLY.md` B1.5).
 6. Globale Settings setzen (Deutsch, Thinking, effort high, Theme …).
 7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`, inkl. Codex-Abschnitt in
    `AGENTS.md`) sicherstellen.

@@ -119,32 +119,37 @@ GitHub source per skill: [`SKILLS.md`](SKILLS.md).
 
 ## Statusline layout
 
-Custom statusline via `~/.claude/hooks/gsd-statusline.js` (GSD Edition).
-Layout, top to bottom (target structure, aligned with the real output):
+Custom statusline via `~/.claude/hooks/gsd-statusline.js` (GSD 1.11, single line).
+Layout (target structure, derived from the renderer):
 
 ```
-[GSD update warning]                                       (optional, only on update/stale hooks)
-model (context window) │ [context meter] <used>%  │  <N> cached
-[5h limit] <used>% - HH:MM  │  [weekly limit] <used>% - day HH:MM  │  $<session cost>
-full path │ git branch                                     (dim)
-<GSD version> [milestone bar] <used>% · <GSD state/phase> │ dirname  [│ last: /command]
+[GSD update warning] model │ task or GSD state │ dirname [│ git + markers] [context meter] [│ last: /command]
 ```
 
 Example:
 ```
-Opus 5 (1M context)  [▰▰▰▰▰▰░░░░] 62%   520.0k cached
-[▰▰▰▰▰▰▰▰░░] 80% - 23:50  │  [▰▰▰▰░░░░░░] 42% - Tue 21:00  │  $225
-/Users/you/code/myproject │ main
-v0.1.0 [▰▰▰▰▰▰▰░░░] 71% · executing │ myproject
+Opus 5 (1M) │ v0.2.0 auth · Phase 3 executing │ myproject │ main✓ [▰▰▰▰▰▰░░░░] 62%
 ```
 
 Properties:
-- Row 1: model + context meter (used share, color-coded) + cached tokens.
-- Row 2: 5-hour rate limit and weekly limit (each `used% - reset`) + session cost in `$`.
-- Row 3: full path + git branch (directly from `.git/HEAD`, no subprocess, worktree-aware).
-- Row 4: GSD milestone version + progress bar + GSD state/phase + dirname; reads
-  `.planning/STATE.md` + `.planning/config.json` walking up the hierarchy.
-  Optional `last: /command` suffix when enabled in config.
+- One line; model and dirname are dimmed. The context meter sits at the end by
+  default (`statusline.context_position: front|end` moves it).
+- Middle: the current todo task (bold) or the GSD state — milestone version +
+  name + phase/status; reads `.planning/STATE.md` + `.planning/config.json`
+  walking up the hierarchy. Compact format (`statusline.state_format: compact`)
+  and the milestone progress bar are opt-in.
+- Context meter: buffer-aware against the auto-compact reserve (~16.5%,
+  overridable via `CLAUDE_CODE_AUTO_COMPACT_WINDOW`); color steps at 50/65/80%,
+  💀 above 80%. Writes the values to the bridge file used by the
+  `gsd-context-monitor` hook. Absolute token count is opt-in
+  (`statusline.show_context_tokens`).
+- Git segment opt-in (`statusline.show_git`): branch plus work markers
+  (`+`staged `~`unstaged `?`untracked `↑`ahead `↓`behind, `✓` clean) from
+  `git status --porcelain=v2`.
+- `last: /command` suffix opt-in (`statusline.show_last_command`). All options
+  live under `statusline.*` in the project's `.planning/config.json`.
+- Compared to the old edition, gone: multi-line layout, cached-token counter,
+  5h/weekly limits and session cost — the 1.11 renderer no longer has them.
 - Fails silently on any error — never breaks the statusline.
 - The bottom terminal line (`bypass permissions on …`) is **Claude Code native**,
   not part of this script.

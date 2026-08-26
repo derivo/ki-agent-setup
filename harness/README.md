@@ -71,11 +71,14 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 
 ### Nie im Executor-Kontext
 
-[EVALS.md](EVALS.md) (~11,5k Token) ist die Maintainer-/Grader-Anleitung für
-Harness- und Modell-Drift-Checks. Ein getesteter Executor liest diese Datei
-nicht, weil sie Referenzaufgaben und Pass-Kriterien enthält; die Trennung ist
-Teil des Eval-Protokolls. Ebenso: die **nicht** zum Projekt passenden
-Stack-Adapter.
+[EVALS.md](EVALS.md) ist die Maintainer-/Grader-Anleitung für Harness- und
+Modell-Drift-Checks, [evals/tasks.json](evals/tasks.json) trägt die
+Referenzaufgaben **samt Pass-Kriterien**. Ein getesteter Executor liest beides
+nicht; die Trennung ist Teil des Eval-Protokolls. Weil beide unter `harness/`
+liegen und mitgespiegelt werden, reicht „nicht laden" nicht — das Briefing eines
+Executors schließt `EVALS.md` **und** `evals/` aus, und der Grader prüft die
+Tool-Traces auf Zugriffe dorthin. Ebenso außen vor: die **nicht** zum Projekt
+passenden Stack-Adapter.
 
 ### Was die Tabelle nicht erlaubt
 

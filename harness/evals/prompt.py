@@ -19,9 +19,12 @@ from pathlib import Path
 TASKS = json.loads((Path(__file__).resolve().parent / "tasks.json").read_text(encoding="utf-8"))["tasks"]
 
 
+USAGE = "usage: prompt.py <task-id> | --list"
+
+
 def main(argv: list[str]) -> int:
     if len(argv) != 1:
-        print(__doc__.strip().splitlines()[-3].strip(), file=sys.stderr)
+        print(USAGE, file=sys.stderr)
         return 2
 
     if argv[0] == "--list":

@@ -445,7 +445,8 @@ absoluten Node-Pfad eintragen (`command -v node`) statt bloßes `node`.
 ```bash
 cp security/tool-guard.js ~/.claude/hooks/security-tool-guard.js
 chmod +x ~/.claude/hooks/security-tool-guard.js
-# In settings.json unter hooks.PreToolUse ergänzen (Matcher Bash|Write|Edit):
+# In settings.json unter hooks.PreToolUse ergänzen
+# (Matcher Bash|Write|Edit|MultiEdit|NotebookEdit — alles, was Inhalt schreibt):
 #   { "type": "command",
 #     "command": "\"$(command -v node)\" \"$HOME/.claude/hooks/security-tool-guard.js\"" }
 ```

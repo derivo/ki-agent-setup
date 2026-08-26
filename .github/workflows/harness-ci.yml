@@ -1,0 +1,27 @@
+name: harness-ci
+
+# The repo's own done-criterion (harness/GUARDRAILS.md C): a mechanical run, not
+# a self-assessment. `make verify` existed long before this workflow but only ran
+# when someone typed it — this is the trigger, not new checking logic. New checks
+# belong in the Makefile or scripts/, never inline here.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # verify-docs.py resolves link targets against the git index, and the
+          # command-count check compares docs against the real tree
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - run: make verify

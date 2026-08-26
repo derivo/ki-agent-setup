@@ -82,4 +82,11 @@ gerade selbst geschrieben hast.
 - das **Review-Panel**, wenn der Diff dessen Schwelle erreicht
   (`harness/REVIEW_PANEL.md` → „Wann").
 
-Kurz: Selbstprüfung nicht doppeln, Beobachtung nie weglassen.
+**Ebenfalls unberührt — und Pflicht:** der **Ausgabe-Check** vor jeder Antwort
+(`AGENTS.md` → Haltung). Er ist kein Nachprüf-Schritt „zur Sicherheit", sondern
+Teil des Antwortens selbst: kein eigener Lauf, kein Subagent, keine zweite Runde
+über fertige Arbeit. Was dieser Abschnitt verbietet, ist das *Verdoppeln* von
+Arbeit — nicht das Gegenlesen der eigenen Ausgabe.
+
+Kurz: Selbstprüfung nicht doppeln, Beobachtung nie weglassen, Ausgabe immer
+gegenlesen.

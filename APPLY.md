@@ -208,10 +208,10 @@ eingerichtet — nicht erst bei autonomen Läufen:
 1. **Secret-Scanning** nach [`security/01`](security/01-secret-scanning.md):
    `gitleaks` installieren und als Pre-Commit-Schritt einklinken
    (`gitleaks protect --staged --redact`).
-2. **Tool-Guard** nach [`security/02`](security/02-tool-guard.md): einen
-   PreToolUse-Block-Hook (matcher `Bash|Write|Edit`) nach dem Muster der
-   `gsd-*`-Guards anlegen und in der Client-Hook-Config registrieren
-   (fail-closed, exit 2 bei Treffer).
+2. **Tool-Guard** nach [`security/02`](security/02-tool-guard.md): der Hook
+   liegt als [`security/tool-guard.js`](security/tool-guard.js) im Repo (exit 2
+   bei Treffer, matcher `Bash|Write|Edit`) — deployen und registrieren nach
+   B1.5, nicht neu schreiben.
 
 Kontrollen 03–07 (Proxy, Egress, Supply-Chain, Sandbox, Injection) je nach
 Autonomiegrad ergänzen — Priorisierung siehe `security/README.md`.
@@ -440,7 +440,21 @@ Alle Hook-Skripte liegen in `~/.claude/hooks/`. Registrieren (Pfade auf reales
 
 `gsd-*`-Hooks kommen aus dem GSD-Installer (A3/B1.3). Laufen Hooks ohne PATH, den
 absoluten Node-Pfad eintragen (`command -v node`) statt bloßes `node`.
-Tool-Guard-Hook aus A6 hier ergänzen.
+
+**Tool-Guard (A6, Kontrolle 2)** — repo-owned, das Repo ist die Quelle:
+```bash
+cp security/tool-guard.js ~/.claude/hooks/security-tool-guard.js
+chmod +x ~/.claude/hooks/security-tool-guard.js
+# In settings.json unter hooks.PreToolUse ergänzen
+# (Matcher Bash|Write|Edit|MultiEdit|NotebookEdit — alles, was Inhalt schreibt):
+#   { "type": "command",
+#     "command": "\"$(command -v node)\" \"$HOME/.claude/hooks/security-tool-guard.js\"" }
+```
+**Verify:** `cmp -s security/tool-guard.js ~/.claude/hooks/security-tool-guard.js`
+ist grün; `grep -c security-tool-guard ~/.claude/settings.json` liefert genau `1`.
+Was der Guard blockt, durchlässt und **nicht** kann, steht in
+[`security/02-tool-guard.md`](security/02-tool-guard.md) → Threat-Model; sein
+Verhalten prüft `make verify`.
 
 **Plugin-eigene Hooks nicht zusätzlich in `settings.json` eintragen.** Ein Plugin
 registriert seine Hooks selbst über den `hooks`-Key seiner `.claude-plugin/plugin.json`;

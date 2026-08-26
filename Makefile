@@ -11,3 +11,9 @@ verify: verify-docs
 verify-docs:
 	python3 -m py_compile scripts/verify-docs.py
 	python3 scripts/verify-docs.py
+
+.PHONY: verify-guard
+verify: verify-guard
+verify-guard:
+	node --check security/tool-guard.js
+	node security/tool-guard.test.js

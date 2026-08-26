@@ -85,9 +85,14 @@ def is_external(target: str) -> bool:
 
 def strip_code(text: str) -> str:
     """Remove fenced and inline code so their contents are not scanned as
-    markdown links (e.g. `[method](uri)` in a code example is not a link)."""
+    markdown links (e.g. `[method](uri)` in a code example is not a link).
+
+    Inline code collapses to a placeholder rather than to nothing: a link whose
+    whole label is code — [`GUARDRAILS.md`](GUARDRAILS.md), the most common form
+    in this repo — would otherwise become `[](target)` and stop matching
+    LINK_RE, silently exempting it from the check."""
     text = CODE_FENCE_RE.sub("", text)
-    return INLINE_CODE_RE.sub("", text)
+    return INLINE_CODE_RE.sub("code", text)
 
 
 def check_links(root: Path, files: list[Path]) -> tuple[list[str], int, int]:

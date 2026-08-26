@@ -17,3 +17,9 @@ verify: verify-guard
 verify-guard:
 	node --check security/tool-guard.js
 	node security/tool-guard.test.js
+
+.PHONY: verify-evals
+verify: verify-evals
+verify-evals:
+	python3 -m py_compile harness/evals/validate.py harness/evals/prompt.py
+	python3 harness/evals/validate.py

@@ -355,16 +355,17 @@ benennen.
 
 ---
 
-## G. UI-Konsistenz → [GUARDRAILS_UI.md](GUARDRAILS_UI.md)
+## G. UI-Konsistenz und I. UI-Nutzbarkeit → [GUARDRAILS_UI.md](GUARDRAILS_UI.md)
 
 Abschnitt G (Regel 6 und 7: Komponenten-Wiederverwendung, Token-Quelle,
-`DESIGN.md`) steht in einer **eigenen Datei**, weil er nur bei Frontend-Arbeit
-gilt und sonst rund ein Drittel dieser immer-geltenden Datei ausmachen würde.
-Rang und Regelnummern sind unverändert.
+`DESIGN.md`) und Abschnitt I (Regel 12–16: Zielgröße, Antwortzeit-Feedback,
+Entscheidungslast, Gruppierung, Eingabe-Toleranz) stehen in einer **eigenen
+Datei**, weil sie nur bei Frontend-Arbeit gelten und sonst rund 40 % dieser
+immer-geltenden Datei ausmachen würden. Rang und Regelnummern sind unverändert.
 
 **Lade [GUARDRAILS_UI.md](GUARDRAILS_UI.md), sobald ein UI-Write ansteht** —
 Komponente, Stylesheet, Token, `DESIGN.md`. Reine API-/CLI-Projekte überspringen
-Abschnitt G vollständig; dann ist die Datei nicht nötig.
+beide Abschnitte vollständig; dann ist die Datei nicht nötig.
 
 ---
 

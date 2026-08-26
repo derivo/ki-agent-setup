@@ -60,7 +60,7 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 | [SPEC_WORKFLOW.md](SPEC_WORKFLOW.md) | ~0,8k | Aus einer groben Idee soll eine zerlegte, testbare Spec werden. |
 | [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) | ~0,5k | Eine Spec wird tatsächlich geschrieben (Form des Ergebnisses). |
 | [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | ~0,7k | Eine architektonisch signifikante Entscheidung fällt an und wird festgehalten. |
-| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~2,4k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). API-/CLI-Projekte nie. |
+| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~4,2k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). Konsistenz (G) **und** Nutzbarkeit (I: Zielgröße, Feedback, Eingabe-Toleranz). API-/CLI-Projekte nie. |
 | [ENGINEERING.md](ENGINEERING.md) | ~2,0k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren). |
 | [DEBUG.md](DEBUG.md) | ~1,2k | Ein Bug hat eine normale Runde überlebt — hypothesengetriebener Loop mit persistentem Debug-State. |
 | [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) | ~1,7k | Eine Regel soll geschärft werden (Harness Correction) oder die prüfende Schleife greift nicht. |

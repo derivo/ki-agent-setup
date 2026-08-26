@@ -176,9 +176,10 @@ lässt — das ist derselbe Filter wie in [GUARDRAILS.md](GUARDRAILS.md) Abschni
 [Laws of UX](https://lawsofux.com/); die verbindlichen Zahlen kommen aus WCAG, nicht
 von dort.
 
-**Die Auswahl ist bewusst klein.** Von den rund 30 Gesetzen der Sammlung sind
-sechs zu Regeln geworden, eines steht als Beleg-Verbot im Nachweis-Abschnitt
-(Aesthetic-Usability), eines als Querverweis: **Jakob's Law** (Nutzer erwarten,
+**Die Auswahl ist bewusst klein.** Von den rund 30 Gesetzen der Sammlung sind acht
+in die sechs Regeln 12–17 eingegangen (Regel 14 stützt sich auf Tesler *und* Hick,
+Regel 17 auf Chunking *und* Miller), eines steht als Beleg-Verbot im
+Nachweis-Abschnitt (Aesthetic-Usability), eines als Querverweis: **Jakob's Law** (Nutzer erwarten,
 dass sich diese Seite verhält wie die anderen, die sie kennen) ist keine eigene
 Regel, weil *Consistency First* in `instructions/AGENTS.md` dieselbe Forderung
 schon stellt. Der Rest ist draußen — namentlich die Gedächtnis- und

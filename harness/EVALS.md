@@ -181,16 +181,21 @@ abgeleitet und machen diese mechanisch prüfbar.
 | `pass` | das Kriterium — **nur** für Orchestrator und Grader |
 | `discrimination` | `verified` / `unverified` / `no-discriminator`, mit Begründung |
 
-**Warum Daten und nicht Prosa.** Prompt und Kriterium standen im selben Absatz,
-und am 2026-07-25 fand ein Executor per `grep` über `harness/` sein eigenes
-Pass-Kriterium; geflickt wurde das mit `--exclude=EVALS.md`. Getrennte Felder
-lösen es an der Ursache — der Orchestrator gibt den Prompt aus, ohne etwas
-schwärzen zu müssen:
+**Warum Daten und nicht Prosa.** Prompt und Kriterium standen im selben Absatz —
+wer den einen ausgab, musste das andere von Hand schwärzen. Getrennte Felder
+machen das unmöglich statt sorgfältig:
 
 ```bash
 python3 harness/evals/prompt.py --list   # ids + Titel
 python3 harness/evals/prompt.py E7       # nur der Wortlaut, nie das Kriterium
 ```
+
+**Was das nicht löst.** Am 2026-07-25 fand ein Executor sein Pass-Kriterium per
+`grep` über `harness/` — und `evals/tasks.json` liegt genau dort und wird in jede
+Client-Kopie gespiegelt. Der Briefing-Pfad ist damit dicht, der Grep-Pfad nicht.
+Dagegen hilft weiterhin nur das Protokoll: Briefing schließt `EVALS.md` und
+`evals/` aus, und der Grader prüft die Tool-Traces jedes Executors auf Zugriffe
+dorthin — ein Treffer macht den Task ungültig, nicht bloß auffällig.
 
 **Zu `discrimination`.** Eine Aufgabe belegt nichts, wenn das Verhalten das
 Löschen der Regel überlebt, die es angeblich trägt — dann trägt es das Modell.

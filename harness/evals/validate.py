@@ -9,6 +9,7 @@ renamed away is a task that silently stopped measuring anything.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -62,9 +63,26 @@ def main() -> int:
                 counts[status] += 1
                 break
 
+    # EVALS.md states the same tally in prose. Two places, one truth — check it
+    # here, the way scripts/verify-docs.py checks the command counts.
+    claimed = re.search(
+        r"\*\*(\d+) verified\*\*.*?\*\*(\d+) unverified\*\*.*?\*\*(\d+) no-discriminator\*\*",
+        (ROOT / "harness/EVALS.md").read_text(encoding="utf-8"),
+        re.S,
+    )
+    if not claimed:
+        print("evals: EVALS.md no longer states the discrimination tally", file=sys.stderr)
+        return 1
+    stated = tuple(int(g) for g in claimed.groups())
+    actual = (counts["verified"], counts["unverified"], counts["no-discriminator"])
+    if stated != actual:
+        print(f"evals: EVALS.md claims {stated}, tasks.json holds {actual}", file=sys.stderr)
+        return 1
+
     print("evals: ok")
     print(f"- tasks: {len(tasks)}, all governing paths resolve")
     print("- discrimination: " + ", ".join(f"{k} {v}" for k, v in counts.items()))
+    print("- tally in EVALS.md matches")
     return 0
 
 

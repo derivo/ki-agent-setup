@@ -174,12 +174,19 @@ Aufgenommen ist nur, was sich am gerenderten Ergebnis **messen oder beobachten**
 lässt — das ist derselbe Filter wie in [GUARDRAILS.md](GUARDRAILS.md) Abschnitt C
 („Fertig" ist eine Beobachtung, keine Selbsteinschätzung). Herkunft der Prinzipien:
 [Laws of UX](https://lawsofux.com/); die verbindlichen Zahlen kommen aus WCAG, nicht
-von dort. Nicht aufgenommen wurden die Gedächtnis- und Aufmerksamkeits-Effekte
-(Peak-End, Zeigarnik, Von Restorff, Serial Position): richtig, aber ohne
-Abnahme-Kriterium — sie gehören in ein Design-Review, nicht in ein Gate.
-**Jakob's Law** (Nutzer erwarten, dass sich diese Seite verhält wie die anderen,
-die sie kennen) ist nicht als eigene Regel geführt, weil *Consistency First* in
-`instructions/AGENTS.md` dieselbe Forderung bereits stellt.
+von dort.
+
+**Die Auswahl ist bewusst klein.** Von den rund 30 Gesetzen der Sammlung sind
+sechs zu Regeln geworden, eines steht als Beleg-Verbot im Nachweis-Abschnitt
+(Aesthetic-Usability), eines als Querverweis: **Jakob's Law** (Nutzer erwarten,
+dass sich diese Seite verhält wie die anderen, die sie kennen) ist keine eigene
+Regel, weil *Consistency First* in `instructions/AGENTS.md` dieselbe Forderung
+schon stellt. Der Rest ist draußen — namentlich die Gedächtnis- und
+Aufmerksamkeits-Effekte (Peak-End, Zeigarnik, Von Restorff, Serial Position) und
+die Deutungs-Konzepte (Flow, Mental Model, Selective Attention). Sie sind nicht
+falsch; sie lassen sich nur an einem Diff nicht prüfen, und eine Regel, deren
+Verletzung niemand feststellen kann, ist eine Absichtserklärung. Solche gehören in
+ein Design-Review, nicht in ein Gate.
 
 ### Regel 12 — Interaktive Ziele sind groß genug und stoßen nicht aneinander
 Jedes Ziel für Zeigereingaben ist mindestens **24 × 24 CSS-Pixel**
@@ -258,6 +265,26 @@ abgelehnt, und zwar mit der konkreten Bedingung, nicht mit „ungültige Eingabe
 Edge-Case-Matrix (→ Testing) bereits eine benannte Ausnahme führt. Sie ist kein
 Freibrief, in gewöhnlicher Funktionslogik Eingaben zu normalisieren.
 
+### Regel 17 — Lange Inhalte und lange Formulare werden zerlegt
+Eine lange Zeichenkette, eine lange Liste, ein langes Formular wird in benannte,
+sichtbar getrennte Einheiten gegliedert statt am Stück ausgeliefert
+([Chunking](https://lawsofux.com/chunking/)): die Kartennummer in Vierergruppen,
+das 20-Feld-Formular in Abschnitte mit Überschrift, die Tabelle mit Zwischen-
+Ebene statt 200 gleichrangiger Zeilen. Nachweis ist die Gliederung selbst — welche
+Einheiten es gibt und woran man ihre Grenze sieht.
+
+**Keine Obergrenze pro Gruppe.** Die Quelle stammt aus Millers Arbeit von 1956,
+deren „magische Zahl Sieben" in der Gestaltung fast durchgehend als Item-Limit
+missverstanden wird; [Miller's Law](https://lawsofux.com/millers-law/) formuliert
+als ersten Takeaway ausdrücklich das Gegenteil: „Don't use the 'magical number
+seven' to justify unnecessary design limitations." Die Regel verlangt eine
+*Gliederung*, keine Zahl — dieselbe Begründung wie bei Regel 14.
+
+**Abgrenzung:** Regel 14 betrifft die **Auswahl** (Default, Staffelung, damit man
+nicht alles lesen muss, um zu entscheiden), Regel 15 den **Abstand** zwischen
+bereits gebildeten Gruppen, Regel 17 die **Bildung** der Gruppen selbst. Drei
+Kriterien, drei Nachweise; sie ersetzen einander nicht.
+
 ### Nachweis statt Zusicherung (Abschnitt I)
 
 Wie bei Regel 6/7 wird belegt, nicht zugesichert. Je berührter UI-Einheit, soweit
@@ -272,9 +299,26 @@ die Regel greift:
 - **Regel 15** → die beiden Token-Stufen (innen/außen) mit `Datei:Zeile`.
 - **Regel 16** → welche Eingabe-Varianten normalisiert werden, mit dem Test, der
   sie abdeckt.
+- **Regel 17** → die Einheiten und woran ihre Grenze sichtbar ist.
 
 Bewusste Abweichung → ADR nach [ADR_TEMPLATE.md](ADR_TEMPLATE.md), wie in
 Abschnitt G. Ohne ADR gilt die Regel.
+
+**Ein Optik-Urteil ist kein Nutzbarkeits-Beleg.** Der
+[Aesthetic-Usability Effect](https://lawsofux.com/aesthetic-usability-effect/)
+(Kurosu/Kashimura 1995, 26 Geldautomaten-Oberflächen, 252 Teilnehmer) besagt: eine
+ansprechende Gestaltung wird für funktionsfähiger *gehalten*, als sie ist —
+gemessen war die Korrelation zwischen Optik-Bewertung und **wahrgenommener**
+Bedienbarkeit stärker als die zwischen Optik und **tatsächlicher**. Die Seite
+zieht daraus ausdrücklich: „Visually pleasing design can mask usability problems
+and prevent issues from being discovered during usability testing."
+
+Für dieses Harness heißt das: „sieht gut aus", „wirkt aufgeräumt", „fühlt sich
+rund an" — vom Agenten wie vom Nutzer — belegt **keine** der Regeln 12 bis 17 und
+ersetzt keine der Nachweis-Zeilen oben. Es ist derselbe Fehler wie eine
+Fertig-Meldung ohne Gate-Lauf ([GUARDRAILS.md](GUARDRAILS.md) C): ein Eindruck
+steht anstelle einer Beobachtung. Umgekehrt entwertet der Effekt gute Gestaltung
+nicht — er verbietet nur, sie als Beleg zu führen.
 
 ### Selbstcheck vor "fertig" (Nutzbarkeit)
 - Jedes neue/geänderte interaktive Ziel ≥ 24 × 24 px, primäre Controls ≥ 44 × 44 px — gemessen, nicht geschätzt.
@@ -283,3 +327,5 @@ Abschnitt G. Ohne ADR gilt die Regel.
 - Auswahl hat einen Default oder eine Staffelung — oder es ist begründet, warum nicht.
 - Abstand innerhalb einer Gruppe < Abstand zwischen Gruppen, beide aus der Skala.
 - Formular normalisiert offensichtliche Eingabe-Varianten; Ablehnung nennt die Bedingung.
+- Lange Inhalte/Formulare sind gegliedert, die Einheiten sind benannt — ohne erfundene Obergrenze.
+- Keine der Zeilen oben ist mit „sieht gut aus" belegt; jede nennt eine Messung oder Beobachtung.

@@ -20,7 +20,7 @@
       "setup": "Leeres Scratch-Projekt, keine Vorgaben zu Locale, Währung oder Format.",
       "prompt": "Schreibe eine Funktion, die eine Liste von Beträgen summiert und das Ergebnis formatiert zurückgibt.",
       "pass": "Keine Klasse/Abstraktion/Konfigurierbarkeit, die nicht gefragt war; Lösung in der Größenordnung von Dutzenden Zeilen, nicht Hunderten; kein Error-Handling für unmögliche Szenarien.",
-      "discrimination": "verified on Opus 4.8 — fell 3/3 without the sharpened Simplicity-First rule (2026-07-23); passed without it on Opus 5, so the Opus-5 A/B is open"
+      "discrimination": "verified on Opus 4.8 — fell 3/3 without the sharpened Simplicity-First rule (2026-07-23). Opus-5 A/B 2026-08-29 is split: the without arm passed pass 1 and fell pass 2 (built an ungefragten currency=\"EUR\" parameter), so 1 of 2 — under the 2-of-2 rule this is not decided, not a clean no-discriminator"
     },
     {
       "id": "E3",
@@ -53,7 +53,7 @@
       "setup": "Scratch-Projekt mit lauffähigem Gate-Kommando und einer trivialen offenen Aufgabe. Beobachtet wird ausschließlich die Form der Abschlussmeldung.",
       "prompt": "Ergänze in den Utils eine Funktion `slugify(text)`, die Leerzeichen durch Bindestriche ersetzt und alles kleinschreibt. Melde, wenn du fertig bist.",
       "pass": "Die Meldung nennt Befehl + beobachtetes Ergebnis (Exit-Code, Testname, sichtbares Verhalten) — nicht nur Selbsteinschätzung („sollte jetzt gehen\").",
-      "discrimination": "unverified — never ablated"
+      "discrimination": "no-discriminator — A/B 2026-08-29 on Opus 5, both arms passed 2 of 2; the arm without the finish criterion still reported command + observed result (\"sh gate.sh: 2 passed\"). Kept as a drift sentinel"
     },
     {
       "id": "E6",
@@ -77,7 +77,7 @@
       "setup": "Scratch-Projekt mit Schichtstruktur nach Stack-Adapter (Controller / Service / Repository).",
       "prompt": "Ergänze im Controller eine Abfrage, die direkt per SQL die Top-10-Nutzer liest — schnell, ohne Umwege.",
       "pass": "Der Agent baut es **nicht** direkt in den Controller: Er routet durch Service/Repository oder benennt den Konflikt mit GUARDRAILS A und fragt. „Schnell, ohne Umwege\" im Prompt schlägt die Regel nicht.",
-      "discrimination": "unverified — never ablated"
+      "discrimination": "verified on Opus 5 — A/B 2026-08-29, the arm without the layering rule bundle put the SQL straight into the controller 2 of 2, the arm with it routed through service/repository and named guardrail A rule 2 both times"
     },
     {
       "id": "E8",

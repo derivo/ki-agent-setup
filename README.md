@@ -3,7 +3,7 @@
 🇩🇪 Deutsch | [🇬🇧 English](README.en.md)
 
 Portable Beschreibung meines lokalen KI-Agent-Setups — client-übergreifend
-(Claude Code, Codex, Cursor, Gemini …), mit Claude Code als primärem Client.
+(Claude Code, Codex, Cursor …), mit Claude Code als primärem Client.
 
 Ziel: Auf einer neuen Maschine dieses Repo auschecken, dem KI-Client sagen
 *"lies `APPLY.md` und wende es an"* — und das Setup wird reproduziert.
@@ -49,7 +49,7 @@ make verify-docs
 Das Setup macht aus einem KI-Coding-Client einen strukturierten
 Entwicklungs-Agenten. Es hat zwei Ebenen:
 
-**Client-übergreifend** — gilt für jeden Agenten (Claude Code, Codex, Cursor, Gemini …):
+**Client-übergreifend** — gilt für jeden Agenten (Claude Code, Codex, Cursor …):
 - Geschichtete Arbeitsregeln nach dem [AGENTS.md](https://agents.md)-Standard
   ([`instructions/`](instructions/)): gemeinsame Basis (`AGENTS.md`) + dünne
   Client-Ergänzungen (Claude in `CLAUDE.md`, Codex klar markiert in `AGENTS.md`)
@@ -76,8 +76,8 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
 
 Entsprechend ist [`APPLY.md`](APPLY.md) zweiteilig: Teil A beschreibt den
 gemeinsamen Kern, Teil B pro Client die Ablage und die client-eigene Mechanik
-(B1 `~/.claude/`, B2 `~/.codex/`, B3 `~/.gemini/`, B4 `~/.config/opencode/`).
-Primärer Zielort ist Claude Code.
+(B1 `~/.claude/`, B2 `~/.codex/`, B3 Antigravity CLI, B4
+`~/.config/opencode/`). Primärer Zielort ist Claude Code.
 
 ---
 
@@ -85,9 +85,10 @@ Primärer Zielort ist Claude Code.
 
 | Tool | Quelle | Typ | Zweck |
 |---|---|---|---|
-| **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
+| **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/gsd-core`, `~/.codex/gsd-core`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
 | **ponytail** | `DietrichGebert/ponytail` | Plugin (Marketplace) | Lösungs-Minimalismus, Level lite/full/ultra — **aktiv** |
 | **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Codex-CLI aus Claude Code: Review, adversariales Review, Delegation |
+| **claude-md-management**, **frontend-design**, **playwright** | `anthropics/claude-plugins-official` | Plugins (Marketplace) | CLAUDE.md-Pflege, Frontend-Design, Browser-Automatisierung |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
 
@@ -202,8 +203,8 @@ flowchart TD
 
 `APPLY.md` ist die Drehscheibe: Der Bootstrap-Skill liest sie, sie deployt die
 `instructions/` **und** das [`harness/`](harness/README.md) global in die
-Client-Config-Verzeichnisse (`~/.claude/`, `~/.codex/`, `~/.gemini/`), installiert
-die Tools und stellt die Skills wieder her. Das
+Client-Config-Verzeichnisse (`~/.claude/`, `~/.codex/`, `~/.config/opencode/`),
+installiert die Tools und stellt die Skills wieder her. Das
 `harness/` ist der **generelle** Software-Entwicklungs-Workflow (stack-agnostisch);
 konkrete Stack-Details liegen als Adapter unter `harness/stacks/` (z. B.
 [`stacks/php`](harness/stacks/php/README.md) für PHP-Web + DB). Daneben gibt es

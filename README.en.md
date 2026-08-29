@@ -3,7 +3,7 @@
 [🇩🇪 Deutsch](README.md) | 🇬🇧 English
 
 Portable description of my local AI agent setup — cross-client (Claude Code,
-Codex, Cursor, Gemini …), with Claude Code as the primary client.
+Codex, Cursor …), with Claude Code as the primary client.
 
 Goal: check out this repo on a new machine, tell the AI client *"read `APPLY.md`
 and apply it"* — and the setup is reproduced. Define once, sync everywhere,
@@ -48,7 +48,7 @@ make verify-docs
 The setup turns an AI coding client into a structured development agent. It has
 two layers:
 
-**Cross-client** — applies to any agent (Claude Code, Codex, Cursor, Gemini …):
+**Cross-client** — applies to any agent (Claude Code, Codex, Cursor …):
 - Layered working rules following the [AGENTS.md](https://agents.md) standard
   ([`instructions/`](instructions/)): shared base (`AGENTS.md`) + thin client
   additions (Claude in `CLAUDE.md`, Codex clearly marked in `AGENTS.md`) —
@@ -76,7 +76,8 @@ two layers:
 Accordingly, [`APPLY.md`](APPLY.md) has two parts: part A describes the shared
 core, part B describes per client where that substance goes and which
 client-specific plumbing comes with it (B1 `~/.claude/`, B2 `~/.codex/`,
-B3 `~/.gemini/`, B4 `~/.config/opencode/`). Claude Code is the primary target.
+B3 Antigravity CLI, B4 `~/.config/opencode/`). Claude Code is the primary
+target.
 
 ---
 
@@ -84,9 +85,10 @@ B3 `~/.gemini/`, B4 `~/.config/opencode/`). Claude Code is the primary target.
 
 | Tool | Source | Type | Purpose |
 |---|---|---|---|
-| **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/get-shit-done`, `~/.codex/get-shit-done`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
+| **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/gsd-core`, `~/.codex/gsd-core`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
 | **ponytail** | `DietrichGebert/ponytail` | plugin (marketplace) | solution minimalism, levels lite/full/ultra — **active** |
 | **codex** | `openai/codex-plugin-cc` | plugin (marketplace) | Codex CLI from Claude Code: review, adversarial review, delegation |
+| **claude-md-management**, **frontend-design**, **playwright** | `anthropics/claude-plugins-official` | plugins (marketplace) | CLAUDE.md upkeep, frontend design, browser automation |
 
 Details on versions, hooks, and settings: see [`APPLY.md`](APPLY.md).
 
@@ -201,8 +203,8 @@ flowchart TD
 
 `APPLY.md` is the hub: the bootstrap skill reads it, it deploys the
 `instructions/` **and** the [`harness/`](harness/README.md) globally into the
-client config directories (`~/.claude/`, `~/.codex/`, `~/.gemini/`), installs the
-tools, and restores the skills. The `harness/` is the
+client config directories (`~/.claude/`, `~/.codex/`, `~/.config/opencode/`),
+installs the tools, and restores the skills. The `harness/` is the
 **general** software-development workflow (stack-agnostic); concrete stack details
 live as adapters under `harness/stacks/` (e.g.
 [`stacks/php`](harness/stacks/php/README.md) for PHP web + DB). Alongside it,

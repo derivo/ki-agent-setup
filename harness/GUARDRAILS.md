@@ -380,6 +380,14 @@ iteriert einmal über den ganzen Blob statt pro Datei. Für Multi-File-Loops
 leere Backup-Arg (`sed -i '' …`); GNU-only-Flags (`grep -P`, `sed -r`) nicht
 annehmen.
 
+Aliase greifen ebenfalls — die Shell startet aus dem **Nutzer-Profil**. Ein
+interaktiver Alias (`cp -i`, `mv -i`, `rm -i`) wartet auf eine Bestätigung, die
+im Agent-Lauf nie kommt: der Befehl tut nichts, scheitert aber auch nicht,
+sondern hängt bis zum Timeout. In Sweeps und Skripten den Alias umgehen —
+`command cp`, `\cp` oder absoluter Pfad. Beobachtet: fünfmal unabhängig in der
+Eval-Serie bis 2026-07-27, zuletzt traf der `cp`-Alias den Orchestrator selbst
+und lief in einen 2-Minuten-Timeout.
+
 ### Regel 9 — Sweep-Ergebnis mechanisch verifizieren
 Nach jedem Datei-Sweep (sed/perl/Massen-Edit) das Ergebnis prüfen statt
 anzunehmen: `grep -c <muster>` auf 0 bzw. die erwartete Zahl. „Befehl lief durch"

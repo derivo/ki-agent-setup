@@ -1,7 +1,7 @@
 # AGENTS.md — gemeinsame Basis für alle KI-Clients
 
 Gemeinsame Arbeitsregeln. Gelten für **jeden** Agenten (Claude Code, Codex,
-Cursor, Gemini …). Tool-spezifische Ergänzungen stehen in der jeweiligen
+Cursor …). Tool-spezifische Ergänzungen stehen in der jeweiligen
 Client-Datei (z. B. `CLAUDE.md`), die diese Basis erweitert — nicht ersetzt. Wo
 ein Client hier kein eigenes Delta nutzt (Codex), bleiben die Hinweise in dieser
 Datei klar markiert.
@@ -182,9 +182,9 @@ Gate → Korrektur, mit selbst-erzwungenen Guardrails und mechanischem
 Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg und Methode in
 dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
 `~/.claude/harness/README.md`, `~/.codex/harness/README.md`,
-`~/.gemini/harness/README.md`, `~/.config/opencode/harness/README.md`, sonst
-`harness/README.md` im ki-agent-setup-Repo. Danach
-den passenden Stack-Adapter unter dem gefundenen `harness/stacks/` wählen.
+`~/.config/opencode/harness/README.md`, sonst `harness/README.md` im
+ki-agent-setup-Repo. Danach den passenden Stack-Adapter unter dem gefundenen
+`harness/stacks/` wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
 **Nicht das ganze Harness laden.** Pflicht sind nur `GUARDRAILS.md` und der zum
@@ -205,8 +205,8 @@ Für Doku-Arbeit (README-Sammlungen, Handbücher, API-Doku) gilt analog das
 wenn `$AGENT_HARNESS_ROOT` gesetzt ist, zuerst
 `$AGENT_HARNESS_ROOT/../doc-harness/README.md`, dann
 `~/.claude/doc-harness/README.md`, `~/.codex/doc-harness/README.md`,
-`~/.gemini/doc-harness/README.md`, `~/.config/opencode/doc-harness/README.md`,
-sonst `doc-harness/README.md` im ki-agent-setup-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
+`~/.config/opencode/doc-harness/README.md`, sonst `doc-harness/README.md` im
+ki-agent-setup-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
 Struktur** (`docs/README.md`/`docs/CLAUDE.md` im Projekt, Vorlage:
 `doc-harness/DOC_TEMPLATE.md`) — ohne definierte Struktur keine generierte Doku.
 
@@ -265,7 +265,8 @@ Codex hat in diesem Setup kein separates `CODEX.md`-Delta. Codex liest die
 globale bzw. projektlokale `AGENTS.md`; deshalb stehen die wenigen
 Codex-spezifischen Hinweise hier und bleiben klar auf Codex begrenzt.
 
-- GSD-Runtime-Daten liegen unter `~/.codex/get-shit-done`.
+- GSD-Runtime-Daten liegen unter `~/.codex/gsd-core` (seit dem Rename von
+  `get-shit-done/`; ein Verzeichnis dieses alten Namens ist Altbestand).
 - Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
   `~/.codex/harness/README.md`, sonst `harness/README.md` im `ki-agent-setup`-Repo.
   Vor Feature-/Code-Arbeit den dortigen Einstieg und den passenden Stack-Adapter

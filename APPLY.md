@@ -11,7 +11,7 @@ Jeder Schritt hat ein Verify-Kriterium; bei Konflikten nachfragen.
 
 Bestehende Werte des Users **nicht** blind überschreiben — mergen, Abweichungen
 melden. Das betrifft alle globalen Client-Verzeichnisse (`~/.claude/`,
-`~/.codex/`, `~/.gemini/`, `~/.config/opencode/`, optional
+`~/.codex/`, `~/.config/opencode/`, optional
 `~/.harness/{harness,doc-harness}/`).
 
 ## Zielorte pro Client
@@ -112,10 +112,13 @@ existiert die jeweilige `harness/README.md`. `harness/stacks/` zeigt die Adapter
 
 GSD ist **kein** Marketplace-Plugin, sondern ein eigener Installer. Er liefert
 Hooks (`gsd-*`), Skills/Commands (`gsd-*`, `gsd:*`) und die Statusline und legt
-seine Runtime-Daten im Config-Verzeichnis des gewählten Clients ab
-(`~/.claude/get-shit-done/`, `~/.codex/get-shit-done/`; seit 1.11 für opencode
-`~/.config/opencode/gsd-core/`). Skills, Agents und Hooks liegen daneben direkt
-im Config-Verzeichnis (`<config>/skills/gsd-*` usw.).
+seine Runtime-Daten im Config-Verzeichnis des gewählten Clients ab. Seit der
+Migration `2026-06-02-rename-get-shit-done-to-gsd-core` heißt dieses Verzeichnis
+bei **jeder** Runtime `<config>/gsd-core/` (`~/.claude/gsd-core/`,
+`~/.codex/gsd-core/`, `~/.config/opencode/gsd-core/`) — nur dort liegt die
+`VERSION`. Ein `<config>/get-shit-done/` aus der Zeit davor bleibt beim Rename
+liegen und ist **Altbestand**, kein zweiter Runtime-Ort. Skills, Agents und Hooks
+liegen daneben direkt im Config-Verzeichnis (`<config>/skills/gsd-*` usw.).
 
 Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-08-21:
 `1.11.0`, setzt **Node ≥ 24** voraus):
@@ -136,9 +139,8 @@ Hinweis: Das frühere Upstream-Repo `gsd-build/get-shit-done` ist archiviert;
 Nachfolger ist `open-gsd/gsd-core` (npm `@opengsd/gsd-core`). Updates über den
 `gsd-update`-Skill bzw. durch bewusstes Aktualisieren dieses Pins nach Prüfung.
 
-**Verify:** Im Config-Verzeichnis des Clients existiert die Runtime
-(`get-shit-done/`, opencode seit 1.11: `gsd-core/`) mit passender `VERSION`;
-der `gsd-help`-Skill ist verfügbar.
+**Verify:** `cat <config>/gsd-core/VERSION` liefert den gepinnten Stand (bei
+jedem Client, nicht nur opencode); der `gsd-help`-Skill ist verfügbar.
 
 ## A4. MCP-Server (Kern-Set)
 
@@ -573,7 +575,7 @@ reicht nicht.
 
 ### B2.2 GSD-Runtime
 Installer (A3) für Runtime „Codex" laufen lassen (Runtime-Daten unter
-`~/.codex/get-shit-done`). Der Installer registriert seine Codex-Hooks selbst
+`~/.codex/gsd-core`). Der Installer registriert seine Codex-Hooks selbst
 (UserPromptSubmit via `hooks.json`) — nichts davon doppelt in eigene Configs
 eintragen.
 
@@ -662,10 +664,10 @@ cp instructions/AGENTS.md ~/.config/opencode/AGENTS.md   # oder symlinken
 Harness-Pointer.
 
 ### B4.2 GSD-Runtime
-Installer (A3) für Runtime „opencode" laufen lassen. Seit GSD 1.11 liegen die
-Runtime-Daten unter `~/.config/opencode/gsd-core/`, Skills/Agents/Hooks direkt
-im Config-Verzeichnis; der Installer trägt zusätzlich einen `gsd`-MCP-Eintrag in
-die `opencode.json` ein.
+Installer (A3) für Runtime „opencode" laufen lassen. Runtime-Daten unter
+`~/.config/opencode/gsd-core/` (wie bei den übrigen Clients, A3),
+Skills/Agents/Hooks direkt im Config-Verzeichnis; der Installer trägt zusätzlich
+einen `gsd`-MCP-Eintrag in die `opencode.json` ein.
 **Verify:** `~/.config/opencode/gsd-core/VERSION` enthält den gepinnten Stand;
 `opencode mcp list` zeigt den `gsd`-Server.
 
@@ -709,8 +711,8 @@ opencode-Konvention.
 Kern (Teil A), unabhängig vom Client:
 - `"$AGENT_HARNESS_ROOT/README.md"` **oder** die client-lokale Harness-Kopie
   vorhanden; `harness/stacks/` zeigt die Adapter.
-- GSD-Runtime im Config-Verzeichnis des Clients (`get-shit-done/`, opencode:
-  `gsd-core/`); `gsd-help` verfügbar.
+- GSD-Runtime im Config-Verzeichnis des Clients (`<config>/gsd-core/` mit
+  `VERSION`); `gsd-help` verfügbar.
 - MCP-Kern-Set aus `MCP_SERVERS.md` verbunden.
 - Security-Basis aktiv: gitleaks im Pre-Commit, Tool-Guard-Hook registriert.
 

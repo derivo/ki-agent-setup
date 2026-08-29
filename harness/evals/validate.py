@@ -5,6 +5,14 @@ It does not judge whether a task is good — it keeps the file well-formed, keep
 every `governing` path pointing at a real harness file, and keeps every task
 carrying an honest `discrimination` value. A task whose governing file was
 renamed away is a task that silently stopped measuring anything.
+
+It also holds the `setup` / `prompt` split: `setup` is stage direction for the
+orchestrator (fixture, construction, why the task is built this way), `prompt`
+is the wording that goes verbatim into the executor session. Before the split
+the two lived in one field, and E5 shipped "Nach Abschluss: Fertig-Meldung
+prüfen" straight to the executor it was meant to catch. STAGE_MARKERS keeps
+that from creeping back: a real user asking for a feature does not say
+"Scratch-Projekt".
 """
 from __future__ import annotations
 
@@ -15,8 +23,20 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-REQUIRED = ("id", "title", "governing", "prompt", "pass", "discrimination")
+REQUIRED = ("id", "title", "governing", "setup", "prompt", "pass", "discrimination")
 STATUSES = ("verified", "unverified", "no-discriminator")
+# Words that belong to the orchestrator's view of the task, never to the wording
+# the executor receives. Their presence in `prompt` means stage direction leaked
+# back into the executor-facing field.
+STAGE_MARKERS = (
+    "Scratch-Projekt",
+    "Scratch-Frontend",
+    "Executor",
+    "Orchestrator",
+    "Fixture",
+    "Pass-Kriterium",
+    "Protokoll",
+)
 
 
 def main() -> int:
@@ -43,6 +63,11 @@ def main() -> int:
         for path in task.get("governing", []):
             if not (ROOT / path).exists():
                 errors.append(f"{label}: governing path does not exist: {path}")
+
+        prompt = str(task.get("prompt", ""))
+        for marker in STAGE_MARKERS:
+            if marker in prompt:
+                errors.append(f"{label}: stage direction '{marker}' leaked into 'prompt'")
 
         status = str(task.get("discrimination", ""))
         if not status.startswith(STATUSES):

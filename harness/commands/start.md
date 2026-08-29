@@ -3,8 +3,8 @@ Read-only: dieser Command ändert nichts, er lädt und berichtet.
 
 1. **Harness finden** — Lookup-Reihenfolge aus den globalen Instructions:
    `$AGENT_HARNESS_ROOT/README.md`, dann `~/.claude/harness/README.md`,
-   `~/.codex/harness/README.md`, `~/.gemini/harness/README.md`,
-   `~/.config/opencode/harness/README.md`, sonst `harness/README.md` im
+   `~/.codex/harness/README.md`, `~/.config/opencode/harness/README.md`,
+   sonst `harness/README.md` im
    ki-agent-setup-Repo. Nichts gefunden → melden, nicht raten.
 2. **Tier 1 laden — nur das** — `GUARDRAILS.md` plus den passenden
    **Stack-Adapter** unter `stacks/`; passt keiner, das benennen (generelle Methode

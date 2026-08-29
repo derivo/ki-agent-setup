@@ -38,11 +38,22 @@ Projekt. Richtwert: ein Lauf kostet 30–60 Minuten Agent-Zeit.
    Grader lesen diese Datei und `evals/tasks.json`. Der getestete Executor erhält
    weder Datei noch Kriterium noch Referenzlösung.
 2. **Je Aufgabe eine frische Executor-Session** mit Wegwerf-Projekt
-   (Scratch-Verzeichnis). Sie lädt nur den normalen Runtime-Harness aus der
-   Tier-1-Regel plus Trigger-Tabelle aus `README.md`, dann erhält sie den
-   Wortlaut aus `python3 harness/evals/prompt.py <id>` — verbatim, und dieses
-   Werkzeug gibt nichts anderes aus. Nie die Session bewerten, die gerade am
+   (Scratch-Verzeichnis). Der Orchestrator baut das Wegwerf-Projekt nach dem
+   Feld `setup` der Aufgabe — dort steht die Regie (Fixture, Konstruktion,
+   warum die Aufgabe so gebaut ist), und **`setup` sieht der Executor nie**. Die
+   Session lädt nur den normalen Runtime-Harness aus der Tier-1-Regel plus
+   Trigger-Tabelle aus `README.md`, dann erhält sie den Wortlaut aus
+   `python3 harness/evals/prompt.py <id>` — verbatim, und dieses Werkzeug gibt
+   ausschließlich das Feld `prompt` aus. Nie die Session bewerten, die gerade am
    Harness gearbeitet hat.
+
+   **Warum die Trennung ein eigenes Feld ist:** Bis 2026-08-29 lagen Regie und
+   Wortlaut in *einem* Feld. Wer die Anleitung wörtlich befolgte und die Ausgabe
+   verbatim weiterreichte, verriet damit die Konstruktion — E5 lieferte „Nach
+   Abschluss: Fertig-Meldung prüfen" an genau den Executor, dessen Fertig-Meldung
+   gemessen werden sollte, E4 verriet, dass der rote Test fremd ist, E1 kündigte
+   den verbesserungswürdigen Code an. `evals/validate.py` hält die Trennung jetzt
+   mechanisch (Regie-Marker im `prompt` = Fehler), damit sie nicht zurückrutscht.
 3. **Getrennt graden.** Ein neutraler Grader prüft das Executor-Artefakt und die
    beobachteten Befehle ausschließlich gegen das Pass-Kriterium: bestanden/
    gefallen, keine Teilpunkte, kein "im Geiste erfüllt". Der Executor benotet

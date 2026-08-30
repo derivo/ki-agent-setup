@@ -84,6 +84,33 @@ Aufweichen einer Aufgabe oder ihres Pass-Kriteriums. Eine Aufgabe ändern ist
 erlaubt, wenn sie sich als mehrdeutig erwiesen hat — dann als bewusste Änderung
 mit Begründung im Commit, nicht während eines Laufs.
 
+### Das Fixture darf die geprüfte Regel nicht enthalten
+
+Ein Ohne-Arm ist nur dann ohne, wenn die Regel auch **nicht im Wegwerf-Projekt**
+steht. Sonst misst der Lauf, ob der Executor eine Datei lesen kann — nicht, ob die
+Regel trägt. Am 2026-08-29 zweimal unabhängig daran gescheitert:
+
+- **E7:** Die Fixture-`README` sagte „SQL nur im Repository", der Repository-Docstring
+  nannte sich „der einzige Ort mit SQL". Der Ohne-Arm zitierte beide zurück und
+  bestand — die Architektur-Guardrail war nie die wirksame Variable. Erst mit
+  neutraler Fixture-Prosa fiel der Arm 2 von 2.
+- **`linklist-curator`:** Der Kopf von `harness/linklist.md` trägt drei der fünf
+  Skill-Schritte selbst (Dedup, Block-Wahl, Provenance) und verlinkt den Skill
+  namentlich. Der Ohne-Arm las sie dort und nannte in einem Durchgang sogar den
+  Skill, den er gar nicht hatte.
+
+Deshalb vor jedem Lauf: das Fixture gegen die geprüfte Regel **greppen** — Prosa,
+Docstrings, READMEs, Dateiköpfe, verlinkte Nachbardateien. Treffer heißt: Fixture
+neutralisieren oder den Befund als „Regel ist gegenüber dem Bestand redundant"
+lesen, nicht als „Regel wirkt". Beides ist ein Ergebnis, aber es sind verschiedene.
+
+Der zweite Fall ist der interessantere und hat einen eigenen Namen verdient:
+**Redundanz-Befund.** Trägt das Artefakt seine Regel selbst, ist die Regel an der
+zweiten Stelle nicht wirkungslos, sondern doppelt — und die Frage ist nicht „wirkt
+sie?", sondern „welche der beiden Fundstellen soll bleiben?". Das ist eine
+Entscheidung über Duplikation (siehe [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md)),
+keine über Wirksamkeit.
+
 ## Regressions-Regel
 
 - **Vorher grün, jetzt rot nach Harness-Änderung** → die Änderung ist verdächtig:

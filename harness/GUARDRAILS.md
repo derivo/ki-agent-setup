@@ -433,3 +433,23 @@ aussagekräftig. PR-/Issue-Nummern kommen aus `gh`-Output, nicht aus dem
 Gedächtnis. Und wer fremde Arbeit „retten" will, prüft zuerst, ob sie inhaltlich
 schon auf dem Remote liegt: ein Sammel-Branch, dessen `git status` leer bleibt,
 ist der Beleg, dass es nichts zu retten gab.
+
+### Regel 12 — Sauberer Merge ist kein Inhalts-Check; Reihenfolge-Risiko entscheidet die Ancestry
+Git merged nach Ancestry und Hunk-Position, nicht nach Bedeutung. Zwei Folgen,
+beide beobachtet:
+
+**Konfliktfrei heißt nicht korrekt.** Fügen beide Seiten denselben Schlüssel an
+verschiedenen Stellen einer additiven Liste ein, sind das für git zwei
+unabhängige Hunks — kein Konflikt, aber ein Duplikat. Beobachtet an einer
+Kubernetes-`env:`-Liste, die nach dem Merge `LOG_CHANNEL`, `LOG_LEVEL` und
+`LOG_STDERR_FORMATTER` doppelt trug; die einzige Datei mit Konfliktmarkern war
+eine andere. Gilt genauso für `volumeMounts`, Dependency-Listen, `.gitignore`,
+Import-Blöcke. Nach jedem Merge auf Duplikate prüfen, nicht nur auf `<<<<<<<`.
+
+**„Nimmt ein späterer Merge X wieder zurück?" beantwortet `git merge-base
+--is-ancestor`, nicht der Vergleich der Dateiinhalte beider Branches.** Ist der
+Quell-Branch bereits Ancestor des Ziels, ist sein Merge ein No-op — unabhängig
+davon, was seine Dateien enthalten. Beobachtet: aus „Branch A trägt das Flag
+nicht" wurde geschlossen „A nach B gemergt entfernt das Flag wieder", obwohl A
+nach einer Reconciliation Ancestor von B war und der Merge nichts geändert
+hätte.

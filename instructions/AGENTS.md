@@ -242,6 +242,27 @@ Zusätzlich:
 - **Keine parallelen Test-Suites gegen eine geteilte Datenbank** — sequenziell
   ausführen, sonst DB-Kollisionen, Deadlocks und Falschfehler.
 
+### Barrierefreiheit — Pflichtnachweis bei jeder UI-Änderung
+
+Jede Änderung an sichtbarer Oberfläche (Templates/Views, Komponenten, CSS,
+Frontend-JS, Bilder samt Alt-Text) gilt erst als fertig, wenn die geänderten
+Seiten gegen den Barrierefreiheits-Standard des Projekts geprüft **und das
+Ergebnis belegt** ist. Ohne Projektvorgabe gilt WCAG 2.2 AA als Untergrenze;
+eine strengere Projektvorgabe (z. B. AAA-Kontrast) schlägt sie.
+
+- **Mechanisch:** axe-core, pa11y oder Lighthouse-Accessibility auf jeder
+  berührten Seite, in allen ausgelieferten Farbmodi. 0 Violations, oder jede
+  verbleibende benannt und begründet.
+- **Manuell bei interaktiven Änderungen** (Formulare, Dialoge, Menüs, Fokus):
+  Tastatur-Durchgang (Tab-Reihenfolge, sichtbarer Fokus, Esc/Enter) und
+  200 % Zoom ohne Verlust.
+- **Beleg statt Zusicherung:** Befehl + Ergebnis (Tool, Version, Seiten, Anzahl
+  Befunde) in der Fertig-Meldung bzw. im PR, im Commit als Trailer
+  `A11y-Check: <Tool> <Ergebnis> <Seiten>`. Projekte dürfen den Trailer per
+  Hook erzwingen. Fehlt der Beleg, ist die Änderung nicht fertig.
+- Gilt zusätzlich zur Edge-Case-Matrix oben und zum UI-Selbstcheck in
+  `harness/GUARDRAILS_UI.md`.
+
 ## Konventionen
 
 - Sensible / konfigurierbare Werte in `.env`. Kein Hardcoding von Credentials /

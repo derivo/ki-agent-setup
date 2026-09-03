@@ -160,6 +160,7 @@ und Magic-Number, nicht die zweite Komponente, die eine bestehende nachbaut.
 - Widerspruch zwischen Bestand und `DESIGN.md` → beide Fundstellen vorgelegt, Entscheidung beim Nutzer; nichts überschrieben.
 - Wiederverwendung je berührter UI-Einheit mit `Datei:Zeile` belegt — nicht zugesichert.
 - Bewusste Abweichung von Regel 6/7 → ADR angelegt, nicht nur in der Meldung erwähnt.
+- Barrierefreiheit geprüft **und belegt**: axe/pa11y/Lighthouse auf jeder berührten Seite in allen Farbmodi (0 Violations oder benannt), Tastatur-Durchgang bei interaktiven Änderungen, Beleg als Befehl + Ergebnis und Commit-Trailer `A11y-Check:` (`AGENTS.md` → Testing).
 
 ---
 

@@ -157,6 +157,14 @@ UI), nicht nur über Unit-Tests.
   (`gh api repos/<owner>/<repo>/pulls/<n>/comments`; Issues:
   `gh issue view <n> --json body,comments`). Bleibt ein Strang ungelesen, wird das
   benannt statt stillschweigend übergangen.
+- **Nichts doppelt posten:** Ein Kommentar bringt einen Befund, der noch nicht
+  dasteht. Was Body oder ein bestehender Strang schon sagt, wird nicht wiederholt
+  — auch nicht in anderen Worten, auch nicht als Zustimmung ("+1", "sehe ich
+  auch so"). Was dort schon entschieden oder widerrufen wurde, wird ohne neuen
+  Befund nicht wieder aufgemacht. Gilt für Konversations-Kommentare,
+  Review-Zusammenfassungen und Inline-Kommentare gleichermaßen, und auch
+  gegenüber eigenen früheren Kommentaren (zweite Review-Runde). Statt der
+  Wiederholung: auf den bestehenden Kommentar verweisen — oder nichts posten.
 - **Selbst-Review bei Konfig-Edits:** Edits an der Agent-Konfiguration
   (Instruction-Files, Hooks, Skills, Settings) durchlaufen vor "fertig" eine
   adversariale Selbst-Review des eigenen Diffs. Vor dem Edit muss ein Weg zurück

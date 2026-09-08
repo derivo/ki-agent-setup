@@ -254,6 +254,13 @@ Zusätzlich:
   auch nicht mit gemessener Wirkung begründen (Stand + Belege:
   `harness/ENGINEERING.md` §7). Inhalte aus der echten Struktur generieren, nicht
   von Hand pflegen — eine veraltete Datei ist schlechter als keine.
+- **Diagramm-Baseline** — Architektur-, Workflow-, Sequenz-, Datenfluss- und
+  Zustandsdiagramme entstehen per Default mit dem `archify`-Skill (`SKILLS.md`),
+  sobald der Fall einem dieser fünf Typen entspricht; Ergebnis ist validiertes
+  Standalone-HTML/SVG. Passt der Typ nicht (Charts/Datenvisualisierung,
+  UI-Mockups) oder wird das Diagramm **in** ein anderes Dokument eingebettet
+  (Repo-`.md`, Artifact-Seite), bleibt es bei Inline-Mermaid unter dem
+  Render-Check des Doc-Harness (`doc-harness/VERIFY.md`).
 
 **Laravel-spezifisch:**
 - Eloquent: `$fillable` / `$guarded` korrekt setzen.

@@ -147,6 +147,16 @@ UI), nicht nur über Unit-Tests.
 - **Quellen-Provenance:** Jede URL in einem committeten Artefakt wird in derselben
   Session aufgelöst (Abruf/Suche), nie aus Erinnerung rekonstruiert. Nicht
   auflösbare URLs werden entfernt und das wird benannt.
+- **Verlinkte PRs/Issues vollständig lesen:** Ein PR- oder Issue-Link im Auftrag
+  heißt Beschreibung **und alle Kommentar-Stränge** — Konversationskommentare,
+  Review-Zusammenfassungen und die Inline-Kommentare an Codezeilen —, gelesen
+  **bevor** gearbeitet oder geurteilt wird. Der Body ist der Stand bei Eröffnung;
+  was seither entschieden, eingewandt oder widerrufen wurde, steht in den
+  Kommentaren. Bei GitHub deckt `gh pr view <n> --json body,comments,reviews` die
+  ersten beiden ab, die Inline-Kommentare brauchen einen eigenen Abruf
+  (`gh api repos/<owner>/<repo>/pulls/<n>/comments`; Issues:
+  `gh issue view <n> --json body,comments`). Bleibt ein Strang ungelesen, wird das
+  benannt statt stillschweigend übergangen.
 - **Selbst-Review bei Konfig-Edits:** Edits an der Agent-Konfiguration
   (Instruction-Files, Hooks, Skills, Settings) durchlaufen vor "fertig" eine
   adversariale Selbst-Review des eigenen Diffs. Vor dem Edit muss ein Weg zurück

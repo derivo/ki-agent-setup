@@ -49,6 +49,7 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | `seo-audit` | `coreyhaines31/marketingskills` | Technisches SEO / On-Page-Diagnose |
 | `ecommerce-seo-audit` | `affilino/ecommerce-seo-audit-skill` | SEO-Audit für Shop-/Produktseiten |
 | `remotion-best-practices` | `remotion-dev/skills` | Video-Erstellung mit Remotion (React) |
+| `archify` | `tt-a1i/archify` | Architektur-, Workflow-, Sequenz-, Datenfluss- und Zustandsdiagramme als validiertes Standalone-HTML/SVG (Mermaid-Import, Bild-Export) |
 
 ## Testing / QA / Browser
 
@@ -98,7 +99,8 @@ Vorschlag zur Priorisierung beim Aufnehmen:
 
 - **Kern (klar behalten):** alle `php-*`, `webapp-testing`, `e2e-testing-patterns`,
   `code-review-excellence`, `web-quality-audit`, `accessibility`,
-  `web-design-guidelines`, `ui-ux-pro-max`, `seo-audit`.
+  `web-design-guidelines`, `ui-ux-pro-max`, `seo-audit`, `archify`
+  (Diagramm-Baseline, `instructions/AGENTS.md` → Konventionen).
 - **Situativ (bei Bedarf):** `php-security-patterns`, `penetration-testing`,
   `pentest-checklist`, `playwright-*`, `browser-use`, `ecommerce-seo-audit`.
 - **Selten/überlappend (kann raus):** `compatibility-testing` &

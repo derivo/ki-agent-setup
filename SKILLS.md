@@ -44,7 +44,7 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | `web-design-guidelines` | `vercel-labs/agent-skills` | UI-Code gegen Web Interface Guidelines prüfen |
 | `web-quality-audit` | `addyosmani/web-quality-skills` | Audit: Performance, A11y, SEO, Best Practices |
 | `accessibility` | `addyosmani/web-quality-skills` | WCAG 2.2 Audit & Verbesserung |
-| `web-accessibility` | `supercent-io/skills-template` | A11y nach WCAG 2.1 implementieren |
+| `web-accessibility` † | `supercent-io/skills-template` | A11y nach WCAG 2.1 implementieren |
 | `performance` | `addyosmani/web-quality-skills` | Web-Performance optimieren (Ladezeit, CWV) |
 | `seo-audit` | `coreyhaines31/marketingskills` | Technisches SEO / On-Page-Diagnose |
 | `ecommerce-seo-audit` | `affilino/ecommerce-seo-audit-skill` | SEO-Audit für Shop-/Produktseiten |
@@ -56,7 +56,7 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | Skill | Quelle (GitHub) | Zweck |
 |---|---|---|
 | `e2e-testing-patterns` | `wshobson/agents` | E2E mit Playwright/Cypress |
-| `playwright-e2e-testing` | `bobmatnyc/claude-mpm-skills` | Playwright Test-Runner, Cross-Browser |
+| `playwright-e2e-testing` † | `bobmatnyc/claude-mpm-skills` | Playwright Test-Runner, Cross-Browser |
 | `playwright-visual-testing` | `manutej/luxor-claude-marketplace` | Visual Regression / Screenshot-Validierung |
 | `compatibility-testing` | `proffesor-for-testing/agentic-qe` | Cross-Browser/-Platform/-Device |
 | `chaos-engineering-resilience` | `proffesor-for-testing/agentic-qe` | Fault Injection, Resilienz-Tests |
@@ -91,6 +91,21 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | `ClaudeXMLStructuring` | lokal / ohne Upstream | `<thinking>`-Tags erzwingen (Eigenbau) |
 
 ---
+
+## † Quellen ohne Update-Pfad
+
+Geprüft am 2026-09-09 gegen die Quell-Repos: `npx skills update -g` scheitert bei
+diesen zwei. Der lokal installierte Stand bleibt funktionsfähig, wächst aber nicht mehr mit.
+
+- **`web-accessibility`** (`supercent-io/skills-template`) — das Repo gibt HTTP 404,
+  die Quelle ist weg. Der Skill steht unten ohnehin unter „Selten/überlappend (kann
+  raus)"; ohne Quelle ist Entfernen die saubere Auflösung.
+- **`playwright-e2e-testing`** (`bobmatnyc/claude-mpm-skills`) — der Pfad
+  `toolchains/javascript/testing/playwright/` existiert weiter, upstream heißt der
+  Skill dort inzwischen aber `playwright` und trägt `user-invocable: false` +
+  `disable-model-invocation: true`. Der Name matcht den Lockfile-Eintrag nicht mehr,
+  deshalb schlägt das Update fehl — und ein erfolgreiches Update würde den Skill
+  inert machen. Bewusst auf dem alten Stand belassen.
 
 ## Bewertung — was davon im Kern-Setup bleiben sollte
 

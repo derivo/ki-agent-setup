@@ -67,6 +67,13 @@ diese?"* Ist die Antwort „viele, quer verteilt", stimmt der Schnitt nicht.
   Fehler-Envelope). Aufrufer sollen nicht den Stacktrace des Providers sehen.
 - **Kein Error-Handling für Unmögliches** (Simplicity First). Aber Grenzen (Netz,
   Parsing, User-Input) defensiv behandeln.
+- **Gefangen heißt behandelt oder weitergereicht:** Ein `catch`, das loggt und
+  Erfolg meldet, macht aus einem Fehlschlag eine Zusage — ebenso ein Fehlerpfad, der
+  ein leeres Ergebnis als gültige Antwort zurückgibt. Entweder propagieren oder eine
+  dauerhafte Wiedervorlage anlegen (Queue, Retry-Eintrag, Journal); deren Eintrag
+  wird erst gelöscht, wenn die Wiederholung nachweislich erfolgreich war. Gilt
+  besonders für Teilfehler, die bereits geschriebenen Zustand verwaisen lassen
+  (angelegte Ressource ohne Registrierung).
 - **Konsistente Form pro Schicht:** gleiche Fehler-Repräsentation für gleiche
   Schicht (alle API-Fehler ein Envelope, alle Service-Fehler eine Exception-Familie)
   — *Consistency First*.

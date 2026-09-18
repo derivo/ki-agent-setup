@@ -79,6 +79,23 @@ Regel-Änderung tatsächlich verbessert (und ob ein Modell-Update etwas gebroche
 hat), prüft das Referenzaufgaben-Set in [EVALS.md](EVALS.md): nach Änderungen an
 Harness/Instructions und nach Modell-Updates ist ein Eval-Lauf fällig.
 
+### Regel-Kandidaten aus Review-Threads
+
+Das Gate findet nur, was es sieht. Die zweite Quelle für Regeln sind die eigenen
+Review-Threads: die Befunde der letzten N Pull Requests durchgehen und nach Klassen
+bündeln. Was in mehreren unabhängigen PRs auftaucht, ist strukturell — genau der
+Fall, für den unten eine Regel vorgesehen ist, während der Einzelbefund keine wird.
+
+Je Klasse mitzählen, wie oft der Autor den Befund nach dem Hinweis tatsächlich
+behoben hat. Eine hohe Quote heißt: der Fund ist unstrittig und taugt als Regel.
+Eine niedrige heißt: Geschmacksfrage — als Regel erzeugt sie nur Reibung.
+
+Die Quote misst die Zustimmung zum Befund, **nicht** die Wirkung der Regel. Ob der
+Fehler ohne sie wieder entsteht, entscheidet weiterhin das A/B aus
+[EVALS.md](EVALS.md). Die ergänzte Regel nennt die PRs, aus denen sie stammt; ohne
+diese Herkunft ist später nicht mehr entscheidbar, ob sie noch etwas abdeckt (siehe
+„Wann eine Regel wieder verschwindet").
+
 ### Wann eine Regel ergänzen — und wann nicht
 Nicht jeder Einzelfall wird zur Regel (sonst Regel-Wildwuchs, gegen Simplicity
 First):

@@ -131,6 +131,15 @@ eine enumerierte, prüfbare AC-Liste (je AC ein Test, alle anfangs rot). Tests s
 dabei unantastbar — grün entsteht nur durch korrekten Code, nie durch Aufweichen
 eines Tests (siehe [TESTS.md](TESTS.md)).
 
+### Regel — Einen Guard löst man aus, man weicht ihn nicht auf
+Schlägt ein Schwellen-Check an (Dateigröße, Komplexität, Bundle-Budget, Lint-Limit),
+ist sein Befund die Arbeit: Datei teilen, Logik herausziehen, Abhängigkeit entfernen.
+**Nicht** die Schwelle anheben, keine Allowlist-/Ignore-Zeile eintragen, kein Override
+setzen, damit der Lauf durchgeht. Die Schwelle selbst zu ändern ist eine eigene
+Entscheidung mit eigener Begründung und eigener Freigabe — nie Nebenwirkung eines
+Feature-Diffs. Ergänzt „keine Suppressions" oben um den Fall, in dem der Check formal
+weiterläuft und nur seine Grenze verschoben wurde.
+
 ### Regel — Laufende Verifikation nicht unterminieren
 - Während ein Test-/Verify-Lauf gegen einen live nachladenden Server läuft
   (Vite/HMR, watch-Modus, Hot-Reload), sind Quellcode-Mutationen tabu:

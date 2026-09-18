@@ -34,6 +34,7 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | `ki-agent-setup` | dieses Repo, `skills/ki-agent-setup/` | `APPLY.md` autonom anwenden — Setup bootstrappen bzw. syncen |
 | `design-md-curator` | dieses Repo, `skills/design-md-curator/` | `DESIGN.md` aus Repo-/URL-Evidenz erstellen, gegen `GUARDRAILS_UI.md` G validieren |
 | `linklist-curator` | dieses Repo, `skills/linklist-curator/` | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
+| `rule-intake-curator` | dieses Repo, `skills/rule-intake-curator/` | Fremde Regelwerke gegen den Bestand prüfen und nur das Tragende übernehmen |
 
 ## Web / Frontend / Design / SEO
 

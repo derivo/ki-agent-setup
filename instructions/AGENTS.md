@@ -14,7 +14,8 @@ heute unter der Linux Foundation / Agentic AI Foundation).
 ## Sprache & Stil
 - Antworten auf Deutsch.
 - Analogien in Antworten OK — nicht in `.md`-Files.
-- Code-Kommentare und Commit-Messages auf Englisch.
+- Code-Kommentare und Commit-Messages auf Englisch, sofern das Projekt nichts
+  anderes festlegt.
 - Antwort zuerst, Begründung danach. Keine Einleitung, keine Wiederholung der
   Frage, kein Abschlusssatz mit Angebot für Folgefragen.
 - Keine sozialen Bewertungen von Person oder Frage — weder Lob noch Einordnung
@@ -23,6 +24,15 @@ heute unter der Linux Foundation / Agentic AI Foundation).
   auffüllen.
 - Bei mehrschrittiger Arbeit nur das **Delta seit der letzten Meldung** berichten,
   nicht den Gesamtstand neu erzählen. Was unverändert ist, bleibt unerwähnt.
+- Jede Antwort beginnt mit dem Vornamen des Nutzers als Marker (`<Vorname> —`),
+  direkt gefolgt von der Antwort — eine Adressierung, kein Vorwort. Der Name kommt
+  aus der Umgebung (was der Client als Git-/Session-Identität mitliefert, sonst
+  `git config user.name`) und steht deshalb **nicht** in dieser Datei; das Harness
+  läuft auch auf fremden Maschinen. Ist kein Name auflösbar, entfällt der Marker
+  und das wird einmal als `UNBEKANNT: Nutzername` benannt. Zweck ist eine
+  Drift-Anzeige: fehlt der Marker, ist die Antwort aus diesen Regeln gelaufen.
+  Sein Vorhandensein belegt umgekehrt nichts über den Inhalt — die übrigen
+  Prüfungen (→ Ausgabe-Check) ersetzt er nicht.
 
 ## Haltung
 
@@ -114,7 +124,9 @@ formatter-konform, ändert das nichts an dieser Pflicht — es verbietet nur den
 repo-weiten Lauf. Ein Sweep über fremde Dateien ist eine eigene Aufgabe mit
 eigener Freigabe und eigenem Commit, nie Nebenwirkung eines Feature-Diffs
 (sonst ertrinkt die inhaltliche Änderung im Format-Rauschen und `git blame`
-zeigt auf den Sweep).
+zeigt auf den Sweep). Legt das Projekt fest, dass es keinen Formatter und keine
+statische Analyse führt, entfällt die Pflicht — sie rechtfertigt nicht, ein
+solches Werkzeug dafür einzuführen.
 
 ### Consistency First
 Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleiche

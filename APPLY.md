@@ -195,6 +195,7 @@ ladbar**:
 | [`ki-agent-setup`](skills/ki-agent-setup/SKILL.md) | dieses `APPLY.md` autonom anwenden — Setup bootstrappen bzw. syncen |
 | [`design-md-curator`](skills/design-md-curator/SKILL.md) | eine `DESIGN.md` aus Repo-/URL-Evidenz erstellen und gegen `GUARDRAILS_UI.md` G validieren |
 | [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
+| [`rule-intake-curator`](skills/rule-intake-curator/SKILL.md) | ein fremdes Regelwerk gegen `instructions/` + `harness/` prüfen und nur das Tragende übernehmen |
 
 Sie werden **verlinkt**, nicht über die `skills`-CLI installiert. Ziel-Verzeichnis ist
 client-spezifisch (Teil B). Namenskollision vermeiden: ein repo-eigener Skill darf
@@ -555,8 +556,8 @@ Codex-Helper (B2.3) schon einen Besitzer hat — Codex sieht sie also nicht. Die
 Skills dort auszurollen ist eine eigene Entscheidung.
 
 **Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
-zeigt die Nicht-GSD-Skills und die drei Links aus A5.1 (`ki-agent-setup`,
-`design-md-curator`, `linklist-curator`) auf den Checkout;
+zeigt die Nicht-GSD-Skills und die vier Links aus A5.1 (`ki-agent-setup`,
+`design-md-curator`, `linklist-curator`, `rule-intake-curator`) auf den Checkout;
 `head -2 ~/.claude/skills/design-md-curator/SKILL.md` ist über den Link lesbar.
 
 ## B2. Codex CLI

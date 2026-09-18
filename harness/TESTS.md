@@ -50,6 +50,10 @@ die Tests selbst auf Adäquanz:
 - Ist die Assertion **spezifisch** — exakter Wert/Text/Zustand — oder so schwach,
   dass auch eine leere/triviale Ausgabe sie erfüllt?
 - Kann der Test überhaupt **rot werden**? Ein Test, der nie fehlschlägt, prüft nichts.
+- Hängt der Test am **Produktionspfad** — oder an einem Test-Helfer, der die Logik
+  nachbaut? Ein Test gegen die Kopie bleibt grün, während die echte Naht bricht.
+  Gegenprobe: den Guard/Zweig im Produktionscode entfernen; wird kein Test rot,
+  schützt er nichts.
 
 Ein grünes, aber inadäquates Gate ist gefährlicher als ein rotes — es meldet
 Sicherheit, die nicht da ist.

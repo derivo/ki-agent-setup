@@ -49,7 +49,9 @@ hergibt, gilt der Auftrag. Rangfolge und Meldepflicht bei Widerspruch:
 ## Background-Subagents — Prompt frei halten
 
 Lange, unabhängige oder recherche-lastige Aufgaben laufen per Default als
-**Background-Subagent**, damit der Prompt für weitere Eingaben frei bleibt.
+**Background-Subagent**, damit der Prompt für weitere Eingaben frei bleibt —
+sofern das Projekt nichts anderes festlegt; eine projektseitige Dispatch-Regel
+(etwa ein ADR) geht vor.
 Model pro Aufgabe wählen: eng umrissene mechanische Arbeit → kleineres Model
 (Haiku), komplexe Arbeit → Session-Model erben. Kleine oder stark
 kontext-abhängige Aufgaben bleiben im Hauptthread — ein Subagent startet ohne

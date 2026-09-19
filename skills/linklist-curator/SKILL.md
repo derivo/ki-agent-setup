@@ -1,6 +1,6 @@
 ---
 name: linklist-curator
-description: Trägt einen Link kuratiert in die Harness-Linklist (harness/linklist.md) ein. Use when the user wants to remember/track a URL, tool, library, or source in the linklist — e.g. "merk dir den Link", "trag X in die Linklist ein", "füge die Quelle hinzu", "das gehört in die Linklist". Erklärt, wie ein Link hineinkommt: Provenance auflösen, dedupen, in den passenden Block, eine Zeile Beschreibung, sortiert halten.
+description: 'Trägt einen Link kuratiert in die Harness-Linklist (harness/linklist.md) ein. Use when the user wants to remember/track a URL, tool, library, or source in the linklist — e.g. "merk dir den Link", "trag X in die Linklist ein", "füge die Quelle hinzu", "das gehört in die Linklist". Erklärt, wie ein Link hineinkommt: Provenance auflösen, dedupen, in den passenden Block, eine Zeile Beschreibung, sortiert halten.'
 ---
 
 # linklist-curator

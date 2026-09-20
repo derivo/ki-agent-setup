@@ -349,6 +349,38 @@ claude plugin install caveman@caveman
 Dann gilt weiter: nicht gleichzeitig mit ponytail aktiv fahren, beide injizieren
 jeden Turn in den Kontext.
 
+**Reste einer früheren Installation.** Ein deinstalliertes Plugin nimmt seine
+Hook-Dateien nicht mit: unter `~/.claude/hooks/` bleiben `caveman-activate.js`,
+`caveman-config.js`, `caveman-mode-tracker.js`, `caveman-stats.js` und
+`caveman-statusline.sh` liegen. Sie sind harmlos, solange `settings.json` sie
+nicht registriert — genau das macht sie aber schwer auffindbar. Gleiches Muster
+bei anderen Vorgängern: die Shell-Statusline `~/.claude/statusline-command.sh`
+(Vorgänger von B1.4) und die GSD-Verzeichnisse `get-shit-done/`, `gsd-pristine/`,
+`gsd-user-files-backup/` und `gsd-migration-journal/` aus der Zeit vor dem Rename
+auf `gsd-core`.
+
+Der Check dafür, aus `~/.claude/` heraus — was hier auftaucht und nicht in der
+Hook-Registrierung aus B1.5 steht, kann weg:
+```bash
+for f in hooks/*.js hooks/*.sh; do
+  grep -q "$(basename "$f")" settings.json || echo "unreferenziert: $f"
+done
+```
+Der Check liest nur `settings.json`, kennt also keine indirekten Aufrufe. Was er
+nennt und trotzdem bleiben muss:
+- `gsd-statusline.js` — Datenquelle für Zeile 4 von `statusline.js` (B1.4).
+- `gsd-cursor-*` und `gsd-windsurf-*` — Hooks für andere Runtimes, stehen im
+  `gsd-file-manifest.json`. Wer sie nicht braucht, wählt sie im Installer ab;
+  ein `rm` hält nur bis zum nächsten Update.
+- Von anderen Hooks aufgerufene Helfer, hier `gsd-check-update-worker.js`,
+  `gsd-ensure-canonical-path.js`, `gsd-node-runner.sh` und `gsd-update-banner.js`.
+  Gegenprobe vor dem Löschen: `grep -rl <dateiname> ~/.claude/hooks/`.
+
+Umgekehrt ist ein Treffer nicht immer Müll, sondern manchmal eine **fehlende
+Registrierung**: Taucht `security-tool-guard.js` in der Liste auf, liegt der Guard
+zwar da, läuft aber nicht — dann fehlt sein Eintrag aus B1.5, und die Kontrolle
+aus A6 ist still ausgefallen.
+
 **Version-Pinning:** `claude plugin install`/`marketplace add` haben **kein**
 Version-/Ref-Flag — die installierte Version ist der git-HEAD zum
 Install-Zeitpunkt. Hartes Pinning wie bei GSD ist per CLI nicht möglich.

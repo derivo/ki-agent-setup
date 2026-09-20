@@ -71,7 +71,7 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   Dependency); der aktive Modus.
 - **codex** — die Codex-CLI aus Claude Code heraus nutzen: Review, adversariales
   Review, Delegation (`/codex:*`).
-- **Statusline** (`gsd-statusline.js`), **Hooks** und `settings.json` — eigene
+- **Statusline** (`statusline.js`), **Hooks** und `settings.json` — eigene
   Claude-Code-Mechanismen.
 
 Entsprechend ist [`APPLY.md`](APPLY.md) zweiteilig: Teil A beschreibt den
@@ -118,38 +118,29 @@ mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 
 ## Statusline-Aufbau
 
-Eigene Statusline via `~/.claude/hooks/gsd-statusline.js` (GSD 1.11, einzeilig).
-Layout (Soll-Struktur, aus dem Renderer abgeleitet):
+Eigene Statusline via `~/.claude/hooks/statusline.js` (Quelle:
+`harness/hooks/statusline.js`, vierzeilig). Liegt bewusst getrennt von
+`gsd-statusline.js`, damit ein GSD-Update sie nicht überschreibt; den
+GSD-Renderer ruft sie nur als Datenquelle für Zeile 4 auf.
 
 ```
-[GSD-Update-Warnung] Model │ Task bzw. GSD-State │ dirname [│ git + Marker] [Context-Meter] [│ last: /command]
-```
-
-Beispiel:
-```
-Opus 5 (1M) │ v0.2.0 auth · Phase 3 executing │ myproject │ main✓ [▰▰▰▰▰▰░░░░] 62%
+Model                 │ Context-Meter          │ gecachte Tokens
+5h-Limit - Reset      │ Wochen-Limit - Reset   │ Session-Kosten
+Pfad                                           │ git-Branch
+GSD-State · Phase                              │ Projekt
 ```
 
 Eigenschaften:
-- Eine Zeile; Model und dirname sind gedimmt. Das Context-Meter steht default am
-  Zeilenende (`statusline.context_position: front|end` stellt um).
-- Middle: aktueller Todo-Task (fett) oder GSD-State — Milestone-Version + Name +
-  Phase/Status; liest `.planning/STATE.md` + `.planning/config.json` hoch durch
-  die Hierarchie. Kompaktformat (`statusline.state_format: compact`) und
-  Milestone-Fortschrittsbalken sind opt-in.
+- Feste Zeilenzahl und Spaltenbreiten — das Raster ist in jedem Verzeichnis
+  gleich; was nicht passt, wird mit `…` abgeschnitten statt verschoben.
 - Context-Meter: pufferbereinigt gegen die Auto-Compact-Reserve (~16,5 %,
-  überschreibbar via `CLAUDE_CODE_AUTO_COMPACT_WINDOW`); Farbstufen bei 50/65/80 %,
-  ab 80 % mit 💀. Schreibt die Werte ins Bridge-File für den
-  `gsd-context-monitor`-Hook. Absoluter Token-Stand opt-in
-  (`statusline.show_context_tokens`).
-- Git-Segment opt-in (`statusline.show_git`): Branch plus Work-Marker
-  (`+`staged `~`unstaged `?`untracked `↑`ahead `↓`behind, `✓` sauber) aus
-  `git status --porcelain=v2`.
-- `last: /command`-Suffix opt-in (`statusline.show_last_command`). Alle Optionen
-  liegen unter `statusline.*` in `.planning/config.json` des Projekts.
-- Gegenüber der alten Edition entfallen: mehrzeiliges Layout, Cached-Token-Zähler,
-  5h-/Wochen-Limit und Session-Kosten — der 1.11-Renderer kennt sie nicht mehr.
-- Fällt bei jedem Fehler still zurück — bricht die Statusline nie.
+  überschreibbar via `CLAUDE_CODE_AUTO_COMPACT_WINDOW`); Farbstufen bei 50/65/80 %.
+  Dieselben Farbstufen gelten für die beiden Limit-Balken.
+- Zeile 4: GSD-State aus `gsd-statusline.js`, ergänzt um Phase und Projektname
+  aus `.planning/STATE.md` (hoch durch die Hierarchie). Ohne `.planning/` steht
+  dort `–` und rechts der Verzeichnisname.
+- Fehlender Wert wird zu `–`; fällt bei jedem Fehler still zurück — bricht die
+  Statusline nie.
 - Die unterste Terminalzeile (`bypass permissions on …`) ist **Claude-Code-nativ**,
   nicht Teil dieses Scripts.
 

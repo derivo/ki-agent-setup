@@ -414,17 +414,26 @@ Top-Level-Keys setzen (mit Bestehenden mergen):
 (`skipDangerousModePermissionPrompt`, `skipAutoPermissionPrompt`) sind **kein
 Default**; nur bewusst, temporär und mit Sandbox/VM setzen.
 
-Statusline aktivieren:
+Statusline aktivieren — repo-owned, das Repo ist die Quelle. `statusline.js`
+ruft `gsd-statusline.js` (B1.3) als Datenquelle für die GSD-Zeile auf und ersetzt
+es **nicht**; der Eintrag zeigt trotzdem auf `statusline.js`, nicht auf den
+GSD-Renderer:
+```bash
+cp harness/hooks/statusline.js ~/.claude/hooks/statusline.js
+chmod +x ~/.claude/hooks/statusline.js
+```
 ```json
 "statusLine": {
   "type": "command",
-  "command": "node \"/Users/<USER>/.claude/hooks/gsd-statusline.js\""
+  "command": "node \"/Users/<USER>/.claude/hooks/statusline.js\""
 }
 ```
 `<USER>` auf den realen Home-Pfad setzen.
 
 **Verify:** `claude` startet auf Deutsch, Thinking aktiv, dark-ansi; Statusline
-zeigt Model-/Context-Zeile + Pfad + git-branch.
+zeigt vier Zeilen (Model/Context, Limits/Kosten, Pfad/Branch, GSD-State);
+`cmp -s harness/hooks/statusline.js ~/.claude/hooks/statusline.js` ist grün und
+`grep -c 'hooks/statusline.js' ~/.claude/settings.json` liefert `1`.
 
 ### B1.5 Hooks (`~/.claude/settings.json`)
 Alle Hook-Skripte liegen in `~/.claude/hooks/`. Registrieren (Pfade auf reales
@@ -722,8 +731,8 @@ Für Claude Code speziell:
 - `claude plugin list` → ponytail, codex + die drei
   `claude-plugins-official`-Plugins enabled — jeweils mit Status `✔ enabled`, nicht
   nur mit einer Versionsnummer (`GUARDRAILS.md` C, „Vorhandensein ≠ Verhalten").
-- Neue Session: ponytail-Mode aktiv, GSD-Statusline sichtbar; in einem
-  `.planning/`-Projekt zeigt die Statusline den GSD-State.
+- Neue Session: ponytail-Mode aktiv, vierzeilige Statusline sichtbar; in einem
+  `.planning/`-Projekt zeigt ihre vierte Zeile den GSD-State.
 
 Bei Abweichungen oder fehlenden Quellen melden statt raten.
 

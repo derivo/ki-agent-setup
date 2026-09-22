@@ -145,7 +145,7 @@ jedem Client, nicht nur opencode); der `gsd-help`-Skill ist verfügbar.
 ## A4. MCP-Server (Kern-Set)
 
 Die MCP-Empfehlungen stehen in [`MCP_SERVERS.md`](MCP_SERVERS.md); das dort als
-**Kern-Set** geführte Trio (context7, GitHub MCP, Playwright MCP) gehört zum
+**Kern-Set** geführte Paar (GitHub MCP, Playwright MCP) gehört zum
 reproduzierten Setup. Pro Server:
 
 - Install-Kommando aus der **offiziellen Doku** des Servers (Quelle steht in der
@@ -660,13 +660,13 @@ Skills und `$hx-start` lädt Harness plus Projektstand.
 ### B2.4 MCP + Skills
 MCP-Kern-Set (A4) in der Codex-MCP-Config registrieren (Mechanismus: Codex-Doku;
 Inventar: `MCP_SERVERS.md`). Für reproduzierbare Checks die kanonischen Namen
-`context7`, `github` und `playwright` verwenden. Skills (A5) nach
+`github` und `playwright` verwenden. Skills (A5) nach
 Codex-Konvention verlinken.
 
-**Verify:** Alle drei Server sind registriert und aktiviert:
+**Verify:** Beide Server sind registriert und aktiviert:
 
 ```bash
-for codex_mcp_name in context7 github playwright; do
+for codex_mcp_name in github playwright; do
   codex mcp get "$codex_mcp_name" --json | grep -q '"enabled": true'
 done
 ```

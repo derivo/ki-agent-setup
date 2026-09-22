@@ -141,6 +141,10 @@ try {
   gsdLine = execFileSync(process.execPath, [path.join(__dirname, 'gsd-statusline.js')], {
     input, encoding: 'utf8',
   }).replace(/\n+$/, '');
+  // The GSD renderer prints a full four-line block of its own; only its last
+  // line carries the milestone/phase/project cells. Keeping the whole output
+  // would paste its model and limit lines underneath this grid.
+  gsdLine = gsdLine.split('\n').pop();
   gsdLine = gsdLine.replace(`${DIM}${compactModel(data.model?.display_name || 'Claude')}${OFF} │ `, '');
   gsdLine = gsdLine.replace(/\s*\x1b\[[0-9;]*m(?:💀 )?[█░]{10} \d+%(?: \([^)]*\))?\x1b\[0m/, '');
 } catch {}
@@ -198,7 +202,10 @@ const rows = [];
   // carries no milestone, so show the placeholder instead of a stray directory.
   const hasState = cells.length > 1;
   let left = hasState ? cells[0] : DIM + NONE + OFF;
-  if (hasState && st?.phase) left = left.replace(/\x1b\[0m$/, '') + ` · Phase ${st.phase}` + OFF;
+  // The GSD cell already names the phase while an orchestrator is in flight;
+  // only add it when that is missing, otherwise it reads "Phase 02 … · Phase 02".
+  if (hasState && st?.phase && !/Phase\s/.test(left))
+    left = left.replace(/\x1b\[0m$/, '') + ` · Phase ${st.phase}` + OFF;
   rows.push([left, DIM + (st?.project || path.basename(dir)) + OFF]);
 }
 

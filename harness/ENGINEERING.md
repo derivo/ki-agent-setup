@@ -1,5 +1,6 @@
 > **Lade wenn:** eine Design-Entscheidung steht an — Modularität, Kohäsion/Kopplung,
-> Interface-Richtung, Fehler-Shape, Wann-abstrahieren.
+> Interface-Richtung, Fehler-Shape, Wann-abstrahieren — oder ein Architektur-,
+> Workflow-, Sequenz-, Datenfluss- bzw. Zustandsdiagramm entsteht (§8).
 
 # Engineering — Prinzipien & Muster
 
@@ -147,6 +148,34 @@ Konventions-Artefakt — eine gesetzte Entscheidung ersetzt den Test nicht, sie
 überspringt ihn bewusst an einer benannten Stelle. Damit die Datei nicht zum Fall
 "Doku ≠ Realität" wird (Schritt 4), wird sie aus der echten Struktur generiert und
 nicht von Hand gepflegt.
+
+## 8. Diagramme — `archify` als Werkzeug
+
+Ein Diagramm ist ein Artefakt wie Code: es behauptet eine Struktur und kann
+veralten. Deshalb gilt die Diagramm-Baseline (`../instructions/AGENTS.md` →
+Konventionen): Architektur-, Workflow-, Sequenz-, Datenfluss- und
+Zustandsdiagramme entstehen mit dem Skill `archify` (Quelle und Installation:
+`../SKILLS.md`), weil er ein **validiertes** Ergebnis liefert statt eines
+Bildes, das nur gut aussieht.
+
+- **Typ aus der Frage, nicht aus dem Werkzeug.** Die fünf archify-Typen
+  (`architecture`, `workflow`, `sequence`, `dataflow`, `lifecycle`) decken die
+  Baseline ab. Charts, Datenvisualisierung und UI-Mockups sind kein
+  archify-Fall.
+- **Inhalt aus der echten Struktur.** Knoten und Kanten kommen aus Code, Config
+  oder Spec (Module, Routen, Zustände), nicht aus Erinnerung — sonst gilt
+  „Doku ≠ Realität" wie in §7, Schritt 4.
+- **Fertig heißt Exit-Code.** Ein ausgeliefertes Diagramm ist erst fertig, wenn
+  `node bin/archify.mjs deliver <typ> <spec.json> <out.html> --quality showcase --json`
+  mit Exit 0 durchläuft (Befehl im Skill-Verzeichnis). Das ist das Gate für
+  dieses Artefakt, analog `GUARDRAILS.md` C; ein Exit ≠ 0 wird nicht als
+  Erfolg gemeldet.
+- **Eingebettet bleibt Mermaid.** Steht das Diagramm **in** einem anderen
+  Dokument (Repo-`.md`, ADR, Artifact-Seite), bleibt es Inline-Mermaid unter dem
+  Render-Check des Doc-Harness (`../doc-harness/VERIFY.md`).
+
+Ist `archify` auf der Maschine nicht installiert, wird das benannt — kein
+stiller Rückfall auf ein unvalidiertes Diagramm.
 
 ---
 

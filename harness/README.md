@@ -61,7 +61,7 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 | [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) | ~0,5k | Eine Spec wird tatsächlich geschrieben (Form des Ergebnisses). |
 | [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | ~0,7k | Eine architektonisch signifikante Entscheidung fällt an und wird festgehalten. |
 | [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~4,9k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). Konsistenz (G) **und** Nutzbarkeit (I: Zielgröße, Feedback, Eingabe-Toleranz, Gliederung). API-/CLI-Projekte nie. |
-| [ENGINEERING.md](ENGINEERING.md) | ~2,0k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren). |
+| [ENGINEERING.md](ENGINEERING.md) | ~2,4k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren) — oder ein Architektur-/Workflow-/Sequenz-/Datenfluss-/Zustandsdiagramm entsteht (§8, `archify`). |
 | [DEBUG.md](DEBUG.md) | ~1,2k | Ein Bug hat eine normale Runde überlebt — hypothesengetriebener Loop mit persistentem Debug-State. |
 | [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) | ~1,7k | Eine Regel soll geschärft werden (Harness Correction) oder die prüfende Schleife greift nicht. |
 | [REVIEW_PANEL.md](REVIEW_PANEL.md) | ~1,9k | Der Diff erreicht die Panel-Schwelle (dort definiert) — nicht als Standardschritt. |

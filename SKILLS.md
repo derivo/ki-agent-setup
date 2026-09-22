@@ -88,7 +88,6 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 |---|---|---|
 | `find-skills` | `vercel-labs/skills` | Skills entdecken & installieren |
 | `microsoft-foundry` | `microsoft/azure-skills` | Azure AI Foundry (in `~/.agents`, nicht aktiv verlinkt) |
-| `ClaudeXMLStructuring` | lokal / ohne Upstream | `<thinking>`-Tags erzwingen (Eigenbau) |
 
 ---
 
@@ -122,5 +121,4 @@ Vorschlag zur Priorisierung beim Aufnehmen:
 - **Selten/überlappend (kann raus):** `compatibility-testing` &
   `chaos-engineering-resilience` (eher Enterprise-QA), `remotion-best-practices`
   (nur bei Video), `microsoft-foundry` (Azure), `web-accessibility` (überlappt mit
-  `accessibility`/`web-quality-audit`), `ClaudeXMLStructuring` (Thinking ist global
-  schon aktiv).
+  `accessibility`/`web-quality-audit`).

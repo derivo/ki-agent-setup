@@ -311,7 +311,8 @@ eine strengere Projektvorgabe (z. B. AAA-Kontrast) schlägt sie.
   Standalone-HTML/SVG. Passt der Typ nicht (Charts/Datenvisualisierung,
   UI-Mockups) oder wird das Diagramm **in** ein anderes Dokument eingebettet
   (Repo-`.md`, Artifact-Seite), bleibt es bei Inline-Mermaid unter dem
-  Render-Check des Doc-Harness (`doc-harness/VERIFY.md`).
+  Render-Check des Doc-Harness (`doc-harness/VERIFY.md`). Tiefe und
+  Fertig-Kriterium: `harness/ENGINEERING.md` §8.
 
 **Laravel-spezifisch:**
 - Eloquent: `$fillable` / `$guarded` korrekt setzen.

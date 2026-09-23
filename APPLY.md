@@ -596,6 +596,31 @@ Codex-Helper (B2.3) schon einen Besitzer hat — Codex sieht sie also nicht. Die
 `SKILL.md`-Dateien sind außerdem Claude-Prosa ohne die Codex-Metadaten. Repo-eigene
 Skills dort auszurollen ist eine eigene Entscheidung.
 
+**Ein installierter Skill ist nicht automatisch ein aktiver.** `settings.json` führt
+unter `skillOverrides` pro Skill ein `"off"`, das ihn aus der Skill-Liste **und** aus
+den `/`-Aufrufen nimmt — der Ordner bleibt dabei liegen, `ls` sieht ihn weiter. Ohne
+Eintrag gilt der Default „an"; Anschalten heißt deshalb **Eintrag entfernen**, nicht
+`"on"` setzen. Beobachtet am 2026-09-24: `archify` war dort abgeschaltet, während
+`instructions/AGENTS.md` es als Diagramm-Baseline vorschreibt — die Vorgabe lief ins
+Leere, ohne dass ein Check anschlug.
+
+Welche Skills hier an sind, folgt der Einstufung in `SKILLS.md`:
+- **an:** „Kern" und die repo-eigenen aus A5.1 — sie tragen Hausregeln.
+- **an, wenn installiert:** „situativ" — sie kosten nur Kontext, wenn sie greifen.
+- **aus:** „selten/überlappend", und `gsd-*` (die laufen über ihre Commands).
+
+Die konkrete Liste ist maschinenlokal und gehört nicht hierher; sie folgt aus dieser
+Regel plus `SKILLS.md`. Ein Skill, den eine Instruction oder das Harness **vorschreibt**,
+darf dort nie auf `"off"` stehen.
+```bash
+# Abgeschaltete Skills, die keine gsd-* sind — jeder Treffer ist zu begründen:
+python3 -c 'import json,os;d=json.load(open(os.path.expanduser("~/.claude/settings.json")));\
+print(sorted(k for k,v in d.get("skillOverrides",{}).items() if v=="off" and not k.startswith("gsd-")))'
+# Tote Einträge (Override ohne Skill-Verzeichnis) — entfernen:
+python3 -c 'import json,os;h=os.path.expanduser;d=json.load(open(h("~/.claude/settings.json")));\
+print([k for k in d.get("skillOverrides",{}) if not os.path.exists(h("~/.claude/skills/")+k)])'
+```
+
 **Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
 zeigt die Nicht-GSD-Skills und die vier Links aus A5.1 (`ki-agent-setup`,
 `design-md-curator`, `linklist-curator`, `rule-intake-curator`) auf den Checkout;

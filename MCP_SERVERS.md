@@ -14,7 +14,6 @@ der installierte Server-Bestand dauerhaft, diese Datei nachziehen.
 
 | Server | Quelle | Nutzen |
 |---|---|---|
-| **context7** | [upstash/context7](https://github.com/upstash/context7) (★58k) | Aktuelle Library-/Framework-Doku direkt im Kontext — gegen veraltetes Modellwissen. Größter Daily-ROI. |
 | **GitHub MCP** | [github/github-mcp-server](https://github.com/github/github-mcp-server) (★31k, offiziell) | PRs, Issues, Repos, Actions direkt steuern. |
 | **Playwright MCP** | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (★34k, offiziell) | Live-Browser: Tests, Screenshots, E2E-Verify — passt zu `/hx:verify`. |
 

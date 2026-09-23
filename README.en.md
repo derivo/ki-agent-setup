@@ -105,8 +105,7 @@ GitHub source per skill: [`SKILLS.md`](SKILLS.md).
 
 ### MCP servers & security
 
-- **MCP servers** — curated, security-conscious recommendations (context7, GitHub,
-  Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md). The core set is installed as
+- **MCP servers** — curated, security-conscious recommendations (GitHub, Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md). The core set is installed as
   part of the setup (`APPLY.md` A4); the file doubles as the secret-free
   inventory.
 - **Security** — hardening layer around the agent (secret scanning, tool block

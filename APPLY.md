@@ -120,10 +120,10 @@ bei **jeder** Runtime `<config>/gsd-core/` (`~/.claude/gsd-core/`,
 liegen und ist **Altbestand**, kein zweiter Runtime-Ort. Skills, Agents und Hooks
 liegen daneben direkt im Config-Verzeichnis (`<config>/skills/gsd-*` usw.).
 
-Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-08-21:
-`1.11.0`, setzt **Node ≥ 24** voraus):
+Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-09-22:
+`1.14.0`, setzt **Node ≥ 24** voraus):
 ```bash
-npx @opengsd/gsd-core@1.11.0
+npx @opengsd/gsd-core@1.14.0
 ```
 Nicht-interaktiv geht es mit Flags: `--global` plus je einer Runtime-Flag
 (`--claude`, `--codex`, `--opencode`, `--antigravity`, …) — pro einzurichtendem
@@ -686,7 +686,7 @@ diese Runtime gelaufen ist. Erst beobachten und dokumentieren, nicht raten.
 Erster Anlauf dafür:
 
 ```bash
-npx @opengsd/gsd-core@1.11.0 --global --antigravity
+npx @opengsd/gsd-core@1.14.0 --global --antigravity
 ```
 
 ## B4. opencode

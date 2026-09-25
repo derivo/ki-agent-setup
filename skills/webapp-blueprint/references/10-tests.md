@@ -115,7 +115,8 @@ Prüfen: die letzten fünf Bugfixes — je ein Test, der vor dem Fix scheiterte?
 
 ### TST-16 · Ö · F — Sicherheitsanforderungen und -befunde werden zu Tests
 Die gewählten ASVS-Anforderungen sind prüfbare Aussagen [ASVS5]; die wichtigsten davon
-— Autorisierung (TST-03), Sitzungsende, Header, Rate-Limits, Uploads — laufen als
+— Autorisierung (TST-03), Injection und XSS (TST-21), Sitzungsende, Header,
+Rate-Limits, Uploads — laufen als
 automatisierte Tests im Gate. Jeder Befund aus Scan, Pentest oder Meldung (SEC-28,
 SEC-30, SEC-33) bekommt nach dem Fix einen Regressionstest (→ TST-15). Sicherheits-
 tests brauchen Sicherheitswissen [VOTIPKA18].
@@ -149,3 +150,16 @@ mit produktionsnaher Menge (synthetisch oder anonymisiert → DAT-13); gemessen 
 Dauer und Sperren, geprüft wird der Rückweg (→ DAT-03, DAT-04). Praxisregel ohne
 eigenen Studienbeleg.
 Prüfen: Laufzeit der letzten Migration auf produktionsnahen Daten.
+
+### TST-21 · B · F — Injection und XSS sind je Ein- und Ausgabeweg getestet
+Grundgesamtheit sind alle Eingabestellen (Parameter, Header, Cookies, Uploads,
+Importe, Webhooks) und alle Ausgabestellen (Templates, JSON, Exporte, Mails). Je
+Kontext mindestens ein automatisierter Test mit typischen Angriffsmustern —
+Anführungszeichen und Kommentarzeichen in Abfragen, Sortierwert außerhalb der
+Allowlist, Shell-Metazeichen, `../` in Pfaden, `<script>` und Attribut-Ausbruch,
+`javascript:`-URL, Formel in Exporten. Gespeichertes XSS wird über den ganzen Weg
+geprüft: speichern, dann an jeder Ausgabestelle anzeigen. Kein Verfahren allein
+genügt: statische Analyse, Scanner und manuelle Prüfung finden jeweils anderes
+[ELDER22], Scanner verfehlen gespeichertes XSS oft [BAU10] → SEC-14, SEC-48, SEC-33.
+Prüfen: Liste der Ein- und Ausgabestellen gegen die Tests; Testfall für gespeichertes
+XSS vorhanden?

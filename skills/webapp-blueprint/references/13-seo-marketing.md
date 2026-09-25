@@ -6,7 +6,7 @@ Werbung → Bereich 06. Quellenkürzel → [QUELLEN.md](QUELLEN.md).
 
 ## Auffindbarkeit
 
-### MKT-01 · B · F — Web-Baseline: `robots.txt`, `sitemap.xml`, `llms.txt`
+### MKT-01 · B (öffentliche-inhalte) · F — Web-Baseline: `robots.txt`, `sitemap.xml`, `llms.txt`
 Hausstandard im ki-agent-setup, aus der echten Struktur generiert statt von Hand
 gepflegt. `robots.txt` steuert nur das Crawlen und ist öffentlich lesbar — kein
 Zugriffsschutz; antwortet sie mit `5xx`, gilt die ganze Site als gesperrt [RFC9309].

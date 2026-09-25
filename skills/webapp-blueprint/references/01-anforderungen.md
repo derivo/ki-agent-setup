@@ -59,7 +59,7 @@ Prüfen: drei Kernbegriffe in Code, UI und Doku vergleichen.
 
 ### REQ-10 · Ö · E — Der Lebenszyklus einer öffentlichen App ist vollständig bedacht
 Jeder Punkt dieser Liste ist Anforderung oder begründet ausgeschlossen: Registrierung mit
-Bestätigung, abgesicherte Ersteinrichtung, Sperren mit sofortiger Wirkung, Konto löschen
+Bestätigung, abgesicherte Ersteinrichtung (→ SEC-46), Sperren mit sofortiger Wirkung, Konto löschen
 und Daten exportieren, Rechtstexte, Update- und Backup-Weg, sichtbare Version,
 Support-Kontakt. Details in den Bereichen 04–09.
 Prüfen: Liste gegen die Anforderungen abhaken.

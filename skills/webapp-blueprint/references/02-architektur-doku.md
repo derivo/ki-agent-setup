@@ -85,3 +85,11 @@ Prüfen: Runbook-Verzeichnis; wo liegt es, wenn die App ausfällt?
 ### ARC-13 · B · F — Der Einstieg für Entwickler ist in unter einer Stunde möglich
 README mit Zweck, lokalem Start, Tests, Gate-Kommando und Verweis auf die Architekturdoku.
 Prüfen: frischer Checkout nach README starten und die Zeit messen.
+
+### ARC-14 · B · L — Schutz- und Betriebsbehauptungen der Doku sind belegt
+Was die Doku über Limits, Verschlüsselung, Trennung, Fail-fast, Backups oder
+Schalter verspricht, verweist je Aussage auf die Stelle, die es durchsetzt, oder den
+Test, der es zeigt. Eine unbelegte Schutzbehauptung ist gefährlicher als keine, weil
+Betreiber und Prüfer sich darauf verlassen → ARC-11.
+Prüfen: jede solche Aussage in README, Architektur- und Betriebsdoku gegen Code
+oder Test.

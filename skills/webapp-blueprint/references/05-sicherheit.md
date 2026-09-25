@@ -343,3 +343,38 @@ Prozesse laufen nicht als Root, Dateisystem wo möglich nur lesbar, Images minim
 und aus vertrauenswürdiger Quelle, ausgehende Verbindungen auf benötigte Ziele
 beschränkt [NIST-800-190] → SEC-16.
 Prüfen: Benutzer des laufenden Prozesses; schreibbare Pfade; Egress-Regeln.
+
+### SEC-44 · B (ki-werkzeug) · F — Kontext und Werkzeuge für KI-Agenten sind begrenzt und gekennzeichnet
+Was die App an Agenten ausliefert, kann dort als Anweisung wirken; Inhalte anderer
+Nutzer sind damit ein Weg für indirekte Prompt Injection in fremde Agenten
+[GRESHAKE23] [OWASP-LLM-2025 LLM01, LLM06]. Deshalb: ausgelieferter Kontext ist nach
+Herkunft gekennzeichnet und fremde Beiträge sind von eigenen getrennt; schreibende
+Werkzeuge haben Rechte je Schlüssel und Mandant, mit Limits; der Werkzeugvertrag
+(Namen, Argumente, Limits) ist versioniert wie eine API → API-01. Autorisierung wie
+bei jedem anderen Endpunkt → SEC-10.
+Prüfen: Beitrag eines anderen Nutzers mit eingebetteter Anweisung — wie erscheint er
+im ausgelieferten Kontext? Liste der Werkzeuge mit Rechten und Limits.
+
+### SEC-45 · B · F — Die App startet nicht mit leeren, Standard- oder Beispielgeheimnissen
+Beim Start in Produktion wird jedes Geheimnis geprüft: nicht leer, nicht gleich einem
+Wert aus Vorlagen (`.env.example`, Doku, Compose-Dateien), ausreichend lang; sonst
+bricht der Start ab. Standardkonten gibt es nicht oder sie sind deaktiviert
+[ASVS5 V6.3.2, V13.2.3] (V13.2.3: strenger als ASVS L2) → SEC-21.
+Prüfen: alle Beispielwerte aus Vorlagen gegen die Startprüfung; Start mit leerem
+Geheimnis in freigegebener Testumgebung.
+
+### SEC-46 · B · F — Die Ersteinrichtung kann nur der Betreiber vornehmen
+Der erste Admin entsteht nicht dadurch, dass sich jemand als Erster registriert: eine
+frisch gestartete, erreichbare Instanz wäre sonst ein Wettlauf. Stattdessen ein
+einmaliges Einrichtungs-Token aus Log oder Umgebung, Anlage per Kommandozeile oder
+Bindung an den lokalen Zugang. Praxisregel ohne eigenen Studienbeleg → REQ-10.
+Prüfen: Code der Registrierung und Ersteinrichtung; wer wird bei leerer Datenbank
+Admin?
+
+### SEC-47 · Ö (clients) · G — Ausgelieferte Client-Software ist gepinnt, nachprüfbar und minimal berechtigt
+Plugins, Hooks und Skripte, die auf Rechnern der Nutzer laufen, werden in festen
+Versionen ausgeliefert, ihre Herkunft ist prüfbar (Signatur oder Prüfsumme) → SEC-26,
+sie laden zur Laufzeit keinen unversionierten Code nach und schreiben nur, wo sie
+müssen. Updates sind für Nutzer erkennbar.
+Prüfen: Auslieferungsweg einer Client-Komponente; was sie beim Start lädt und wohin
+sie schreibt.

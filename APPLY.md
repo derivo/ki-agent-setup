@@ -193,6 +193,7 @@ ladbar**:
 | Skill | Zweck |
 |---|---|
 | [`ki-agent-setup`](skills/ki-agent-setup/SKILL.md) | dieses `APPLY.md` autonom anwenden — Setup bootstrappen bzw. syncen |
+| [`analyse-qs`](skills/analyse-qs/SKILL.md) | Analyse und QS eines Projekts prüfen — Requirements (IREB/req42), arc42, DDD, QS-Gates — als belegte Lückenliste |
 | [`design-md-curator`](skills/design-md-curator/SKILL.md) | eine `DESIGN.md` aus Repo-/URL-Evidenz erstellen und gegen `GUARDRAILS_UI.md` G validieren |
 | [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
 | [`rule-intake-curator`](skills/rule-intake-curator/SKILL.md) | ein fremdes Regelwerk gegen `instructions/` + `harness/` prüfen und nur das Tragende übernehmen |
@@ -623,7 +624,7 @@ print([k for k in d.get("skillOverrides",{}) if not os.path.exists(h("~/.claude/
 ```
 
 **Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
-zeigt die Nicht-GSD-Skills und die fünf Links aus A5.1 (`ki-agent-setup`,
+zeigt die Nicht-GSD-Skills und die sechs Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
 `design-md-curator`, `linklist-curator`, `rule-intake-curator`, `ui-test-gap-audit`) auf den Checkout;
 `head -2 ~/.claude/skills/design-md-curator/SKILL.md` ist über den Link lesbar.
 

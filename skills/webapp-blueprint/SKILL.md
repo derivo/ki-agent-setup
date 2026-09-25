@@ -37,10 +37,20 @@ der Katalog behauptet keine Wirkung, die niemand gemessen hat.
   Was nur ein Lauf in der echten Umgebung belegen kann und nicht gelaufen ist, heißt
   `UNBEKANNT`, nicht „erfüllt“. „Nicht gefunden“ braucht dieselbe Beleghärte wie
   „vorhanden“: am tatsächlichen Ort gesucht, nicht nur ein grep.
+- **Passiver Beleg für aktive Prüfungen.** Nennt ein `Prüfen:` eine aktive Probe, zählt
+  auch ein passiver Beleg — aber nur, wenn alle betroffenen Stellen enumeriert sind und
+  der Code das Verhalten eindeutig festlegt. Sonst `UNBEKANNT` mit dem Vermerk, dass
+  eine aktive Probe nötig ist. `nicht geprüft` heißt nur: außerhalb des Umfangs.
 - **Grundgesamtheit zuerst.** Aussagen wie „alle Endpunkte paginiert“ setzen eine aus
   dem Code enumerierte Liste voraus (Routen, Controller, Jobs), keine Stichprobe.
+  Zähleinheit „Endpunkt“ ist Methode + Pfad-Template. Nennt ein Punkt eine
+  Stichprobengröße und gibt es weniger Elemente, werden alle genommen.
+- **Fehlender Gegenstand ist `n. a.`** — gibt es das Geprüfte gar nicht (keine
+  Retries, keine Uploads), lautet der Status `n. a.` mit Grund „nicht vorhanden“, nicht
+  „erfüllt“.
 - **Stufe bestimmt Pflicht, nicht Umfang des Berichts.** Punkte über der gewählten
-  Stufe werden als Empfehlung geführt, nicht als Lücke.
+  Stufe bekommen ihren sachlichen Status, werden aber als Empfehlung geführt und nicht
+  als Lücke gezählt (Pflicht-Zählung und Gesamt-Zählung getrennt, → AUSGABE.md).
 - **Projektregeln gehen vor.** Legt das Projekt (bzw. seine `AGENTS.md`/`CLAUDE.md`)
   eine Variante fest, die der Katalog als eine von mehreren zulässt, gilt die
   Projektvariante; der Audit prüft dann deren konsequente Umsetzung. Ein echter
@@ -54,8 +64,14 @@ der Katalog behauptet keine Wirkung, die niemand gemessen hat.
   nicht als Risiko akzeptiert oder aufgeschoben werden.
 - **Pflicht-Herkunft ist erkennbar.** Die Stufe eines Punkts ist eine Einstufung dieses
   Katalogs. Wo sie strenger ist als das Level der zitierten Quelle, steht das am Punkt
-  („strenger als ASVS L2“). Hausstandards des ki-agent-setup sind als solche markiert
-  und gelten anderswo als Empfehlung.
+  („strenger als ASVS L2“). Hausstandards des ki-agent-setup sind als solche markiert;
+  sie gelten als Pflicht in Projekten, die unter den Arbeitsregeln dieses Setups
+  entwickelt werden (dessen `AGENTS.md` ist geladen), anderswo als Empfehlung.
+- **Hersteller oder Betreiber.** Bei `selbst-gehostet` treffen Betreiberpflichten
+  (Impressum, Datenschutzinformation, TLS, Mail-DNS, Meldewege) den Kunden. Geprüft wird
+  dann, ob die Software sie ermöglicht und dokumentiert (LAW-22) — Default-Konfiguration
+  und Betriebsdoku sind der Beleg; eine konkrete Instanz nur, wenn der Auftrag sie
+  nennt.
 
 ## 1. Profil festlegen (vor jedem Audit und jedem Plan)
 
@@ -71,7 +87,13 @@ geprüft oder ein Shop gegen Prototyp-Maßstäbe.
 | **K — Kritisch** | Zahlungen, besondere Datenkategorien (Art. 9 DSGVO), vertragliche Verfügbarkeitszusagen, hoher Schaden bei Ausfall/Leck | ASVS 5.0 L3 in den betroffenen Kapiteln |
 
 Die Stufen sind kumulativ: Ö enthält alles aus B, K alles aus Ö. Die Einstufung wird
-mit Begründung notiert (arc42 Kap. 1/10 oder ADR).
+mit Begründung notiert (arc42 Kap. 1/10 oder ADR). Eingestuft wird das Produkt im
+anspruchsvollsten dokumentierten oder beabsichtigten Einsatz, sofern der Auftrag keine
+bestimmte Instanz nennt.
+
+**Ohne Rückfrage** (Subagent, CI, anderer Client): Profil aus Repo und Doku ableiten,
+als Annahme mit Begründung je Festlegung in den Kopf schreiben (`bestaetigt: false`)
+und fortfahren. Der Bericht nennt, welche Punkte sich bei anderem Profil ändern.
 
 **Bedingungen** (schalten Punkte zu, unabhängig von der Stufe) — jede mit ja/nein
 beantworten:
@@ -86,6 +108,8 @@ beantworten:
 | `nutzerinhalte` | Die App speichert Inhalte im Auftrag von Nutzern (Hosting im Sinne des DSA) |
 | `plattform` | … und macht sie auf Wunsch der Nutzer öffentlich zugänglich (Online-Plattform im Sinne des DSA) |
 | `ki` | KI-System interagiert mit Nutzern oder erzeugt Inhalte |
+| `ki-werkzeug` | Die App liefert Kontext oder Werkzeuge an KI-Agenten (etwa als MCP-Server), auch ohne eigenes Modell |
+| `clients` | Die App liefert Software aus, die auf Rechnern der Nutzer läuft (Plugins, Hooks, Skripte, Apps) |
 | `mehrsprachig` | mehr als eine Sprache oder Region |
 | `öffentliche-inhalte` | Inhalte sollen über Suchmaschinen gefunden werden |
 | `newsletter` | Werbe-E-Mails |
@@ -126,7 +150,8 @@ Prüfen: … (wo und wie der Beleg gefunden wird)
 - **ID** — Bereichskürzel + Nummer, stabil; Berichte und Issues verweisen darauf.
 - **Stufe** — ab welcher Stufe der Punkt Pflicht ist (`B`, `Ö`, `K`). Ein
   Bedingungskürzel in Klammern (`Ö (verbraucher)`) heißt: Pflicht ab dieser Stufe,
-  aber nur, wenn die Bedingung zutrifft.
+  aber nur, wenn die Bedingung zutrifft; mehrere Kürzel (`Ö (mehrsprachig,
+  öffentliche-inhalte)`) müssen alle zutreffen.
 - **Phase** — wann der Punkt im Lebenszyklus fällig ist:
   `E` Entwurf (vor der ersten Zeile Code) · `F` Fundament (im ersten lauffähigen
   Durchstich) · `G` Go-live (vor dem ersten echten Nutzer) · `L` Laufend (Betrieb,
@@ -154,7 +179,8 @@ Prüfen: … (wo und wie der Beleg gefunden wird)
    unterscheidbar, was nicht zutrifft und was nicht angeschaut wurde.
 5. **Lücken nach Risiko sortieren**: zuerst gesetzliche Pflichten und Sicherheit mit
    akutem Schaden (Datenleck, Abmahnfähiges, Datenverlust), dann Betriebsfähigkeit (kein
-   Restore, kein Alarm), dann Nachvollziehbarkeit und Qualität.
+   Restore, kein Alarm), dann Nachvollziehbarkeit und Qualität. Mehrere IDs mit
+   derselben Ursache sind ein Befund, nicht mehrere (→ AUSGABE.md, Feld `siehe`).
 6. **Vorschlag je Lücke**: Maßnahme als Vorgehen, Aufwand grob (S/M/L), Ablageort
    (Issue, Phase, arc42-Kapitel, ADR). Keine Umsetzung ohne Freigabe; Serien über
    drei PRs brauchen Zwischenfreigabe.

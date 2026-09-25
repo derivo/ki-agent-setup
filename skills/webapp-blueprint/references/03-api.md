@@ -106,8 +106,10 @@ Nachträgliche Pagination ist ein Breaking Change [AIP-158]. Cursor/opaker Token
 Offset bei großen oder sich ändernden Mengen [ZALANDO #160]; der Token gilt nur mit
 denselben Filtern und ist keine Autorisierung; zu große Seitengrößen werden auf das
 Maximum gekappt.
-Prüfen: alle Listen-Endpunkte aus der Routenliste; je Endpunkt Limit und
-Default-Seitengröße.
+Eine feste Obergrenze ohne Weiterblättern ist keine Pagination — sie verschweigt
+Daten.
+Prüfen: alle Listen-Endpunkte aus der Routenliste; je Endpunkt Limit,
+Default-Seitengröße und Weg zur nächsten Seite.
 
 ### API-13 · Ö · F — Filter und Sortierung sind definiert
 Unbekannte Filter- oder Sortierfelder führen zu einem Fehler statt stillschweigend zu

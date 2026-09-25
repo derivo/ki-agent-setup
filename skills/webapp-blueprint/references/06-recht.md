@@ -193,3 +193,12 @@ Impressum, Datenschutzinformation, Nutzungsbedingungen, Widerrufsbelehrung mit D
 Verantwortlichem; Anlass zur Prüfung sind neue Verarbeitungen, neue Dienstleister und
 Gesetzesänderungen.
 Prüfen: Datum der letzten Prüfung je Text.
+
+### LAW-22 · B (selbst-gehostet) · G — Die Software ermöglicht Betreibern ihre Pflichten
+Bei selbst betriebener Software liegen Impressum, Datenschutzinformation,
+Verarbeitungsverzeichnis und Meldewege beim Betreiber; die Software muss sie
+ermöglichen: konfigurierbare Links oder Seiten für Impressum, Datenschutz und
+Nutzungsbedingungen, eine Liste der eingebundenen Dienstleister und Datenflüsse,
+Export und Löschung für Betroffenenrechte (→ LAW-04), Hinweise für das
+Verarbeitungsverzeichnis. Grundregel „Hersteller oder Betreiber“ in SKILL.md.
+Prüfen: Konfigurationsoptionen für Rechtstexte; Betreiberdoku zu Datenflüssen.

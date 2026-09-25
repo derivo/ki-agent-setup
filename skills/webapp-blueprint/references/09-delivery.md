@@ -30,7 +30,8 @@ Prüfen: Dauer des letzten Rollbacks oder einer Übung.
 ### DEL-05 · Ö · G — Riskante Änderungen gehen schrittweise live
 Canary oder gestaffelter Rollout mit wenigen SLI-Vergleichen zwischen neuer und alter
 Version und automatischem oder klar definiertem Abbruch [SRE-CANARY]; Blue/Green als
-Alternative.
+Alternative. Bei `selbst-gehostet` ist die Entsprechung ein Release-Kanal mit
+Vorabversionen, die vor der allgemeinen Freigabe bei einigen Betreibern laufen.
 Prüfen: Rollout-Strategie der Pipeline; Abbruchkriterien.
 
 ### DEL-06 · Ö · F — Feature-Flags sind Inventar mit Ablaufdatum
@@ -70,3 +71,9 @@ entsteht aus dem Repo plus Geheimnissen, ohne Wissen aus Köpfen. Vor einem Depl
 auf eine neue Umgebung ist der Umgebungs-Vertrag geklärt (Ziel, Artefaktweg,
 Geheimnisse, Rollback).
 Prüfen: Wie lange dauert es, eine Testumgebung neu aufzubauen?
+
+### DEL-12 · Ö · L — Jede Konfigurationsoption ist inventarisiert und wirksam
+Jede Einstellung und Umgebungsvariable hat Zweck, Default und Eigentümer und wird im
+Code tatsächlich gelesen und durchgesetzt. Eine Option ohne Wirkung täuscht Betreiber:
+sie glauben an ein Limit oder einen Schalter, den es nicht gibt → ARC-14.
+Prüfen: Liste der Einstellungen gegen ihre Lesestellen im Code; je Limit ein Test.

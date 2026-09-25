@@ -37,6 +37,7 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | `linklist-curator` | dieses Repo, `skills/linklist-curator/` | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
 | `rule-intake-curator` | dieses Repo, `skills/rule-intake-curator/` | Fremde Regelwerke gegen den Bestand prüfen und nur das Tragende übernehmen |
 | `ui-test-gap-audit` | dieses Repo, `skills/ui-test-gap-audit/` | Fehlende UI-Tests messen: Rollen × Seiten × Formulare × Varianten nach Echtheitsstufe, Lücken nach Risiko |
+| `webapp-blueprint` | dieses Repo, `skills/webapp-blueprint/` | Web-App gegen State of the Art prüfen oder neu planen: 212 Vorgehensregeln in 13 Bereichen, Stufen B/Ö/K, mit Quellen- und Evidenzlage |
 
 ## Web / Frontend / Design / SEO
 

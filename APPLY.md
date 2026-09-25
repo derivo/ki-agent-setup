@@ -198,6 +198,7 @@ ladbar**:
 | [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
 | [`rule-intake-curator`](skills/rule-intake-curator/SKILL.md) | ein fremdes Regelwerk gegen `instructions/` + `harness/` prüfen und nur das Tragende übernehmen |
 | [`ui-test-gap-audit`](skills/ui-test-gap-audit/SKILL.md) | fehlende UI-Tests messen — je Rolle, Seite, Formular und Datenvariante nach Echtheitsstufe, Lücken nach Risiko |
+| [`webapp-blueprint`](skills/webapp-blueprint/SKILL.md) | eine Web-App gegen den State of the Art prüfen oder neu planen — Katalog aus Vorgehensregeln je Bereich, Stufen, Quellen- und Evidenzlage |
 
 Sie werden **verlinkt**, nicht über die `skills`-CLI installiert. Ziel-Verzeichnis ist
 client-spezifisch (Teil B). Namenskollision vermeiden: ein repo-eigener Skill darf
@@ -624,8 +625,9 @@ print([k for k in d.get("skillOverrides",{}) if not os.path.exists(h("~/.claude/
 ```
 
 **Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
-zeigt die Nicht-GSD-Skills und die sechs Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
-`design-md-curator`, `linklist-curator`, `rule-intake-curator`, `ui-test-gap-audit`) auf den Checkout;
+zeigt die Nicht-GSD-Skills und die sieben Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
+`design-md-curator`, `linklist-curator`, `rule-intake-curator`, `ui-test-gap-audit`,
+`webapp-blueprint`) auf den Checkout;
 `head -2 ~/.claude/skills/design-md-curator/SKILL.md` ist über den Link lesbar.
 
 ## B2. Codex CLI

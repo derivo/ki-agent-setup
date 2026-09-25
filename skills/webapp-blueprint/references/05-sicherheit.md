@@ -105,15 +105,20 @@ Prüfen: Endpunkte, die `owner`/`tenant`/`user_id` schreiben.
 Gegen erlaubte Werte (Allowlist), einschließlich Geschäftsregeln [ASVS5 V2].
 Prüfen: Validierung je Einstiegspunkt; Endpunkte, die Rohdaten durchreichen.
 
-### SEC-14 · B · F — Ausgabe kontextgerecht kodiert, Queries parametrisiert
-Kein SQL, Shell-Kommando, Pfad oder HTML per String-Verkettung mit Nutzerdaten
-[ASVS5 V1]. Im Browser gilt dasselbe für gefährliche DOM-Senken (`innerHTML`,
-`eval`, dynamische Skript-URLs): nur geprüfte Werte, wo verfügbar erzwungen über
-Trusted Types [TT] (W3C-Entwurf). Kodierung ist die erste Linie; Browser-Mitigations
-wie CSP sind die zweite — Script Gadgets in verbreiteten JS-Frameworks umgingen alle
-damals bekannten XSS-Mitigations [LEKIES17].
-Prüfen: Suche nach Verkettung in Query-/Exec-Aufrufen und nach DOM-Senken im
-Frontend-Code; Template-Engine mit Auto-Escaping aktiv.
+### SEC-14 · B · F — Queries, Befehle und Parser sind gegen Injection gebaut
+Nutzerdaten erreichen keinen Interpreter als Code:
+- Datenbankabfragen (SQL, NoSQL, ORM-Rohabfragen) nur mit gebundenen Parametern
+  [ASVS5 V1.2.4]. Was sich nicht binden lässt — Tabellen- und Spaltennamen,
+  Sortierrichtung —, kommt aus einer festen Allowlist im Code, nie aus dem Request
+  [OWASP-SQLI].
+- Betriebssystem-Befehle ohne Shell, mit Argumentliste [V1.2.5] [OWASP-CMD];
+  Dateipfade aus internen Kennungen statt aus Dateinamen der Nutzer [V5.3.2].
+- Templates werden nie aus Eingaben gebaut [V1.3.7] (strenger als ASVS L2); kein `eval` und keine
+  Ausdruckssprachen auf Eingaben [V1.3.2].
+- XML-Parser ohne externe Entitäten [V1.5.1] [OWASP-XXE]; Deserialisierung → SEC-39.
+Prüfen: alle Rohabfragen, Exec-, Eval- und Template-Aufrufe enumerieren und je
+Fundstelle die Herkunft der eingesetzten Werte belegen; Sortier- und
+Filterparameter gegen ihre Allowlist; Parser-Konfiguration. Tests → TST-21.
 
 ### SEC-15 · B · F — Schreibbare Felder sind je Aktion festgelegt
 Kein Mass Assignment: Felder wie `role`, `is_admin`, `tenant_id` sind nicht über
@@ -378,3 +383,34 @@ sie laden zur Laufzeit keinen unversionierten Code nach und schreiben nur, wo si
 müssen. Updates sind für Nutzer erkennbar.
 Prüfen: Auslieferungsweg einer Client-Komponente; was sie beim Start lädt und wohin
 sie schreibt.
+
+### SEC-48 · B · F — Ausgaben sind je Kontext kodiert, XSS hat keinen Umweg
+- Automatisches Escaping der Template-Engine ist an; kodiert wird passend zum
+  Kontext — HTML-Inhalt und -Attribut, URL, JavaScript/JSON [ASVS5 V1.2.1–V1.2.3]
+  [OWASP-XSS].
+- Jede Stelle, die das Escaping umgeht (Roh-Ausgabe im Template, `v-html`,
+  `dangerouslySetInnerHTML`, `bypassSecurityTrust…` o. Ä.), ist inventarisiert und
+  einzeln begründet; ohne Begründung ist sie ein Befund.
+- HTML von Nutzern (Rich-Text) nur über einen etablierten Sanitizer mit Allowlist
+  [V1.3.1]; Markdown, SVG und andere skriptfähige Formate ebenso [V1.3.4, V1.3.5]
+  (strenger als ASVS L2).
+- Im Browser: Text über `textContent` statt `innerHTML` [V3.2.2], gefährliche
+  DOM-Senken nur mit geprüften Werten, wo verfügbar erzwungen über Trusted Types [TT]
+  [OWASP-DOMXSS]; API-Antworten mit korrektem `Content-Type`, damit Daten nicht als HTML
+  gerendert werden [V3.2.1].
+- Gespeicherte Daten sind so unzuverlässig wie Request-Daten: gespeichertes XSS entsteht
+  bei der Ausgabe, nicht bei der Eingabe, und wird von automatischen Scannern oft
+  übersehen [BAU10].
+Kodierung ist die erste Linie; CSP die zweite (→ SEC-18, SEC-19) — Script Gadgets in
+verbreiteten JS-Frameworks umgingen alle damals bekannten XSS-Mitigations [LEKIES17].
+Prüfen: Liste der Escape-Ausnahmen in Templates und Frontend-Code mit Begründung;
+Sanitizer-Konfiguration; DOM-Senken; Tests → TST-21.
+
+### SEC-49 · Ö · F — Auch seltenere Interpreter sind abgesichert
+Wo vorhanden: LDAP- und XPath-Abfragen parametrisiert [ASVS5 V1.2.6, V1.2.7];
+Eingaben in Mail-Headern bereinigt [V1.3.11]; Nutzereingaben in regulären Ausdrücken
+maskiert [V1.2.9] und Ausdrücke ohne exponentielles Backtracking [V1.3.12] (strenger
+als ASVS L3); CSV- und Tabellen-Exporte gegen Formel-Injection geschützt [V1.2.10]
+(strenger als ASVS L3) [OWASP-INJ]. Was davon nicht vorkommt, ist `n. a.`
+Prüfen: Enumeration dieser Interpreter im Code; Export mit einem Wert, der mit `=`
+beginnt.

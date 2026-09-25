@@ -64,6 +64,12 @@ Katalogpunkte anpassen, Datum oben setzen.
 | RFC8725 | [JSON Web Token Best Current Practices](https://www.rfc-editor.org/rfc/rfc8725) | Norm (IETF BCP 225) | Feb. 2020 |
 | OWASP-REDIRECT | [OWASP Unvalidated Redirects and Forwards Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html) | Leitfaden | laufend |
 | OWASP-DESER | [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-SQLI | [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-CMD | [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-XXE | [OWASP XML External Entity Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-INJ | [OWASP Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-XSS | [OWASP Cross Site Scripting Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-DOMXSS | [OWASP DOM based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |
 | OWASP-LLM-2025 | [OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/) | Leitfaden | 2025 |
 | NIST-800-190 | [NIST SP 800-190, Application Container Security Guide](https://csrc.nist.gov/pubs/sp/800/190/final) | Norm | final Sept. 2017 |
 | ISO29119 | [ISO/IEC/IEEE 29119-1:2022, Software testing — Concepts and definitions](https://standards.ieee.org/ieee/29119-1/10779/) | Norm | 2022 (Seite von IEEE SA; iso.org beim Abruf gesperrt) |

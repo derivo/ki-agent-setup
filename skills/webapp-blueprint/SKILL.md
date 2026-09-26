@@ -110,6 +110,8 @@ beantworten:
 | `ki` | KI-System interagiert mit Nutzern oder erzeugt Inhalte |
 | `ki-werkzeug` | Die App liefert Kontext oder Werkzeuge an KI-Agenten (etwa als MCP-Server), auch ohne eigenes Modell |
 | `clients` | Die App liefert Software aus, die auf Rechnern der Nutzer läuft (Plugins, Hooks, Skripte, Apps) |
+| `websocket` | Die App nutzt WebSocket-Verbindungen |
+| `graphql` | Die App bietet eine GraphQL-Schnittstelle an |
 | `mehrsprachig` | mehr als eine Sprache oder Region |
 | `öffentliche-inhalte` | Inhalte sollen über Suchmaschinen gefunden werden |
 | `newsletter` | Werbe-E-Mails |

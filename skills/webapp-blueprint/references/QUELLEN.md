@@ -64,6 +64,12 @@ Katalogpunkte anpassen, Datum oben setzen.
 | RFC8725 | [JSON Web Token Best Current Practices](https://www.rfc-editor.org/rfc/rfc8725) | Norm (IETF BCP 225) | Feb. 2020 |
 | OWASP-REDIRECT | [OWASP Unvalidated Redirects and Forwards Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html) | Leitfaden | laufend |
 | OWASP-DESER | [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-CICD | [OWASP CI CD Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-CRYPTO | [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-HTML5 | [OWASP HTML5 Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-WS | [OWASP WebSocket Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html) | Leitfaden | laufend |
+| OWASP-GRAPHQL | [OWASP GraphQL Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html) | Leitfaden | laufend |
+| CLEAR-SITE-DATA | [W3C Clear Site Data](https://www.w3.org/TR/clear-site-data/) | Norm-Entwurf (W3C Working Draft) | abgerufen 2026-09-26 |
 | OWASP-SQLI | [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |
 | OWASP-CMD | [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html) | Leitfaden | laufend |
 | OWASP-XXE | [OWASP XML External Entity Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html) | Leitfaden | laufend |

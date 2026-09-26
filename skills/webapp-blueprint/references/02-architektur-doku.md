@@ -93,3 +93,13 @@ Test, der es zeigt. Eine unbelegte Schutzbehauptung ist gefährlicher als keine,
 Betreiber und Prüfer sich darauf verlassen → ARC-11.
 Prüfen: jede solche Aussage in README, Architektur- und Betriebsdoku gegen Code
 oder Test.
+
+### ARC-15 · B · E — Frameworks und Bibliotheken werden nach festen Kriterien gewählt
+Tragende Abhängigkeiten (Framework, ORM, Frontend-Bibliothek, Auth-Komponente) werden
+nach vorab festgelegten Kriterien gewählt und als ADR festgehalten (→ ARC-09):
+Pflegezustand und Release-Zyklus mit Langzeitunterstützung, Umgang mit
+Sicherheitslücken, Lizenz (→ LAW-26), Verbreitung und vorhandenes Wissen im Team,
+Ausstiegskosten. Veraltete Abhängigkeiten sind der Normalfall, nicht die Ausnahme
+[KULA18] — die Wahl entscheidet, wie teuer Aktualisieren später wird (→ SEC-25,
+TST-30). Praxisregel für die Kriterien.
+Prüfen: ADRs der tragenden Abhängigkeiten; Support-Ende der eingesetzten Versionen.

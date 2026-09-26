@@ -1,9 +1,33 @@
-# 06 — Datenschutz & Recht (Deutschland/EU)
+# 06 — Datenschutz & Recht
 
 **Prüfpunkte, keine Rechtsberatung.** Jeder Punkt nennt Norm und Anwendungsbedingung;
 ob er im Einzelfall greift, entscheidet im Zweifel eine fachkundige Person. Rechtsstand:
 Abrufdatum im [Quellenverzeichnis](QUELLEN.md). Rechtslage ändert sich — Punkte mit
 Phase `L` gehören in einen wiederkehrenden Termin.
+
+**Rechtsraum.** Die Punkte unten setzen die Pflichtthemen für **Deutschland und die
+EU** um. Für jeden anderen Rechtsraum aus dem Profil gilt die Tabelle der
+Pflichtthemen als Prüffrage: die dort geltende Norm wird mit abgerufener Quelle
+ermittelt und je Rechtsraum eine eigene Registerzeile geführt; ohne belegte Norm
+`UNBEKANNT`. Deutsche oder EU-Normen werden nicht stellvertretend angewendet.
+
+| Pflichtthema | Prüffrage für jeden Rechtsraum | Umsetzung DE/EU |
+|---|---|---|
+| Anbieterangaben | Muss der Anbieter sich auf der Website ausweisen, und womit? | LAW-01, LAW-14 |
+| Datenschutz | Rechtsgrundlagen, Informationspflichten, Verzeichnisse, Betroffenenrechte, Dienstleister, Voreinstellungen | LAW-02 bis LAW-04, LAW-06, LAW-07, LAW-21 |
+| Einwilligung für Endgeräte und Tracking | Braucht Speichern/Auslesen im Browser eine Einwilligung? | LAW-05 |
+| Datenpannen | Wer muss wem in welcher Frist melden? | LAW-08 |
+| Barrierefreiheit | Gibt es eine gesetzliche Pflicht, für wen, mit welchem Standard? | LAW-09 |
+| Online-Verträge mit Verbrauchern | Bestellablauf, Kündigung, Widerruf, Preisangaben | LAW-10 bis LAW-13 |
+| Plattform- und Inhaltepflichten | Melde- und Beschwerdewege, Transparenz | LAW-15, LAW-18 |
+| KI-Transparenz | Kennzeichnungspflichten für KI-Interaktion und -Inhalte | LAW-16 |
+| Werbung per E-Mail | Einwilligungsmodell und Nachweis | LAW-17 |
+| Cybersicherheit der Organisation | Produkt- und Betreiberpflichten, Meldewege | LAW-19 |
+| Aufbewahrung | Welche Unterlagen sind wie lange aufzubewahren, und wie verträgt sich das mit Löschpflichten? | LAW-23 |
+| Rechnungsstellung | Ist ein elektronisches Rechnungsformat vorgeschrieben? | LAW-24 |
+| Anbieterwechsel bei Cloud-Diensten | Muss der Kunde wechseln und seine Daten mitnehmen können? | LAW-25 |
+| Lizenzen genutzter Software | gilt rechtsraumübergreifend | LAW-26 |
+| Pflege der Rechtstexte | wiederkehrend | LAW-20, LAW-22 |
 
 Alle Punkte dieses Bereichs tragen Stufe `B`: eine gesetzliche Pflicht hängt an ihrer
 Anwendungsbedingung, nicht an der gewählten Schutzstufe, und ist keiner Risikoakzeptanz
@@ -202,3 +226,45 @@ Nutzungsbedingungen, eine Liste der eingebundenen Dienstleister und Datenflüsse
 Export und Löschung für Betroffenenrechte (→ LAW-04), Hinweise für das
 Verarbeitungsverzeichnis. Grundregel „Hersteller oder Betreiber“ in SKILL.md.
 Prüfen: Konfigurationsoptionen für Rechtstexte; Betreiberdoku zu Datenflüssen.
+
+## Geschäftsunterlagen, Verträge, Lizenzen
+
+### LAW-23 · B (zahlungen) · E — Aufbewahrungspflichten und Löschpflichten sind vereinbar
+Rechnungen, Buchungsbelege und Geschäftsbriefe sind aufzubewahren — in Deutschland
+Buchungsbelege acht Jahre, Bücher und Jahresabschlüsse zehn, sonstige steuerlich
+bedeutsame Unterlagen sechs Jahre (§ 147 Abs. 3 AO) [AO-147]; handelsrechtlich
+§ 257 HGB [HGB-257]. Während der Frist müssen sie verfügbar und lesbar bleiben. Die
+Kontolöschung (DAT-10) sperrt diese Daten deshalb statt sie zu löschen, trennt sie vom
+aktiven Bestand und löscht sie nach Fristende → DAT-09; die Frist steht als eigene
+Löschregel im Verzeichnis (LAW-03).
+Prüfen: Löschweg eines Kontos mit Rechnungen; Aufbewahrungsregel je Belegart; was nach
+Fristende geschieht.
+
+### LAW-24 · B (zahlungen) · F — Rechnungen entsprechen der vorgeschriebenen Form
+In Deutschland ist für Leistungen an andere inländische Unternehmen eine elektronische
+Rechnung in einem strukturierten Format nach der europäischen Norm vorgeschrieben;
+Übergangsregeln erlauben andere Formate bis Ende 2026 bzw. Ende 2027 (§ 14 Abs. 1
+und 2, § 27 Abs. 38 UStG) [USTG-14] [USTG-27]. Stellt die App Rechnungen aus oder verarbeitet sie
+eingehende, ist das Format ein Anforderungsthema, kein Detail der Ausgabe.
+Prüfen: Rechnungsarten (an Unternehmen, an Verbraucher) und ihr Format; Stichtag der
+Umstellung in der Planung.
+
+### LAW-25 · B (saas) · E — Kunden können zu einem anderen Anbieter wechseln
+Der EU Data Act gilt seit 12.09.2025; sein Kapitel VI verpflichtet Anbieter von
+Datenverarbeitungsdiensten einschließlich SaaS, Wechsel und parallele Nutzung
+anderer Dienste zu ermöglichen: Mindestinhalte im Vertrag, offene Schnittstellen und
+Export der Daten des Kunden samt Metadaten in einem gängigen, maschinenlesbaren
+Format; Wechselentgelte einschließlich Datentransfer entfallen ab 12.01.2027
+[DATA-ACT]. Technische Grundlage → DAT-11.
+Prüfen: Export des gesamten Kundenbestands inklusive Metadaten; Vertragsklauseln zum
+Wechsel; Entgelte für Export oder Datentransfer.
+
+### LAW-26 · B · G — Lizenzen der verwendeten Software sind bekannt und erfüllt
+Für jede eingebundene Komponente ist die Lizenz bekannt; Pflichten daraus
+(Lizenztexte und Hinweise mitliefern, Quellcode bereitstellen, Weitergabe
+beschränken) werden erfüllt, bevor ausgeliefert wird. Ein Prozess dafür nach einem
+anerkannten Standard [OPENCHAIN] macht das wiederholbar; die Stückliste aus SEC-24 ist
+die Grundlage. Besonders bei `selbst-gehostet` und `clients`, weil dort Software
+weitergegeben wird.
+Prüfen: Lizenzliste aus der Stückliste; Umgang mit starkem Copyleft; Hinweisdatei im
+ausgelieferten Artefakt.

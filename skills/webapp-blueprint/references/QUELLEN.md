@@ -94,6 +94,7 @@ Katalogpunkte anpassen, Datum oben setzen.
 | SRE-POSTMORTEM | [SRE Book: Postmortem Culture](https://sre.google/sre-book/postmortem-culture/) | Buch/Bericht | 2016 |
 | SRE-PRR | [SRE Book: The Evolving SRE Engagement Model](https://sre.google/sre-book/evolving-sre-engagement-model/) | Buch/Bericht | 2016 |
 | SRE-SLO | [SRE Workbook: Implementing SLOs](https://sre.google/workbook/implementing-slos/) | Buch/Bericht | 2018 |
+| SRE-SLA | [SRE Book: Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) — Abgrenzung SLI/SLO/SLA | Buch/Bericht | 2016 |
 | SRE-ALERT | [SRE Workbook: Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/) | Buch/Bericht | 2018 |
 | SRE-CANARY | [SRE Workbook: Canarying Releases](https://sre.google/workbook/canarying-releases/) | Buch/Bericht | 2018 |
 | RED | [The RED Method](https://grafana.com/blog/the-red-method-how-to-instrument-your-services/) | Leitfaden | Blog |
@@ -156,6 +157,12 @@ Katalogpunkte anpassen, Datum oben setzen.
 | NIS2-BSI | [BSI: NIS-2-Umsetzungsgesetz in Kraft](https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2025/251205_NIS-2-Umsetzungsgesetz_in_Kraft.html) | Behördeninformation | 06.12.2025 |
 | BSIG-28 | [§ 28 BSIG](https://www.gesetze-im-internet.de/bsig_2025/__28.html) | Gesetz | abgerufen 2026-09-25; Schwellenwerte vor Anwendung am Text prüfen |
 | BSIG-32 | [§ 32 BSIG](https://www.gesetze-im-internet.de/bsig_2025/__32.html) — Meldepflichten, Erstmeldung binnen 24 Stunden | Gesetz | abgerufen 2026-09-25 |
+| AO-147 | [§ 147 AO](https://www.gesetze-im-internet.de/ao_1977/__147.html) — Aufbewahrung von Unterlagen | Gesetz | abgerufen 2026-09-26 |
+| HGB-257 | [§ 257 HGB](https://www.gesetze-im-internet.de/hgb/__257.html) — Aufbewahrung von Unterlagen | Gesetz | abgerufen 2026-09-26 |
+| USTG-14 | [§ 14 UStG](https://www.gesetze-im-internet.de/ustg_1980/__14.html) — Ausstellung von Rechnungen, E-Rechnung | Gesetz | abgerufen 2026-09-26 |
+| USTG-27 | [§ 27 UStG](https://www.gesetze-im-internet.de/ustg_1980/__27.html), Abs. 38 — Übergangsregeln E-Rechnung | Gesetz | abgerufen 2026-09-26 |
+| DATA-ACT | [EU-Kommission: Data Act explained](https://digital-strategy.ec.europa.eu/en/factpages/data-act-explained) | Behördeninformation | gilt seit 12.09.2025; Wechselentgelte entfallen ab 12.01.2027 |
+| OPENCHAIN | [OpenChain ISO/IEC 5230 — License Compliance](https://openchainproject.org/license-compliance) | Norm (ISO/IEC 5230) | abgerufen 2026-09-26 |
 
 ### UX, Barrierefreiheit, i18n
 
@@ -269,6 +276,8 @@ Katalogpunkte anpassen, Datum oben setzen.
 | INOZEMTSEVA14 | Inozemtseva, Holmes: Coverage is not strongly correlated with test suite effectiveness, ICSE 2014, [doi:10.1145/2568225.2568271](https://doi.org/10.1145/2568225.2568271) | empirisch | Bei kontrollierter Suite-Größe nur schwache bis mäßige Korrelation |
 | JUST14 | Just et al.: Are mutants a valid substitute for real faults?, FSE 2014, [doi:10.1145/2635868.2635929](https://doi.org/10.1145/2635868.2635929) | empirisch (357 reale Fehler) | Mutantenerkennung korreliert mit Erkennung realer Fehler |
 | PETROVIC21 | Petrović et al.: Does Mutation Testing Improve Testing Practices?, ICSE 2021, [doi:10.1109/icse43902.2021.00087](https://doi.org/10.1109/icse43902.2021.00087) | empirisch (Google) | Entwickler schreiben mit Mutationstests mehr und bessere Tests |
+| BACCHELLI13 | Bacchelli, Bird: Expectations, outcomes, and challenges of modern code review, ICSE 2013, [doi:10.1109/ICSE.2013.6606617](https://doi.org/10.1109/ICSE.2013.6606617) | empirisch (Microsoft) | Fehlerfinden ist Hauptmotiv, Reviews liefern aber vor allem Wissenstransfer und Verständnis |
+| SADOWSKI-CR18 | Sadowski et al.: Modern code review: a case study at Google, ICSE-SEIP 2018, [doi:10.1145/3183519.3183525](https://doi.org/10.1145/3183519.3183525) | empirisch (9 Mio. Reviews) | Motive, Praxis und Zufriedenheit mit Reviews bei Google |
 | ELDER22 | Elder et al.: Do I really need all this work to find vulnerabilities?, *EMSE* 2022, [doi:10.1007/s10664-022-10179-6](https://doi.org/10.1007/s10664-022-10179-6) | empirisch (Vergleich 4 Verfahren) | SAST fand die meisten, exploratives Pentesting die schwersten Lücken; jedes Verfahren fand eigene |
 | BAU10 | Bau et al.: State of the Art: Automated Black-Box Web Application Vulnerability Testing, IEEE S&P 2010, [doi:10.1109/sp.2010.27](https://doi.org/10.1109/sp.2010.27) | empirisch (8 Scanner) | Gespeichertes XSS und SQLi von vielen Scannern nicht gefunden |
 | DOUPE10 | Doupé, Cova, Vigna: Why Johnny Can’t Pentest, DIMVA 2010, [doi:10.1007/978-3-642-14215-4_7](https://doi.org/10.1007/978-3-642-14215-4_7) | empirisch (11 Scanner) | Crawling so kritisch wie Erkennung; ganze Lückenklassen übersehen |

@@ -77,3 +77,12 @@ Jede Einstellung und Umgebungsvariable hat Zweck, Default und Eigentümer und wi
 Code tatsächlich gelesen und durchgesetzt. Eine Option ohne Wirkung täuscht Betreiber:
 sie glauben an ein Limit oder einen Schalter, den es nicht gibt → ARC-14.
 Prüfen: Liste der Einstellungen gegen ihre Lesestellen im Code; je Limit ein Test.
+
+### DEL-13 · B · F — Code-Reviews folgen Regeln
+Jede Änderung wird vor dem Merge von einer zweiten Person bzw. einem zweiten Agenten
+gelesen; festgelegt ist, was das Review prüft (Korrektheit, Tests, Sicherheit,
+Verständlichkeit) und was das Gate schon abdeckt. Reviews sind klein und schnell. Sie
+finden Fehler, wirken aber vor allem über Wissenstransfer und gemeinsames Verständnis
+[BACCHELLI13]. Leichtgewichtige, werkzeuggestützte Reviews sind in Open Source und
+Industrie die Norm [SADOWSKI-CR18].
+Prüfen: Review-Regeln; Größe und Durchlaufzeit der letzten PRs; PRs ohne Review.

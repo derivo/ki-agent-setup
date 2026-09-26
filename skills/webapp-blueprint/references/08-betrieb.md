@@ -156,3 +156,31 @@ Warnung, Drosselung oder bewusste Freigabe. Telemetrie mit hoher Kardinalität u
 lange Aufbewahrung sind häufige stille Kostentreiber → OBS-03.
 Prüfen: Kostenaufstellung der letzten Periode je Posten; Budgetalarm vorhanden; wer
 entscheidet bei Überschreitung?
+
+### OPS-23 · Ö · G — Skalierung ist geplant, nicht erhofft
+Die App skaliert horizontal über zustandslose Prozesse (→ OPS-08) [12F VIII];
+Verbindungs-Pools und Datenbankgrenzen sind auf die Zahl der Instanzen abgestimmt;
+wo nötig entlasten Lese-Replikate und Caches (→ OPS-17). Aus Bruchpunkt (OPS-16) und
+Wachstum ergibt sich eine Kapazitätsplanung mit Vorlauf [AWS-REL].
+Prüfen: Rechnung Instanzen × Pool-Größe gegen die Verbindungsgrenze der Datenbank;
+Kapazitätsplan mit Datum.
+
+### OPS-24 · B · E — Hosting-Standorte und Datenflüsse sind bekannt
+Für Anwendung, Datenbank, Backups, Objektspeicher, Logs und jeden Dienstleister ist
+dokumentiert, in welchem Land bzw. welcher Region die Daten liegen und wohin sie
+fließen. Das ist die Grundlage für die Rechtsräume im Profil und für Übermittlungen in
+Drittländer (→ LAW-06, LAW-21).
+Prüfen: Datenfluss-Übersicht mit Standorten gegen die tatsächliche Konfiguration.
+
+### OPS-25 · Ö · G — Nutzer werden bei Störungen und Wartung informiert
+Eine Statusseite, die nicht von der eigenen Infrastruktur abhängt; im Vorfall eine
+benannte Rolle, die regelmäßig nach innen und außen informiert [SRE-INCIDENT];
+geplante Wartung wird mit Vorlauf angekündigt.
+Prüfen: Statusseite bei Ausfall der App erreichbar? Kommunikation im letzten Vorfall.
+
+### OPS-26 · Ö · E — Zugesagte Verfügbarkeit ist aus den SLOs abgeleitet
+Wo Kunden Verfügbarkeit oder Reaktionszeiten vertraglich zugesagt sind (SLA), liegen
+die internen Ziele (OBS-15) strenger, die Messung ist objektiv und für beide Seiten
+nachvollziehbar, und die Folgen eines Verfehlens sind festgelegt [SRE-SLA]. Ohne
+Zusagen `n. a.`
+Prüfen: SLA gegen SLO; Messweg; Bericht der letzten Periode.

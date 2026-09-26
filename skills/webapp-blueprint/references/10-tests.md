@@ -163,3 +163,37 @@ genügt: statische Analyse, Scanner und manuelle Prüfung finden jeweils anderes
 [ELDER22], Scanner verfehlen gespeichertes XSS oft [BAU10] → SEC-14, SEC-48, SEC-33.
 Prüfen: Liste der Ein- und Ausgabestellen gegen die Tests; Testfall für gespeichertes
 XSS vorhanden?
+
+### TST-22 · Ö · G — Die Kern-Nutzerwege laufen als End-to-End-Tests
+Die wenigen Abläufe, ohne die die App wertlos ist — Registrierung, Anmeldung,
+Kernablauf, Bezahlen, Konto löschen —, laufen als End-to-End-Tests im echten Browser
+gegen eine produktionsnahe Umgebung. Wenige und stabil statt viele und brüchig
+(→ TST-05); Details gehören auf die unteren Ebenen (→ TST-01). Praxisregel ohne
+eigenen Studienbeleg.
+Prüfen: Liste der Kern-Nutzerwege aus 01 gegen die End-to-End-Tests.
+
+### TST-23 · Ö · G — Nach jedem Deploy wird geprüft, ob die App lebt
+Direkt nach dem Deploy läuft ein kurzer Smoke-Test gegen die Zielumgebung
+(Startseite, Anmeldung, ein Kernablauf, Health-Endpunkte); scheitert er, greift der
+Rollback (→ DEL-04, DEL-05). Im Betrieb prüfen synthetische Abläufe die Kernwege in
+festen Abständen von außen und alarmieren (→ OBS-16). Praxisregel ohne eigenen
+Studienbeleg.
+Prüfen: Smoke-Schritt in der Deploy-Pipeline; synthetische Prüfungen und ihr letzter
+Alarm.
+
+### TST-24 · Ö · G — Die unterstützten Browser und Geräte sind festgelegt und geprüft
+Eine schriftliche Matrix (Browser, Versionen, Bildschirmgrößen, Eingabearten) folgt
+aus der tatsächlichen Nutzung; die Kern-Nutzerwege werden auf dieser Matrix
+geprüft, automatisiert oder manuell. Wo das Aussehen zählt, ergänzen
+Bildvergleiche der Kernseiten die funktionalen Tests. Praxisregel ohne eigenen
+Studienbeleg.
+Prüfen: Matrix vorhanden und begründet; letzter Lauf auf der Matrix.
+
+### TST-25 · B · F — Zeitabhängige Logik wird mit steuerbarer Uhr getestet
+Code, der mit Zeit rechnet (Fristen, Abos, Ablaufdaten, Berichte, Erinnerungen),
+nimmt die Zeit aus einer austauschbaren Quelle; Tests prüfen gezielt Zeitzonen,
+Sommerzeitwechsel, Monats- und Jahresende und Schaltjahr (→ DAT-06). Tests, die
+von der echten Uhrzeit abhängen, sind instabil (→ TST-05).
+Praxisregel ohne eigenen Studienbeleg.
+Prüfen: direkte Aufrufe der Systemzeit in Fachlogik; Tests zu Sommerzeit und
+Monatsende.

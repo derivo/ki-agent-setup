@@ -414,3 +414,85 @@ als ASVS L3); CSV- und Tabellen-Exporte gegen Formel-Injection geschützt [V1.2.
 (strenger als ASVS L3) [OWASP-INJ]. Was davon nicht vorkommt, ist `n. a.`
 Prüfen: Enumeration dieser Interpreter im Code; Export mit einem Wert, der mit `=`
 beginnt.
+
+## Ergänzende Schutzbereiche
+
+### SEC-50 · Ö · F — Sensible Kontoänderungen verlangen eine erneute Anmeldung
+Vor der Änderung von E-Mail-Adresse, Telefonnummer, Passwort oder zweitem Faktor ist
+eine vollständige erneute Anmeldung nötig [ASVS5 V7.5.1]; Nutzer sehen ihre aktiven
+Sitzungen und können sie beenden [V7.5.2]; bei K verlangen auch besonders
+folgenreiche Aktionen (Auszahlung, Konto löschen, Rechte vergeben) einen weiteren
+Faktor [V7.5.3] → SEC-07, SEC-31.
+Prüfen: mit einer alten, aber gültigen Sitzung die E-Mail-Adresse ändern — wird die
+Anmeldung verlangt? Sitzungsübersicht vorhanden?
+
+### SEC-51 · B · G — Es gibt keine ungewollten Informationslecks
+Keine Versionsverwaltungsdaten (`.git`) im ausgelieferten Stand [ASVS5 V13.4.1];
+Debug-Modi in Produktion aus, kein Verzeichnislisting, kein `TRACE`, interne
+API-Doku und Monitoring-Endpunkte nicht öffentlich [V13.4.2–V13.4.5] (strenger als
+ASVS L2); keine `.env`-, Backup- oder Konfigurationsdateien im Webroot; Source Maps
+nur, wenn bewusst gewollt. Bei K keine detaillierten Versionsangaben und nur erlaubte
+Dateiendungen [V13.4.6, V13.4.7] → OBS-05, API-09.
+Prüfen: `/.git/HEAD`, `/.env`, typische Backup-Namen, ein Verzeichnis ohne Index, eine
+provozierte Fehlerseite, `TRACE`-Request — in Produktion passiv als Abruf, in
+freigegebener Testumgebung vollständig.
+
+### SEC-52 · Ö · F — Im Browser bleiben keine sensiblen Daten zurück
+Nach Abmeldung werden Daten im Browser gelöscht [ASVS5 V14.3.1], unterstützt etwa
+durch `Clear-Site-Data` [CLEAR-SITE-DATA] (W3C-Entwurf); sensible Antworten mit
+`Cache-Control: no-store` [V14.3.2]; `localStorage`, `sessionStorage` und IndexedDB
+enthalten außer Sitzungstokens keine sensiblen Daten [V14.3.3] [OWASP-HTML5]; Felder
+für Einmalcodes und Zahlungsdaten ohne Autovervollständigung.
+Prüfen: nach Abmeldung Browser-Speicher und Zurück-Taste prüfen; Header sensibler
+Seiten; Inhalt des Browser-Speichers während einer Sitzung.
+
+### SEC-53 · Ö · E — Sensible Daten haben Schutzvorgaben je Klasse
+Auf der Kennzeichnung aus DAT-12 aufbauend hat jede Schutzklasse festgelegte
+Vorgaben — Verschlüsselung im Ruhezustand (Datenbank, Backups, Objektspeicher),
+Integrität, Aufbewahrung, Protokollierung, Zugriff [ASVS5 V14.1.1, V14.1.2, V14.2.4]
+[OWASP-CRYPTO]. Sensible Daten stehen nicht in URLs [V14.2.1], gehen nicht an
+Tracker oder andere Dritte ohne Zweck [V14.2.3] und liegen nicht ungeschützt in
+Zwischenspeichern [V14.2.2]. Bei K werden nur die nötigen Teile ausgegeben (etwa
+maskierte Kontonummern) und Metadaten aus hochgeladenen Dateien entfernt
+[V14.2.6, V14.2.8] → LAW-07.
+Prüfen: Schutzvorgaben je Klasse; Verschlüsselung von Datenbank und Backups belegt;
+URLs in Zugriffslogs auf Tokens und Kennungen durchsuchen.
+
+### SEC-54 · B · F — Kryptografie nur mit etablierten Verfahren und sicherem Zufall
+Keine eigenen Verfahren: geprüfte Bibliotheken [ASVS5 V11.2.1], zugelassene
+Algorithmen und Modi mit Authentifizierung (etwa AES-GCM), kein ECB [V11.3.1–V11.3.3],
+keine schwachen Hashfunktionen wie MD5 für Sicherheitszwecke [V11.4.1]. Alles, was
+nicht erratbar sein soll — Tokens, Reset-Links, Einladungscodes, IDs in Links —,
+stammt aus einem kryptografisch sicheren Zufallsgenerator mit mindestens 128 Bit
+Entropie [V11.5.1]. Algorithmen sind austauschbar, ohne die Daten neu aufbauen zu
+müssen [V11.2.2] [OWASP-CRYPTO]. V11.2.1, V11.3.3, V11.5.1, V11.2.2: strenger als
+ASVS L2. Passwort-Hashes → SEC-03; Schlüssel → SEC-22.
+Prüfen: Fundstellen von Zufallserzeugung, Hash- und Verschlüsselungsaufrufen; je
+Fundstelle Verfahren und Zweck.
+
+### SEC-55 · Ö · F — Die Build- und Deploy-Pipeline ist selbst abgesichert
+Wer die Pipeline kontrolliert, kontrolliert die Produktion. Deshalb: Änderungen am
+Hauptzweig nur über Review und Pflicht-Checks (→ DEL-01); die Identität der Pipeline
+hat nur die Rechte ihres Jobs; Geheimnisse stehen nur geschützten Jobs zur Verfügung,
+nicht Läufen aus fremden Forks; eingebundene Aktionen, Plugins und Basis-Images sind
+auf feste Versionen gepinnt; Pipeline-Konfiguration ist versioniert und ihre
+Änderungen werden reviewt; Ausführungen sind protokolliert [OWASP-CICD] → SEC-24,
+SEC-26, SEC-21.
+Prüfen: Rechte der Pipeline-Identität; Verhalten bei einem PR aus einem Fork;
+ungepinnte Referenzen in der Pipeline-Konfiguration.
+
+### SEC-56 · Ö (websocket) · F — WebSocket-Verbindungen sind abgesichert
+Nur verschlüsselt (WSS) [ASVS5 V4.4.1]; `Origin` beim Handshake gegen eine Allowlist
+geprüft [V4.4.2]; Anmeldung über die bestehende Sitzung oder eigene Tokens nach den
+Regeln für Sitzungen [V4.4.3, V4.4.4]; Autorisierung je Nachricht, nicht nur beim
+Verbindungsaufbau (→ SEC-10); Größe und Rate der Nachrichten begrenzt [OWASP-WS].
+Prüfen: Handshake mit fremder `Origin`; Nachricht an einen Kanal, für den das Konto
+keine Rechte hat.
+
+### SEC-57 · Ö (graphql) · F — GraphQL ist gegen teure Abfragen und Datenabfluss geschützt
+Tiefen-, Mengen- oder Kostenbegrenzung bzw. Allowlist erlaubter Abfragen
+[ASVS5 V4.3.1]; Introspection in Produktion aus, außer die Schnittstelle ist für
+Dritte bestimmt [V4.3.2]; Autorisierung je Resolver und Feld (→ SEC-10); gebündelte
+Abfragen zählen gegen Rate-Limits (→ API-17) [OWASP-GRAPHQL].
+Prüfen: tief verschachtelte Abfrage und Introspection gegen die Testumgebung;
+Resolver ohne Autorisierungsprüfung.

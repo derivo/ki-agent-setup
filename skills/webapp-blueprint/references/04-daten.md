@@ -54,7 +54,7 @@ und Eindeutigkeitsprüfung; Sortierung sprachabhängig, wo Nutzer sortierte List
 [W3C-ENC] [UAX15] [UTS10] → I18N.
 Prüfen: Zeichensatz und Collation der Datenbank und der Verbindung.
 
-### DAT-09 · Ö · E — Jede Datenkategorie hat Zweck, Frist und Löschweg
+### DAT-09 · B · E — Jede Datenkategorie hat Zweck, Frist und Löschweg
 Löschkonzept je Kategorie (Konto, Bestellung, Log, Upload, Sicherung): Aufbewahrungsfrist,
 Rechtsgrundlage, technischer Löschjob. „Weich gelöscht“ ist nicht gelöscht; Fristen gelten
 auch in Logs und Sicherungen (dort mit dokumentiertem Auslaufen) [EU: DSGVO Art. 5,

@@ -197,3 +197,54 @@ von der echten Uhrzeit abhängen, sind instabil (→ TST-05).
 Praxisregel ohne eigenen Studienbeleg.
 Prüfen: direkte Aufrufe der Systemzeit in Fachlogik; Tests zu Sommerzeit und
 Monatsende.
+
+### TST-26 · Ö · F — Mails und Benachrichtigungen sind getestet
+Jede Nachricht, die die App verschickt (Bestätigung, Reset, Rechnung, Hinweis), hat
+einen Test auf Empfänger, Betreff, Sprache, Pflichtinhalte und funktionierende Links;
+Werbemails zusätzlich auf Abmelde-Header (→ MKT-12). In Test- und Stagingumgebungen
+werden Mails abgefangen statt zugestellt, damit keine echten Empfänger sie erhalten.
+Praxisregel ohne eigenen Studienbeleg.
+Prüfen: Liste der Nachrichtenarten gegen Tests; Mail-Konfiguration der Testumgebungen.
+
+### TST-27 · Ö · F — Performance-Regressionen fallen im Gate auf
+Für die Kern-Endpunkte werden Antwortzeit und Anzahl der Datenbankabfragen je Request
+gemessen und gegen einen Schwellwert geprüft; eine neue N+1-Abfrage macht den Lauf
+rot, nicht erst die Produktion (→ DAT-14). Ergänzt das Leistungsbudget der Seiten
+(UX-11). Praxisregel ohne eigenen Studienbeleg.
+Prüfen: Schwellwerte je Kern-Endpunkt; ein Lauf, der an einer Regression scheiterte.
+
+### TST-28 · Ö · G — Dauerlast ist getestet
+Ein Lasttest über Stunden mit realistischem Profil zeigt, was kurze Tests nicht zeigen:
+wachsender Speicher, erschöpfte Verbindungen, volllaufende Platten und Queues. Er wird
+wie jeder Lasttest in Entwurf, Ausführung und Auswertung geplant [JIANG15]; Spitzenlast
+und Bruchpunkt → OPS-16.
+Prüfen: letzter Dauertest mit Dauer, Profil und Verlauf von Speicher und Verbindungen.
+
+### TST-29 · Ö · F — Hintergrundjobs halten Wiederholung, Doppelung und Abbruch aus
+Jobs und Queue-Konsumenten werden getestet mit doppelter Zustellung, Wiederholung nach
+Fehler, vertauschter Reihenfolge und Abbruch mitten in der Verarbeitung; erwartet wird
+dasselbe Ergebnis wie bei einmaliger, geordneter Ausführung (→ API-15, DAT-15, OPS-02).
+Praxisregel ohne eigenen Studienbeleg.
+Prüfen: Liste der Jobs gegen Tests für diese vier Fälle.
+
+### TST-30 · B · L — Updates von Abhängigkeiten laufen durch die volle Suite
+Jede Aktualisierung — auch automatisch vorgeschlagene — läuft durch das volle Gate;
+Major-Versionen bekommen zusätzlich einen Blick in die Änderungshinweise und einen
+Lauf der End-to-End-Tests (→ TST-22). Ohne diese Sicherheit bleiben Updates liegen: die
+meisten Projekte behalten veraltete Abhängigkeiten [KULA18] → SEC-25.
+Prüfen: letzte Update-PRs mit Gate-Ergebnis; Alter der ältesten Abhängigkeit.
+
+### TST-31 · Ö · G — Das Frontend verhält sich bei schlechtem Netz und Mehrfachklick richtig
+Getestet werden langsame und abbrechende Verbindungen, doppeltes Absenden, Doppelklick
+auf Aktionen und Zurück-Taste mitten im Ablauf: keine doppelten Bestellungen, keine
+verlorenen Eingaben, verständliche Meldung statt Endlos-Spinner (→ API-15).
+Praxisregel ohne eigenen Studienbeleg.
+Prüfen: Test mit gedrosseltem Netz und mit doppeltem Absenden der Kernformulare.
+
+### TST-32 · B · F — Die Einwilligung wird automatisiert getestet
+Die vier Durchläufe aus LAW-05 — Erstaufruf, Ablehnen, selektive Zustimmung, Widerruf —
+laufen als automatisierte Browser-Tests bei jedem Release und prüfen Netzwerkanfragen
+und alle Speicherarten. Ein neues Skript oder ein neuer Dienstleister darf die
+Einwilligung nicht unbemerkt umgehen (→ SEC-37). Praxisregel ohne eigenen
+Studienbeleg.
+Prüfen: Tests für die vier Durchläufe; Liste erwarteter Anfragen vor der Einwilligung.

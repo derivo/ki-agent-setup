@@ -57,8 +57,8 @@ Prüfen: Zeichensatz und Collation der Datenbank und der Verbindung.
 ### DAT-09 · Ö · E — Jede Datenkategorie hat Zweck, Frist und Löschweg
 Löschkonzept je Kategorie (Konto, Bestellung, Log, Upload, Sicherung): Aufbewahrungsfrist,
 Rechtsgrundlage, technischer Löschjob. „Weich gelöscht“ ist nicht gelöscht; Fristen gelten
-auch in Logs und Sicherungen (dort mit dokumentiertem Auslaufen) [DSGVO Art. 5, 17, 30]
-→ LAW-03.
+auch in Logs und Sicherungen (dort mit dokumentiertem Auslaufen) [EU: DSGVO Art. 5,
+17, 30] → LAW-03; gesetzliche Aufbewahrungsfristen → LAW-23.
 Prüfen: Löschjobs gegen das Konzept; Soft-Delete ohne endgültige Löschung.
 
 ### DAT-10 · B · F — Konten lassen sich vollständig löschen, geteilte Beiträge anonymisieren
@@ -67,7 +67,7 @@ gehören oder geteilt sind, werden anonymisiert statt gelöscht, wo das fachlich
 Prüfen: Konto löschen und Datenbank nach Resten durchsuchen.
 
 ### DAT-11 · B · F — Nutzer bekommen ihre Daten maschinenlesbar heraus
-Export in einem gängigen, strukturierten Format [DSGVO Art. 15 Abs. 3, Art. 20] → LAW-04.
+Export in einem gängigen, strukturierten Format [EU: DSGVO Art. 15 Abs. 3, Art. 20] → LAW-04, LAW-25.
 Prüfen: Export auslösen und Vollständigkeit gegen das Datenmodell prüfen.
 
 ### DAT-12 · Ö · E — Personenbezogene und sensible Daten sind markiert

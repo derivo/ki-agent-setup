@@ -1,6 +1,6 @@
 ---
 name: webapp-blueprint
-description: 'Blueprint einer State-of-the-Art-Web-App als Prüfkatalog und Bauplan: Anforderungen, Architektur & Doku (arc42/ADR), API-Design & -Versionierung, Daten, Sicherheit (ASVS 5.0), Datenschutz & Recht (DSGVO, TDDDG, DDG, BFSG, BGB-Buttons, DSA, AI Act, CRA/NIS2), Observability (Metriken, Logs, Traces, Health-Endpunkte, SLOs), Betrieb & Resilienz, Delivery, Tests, UX & Barrierefreiheit, i18n, SEO & Marketing. Use when the user wants an existing web app checked for gaps against current best practice, or wants a new web app planned from scratch — e.g. "prüf unsere App gegen den Blueprint", "was fehlt uns zum State of the Art", "sind wir production-ready", "plan eine neue Web-App", "welche Endpunkte/Metriken/Monitoring brauchen wir", "wie versionieren wir die API", "welche Pflichten haben wir rechtlich". Beschreibt Vorgehen, nicht Tools; stack-neutral mit PHP als Beispiel. Default ist ein Read-only-Audit mit belegter Lückenliste; im Neubau-Modus entsteht ein Plan, Artefakte erst nach Freigabe.'
+description: 'Blueprint einer State-of-the-Art-Web-App als Prüfkatalog und Bauplan: Anforderungen, Architektur & Doku (arc42/ADR), API-Design & -Versionierung, Daten, Sicherheit (ASVS 5.0), Datenschutz & Recht (Pflichtthemen je Rechtsraum, ausgearbeitet für DE/EU), Observability (Metriken, Logs, Traces, Health-Endpunkte, SLOs), Betrieb & Resilienz, Delivery, Tests, UX & Barrierefreiheit, i18n, SEO & Marketing. Use when the user wants an existing web app checked for gaps against current best practice, or wants a new web app planned from scratch — e.g. "prüf unsere App gegen den Blueprint", "was fehlt uns zum State of the Art", "sind wir production-ready", "plan eine neue Web-App", "welche Endpunkte/Metriken/Monitoring brauchen wir", "wie versionieren wir die API", "welche Pflichten haben wir rechtlich". Beschreibt Vorgehen, nicht Tools; stack-neutral mit PHP als Beispiel. Default ist ein Read-only-Audit mit belegter Lückenliste; im Neubau-Modus entsteht ein Plan, Artefakte erst nach Freigabe.'
 ---
 
 # webapp-blueprint
@@ -58,6 +58,13 @@ der Katalog behauptet keine Wirkung, die niemand gemessen hat.
 - **Recht ist Prüfpunkt, keine Beratung.** Rechtliche Punkte nennen Norm und
   Anwendungsbedingung; ob sie greifen, entscheidet im Zweifel eine fachkundige Person.
   Stand der Rechtslage: siehe Datum im Quellenverzeichnis.
+- **Recht hängt am Rechtsraum.** Welche Normen gelten, bestimmen die Rechtsräume im
+  Profil (Abschnitt 1). Bereich 06 gliedert das Recht in **Pflichtthemen**, die in
+  vielen Rechtsordnungen wiederkehren, und setzt sie für Deutschland/EU konkret um.
+  Für jeden anderen Rechtsraum bleibt das Pflichtthema die Prüffrage; die dort
+  geltende Norm wird mit abgerufener Quelle ermittelt. Ist sie nicht belegbar, lautet
+  der Status `UNBEKANNT` („Rechtslage <Land> zu <Thema>“) — deutsche oder EU-Normen
+  werden nie stellvertretend angewendet, Normen werden nie aus dem Gedächtnis ergänzt.
 - **Recht hängt nicht an der Stufe.** Ob ein gesetzlicher Punkt gilt, entscheidet allein
   seine Anwendungsbedingung. Deshalb tragen alle Punkte in Bereich 06 und die
   gesetzlich begründeten Barrierefreiheitspunkte Stufe `B`. Eine gesetzliche Pflicht kann
@@ -84,7 +91,7 @@ geprüft oder ein Shop gegen Prototyp-Maßstäbe.
 |---|---|---|
 | **B — Basis** | intern, wenige bekannte Nutzer, keine sensiblen Daten, Ausfall ärgerlich statt teuer | ASVS 5.0 L1 |
 | **Ö — Öffentlich** (Default) | aus dem Internet erreichbar, Registrierung oder personenbezogene Daten, Verbraucher als Nutzer | ASVS 5.0 L2 |
-| **K — Kritisch** | Zahlungen, besondere Datenkategorien (Art. 9 DSGVO), vertragliche Verfügbarkeitszusagen, hoher Schaden bei Ausfall/Leck | ASVS 5.0 L3 in den betroffenen Kapiteln |
+| **K — Kritisch** | Zahlungen, besondere Datenkategorien (etwa Gesundheit; EU: Art. 9 DSGVO), vertragliche Verfügbarkeitszusagen, hoher Schaden bei Ausfall/Leck | ASVS 5.0 L3 in den betroffenen Kapiteln |
 
 Die Stufen sind kumulativ: Ö enthält alles aus B, K alles aus Ö. Die Einstufung wird
 mit Begründung notiert (arc42 Kap. 1/10 oder ADR). Eingestuft wird das Produkt im
@@ -95,18 +102,25 @@ bestimmte Instanz nennt.
 als Annahme mit Begründung je Festlegung in den Kopf schreiben (`bestaetigt: false`)
 und fortfahren. Der Bericht nennt, welche Punkte sich bei anderem Profil ändern.
 
+**Rechtsräume** (bestimmen, welche Normen gelten): Sitz des Anbieters und jedes Land
+oder jeder Wirtschaftsraum, dessen Nutzer die App gezielt anspricht — etwa über
+Sprache, Währung, Lieferland oder Werbung. Mehrere Rechtsräume gelten nebeneinander;
+wer in die EU verkauft, unterliegt EU-Recht auch mit Sitz außerhalb. Ohne Angabe ist
+der Rechtsraum `UNBEKANNT`, und die rechtlichen Punkte werden nicht bewertet.
+
 **Bedingungen** (schalten Punkte zu, unabhängig von der Stufe) — jede mit ja/nein
-beantworten:
+beantworten; sie beschreiben Sachverhalte, nicht Normen:
 
 | Kürzel | Bedingung |
 |---|---|
 | `api-extern` | Die API hat Konsumenten außerhalb des eigenen Deploy-Zyklus (Kunden, Partner, mobile Apps) |
-| `verbraucher` | Entgeltliche Verträge mit Verbrauchern werden im elektronischen Geschäftsverkehr geschlossen (Fernabsatz) |
-| `abo` | Entgeltliche Dauerschuldverhältnisse (Abos) über die Website abschließbar |
+| `verbraucher` | Privatpersonen schließen über die App entgeltliche Verträge (Fernabsatz) |
+| `abo` | Entgeltliche Verträge mit Laufzeit (Abos) sind über die App abschließbar |
 | `zahlungen` | Die App wickelt Zahlungen ab oder bindet einen Zahlungsdienst ein |
 | `uploads` | Nutzer laden Dateien hoch — auch nur für sich selbst |
-| `nutzerinhalte` | Die App speichert Inhalte im Auftrag von Nutzern (Hosting im Sinne des DSA) |
-| `plattform` | … und macht sie auf Wunsch der Nutzer öffentlich zugänglich (Online-Plattform im Sinne des DSA) |
+| `nutzerinhalte` | Die App speichert Inhalte im Auftrag von Nutzern (in der EU: Hosting im Sinne des DSA) |
+| `plattform` | … und macht sie auf Wunsch der Nutzer öffentlich zugänglich (in der EU: Online-Plattform im Sinne des DSA) |
+| `saas` | Kunden nutzen die App als gehosteten Dienst mit eigenem Datenbestand |
 | `ki` | KI-System interagiert mit Nutzern oder erzeugt Inhalte |
 | `ki-werkzeug` | Die App liefert Kontext oder Werkzeuge an KI-Agenten (etwa als MCP-Server), auch ohne eigenes Modell |
 | `clients` | Die App liefert Software aus, die auf Rechnern der Nutzer läuft (Plugins, Hooks, Skripte, Apps) |

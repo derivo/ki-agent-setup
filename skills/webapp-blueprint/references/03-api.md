@@ -178,7 +178,8 @@ Prüfen: Request mit falschem `Content-Type`.
 
 ### API-22 · B · F — Tokens nie in URLs
 Keine Tokens oder API-Schlüssel in Query-Strings — sie landen in Logs, Referrern und
-Browser-Verlauf [RFC9700] [ASVS5 V14.2.1].
+Browser-Verlauf [RFC9700] [ASVS5 V14.2.1]. API-Sicht auf SEC-53; im Register mit
+`siehe`.
 Prüfen: Routen und Clients auf `token=`, `key=`, `api_key=`; Access-Logs.
 
 ### API-23 · Ö · E — Zugriffstokens sind kurzlebig, gebunden und widerrufbar
@@ -186,6 +187,7 @@ Authorization-Code-Flow mit PKCE, kein Implicit- und kein Passwort-Grant; exakte
 Vergleich der Redirect-URIs; kurzlebige Access-Tokens mit Zielgruppe; Refresh-Tokens
 öffentlicher Clients rotiert oder gebunden [RFC9700]. Statische Dauerschlüssel nur
 für Maschinenkonten, mit Scope und Ablauf.
+Die Prüfung der Tokens selbst (Signatur, Zielgruppe, `nonce`) → SEC-38.
 Prüfen: Token-Lebensdauer in der Konfiguration; Widerruf eines Tokens und sofortiger
 Folge-Request.
 
@@ -193,7 +195,8 @@ Folge-Request.
 „Eingeloggt“ reicht nicht; die Prüfung erfolgt serverseitig je Objekt → Punkt SEC-10.
 Prüfen: siehe SEC-10.
 
-### API-25 · Ö · F — CORS ist eine explizite Allowlist
-Keine Wildcard mit Credentials, kein ungeprüftes Zurückspiegeln des `Origin`; wer
-kein Cross-Origin braucht, sendet keine CORS-Header [OWASP-REST].
-Prüfen: Preflight mit fremdem Origin; Antwort-Header.
+### API-25 · Ö · F — Wer kein Cross-Origin braucht, sendet keine CORS-Header
+Die Regeln für erlaubte Origins stehen in SEC-35; hier nur die API-Entscheidung:
+Endpunkte ohne Browser-Konsumenten fremder Origins senden gar keine CORS-Header
+[OWASP-REST]. Im Register mit `siehe: ["SEC-35"]`.
+Prüfen: welche Endpunkte CORS-Header senden, und wer sie braucht.

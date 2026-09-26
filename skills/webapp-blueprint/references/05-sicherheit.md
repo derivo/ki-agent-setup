@@ -496,3 +496,11 @@ Dritte bestimmt [V4.3.2]; Autorisierung je Resolver und Feld (→ SEC-10); gebü
 Abfragen zählen gegen Rate-Limits (→ API-17) [OWASP-GRAPHQL].
 Prüfen: tief verschachtelte Abfrage und Introspection gegen die Testumgebung;
 Resolver ohne Autorisierungsprüfung.
+
+### SEC-58 · Ö · F — Support-Zugriff auf Kundenkonten ist zweckgebunden und sichtbar
+Sieht oder handelt der Support im Konto eines Kunden, dann nur mit Anlass (Ticket),
+befristet, ohne Kenntnis oder Wahl von dessen Passwort [ASVS5 V6.4.6] (strenger als
+ASVS L3), protokolliert im Audit-Log (→ OBS-09) und für den Kunden erkennbar.
+Folgenreiche Aktionen im fremden Konto sind gesperrt oder brauchen Freigabe.
+Praxisregel für Befristung und Sichtbarkeit.
+Prüfen: wie Support ein Kundenkonto einsieht; Audit-Eintrag eines solchen Zugriffs.

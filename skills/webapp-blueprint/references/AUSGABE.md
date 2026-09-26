@@ -42,6 +42,7 @@ Maschinen unlesbar, auch wenn er für Menschen gut aussieht.
 | `massnahme`, `ablage` | Freitext (Vorgehen, kein Werkzeug) · `issue` · `adr` · `arc42` · `phase` | nur bei `teilweise`/`fehlt` |
 | `siehe` | Liste von IDs | Befund mit derselben Ursache; Maßnahme steht nur bei der ersten ID |
 | `konflikt` | `datei:zeile` der Projektregel | Projektregel widerspricht einem Pflichtpunkt |
+| `rechtsraum`, `norm` | Code aus `profil.rechtsraeume` · Normzitat mit Quelle | nur bei Bereich 06: je Rechtsraum eine Registerzeile mit der dort geltenden Norm; ohne belegte Norm `status: unbekannt` |
 
 ## Vorlage Audit
 
@@ -55,6 +56,7 @@ stand: <Commit-Hash oder Version>
 umgebung: <keine | Testumgebung-Name>   # aktive Proben nur hier
 profil:
   stufe: Oe
+  rechtsraeume: [DE, EU]                   # ISO-3166-Codes bzw. EU; [] = unbekannt
   bedingungen: [api-extern, verbraucher]   # nur die zutreffenden
   bestaetigt: false                        # true nur nach Bestätigung durch den Nutzer
   begruendung:                             # ein Satz je Festlegung
@@ -104,7 +106,8 @@ vor `qualitaet`).
 ````
 
 **Registerregeln:** Jeder Punkt der geprüften Bereiche erscheint genau einmal —
-auch `na` und `nicht_geprueft` —, damit ein Folgelauf vollständig vergleichen kann.
+auch `na` und `nicht_geprueft` —, damit ein Folgelauf vollständig vergleichen kann;
+Punkte aus Bereich 06 einmal je Rechtsraum.
 Punkte nicht geprüfter Bereiche dürfen fehlen, stehen dann aber in
 `umfang.nicht_geprueft`. `zaehlung` und `zaehlung_pflicht` stimmen mit dem Register
 überein; Punkte oberhalb der Stufe zählen nur in `zaehlung`. Ein Folgeagent muss aus

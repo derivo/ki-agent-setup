@@ -133,8 +133,6 @@ GSD state · phase                              │ project
 ```
 
 Properties:
-- All three budget bars show the remaining share as `% frei` (available);
-  warning colors still reflect consumption.
 - Fixed line count and column widths — the grid is identical in every
   directory; what does not fit is cut with `…` instead of shifting.
 - Context meter: buffer-aware against the auto-compact reserve (~16.5%,

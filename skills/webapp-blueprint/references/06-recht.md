@@ -20,13 +20,14 @@ ermittelt und je Rechtsraum eine eigene Registerzeile geführt; ohne belegte Nor
 | Barrierefreiheit | Gibt es eine gesetzliche Pflicht, für wen, mit welchem Standard? | LAW-09 |
 | Online-Verträge mit Verbrauchern | Bestellablauf, Kündigung, Widerruf, Preisangaben | LAW-10 bis LAW-13 |
 | Plattform- und Inhaltepflichten | Melde- und Beschwerdewege, Transparenz | LAW-15, LAW-18 |
+| Marktplätze | Informationen zu Ranking und Anbieter, Identität der Händler, Regeln für gewerbliche Nutzer, Steuermeldungen, Geldflüsse | LAW-27 bis LAW-31 |
 | KI-Transparenz | Kennzeichnungspflichten für KI-Interaktion und -Inhalte | LAW-16 |
 | Werbung per E-Mail | Einwilligungsmodell und Nachweis | LAW-17 |
 | Cybersicherheit der Organisation | Produkt- und Betreiberpflichten, Meldewege | LAW-19 |
 | Aufbewahrung | Welche Unterlagen sind wie lange aufzubewahren, und wie verträgt sich das mit Löschpflichten? | LAW-23 |
 | Rechnungsstellung | Ist ein elektronisches Rechnungsformat vorgeschrieben? | LAW-24 |
 | Anbieterwechsel bei Cloud-Diensten | Muss der Kunde wechseln und seine Daten mitnehmen können? | LAW-25 |
-| Lizenzen genutzter Software | gilt rechtsraumübergreifend | LAW-26 |
+| Lizenzen genutzter Software | gilt rechtsraumübergreifend (eine Registerzeile, `rechtsraum: "alle"`) | LAW-26 |
 | Pflege der Rechtstexte | wiederkehrend | LAW-20, LAW-22 |
 
 Alle Punkte dieses Bereichs tragen Stufe `B`: eine gesetzliche Pflicht hängt an ihrer
@@ -193,6 +194,54 @@ Wer behauptet, Bewertungen stammten von Käufern, braucht angemessene
 Überprüfungsmaßnahmen und informiert darüber; gefälschte Bewertungen sind stets
 unzulässig [UWG-ANH Nr. 23b, 23c].
 Prüfen: Herkunft angezeigter Bewertungen; Hinweistext zum Prüfverfahren.
+
+## Marktplätze
+
+### LAW-27 · B (marktplatz, verbraucher) · G — Verbraucher erfahren Ranking-Grundlagen und Anbieterstatus
+Ein Online-Marktplatz informiert Verbraucher über die Hauptparameter des Rankings und
+ihre relative Gewichtung, über einbezogene Anbieter bei Vergleichen, über
+Verbundenheit mit dem Anbieter und darüber, ob der Anbieter nach eigener Erklärung
+Unternehmer ist — falls nicht, dass das Verbraucherrecht für den Vertrag nicht gilt
+[BGB-312L] [EGBGB-246D].
+Prüfen: Hinweis an Suchergebnissen; Selbsterklärung „Unternehmer ja/nein“ im
+Anbieterprofil und ihre Anzeige am Angebot.
+
+### LAW-28 · B (marktplatz, verbraucher) · F — Händler sind vor dem Anbieten identifiziert, Pflichtangaben sind möglich
+EU: Online-Plattformen, über die Verbraucher Fernabsatzverträge mit Unternehmern
+schließen, lassen Unternehmer erst nach Erhalt von Name, Anschrift, Kontaktdaten,
+Identitätsnachweis, Registereintrag und Selbstverpflichtung zu (Nachverfolgbarkeit), und
+ihre Oberfläche erlaubt den Händlern die vorvertraglichen Pflicht- und
+Produktsicherheitsangaben. Ausgenommen sind Anbieter, die Klein- oder
+Kleinstunternehmen sind [DSA-30].
+Prüfen: Onboarding-Ablauf für Händler (Pflichtfelder, Freischaltung erst danach);
+Felder für Händlerangaben am Angebot.
+
+### LAW-29 · B (marktplatz) · G — Gewerbliche Nutzer erhalten faire, transparente Bedingungen
+EU: Vermittelt die App Angebote gewerblicher Nutzer an Verbraucher, gilt die
+P2B-Verordnung: klare, jederzeit verfügbare AGB mit Gründen für Sperren und
+Einschränkungen, begründete Sperrentscheidungen, die Hauptparameter des Rankings in
+den AGB, ein kostenfreies internes Beschwerdesystem (entfällt für kleine
+Unternehmen) und benannte Mediatoren [P2B-VO].
+Prüfen: AGB für Anbieter gegen diese Liste; Sperrfunktion mit Begründungstext;
+Beschwerdeweg für Anbieter.
+
+### LAW-30 · B (marktplatz) · E — Meldepflicht über Anbieter an die Steuerbehörde ist geklärt
+DE: Wer als Plattform Rechtsgeschäfte über relevante Tätigkeiten ermöglicht, ist
+meldender Plattformbetreiber — nicht aber, wer nur Angebote auflistet, bewirbt oder
+weiterleitet [PSTTG-3]. Dann: Registrierung, Sorgfaltspflichten zur Identifikation der
+Anbieter und Meldung bis zum 31. Januar des Folgejahres [PSTTG-13]; die Pflicht folgt
+aus EU-Recht (DAC7) und gilt entsprechend in allen Mitgliedstaaten.
+Prüfen: Einordnung mit Begründung (etwa ADR); falls meldepflichtig: erhobene
+Anbieterdaten, Exportweg für die Meldung.
+
+### LAW-31 · B (marktplatz, zahlungen) · E — Geldflüsse zwischen Käufer und Anbieter sind aufsichtsrechtlich geklärt
+DE: Nimmt der Betreiber Geld für Anbieter entgegen und leitet es weiter, kann das ein
+erlaubnispflichtiger Zahlungsdienst sein [ZAG-10]; die Ausnahme für Handelsvertreter
+ist eng — nur wer allein im Namen einer Seite verhandelt oder abschließt [ZAG-2].
+Üblicher Weg: ein beaufsichtigter Zahlungsdienstleister mit Marktplatzmodell, bei dem
+das Geld nie über Konten des Betreibers läuft.
+Prüfen: Zahlungsfluss (wer hält das Geld zwischen Kauf und Auszahlung?); Vertrag
+mit dem Zahlungsdienstleister oder Erlaubnis.
 
 ## Regulierung der Organisation
 

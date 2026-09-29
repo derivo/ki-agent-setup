@@ -34,6 +34,18 @@ heute unter der Linux Foundation / Agentic AI Foundation).
   Sein Vorhandensein belegt umgekehrt nichts über den Inhalt — die übrigen
   Prüfungen (→ Ausgabe-Check) ersetzt er nicht.
 
+### Ponytail + Caveman — gemeinsam aktiv für alle Clients
+
+Ponytail (Level `full`) und Caveman sind standardmäßig gleichzeitig aktiv.
+Ponytail steuert die Umsetzung: Bestand wiederverwenden, stdlib und native
+Funktionen bevorzugen, nur die kleinste vollständige Lösung bauen.
+Caveman steuert den Antwortstil: kurze, direkte Sätze; Füllwörter und
+Wiederholungen weglassen. Verständlichkeit, fachliche Präzision,
+angeforderte Details, Rückfragen und Pflichtbelege dürfen nicht entfallen.
+Code, Kommentare und Dokumente behalten ihren jeweiligen Projektstil.
+„stop caveman“ deaktiviert den Stil für die Session, „caveman an“ aktiviert ihn.
+Diese gemeinsame Regel braucht kein separates Caveman-Plugin.
+
 ## Haltung
 
 - Nicht nach dem Mund reden. Konstruktiv bewerten, ob die Anfrage richtig ist —

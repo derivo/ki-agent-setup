@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Four-line statusline (harness spec, ki-agent-setup/README.md "Statusline-Aufbau"):
 //   1  model + context meter + cached tokens
-//   2  5h limit + weekly limit (each "used% - reset") + session cost
+//   2  5h limit + weekly limit (each "remaining% frei - reset") + session cost
 //   3  path + git branch
 //   4  GSD milestone/state + phase + project   <- GSD renderer + .planning/STATE.md
 // Fixed column widths and a fixed line count, so the layout is identical in every
@@ -16,7 +16,7 @@ const path = require('path');
 const DIM = '\x1b[2m';
 const OFF = '\x1b[0m';
 const NONE = '–';
-const COL = [46, 26]; // fixed widths of column 1 and 2; column 3 is free
+const COL = [46, 32]; // fixed widths of column 1 and 2; column 3 is free
 const input = fs.readFileSync(0, 'utf8');
 
 /** Visible width: ANSI escapes don't occupy columns. */
@@ -51,12 +51,13 @@ function grid(rows) {
     .join(`${DIM}│ ${OFF}`));
 }
 
-/** 10-segment bar, colored by used percentage (GSD thresholds 50/65/80). */
+/** Remaining budget; warning colors still follow consumption (50/65/80). */
 function meter(used) {
-  const pct = Math.max(0, Math.min(100, Math.round(used)));
+  const spent = Math.max(0, Math.min(100, Math.round(used)));
+  const pct = 100 - spent;
   const bar = '█'.repeat(Math.floor(pct / 10)) + '░'.repeat(10 - Math.floor(pct / 10));
-  const color = pct < 50 ? '\x1b[32m' : pct < 65 ? '\x1b[33m' : pct < 80 ? '\x1b[38;5;208m' : '\x1b[31m';
-  return `${color}${bar} ${pct}%${OFF}`;
+  const color = spent < 50 ? '\x1b[32m' : spent < 65 ? '\x1b[33m' : spent < 80 ? '\x1b[38;5;208m' : '\x1b[31m';
+  return `${color}${bar} ${pct}% frei${OFF}`;
 }
 
 function formatTokens(n) {

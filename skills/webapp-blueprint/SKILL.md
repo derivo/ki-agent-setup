@@ -44,17 +44,24 @@ der Katalog behauptet keine Wirkung, die niemand gemessen hat.
 - **Grundgesamtheit zuerst.** Aussagen wie „alle Endpunkte paginiert“ setzen eine aus
   dem Code enumerierte Liste voraus (Routen, Controller, Jobs), keine Stichprobe.
   Zähleinheit „Endpunkt“ ist Methode + Pfad-Template. Nennt ein Punkt eine
-  Stichprobengröße und gibt es weniger Elemente, werden alle genommen.
+  Stichprobengröße und gibt es weniger Elemente, werden alle genommen. Ist eine
+  Vollerhebung nicht leistbar, belegt eine Stichprobe ohne Befund höchstens
+  `teilweise` („nur Stichprobe n von N“); ein Befund in der Stichprobe reicht für
+  `fehlt` bzw. `teilweise`.
 - **Fehlender Gegenstand ist `n. a.`** — gibt es das Geprüfte gar nicht (keine
   Retries, keine Uploads), lautet der Status `n. a.` mit Grund „nicht vorhanden“, nicht
-  „erfüllt“.
+  „erfüllt“. Ebenso ein Rechtspunkt, dessen Bedingung zutrifft, dessen Tatbestand aber
+  nicht erfüllt ist — der Grund nennt das fehlende Tatbestandsmerkmal.
 - **Stufe bestimmt Pflicht, nicht Umfang des Berichts.** Punkte über der gewählten
   Stufe bekommen ihren sachlichen Status, werden aber als Empfehlung geführt und nicht
   als Lücke gezählt (Pflicht-Zählung und Gesamt-Zählung getrennt, → AUSGABE.md).
 - **Projektregeln gehen vor.** Legt das Projekt (bzw. seine `AGENTS.md`/`CLAUDE.md`)
   eine Variante fest, die der Katalog als eine von mehreren zulässt, gilt die
   Projektvariante; der Audit prüft dann deren konsequente Umsetzung. Ein echter
-  Widerspruch zu einem MUST wird benannt, nicht still aufgelöst.
+  Widerspruch zu einem MUST wird benannt, nicht still aufgelöst: der Status richtet
+  sich nach dem Katalog, die Projektregel steht unter `konflikt`, die Auflösung ist
+  eine Entscheidung (ADR). Eine befristete Projektregel („bis Go-live“) gilt bis zu
+  ihrem Ende; Punkte ab Phase `G` bleiben davon unberührt.
 - **Recht ist Prüfpunkt, keine Beratung.** Rechtliche Punkte nennen Norm und
   Anwendungsbedingung; ob sie greifen, entscheidet im Zweifel eine fachkundige Person.
   Stand der Rechtslage: siehe Datum im Quellenverzeichnis.
@@ -73,7 +80,8 @@ der Katalog behauptet keine Wirkung, die niemand gemessen hat.
   Katalogs. Wo sie strenger ist als das Level der zitierten Quelle, steht das am Punkt
   („strenger als ASVS L2“). Hausstandards des ki-agent-setup sind als solche markiert;
   sie gelten als Pflicht in Projekten, die unter den Arbeitsregeln dieses Setups
-  entwickelt werden (dessen `AGENTS.md` ist geladen), anderswo als Empfehlung.
+  entwickelt werden (dessen `AGENTS.md` ist geladen), anderswo als Empfehlung. Ist das
+  nicht feststellbar, gelten sie als Empfehlung.
 - **Hersteller oder Betreiber.** Bei `selbst-gehostet` treffen Betreiberpflichten
   (Impressum, Datenschutzinformation, TLS, Mail-DNS, Meldewege) den Kunden. Geprüft wird
   dann, ob die Software sie ermöglicht und dokumentiert (LAW-22) — Default-Konfiguration
@@ -96,7 +104,9 @@ geprüft oder ein Shop gegen Prototyp-Maßstäbe.
 Die Stufen sind kumulativ: Ö enthält alles aus B, K alles aus Ö. Die Einstufung wird
 mit Begründung notiert (arc42 Kap. 1/10 oder ADR). Eingestuft wird das Produkt im
 anspruchsvollsten dokumentierten oder beabsichtigten Einsatz, sofern der Auftrag keine
-bestimmte Instanz nennt.
+bestimmte Instanz nennt. Beabsichtigt ist, was Roadmap, ADR oder Code (etwa ein
+abgeschalteter Schalter) als geplant ausweisen; die davon abhängigen Punkte stehen
+unter `empfindlich`.
 
 **Ohne Rückfrage** (Subagent, CI, anderer Client): Profil aus Repo und Doku ableiten,
 als Annahme mit Begründung je Festlegung in den Kopf schreiben (`bestaetigt: false`)
@@ -120,8 +130,9 @@ beantworten; sie beschreiben Sachverhalte, nicht Normen:
 | `uploads` | Nutzer laden Dateien hoch — auch nur für sich selbst |
 | `nutzerinhalte` | Die App speichert Inhalte im Auftrag von Nutzern (in der EU: Hosting im Sinne des DSA) |
 | `plattform` | … und macht sie auf Wunsch der Nutzer öffentlich zugänglich (in der EU: Online-Plattform im Sinne des DSA) |
-| `saas` | Kunden nutzen die App als gehosteten Dienst mit eigenem Datenbestand |
-| `ki` | KI-System interagiert mit Nutzern oder erzeugt Inhalte |
+| `marktplatz` | Nutzer schließen über die App Verträge mit Dritten (Händlern, Anbietern), nicht nur mit dem Betreiber |
+| `saas` | Kunden nutzen die App als gehosteten Dienst für eigene Prozesse und Daten; Anbieterkonten auf einem Marktplatz zählen nicht dazu |
+| `ki` | KI-System interagiert mit Nutzern oder erzeugt Inhalte, die Nutzer zu sehen bekommen — auch wenn der Betreiber die Erzeugung anstößt |
 | `ki-werkzeug` | Die App liefert Kontext oder Werkzeuge an KI-Agenten (etwa als MCP-Server), auch ohne eigenes Modell |
 | `clients` | Die App liefert Software aus, die auf Rechnern der Nutzer läuft (Plugins, Hooks, Skripte, Apps) |
 | `websocket` | Die App nutzt WebSocket-Verbindungen |
@@ -129,7 +140,7 @@ beantworten; sie beschreiben Sachverhalte, nicht Normen:
 | `mehrsprachig` | mehr als eine Sprache oder Region |
 | `öffentliche-inhalte` | Inhalte sollen über Suchmaschinen gefunden werden |
 | `newsletter` | Werbe-E-Mails |
-| `mandanten` | mehrere Kunden/Organisationen teilen eine Instanz |
+| `mandanten` | mehrere Kunden/Organisationen teilen eine Instanz, und ihre Daten müssen voneinander getrennt bleiben (auch Händlerorganisationen mit eigenen Mitarbeiterkonten) |
 | `selbst-gehostet` | Kunden betreiben die App selbst (Installer, Updates beim Kunden) |
 
 ## 2. Der Katalog

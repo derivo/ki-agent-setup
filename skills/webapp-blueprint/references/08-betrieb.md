@@ -30,6 +30,8 @@ Ein Fehlerpfad, der loggt und Erfolg meldet oder ein leeres Ergebnis als gültig
 zurückgibt, macht aus einem Fehlschlag eine Zusage. Entweder propagieren oder dauerhaft
 zur Wiederholung vormerken (Queue, Journal) und erst nach nachweislichem Erfolg
 entfernen.
+Blickwinkel: Verlässlichkeit — geht Arbeit verloren? (Sicherheit → SEC-29, Test →
+TST-12; dieselbe Stelle darf in allen dreien auftauchen, jeweils mit eigenem Status.)
 Prüfen: `catch`-Blöcke ohne Weiterreichen; Teilschreibvorgänge über mehrere Systeme.
 
 ### OPS-05 · B · F — Langsame Arbeit läuft außerhalb des Requests

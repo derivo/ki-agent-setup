@@ -219,7 +219,8 @@ Prüfen: Datei abrufen; `Expires` in der Zukunft?
 ### SEC-29 · Ö · L — Fehler- und Ausnahmezustände sind geprüft
 Unerwartete Zustände enden in einem sicheren Zustand statt in offenem Zugriff oder
 halb geschriebenen Daten — seit 2025 eigene Top-10-Kategorie
-[OWASP-T10-2025 A10]. → siehe auch OPS-01 bis OPS-04 (Timeouts, Fehlerpfade).
+[OWASP-T10-2025 A10]. Blickwinkel: Sicherheit — endet der Fehler offen (Zugriff
+erlaubt, Prüfung übersprungen)? → OPS-04 (Verlässlichkeit), TST-12 (Test).
 Prüfen: `catch`-Blöcke, die loggen und Erfolg melden; Fehlerpfade bei Teilschreibvorgängen.
 
 ### SEC-30 · K · G — Unabhängige Prüfung vor dem Go-live
@@ -431,9 +432,12 @@ Keine Versionsverwaltungsdaten (`.git`) im ausgelieferten Stand [ASVS5 V13.4.1];
 Debug-Modi in Produktion aus, kein Verzeichnislisting, kein `TRACE`, interne
 API-Doku und Monitoring-Endpunkte nicht öffentlich [V13.4.2–V13.4.5] (strenger als
 ASVS L2); keine `.env`-, Backup- oder Konfigurationsdateien im Webroot; Source Maps
-nur, wenn bewusst gewollt. Bei K keine detaillierten Versionsangaben und nur erlaubte
+nur, wenn bewusst gewollt. Das gilt auch für den ganzen Prod-Stack: Begleitdienste
+(Identity-Provider, Queue- und Mail-Oberflächen) laufen nicht im Entwicklungsmodus,
+Diagnose- und Profiling-Werkzeuge sind in Produktion aus oder nur für Berechtigte
+erreichbar — mit sicherem Default, nicht erst über eine Umgebungsvariable. Bei K keine detaillierten Versionsangaben und nur erlaubte
 Dateiendungen [V13.4.6, V13.4.7] → OBS-05, API-09.
-Prüfen: `/.git/HEAD`, `/.env`, typische Backup-Namen, ein Verzeichnis ohne Index, eine
+Prüfen: Startbefehle und Defaults der Prod-Konfiguration; `/.git/HEAD`, `/.env`, typische Backup-Namen, ein Verzeichnis ohne Index, eine
 provozierte Fehlerseite, `TRACE`-Request — in Produktion passiv als Abruf, in
 freigegebener Testumgebung vollständig.
 

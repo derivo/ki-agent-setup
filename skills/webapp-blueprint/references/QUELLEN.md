@@ -150,6 +150,14 @@ Katalogpunkte anpassen, Datum oben setzen.
 | UWG-7 | [§ 7 UWG](https://www.gesetze-im-internet.de/uwg_2004/__7.html) | Gesetz | abgerufen 2026-09-25 |
 | UWG-ANH | [Anhang zu § 3 Abs. 3 UWG](https://www.gesetze-im-internet.de/uwg_2004/anhang.html), Nr. 23b, 23c | Gesetz | abgerufen 2026-09-25 |
 | ODR-EU | [EU-Kommission: Schließung der ODR-Plattform](https://consumer-redress.ec.europa.eu/site-relocation_en) | Behördeninformation | abgeschaltet 20.07.2025 |
+| BGB-312L | [§ 312l BGB](https://www.gesetze-im-internet.de/bgb/__312l.html) — Online-Marktplätze | Gesetz | abgerufen 2026-09-26 |
+| EGBGB-246D | [Art. 246d § 1 EGBGB](https://www.gesetze-im-internet.de/bgbeg/art_246d__1.html) — Informationspflichten von Online-Marktplätzen | Gesetz | abgerufen 2026-09-26 |
+| DSA-30 | [Verordnung (EU) 2022/2065, Art. 29–31](https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32022R2065) — Nachverfolgbarkeit von Unternehmern | Gesetz | abgerufen 2026-09-26 |
+| P2B-VO | [Verordnung (EU) 2019/1150](https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32019R1150) — Art. 3, 4, 5, 11, 12 | Gesetz | abgerufen 2026-09-26 |
+| PSTTG-3 | [§ 3 PStTG](https://www.gesetze-im-internet.de/psttg/__3.html) — Plattform, Plattformbetreiber | Gesetz | abgerufen 2026-09-26 |
+| PSTTG-13 | [§ 13 PStTG](https://www.gesetze-im-internet.de/psttg/__13.html) — Meldepflicht, Frist 31. Januar | Gesetz | abgerufen 2026-09-26 |
+| ZAG-2 | [§ 2 ZAG](https://www.gesetze-im-internet.de/zag_2018/__2.html) — Ausnahmen, Handelsvertreter | Gesetz | abgerufen 2026-09-26 |
+| ZAG-10 | [§ 10 ZAG](https://www.gesetze-im-internet.de/zag_2018/__10.html) — Erlaubnispflicht für Zahlungsdienste | Gesetz | abgerufen 2026-09-26 |
 | DSA-QA | [EU-Kommission: Digital Services Act — Questions and Answers](https://digital-strategy.ec.europa.eu/en/faqs/digital-services-act-questions-and-answers) | Behördeninformation | abgerufen 2026-09-25 |
 | AIACT-50 | [EU-Kommission: Transparency obligations under Article 50 AI Act](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act) | Behördeninformation | gilt seit 02.08.2026 |
 | CRA | [EU-Kommission: Cyber Resilience Act — Summary](https://digital-strategy.ec.europa.eu/en/policies/cra-summary) | Behördeninformation | in Kraft seit 10.12.2024 |

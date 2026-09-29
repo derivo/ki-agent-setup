@@ -9,6 +9,13 @@ Abschnitt ausgefüllt und beim Menschen reviewt ist — bevor Code entsteht.
 
 Lege fertige Specs unter `specs/<feature-slug>.md` ab.
 
+Die Spec beschreibt den **aktuellen** Stand des Features, nicht den beim ersten
+Bau. Ändert eine spätere Aufgabe sein Verhalten, zieht derselbe Diff die Spec
+nach (Akzeptanzkriterien, Out-of-Scope) — sonst erbt die nächste Aufgabe Tests
+gegen ein Verhalten, das es nicht mehr gibt. Die Historie steht in git, nicht in
+der Spec. Das Warum einer tragenden Änderung gehört weiter ins ADR
+([ADR_TEMPLATE.md](ADR_TEMPLATE.md)), nicht in die Spec.
+
 ---
 
 ```markdown

@@ -84,7 +84,9 @@ Prüfen: Runbook-Verzeichnis; wo liegt es, wenn die App ausfällt?
 
 ### ARC-13 · B · F — Der Einstieg für Entwickler ist in unter einer Stunde möglich
 README mit Zweck, lokalem Start, Tests, Gate-Kommando und Verweis auf die Architekturdoku.
-Prüfen: frischer Checkout nach README starten und die Zeit messen.
+Prüfen: frischer Checkout nach README starten und die Zeit messen. Passiv ersatzweise:
+jeder README-Schritt ist ein Befehl ohne Rätselraten, fehlende Voraussetzungen sind
+genannt, ein Einrichtungsskript existiert — dann höchstens `teilweise`.
 
 ### ARC-14 · B · L — Schutz- und Betriebsbehauptungen der Doku sind belegt
 Was die Doku über Limits, Verschlüsselung, Trennung, Fail-fast, Backups oder

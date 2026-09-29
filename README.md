@@ -66,6 +66,9 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
 - **Skills** — via `skills`-CLI client-übergreifend installierbar
   ([`SKILLS.md`](SKILLS.md)).
 
+- **Caveman** — knapper Antwortstil für alle Clients über
+  [`instructions/AGENTS.md`](instructions/AGENTS.md), parallel zu Ponytail.
+
 **Claude-Code-spezifisch** — die Mechanik, die das in Claude Code einklinkt:
 - **ponytail** — Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor neuer
   Dependency); der aktive Modus.
@@ -130,6 +133,8 @@ GSD-State · Phase                              │ Projekt
 ```
 
 Eigenschaften:
+- Alle drei Budget-Balken zeigen den verbleibenden Anteil als `% frei`;
+  Warnfarben richten sich weiterhin nach dem Verbrauch.
 - Feste Zeilenzahl und Spaltenbreiten — das Raster ist in jedem Verzeichnis
   gleich; was nicht passt, wird mit `…` abgeschnitten statt verschoben.
 - Context-Meter: pufferbereinigt gegen die Auto-Compact-Reserve (~16,5 %,

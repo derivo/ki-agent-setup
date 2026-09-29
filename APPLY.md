@@ -332,25 +332,10 @@ Playwright-Browser-Automatisierung. `codex` bindet die Codex-CLI in Claude Code
 ein (Review, adversariales Review, Delegation über `/codex:*`) — es setzt eine
 installierte `codex`-CLI voraus (Teil B2).
 
-**`caveman` gehört bewusst nicht mehr dazu** (Entscheidung 2026-08-23). Es lieferte
-Prosa-Kompression auf einer anderen Achse als ponytail (wie geredet wird vs. was
-gebaut wird), stand hier aber seit dem 04.08. auf `defaultMode: off` und wurde
-seither nicht benutzt. Aktiv bleibt dann nur seine Oberfläche — drei Subagents,
-fünf Commands, dreizehn Skills —, und die dupliziert, was dieses Setup schon hat:
-`cavecrew-investigator` neben `Explore`, `cavecrew-reviewer` neben `/hx:review`
-und `REVIEW_PANEL.md`, `caveman-evidence-review` neben `GUARDRAILS.md` C. Eine
-zweite Variante für denselben Zweck ist genau das, was *Consistency First*
-untersagt; dazu kam Wartungsaufwand für ein abgeschaltetes Werkzeug (ein
-Manifest-Feld im Upstream-HEAD ließ das Plugin nicht mehr laden).
-
-Wer die Kompression doch will, holt sie einzeln zurück — der Marketplace bleibt
-dafür registrierbar, das Setup schreibt sie nur nicht mehr vor:
-```bash
-claude plugin marketplace add JuliusBrussee/caveman
-claude plugin install caveman@caveman
-```
-Dann gilt weiter: nicht gleichzeitig mit ponytail aktiv fahren, beide injizieren
-jeden Turn in den Kontext.
+**Caveman ist für alle Clients als Antwortstil aktiv** — über
+`instructions/AGENTS.md` → Sprache & Stil, parallel zu Ponytail. Die Regel wird
+mit der gemeinsamen Basis an Claude Code, Codex und opencode verteilt; ein
+separates Caveman-Plugin ist dafür nicht erforderlich.
 
 **Reste einer früheren Installation.** Ein deinstalliertes Plugin nimmt seine
 Hook-Dateien nicht mit: unter `~/.claude/hooks/` bleiben `caveman-activate.js`,

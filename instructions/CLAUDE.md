@@ -32,8 +32,8 @@ Zwei Stellen, an denen die Hausregeln vorgehen — Rangfolge wie in
 - „Ein Check reicht" ersetzt **nicht** die Edge-Case-Matrix für UI-Formulare
   (`AGENTS.md` → Testing).
 
-caveman ist bewusst nicht Teil dieses Setups (`APPLY.md` B1.2). Wer es einzeln
-nachrüstet, fährt es nicht gleichzeitig mit ponytail aktiv.
+Caveman ist parallel als Antwortstil aktiv; die gemeinsame Regel steht in
+`AGENTS.md` → Sprache & Stil.
 
 ## Skills
 

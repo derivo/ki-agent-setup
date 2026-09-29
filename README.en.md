@@ -65,6 +65,9 @@ two layers:
 - **Skills** — installable cross-client via the `skills` CLI
   ([`SKILLS.md`](SKILLS.md)).
 
+- **Caveman** — concise responses across clients through
+  [`instructions/AGENTS.md`](instructions/AGENTS.md), alongside Ponytail.
+
 **Claude-Code-specific** — the plumbing that wires it into Claude Code:
 - **ponytail** — solution minimalism (YAGNI ladder, stdlib/native before a new
   dependency); the active mode.
@@ -130,6 +133,8 @@ GSD state · phase                              │ project
 ```
 
 Properties:
+- All three budget bars show the remaining share as `% frei` (available);
+  warning colors still reflect consumption.
 - Fixed line count and column widths — the grid is identical in every
   directory; what does not fit is cut with `…` instead of shifting.
 - Context meter: buffer-aware against the auto-compact reserve (~16.5%,

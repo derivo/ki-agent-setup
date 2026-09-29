@@ -133,8 +133,6 @@ GSD-State · Phase                              │ Projekt
 ```
 
 Eigenschaften:
-- Alle drei Budget-Balken zeigen den verbleibenden Anteil als `% frei`;
-  Warnfarben richten sich weiterhin nach dem Verbrauch.
 - Feste Zeilenzahl und Spaltenbreiten — das Raster ist in jedem Verzeichnis
   gleich; was nicht passt, wird mit `…` abgeschnitten statt verschoben.
 - Context-Meter: pufferbereinigt gegen die Auto-Compact-Reserve (~16,5 %,

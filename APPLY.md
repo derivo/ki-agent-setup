@@ -198,6 +198,7 @@ ladbar**:
 | [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
 | [`rule-intake-curator`](skills/rule-intake-curator/SKILL.md) | ein fremdes Regelwerk gegen `instructions/` + `harness/` prüfen und nur das Tragende übernehmen |
 | [`ui-test-gap-audit`](skills/ui-test-gap-audit/SKILL.md) | fehlende UI-Tests messen — je Rolle, Seite, Formular und Datenvariante nach Echtheitsstufe, Lücken nach Risiko |
+| [`webapp-blueprint`](skills/webapp-blueprint/SKILL.md) | eine Web-App gegen den State of the Art prüfen oder neu planen — Katalog aus Vorgehensregeln je Bereich, Stufen, Quellen- und Evidenzlage |
 
 Sie werden **verlinkt**, nicht über die `skills`-CLI installiert. Ziel-Verzeichnis ist
 client-spezifisch (Teil B). Namenskollision vermeiden: ein repo-eigener Skill darf
@@ -331,25 +332,10 @@ Playwright-Browser-Automatisierung. `codex` bindet die Codex-CLI in Claude Code
 ein (Review, adversariales Review, Delegation über `/codex:*`) — es setzt eine
 installierte `codex`-CLI voraus (Teil B2).
 
-**`caveman` gehört bewusst nicht mehr dazu** (Entscheidung 2026-08-23). Es lieferte
-Prosa-Kompression auf einer anderen Achse als ponytail (wie geredet wird vs. was
-gebaut wird), stand hier aber seit dem 04.08. auf `defaultMode: off` und wurde
-seither nicht benutzt. Aktiv bleibt dann nur seine Oberfläche — drei Subagents,
-fünf Commands, dreizehn Skills —, und die dupliziert, was dieses Setup schon hat:
-`cavecrew-investigator` neben `Explore`, `cavecrew-reviewer` neben `/hx:review`
-und `REVIEW_PANEL.md`, `caveman-evidence-review` neben `GUARDRAILS.md` C. Eine
-zweite Variante für denselben Zweck ist genau das, was *Consistency First*
-untersagt; dazu kam Wartungsaufwand für ein abgeschaltetes Werkzeug (ein
-Manifest-Feld im Upstream-HEAD ließ das Plugin nicht mehr laden).
-
-Wer die Kompression doch will, holt sie einzeln zurück — der Marketplace bleibt
-dafür registrierbar, das Setup schreibt sie nur nicht mehr vor:
-```bash
-claude plugin marketplace add JuliusBrussee/caveman
-claude plugin install caveman@caveman
-```
-Dann gilt weiter: nicht gleichzeitig mit ponytail aktiv fahren, beide injizieren
-jeden Turn in den Kontext.
+**Caveman ist für alle Clients als Antwortstil aktiv** — über
+`instructions/AGENTS.md` → Sprache & Stil, parallel zu Ponytail. Die Regel wird
+mit der gemeinsamen Basis an Claude Code, Codex und opencode verteilt; ein
+separates Caveman-Plugin ist dafür nicht erforderlich.
 
 **Reste einer früheren Installation.** Ein deinstalliertes Plugin nimmt seine
 Hook-Dateien nicht mit: unter `~/.claude/hooks/` bleiben `caveman-activate.js`,
@@ -624,8 +610,9 @@ print([k for k in d.get("skillOverrides",{}) if not os.path.exists(h("~/.claude/
 ```
 
 **Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
-zeigt die Nicht-GSD-Skills und die sechs Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
-`design-md-curator`, `linklist-curator`, `rule-intake-curator`, `ui-test-gap-audit`) auf den Checkout;
+zeigt die Nicht-GSD-Skills und die sieben Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
+`design-md-curator`, `linklist-curator`, `rule-intake-curator`, `ui-test-gap-audit`,
+`webapp-blueprint`) auf den Checkout;
 `head -2 ~/.claude/skills/design-md-curator/SKILL.md` ist über den Link lesbar.
 
 ## B2. Codex CLI

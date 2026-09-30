@@ -20,13 +20,13 @@ const output = execFileSync(process.execPath, [script], {
 });
 const rows = output.replace(/\x1b\[[0-9;]*m/g, '').split('\n');
 assert.equal(rows.length, 4);
-assert.ok(rows[0].includes('███████░░░ 76% frei'));
-assert.ok(rows[1].includes('███████░░░ 73% frei - 08:00'));
-assert.ok(rows[1].includes('███████░░░ 74% frei - Fr 08:00'));
+assert.ok(rows[0].includes('██░░░░░░░░ 24%'));
+assert.ok(rows[1].includes('██░░░░░░░░ 27% - 08:00'));
+assert.ok(rows[1].includes('██░░░░░░░░ 26% - Fr 08:00'));
 assert.ok(rows[2].includes(root.replace(os.homedir(), '~')));
 assert.ok(rows[2].includes(execFileSync('git', ['branch', '--show-current'], {
   cwd: root, encoding: 'utf8',
 }).trim()));
-assert.ok(output.includes('\x1b[32m███████░░░ 76% frei'));
+assert.ok(output.includes('\x1b[32m██░░░░░░░░ 24%'));
 console.log(rows.join('\n'));
-console.log('statusline: remaining budgets, reset times, directory and branch OK');
+console.log('statusline: used budgets, reset times, directory and branch OK');

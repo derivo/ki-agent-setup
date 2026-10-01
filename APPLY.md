@@ -145,8 +145,8 @@ jedem Client, nicht nur opencode); der `gsd-help`-Skill ist verfügbar.
 ## A4. MCP-Server (Kern-Set)
 
 Die MCP-Empfehlungen stehen in [`MCP_SERVERS.md`](MCP_SERVERS.md); das dort als
-**Kern-Set** geführte Paar (GitHub MCP, Playwright MCP) gehört zum
-reproduzierten Setup. Pro Server:
+**Kern-Set** geführte Playwright MCP gehört zum reproduzierten Setup. GitHub
+läuft über die `gh`-CLI (siehe A4.1), nicht über MCP. Pro Server:
 
 - Install-Kommando aus der **offiziellen Doku** des Servers (Quelle steht in der
   Tabelle), Version **pinnen** — nicht `latest`.
@@ -162,6 +162,16 @@ Client-Doku, Server-Inventar in `MCP_SERVERS.md`. Wird ein Server dauerhaft
 ergänzt/entfernt, die secret-freie Tabelle dort nachziehen.
 
 **Verify:** Die MCP-Liste des Clients zeigt die Kern-Set-Server als verbunden.
+
+### A4.1 GitHub über `gh`
+
+`gh` aus der offiziellen Quelle installieren (Debian/Ubuntu: `sudo apt-get install gh`,
+macOS: `brew install gh`) und einmal interaktiv anmelden — das Login ist Sache des
+Users, der Agent führt es nicht aus und bekommt keinen Token in den Chat:
+```bash
+gh auth login
+```
+**Verify:** `gh --version` liefert einen Wert und `gh auth status` meldet `Logged in`.
 
 ## A5. Zusätzliche Skills (nicht aus GSD oder den Plugins)
 
@@ -674,16 +684,14 @@ Skills und `$hx-start` lädt Harness plus Projektstand.
 
 ### B2.4 MCP + Skills
 MCP-Kern-Set (A4) in der Codex-MCP-Config registrieren (Mechanismus: Codex-Doku;
-Inventar: `MCP_SERVERS.md`). Für reproduzierbare Checks die kanonischen Namen
-`github` und `playwright` verwenden. Skills (A5) nach
+Inventar: `MCP_SERVERS.md`). Für reproduzierbare Checks den kanonischen Namen
+`playwright` verwenden; GitHub läuft über `gh` (A4.1). Skills (A5) nach
 Codex-Konvention verlinken.
 
-**Verify:** Beide Server sind registriert und aktiviert:
+**Verify:** Der Server ist registriert und aktiviert:
 
 ```bash
-for codex_mcp_name in github playwright; do
-  codex mcp get "$codex_mcp_name" --json | grep -q '"enabled": true'
-done
+codex mcp get playwright --json | grep -q '"enabled": true'
 ```
 
 ## B3. Antigravity CLI — Nachfolger der sunsetteten Gemini CLI

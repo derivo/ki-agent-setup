@@ -36,6 +36,7 @@ Schritt liegen sie nur im Checkout und sind nicht ladbar.
 | `design-md-curator` | dieses Repo, `skills/design-md-curator/` | `DESIGN.md` aus Repo-/URL-Evidenz erstellen, gegen `GUARDRAILS_UI.md` G validieren |
 | `linklist-curator` | dieses Repo, `skills/linklist-curator/` | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
 | `rule-intake-curator` | dieses Repo, `skills/rule-intake-curator/` | Fremde Regelwerke gegen den Bestand prüfen und nur das Tragende übernehmen |
+| `trend-scout` | dieses Repo, `skills/trend-scout/` | Trends, Standards und Werkzeuge belegt suchen und gegen den Bestand prüfen; Quellen-Roster `harness/RESEARCH_SOURCES.md` pflegen |
 | `ui-test-gap-audit` | dieses Repo, `skills/ui-test-gap-audit/` | Fehlende UI-Tests messen: Rollen × Seiten × Formulare × Varianten nach Echtheitsstufe, Lücken nach Risiko |
 | `webapp-blueprint` | dieses Repo, `skills/webapp-blueprint/` | Web-App gegen State of the Art prüfen oder neu planen: 212 Vorgehensregeln in 13 Bereichen, Stufen B/Ö/K, mit Quellen- und Evidenzlage |
 

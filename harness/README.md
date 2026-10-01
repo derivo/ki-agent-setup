@@ -67,6 +67,7 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 | [REVIEW_PANEL.md](REVIEW_PANEL.md) | ~1,9k | Der Diff erreicht die Panel-Schwelle (dort definiert) — nicht als Standardschritt. |
 | [ROADMAP.md](ROADMAP.md) | ~1,0k | Der Autonomiegrad ist unklar: wie weit darf ohne Rückfrage gearbeitet werden. |
 | [feature.md](feature.md) | ~0,7k | Ein kompletter Feature-Lauf wird abgearbeitet (Runbook). |
+| [RESEARCH_SOURCES.md](RESEARCH_SOURCES.md) | ~1,2k | Eine Recherche nach neuen Erkenntnissen/Standards/Werkzeugen läuft (Skill `trend-scout`) oder eine Quelle soll aufgenommen/verworfen werden. |
 | [linklist.md](linklist.md) | ~0,8k | `/hx:linklist` wurde aufgerufen oder eine Quelle wird gesucht. |
 
 ### Nie im Executor-Kontext

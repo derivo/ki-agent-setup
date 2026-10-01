@@ -108,7 +108,7 @@ mit GitHub-Quelle pro Skill: [`SKILLS.md`](SKILLS.md).
 
 ### MCP-Server & Sicherheit
 
-- **MCP-Server** — kuratierte, sicherheitsbewusste Empfehlungen (GitHub, Playwright …): [`MCP_SERVERS.md`](MCP_SERVERS.md). Das Kern-Set wird beim Setup
+- **MCP-Server** — kuratierte, sicherheitsbewusste Empfehlungen (Playwright …; GitHub über `gh`): [`MCP_SERVERS.md`](MCP_SERVERS.md). Das Kern-Set wird beim Setup
   mitinstalliert (`APPLY.md` A4); die Datei ist zugleich das secret-freie
   Inventar.
 - **Sicherheit** — Hardening-Layer um den Agenten (Secret-Scan, Tool-Block-Hook,

@@ -14,8 +14,9 @@ der installierte Server-Bestand dauerhaft, diese Datei nachziehen.
 
 | Server | Quelle | Nutzen |
 |---|---|---|
-| **GitHub MCP** | [github/github-mcp-server](https://github.com/github/github-mcp-server) (★31k, offiziell) | PRs, Issues, Repos, Actions direkt steuern. |
 | **Playwright MCP** | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (★34k, offiziell) | Live-Browser: Tests, Screenshots, E2E-Verify — passt zu `/hx:verify`. |
+
+**GitHub läuft über die `gh`-CLI, nicht über einen MCP-Server.** PRs, Issues, Repos und Actions steuert der Agent per `gh` ([cli.github.com](https://cli.github.com), offiziell). Das spart den MCP-Kontext, braucht keinen Token in einer MCP-Config (Login über `gh auth login`, Credential im System-Keyring bzw. `~/.config/gh/`) und ist in Shell, Skripten und allen Clients gleich nutzbar. Lesend zuerst (`gh pr view`, `gh issue list`, `gh run view`); schreibende Aufrufe (`gh pr create/merge`, `gh issue comment`) gelten als nach außen wirksam — nur auf Freigabe.
 
 ## Entwicklung (lokaler Dev-Stack)
 

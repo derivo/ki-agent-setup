@@ -9,4 +9,4 @@ sofort coden.
 3. Ablegen unter `specs/<feature-slug>.md`.
 4. Spec dem Menschen zum Review vorlegen — **bevor** Code entsteht.
 
-Harness-Referenz: `~/.claude/harness/SPEC_WORKFLOW.md`, `FEATURE_TEMPLATE.md`.
+Harness-Referenz (Root per Lookup wie in `/hx:start`): `SPEC_WORKFLOW.md`, `FEATURE_TEMPLATE.md`.

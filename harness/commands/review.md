@@ -17,4 +17,4 @@ das Multi-Agent-Review-Panel.
 4. Alle Funde melden — `Datei:Zeile · Lens · Problem · Fix`, nach Schweregrad,
    unsichere getrennt darunter. Keine Stil-Nits ohne Bedeutungsänderung.
 
-Harness-Referenz: `~/.claude/harness/REVIEW_PANEL.md`.
+Harness-Referenz (Root per Lookup wie in `/hx:start`): `REVIEW_PANEL.md`.

@@ -2,7 +2,8 @@ Session-Start — Harness laden, Projektstand erfassen, einsatzbereit melden.
 Read-only: dieser Command ändert nichts, er lädt und berichtet.
 
 1. **Harness finden** — Lookup-Reihenfolge aus den globalen Instructions:
-   `$AGENT_HARNESS_ROOT/README.md`, dann `~/.claude/harness/README.md`,
+   `$AGENT_HARNESS_ROOT/README.md`, dann `~/.agents/harness/README.md`,
+   dann `~/.claude/harness/README.md`,
    `~/.codex/harness/README.md`, `~/.config/opencode/harness/README.md`,
    sonst `harness/README.md` im
    ki-agent-setup-Repo. Nichts gefunden → melden, nicht raten.

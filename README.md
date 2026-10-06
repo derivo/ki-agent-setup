@@ -195,15 +195,16 @@ flowchart TD
 ```
 
 `APPLY.md` ist die Drehscheibe: Der Bootstrap-Skill liest sie, sie deployt die
-`instructions/` **und** das [`harness/`](harness/README.md) global in die
-Client-Config-Verzeichnisse (`~/.claude/`, `~/.codex/`, `~/.config/opencode/`),
+`instructions/` global in die Client-Config-Verzeichnisse (`~/.claude/`,
+`~/.codex/`, `~/.config/opencode/`) und das [`harness/`](harness/README.md)
+einmal client-neutral nach `~/.agents/harness/`,
 installiert die Tools und stellt die Skills wieder her. Das
 `harness/` ist der **generelle** Software-Entwicklungs-Workflow (stack-agnostisch);
 konkrete Stack-Details liegen als Adapter unter `harness/stacks/` (z. B.
 [`stacks/php`](harness/stacks/php/README.md) für PHP-Web + DB). Daneben gibt es
 das [`doc-harness/`](doc-harness/README.md) als Workflow für **Doku**-Projekte.
-Codex nutzt dafür `~/.codex/AGENTS.md` und den Harness-Mirror unter
-`~/.codex/harness/`; die Harness-Workflows werden als `$hx-*`-Skills unter
+Codex nutzt dafür `~/.codex/AGENTS.md` und dasselbe Harness unter
+`~/.agents/harness/`; die Harness-Workflows werden als `$hx-*`-Skills unter
 `~/.agents/skills/` hinterlegt. Ein separates `CODEX.md` gibt es in diesem Setup
 nicht.
 

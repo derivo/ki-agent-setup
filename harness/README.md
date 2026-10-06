@@ -16,7 +16,7 @@ Gate-Kommando, Test-Framework, verbotene Import-Muster) liegen als **Adapter**
 unter [`stacks/`](stacks/) und werden auf die generelle Methode aufgesetzt.
 
 **Global verfügbar.** Das Harness gilt für *jedes* Softwareprojekt, nicht optional
-pro Projekt. Es wird global hinterlegt (`~/.claude/harness/`) und von den globalen
+pro Projekt. Es wird global hinterlegt (client-neutral unter `~/.agents/harness/`) und von den globalen
 Instructions referenziert (siehe `../instructions/`). Bei einem konkreten Projekt
 wählt der Agent den passenden Stack-Adapter; gibt es keinen, arbeitet er nach der
 generellen Methode und legt bei Bedarf einen neuen Adapter an.

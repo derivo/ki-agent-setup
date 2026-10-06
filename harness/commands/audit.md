@@ -37,5 +37,5 @@ aufgerufener Lauf, kein Schritt vor der Fertig-Meldung.
 7. **Kein Auto-Fix.** Der Audit meldet. Fixes laufen danach als eigener Auftrag,
    pro Befund atomar, mit grünem Gate (GUARDRAILS C und D).
 
-Harness-Referenz: `~/.claude/harness/GUARDRAILS.md` (A, C),
+Harness-Referenz (Root per Lookup wie in `/hx:start`): `GUARDRAILS.md` (A, C),
 `GUARDRAILS_UI.md` (G), `ADR_TEMPLATE.md`, Stack-Adapter unter `stacks/`.

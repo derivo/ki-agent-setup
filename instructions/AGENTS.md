@@ -223,6 +223,7 @@ Bei Feature-/Code-Arbeit nach dem **Harness** entwickeln: Spec → Test → Code
 Gate → Korrektur, mit selbst-erzwungenen Guardrails und mechanischem
 Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg und Methode in
 dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
+`~/.agents/harness/README.md` (client-neutrales Root), dann die Client-Kopien
 `~/.claude/harness/README.md`, `~/.codex/harness/README.md`,
 `~/.config/opencode/harness/README.md`, sonst `harness/README.md` im
 ki-agent-setup-Repo. Danach den passenden Stack-Adapter unter dem gefundenen
@@ -246,10 +247,11 @@ Für Doku-Arbeit (README-Sammlungen, Handbücher, API-Doku) gilt analog das
 **Doc-Harness** (Claims-gegen-Quelle als Gate). Suchreihenfolge:
 wenn `$AGENT_HARNESS_ROOT` gesetzt ist, zuerst
 `$AGENT_HARNESS_ROOT/../doc-harness/README.md`, dann
-`~/.claude/doc-harness/README.md`, `~/.codex/doc-harness/README.md`,
-`~/.config/opencode/doc-harness/README.md`, sonst `doc-harness/README.md` im
-ki-agent-setup-Repo. Generierte Projekt-Doku braucht eine **vorher definierte
-Struktur** (`docs/README.md`/`docs/CLAUDE.md` im Projekt, Vorlage:
+`~/.agents/doc-harness/README.md`, `~/.claude/doc-harness/README.md`,
+`~/.codex/doc-harness/README.md`, `~/.config/opencode/doc-harness/README.md`,
+sonst `doc-harness/README.md` im ki-agent-setup-Repo. Generierte Projekt-Doku
+braucht eine **vorher definierte Struktur** (`docs/README.md`/`docs/CLAUDE.md`
+im Projekt, Vorlage:
 `doc-harness/DOC_TEMPLATE.md`) — ohne definierte Struktur keine generierte Doku.
 
 ## Testing — Pflichtstandard Edge Cases
@@ -339,7 +341,8 @@ Codex-spezifischen Hinweise hier und bleiben klar auf Codex begrenzt.
 - GSD-Runtime-Daten liegen unter `~/.codex/gsd-core` (seit dem Rename von
   `get-shit-done/`; ein Verzeichnis dieses alten Namens ist Altbestand).
 - Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
-  `~/.codex/harness/README.md`, sonst `harness/README.md` im `ki-agent-setup`-Repo.
+  `~/.agents/harness/README.md`, dann `~/.codex/harness/README.md`, sonst
+  `harness/README.md` im `ki-agent-setup`-Repo.
   Vor Feature-/Code-Arbeit den dortigen Einstieg und den passenden Stack-Adapter
   lesen.
 - Wenn verschachtelte Codex-Läufe nicht nach `~/.codex` schreiben können, via

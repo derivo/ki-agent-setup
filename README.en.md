@@ -195,15 +195,16 @@ flowchart TD
 ```
 
 `APPLY.md` is the hub: the bootstrap skill reads it, it deploys the
-`instructions/` **and** the [`harness/`](harness/README.md) globally into the
-client config directories (`~/.claude/`, `~/.codex/`, `~/.config/opencode/`),
+`instructions/` globally into the client config directories (`~/.claude/`,
+`~/.codex/`, `~/.config/opencode/`) and the [`harness/`](harness/README.md) once,
+client-neutral, into `~/.agents/harness/`,
 installs the tools, and restores the skills. The `harness/` is the
 **general** software-development workflow (stack-agnostic); concrete stack details
 live as adapters under `harness/stacks/` (e.g.
 [`stacks/php`](harness/stacks/php/README.md) for PHP web + DB). Alongside it,
 [`doc-harness/`](doc-harness/README.md) is the workflow for **documentation**
-projects. Codex uses `~/.codex/AGENTS.md` and the harness mirror under
-`~/.codex/harness/`; harness workflows are installed as `$hx-*` skills under
+projects. Codex uses `~/.codex/AGENTS.md` and the same harness under
+`~/.agents/harness/`; harness workflows are installed as `$hx-*` skills under
 `~/.agents/skills/`. This setup does not use a separate `CODEX.md`.
 
 For repo maintenance, there is a no-dependency baseline check:

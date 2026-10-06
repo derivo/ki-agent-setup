@@ -15,4 +15,4 @@ Bereite einen Pull Request für "$ARGUMENTS" (oder den aktuellen Branch) vor.
    stehenbleiben. Fremde Branches bleiben unangetastet: ein gemergter Branch kann
    in einer anderen Session oder auf einer anderen Maschine ausgecheckt sein.
 
-Harness-Referenz: `~/.claude/harness/AGENT_LOOP.md`, `feature.md`.
+Harness-Referenz (Root per Lookup wie in `/hx:start`): `AGENT_LOOP.md`, `feature.md`.

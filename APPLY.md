@@ -12,7 +12,7 @@ Jeder Schritt hat ein Verify-Kriterium; bei Konflikten nachfragen.
 Bestehende Werte des Users **nicht** blind überschreiben — mergen, Abweichungen
 melden. Das betrifft alle globalen Client-Verzeichnisse (`~/.claude/`,
 `~/.codex/`, `~/.config/opencode/`, optional
-`~/.harness/{harness,doc-harness}/`).
+`~/.agents/{harness,doc-harness}/`).
 
 ## Zielorte pro Client
 
@@ -26,8 +26,8 @@ melden. Das betrifft alle globalen Client-Verzeichnisse (`~/.claude/`,
 > die Runtime ab); Zeile aus der Tabelle entfernt, Details in B3.
 
 Primärer Zielort ist `~/.claude/`; die übrigen sind Cross-Client-Spiegel
-derselben Substanz. Ein zentrales Harness-Root (`~/.harness/harness/`, via
-`$AGENT_HARNESS_ROOT`) kann die Harness-Kopien pro Client ersetzen — siehe A2.
+derselben Substanz. Ein client-neutrales Harness-Root (`~/.agents/harness/`)
+ersetzt die Harness-Kopien pro Client — siehe A2.
 
 ---
 
@@ -70,25 +70,28 @@ unter `harness/stacks/` (oder legt einen neuen an).
 
 **Zwei Ablage-Strategien** (eine wählen):
 
-1. **Zentrales Root (empfohlen bei mehreren Clients):** Harness einmal ablegen,
-   `$AGENT_HARNESS_ROOT` darauf zeigen lassen. Der Lookup in
-   `instructions/AGENTS.md` prüft diese Variable zuerst — dann brauchen die
-   Clients **keine** eigene Harness-Kopie.
+1. **Client-neutrales Root (empfohlen):** Harness einmal unter `~/.agents/`
+   ablegen. Der Lookup in `instructions/AGENTS.md` und der SessionStart-Reminder
+   prüfen `~/.agents/harness/` fest verdrahtet direkt nach
+   `$AGENT_HARNESS_ROOT` — es braucht **keine** Env-Variable und keine
+   Harness-Kopie pro Client. Das zählt besonders für GUI-/IDE-Clients, die keine
+   Shell-rc-Dateien lesen.
    Entwicklungs- und Doc-Harness liegen als Geschwister, damit ihre relativen
    Links und der SessionStart-Reminder in Quell- und Deploy-Layout identisch
-   funktionieren.
+   funktionieren. `~/.agents/skills/` ist geteilt — `rsync --delete` nur auf die
+   beiden Unterordner, nie auf `~/.agents/` selbst.
    ```bash
-   mkdir -p ~/.harness
-   export AGENT_HARNESS_ROOT="$HOME/.harness/harness"
-   echo 'export AGENT_HARNESS_ROOT="$HOME/.harness/harness"' >> ~/.zshrc
-   rsync -a --delete harness/ ~/.harness/harness/
-   rsync -a --delete doc-harness/ ~/.harness/doc-harness/
+   mkdir -p ~/.agents
+   rsync -a --delete harness/ ~/.agents/harness/
+   rsync -a --delete doc-harness/ ~/.agents/doc-harness/
    ```
+   `$AGENT_HARNESS_ROOT` bleibt als Override für einen abweichenden Ort
+   (z. B. ein Checkout); der Lookup prüft die Variable vor `~/.agents/harness/`.
 2. **Kopie pro Client:** Harness in das Config-Verzeichnis jedes Clients spiegeln
    (Befehl im jeweiligen Teil-B-Block).
 
 > **Achtung — `--delete` ist destruktiv.** Alle `rsync`-Ziele für das Harness
-> (`~/.harness/{harness,doc-harness}/`, `~/.{claude,codex,gemini}/harness/`,
+> (`~/.agents/{harness,doc-harness}/`, `~/.{claude,codex,gemini}/harness/`,
 > `~/.config/opencode/harness/`, die `doc-harness/`-Pendants,
 > `~/.claude/commands/hx/`) sind **repo-owned Mirror**: `--delete` löscht im Ziel
 > alles, was nicht aus der Quelle stammt. Das ist Absicht (sauberer Mirror),
@@ -103,9 +106,10 @@ deployt und aufgerufen (Namespace-Konventionen weichen ab) — siehe Teil B.
 `harness/commands/README.md` ist Doku, **kein** Command — beim Command-Deploy
 ausschließen.
 
-**Verify:** Beim zentralen Root existieren
-`"$AGENT_HARNESS_ROOT/README.md"` **und**
-`"$AGENT_HARNESS_ROOT/../doc-harness/README.md"`; bei einer Client-Kopie
+**Verify:** Beim client-neutralen Root existieren
+`~/.agents/harness/README.md` **und** `~/.agents/doc-harness/README.md`
+(beim Override entsprechend unter `$AGENT_HARNESS_ROOT` und
+`$AGENT_HARNESS_ROOT/../doc-harness`); bei einer Client-Kopie
 existiert die jeweilige `harness/README.md`. `harness/stacks/` zeigt die Adapter.
 
 ## A3. GSD (get-shit-done)
@@ -514,7 +518,7 @@ ponytail schreibt seinen Zustand in eine Flag-Datei unter `~/.claude/`
 mitgespiegelt.
 
 ### B1.6 Harness + Commands + Reminder
-Harness-Kopie (falls kein zentrales Root aus A2):
+Harness-Kopie (falls kein client-neutrales Root aus A2):
 ```bash
 rsync -a --delete harness/ ~/.claude/harness/
 rsync -a --delete doc-harness/ ~/.claude/doc-harness/   # optional
@@ -541,10 +545,11 @@ chmod +x ~/.claude/hooks/harness-activate.sh
 #                  "timeout": 5 } ] }
 ```
 Der Hook resolved den Root wie `instructions/AGENTS.md` (zuerst
-`$AGENT_HARNESS_ROOT`, sonst `~/.claude/harness`); fehlt der Root, bleibt er still.
+`$AGENT_HARNESS_ROOT`, dann `~/.agents/harness`, sonst `~/.claude/harness`);
+fehlt der Root, bleibt er still.
 
-**Verify:** `~/.claude/harness/README.md` (oder `$AGENT_HARNESS_ROOT/README.md`)
-existiert; `ls ~/.claude/commands/hx/` enthält die Harness-Commands; neue Session
+**Verify:** `~/.agents/harness/README.md` (oder `$AGENT_HARNESS_ROOT/README.md`
+bzw. die Kopie `~/.claude/harness/README.md`) existiert; `ls ~/.claude/commands/hx/` enthält die Harness-Commands; neue Session
 zeigt eine `HARNESS AKTIV …`-Zeile.
 
 ### B1.7 MCP + Skills
@@ -637,7 +642,7 @@ Installer (A3) für Runtime „Codex" laufen lassen (Runtime-Daten unter
 eintragen.
 
 ### B2.3 Harness + Commands
-Harness-Kopie (falls kein zentrales Root aus A2):
+Harness-Kopie (falls kein client-neutrales Root aus A2):
 ```bash
 rsync -a --delete harness/ ~/.codex/harness/
 rsync -a --delete doc-harness/ ~/.codex/doc-harness/   # optional
@@ -663,10 +668,10 @@ scripts/deploy-codex-harness-skills.sh
 ```
 
 Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
-`~/.codex/harness/README.md`.
+`~/.agents/harness/README.md`, dann `~/.codex/harness/README.md`.
 
-**Verify:** Bei der Client-Kopie ist `diff -qr harness/ ~/.codex/harness/` grün
-(beim zentralen Root entsprechend gegen `$AGENT_HARNESS_ROOT` vergleichen).
+**Verify:** Beim client-neutralen Root ist `diff -qr harness/ ~/.agents/harness/`
+grün (bei der Client-Kopie entsprechend gegen `~/.codex/harness/`).
 `scripts/deploy-codex-harness-skills.sh --check` bestätigt, dass alle
 `hx-*`-Skills exakt aus den Command-Quellen gerendert wurden und keine veralteten
 Harness-Skills übrig sind. In einer neuen Codex-Session listet `/skills` die
@@ -729,11 +734,10 @@ einen `gsd`-MCP-Eintrag in die `opencode.json` ein.
 `opencode mcp list` zeigt den `gsd`-Server.
 
 ### B4.3 Harness + Commands
-Harness ist über `$AGENT_HARNESS_ROOT` (A2) bereits erreichbar — opencode erbt die
-Shell-Env, ein eigener Mirror ist **nicht** nötig. Nur ohne zentrales Root eine
-Kopie anlegen:
+Harness ist über `~/.agents/harness/` (A2) bereits erreichbar — ein eigener
+Mirror ist **nicht** nötig. Nur ohne client-neutrales Root eine Kopie anlegen:
 ```bash
-rsync -a --delete harness/ ~/.config/opencode/harness/   # nur ohne AGENT_HARNESS_ROOT
+rsync -a --delete harness/ ~/.config/opencode/harness/   # nur ohne ~/.agents/harness
 rsync -a --delete doc-harness/ ~/.config/opencode/doc-harness/   # optional
 ```
 Command-Library: opencode liest Custom-Commands **flach** aus
@@ -751,7 +755,7 @@ for f in harness/commands/*.md; do
   sed 's#/hx:#/hx-#g' "$f" > ~/.config/opencode/command/hx-"$base"
 done
 ```
-**Verify:** Harness via `$AGENT_HARNESS_ROOT/README.md` erreichbar (oder Kopie
+**Verify:** Harness via `~/.agents/harness/README.md` erreichbar (oder Kopie
 unter `~/.config/opencode/harness/`); `ls ~/.config/opencode/command/` enthält die
 Commands als `hx-*.md`; `grep -rl '/hx:' ~/.config/opencode/command/hx-*.md`
 liefert **nichts**.
@@ -766,8 +770,8 @@ opencode-Konvention.
 ## Abschluss-Verifikation
 
 Kern (Teil A), unabhängig vom Client:
-- `"$AGENT_HARNESS_ROOT/README.md"` **oder** die client-lokale Harness-Kopie
-  vorhanden; `harness/stacks/` zeigt die Adapter.
+- `~/.agents/harness/README.md` (bzw. `"$AGENT_HARNESS_ROOT/README.md"`) **oder**
+  die client-lokale Harness-Kopie vorhanden; `harness/stacks/` zeigt die Adapter.
 - GSD-Runtime im Config-Verzeichnis des Clients (`<config>/gsd-core/` mit
   `VERSION`); `gsd-help` verfügbar.
 - MCP-Kern-Set aus `MCP_SERVERS.md` verbunden.

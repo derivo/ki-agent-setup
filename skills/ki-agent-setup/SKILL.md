@@ -33,7 +33,7 @@ die Single-Source-of-Truth — bei Widerspruch gewinnen sie, nicht dieser Skill.
   ein vorhandenes Config-Verzeichnis zählt nicht als Beleg.
 - Bestehenden Stand der **bespielten** Clients erfassen:
   `~/.claude/settings.json`, `claude plugin list`, vorhandene
-  `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.codex/harness/`,
+  `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/harness/`, `~/.codex/harness/`,
   `~/.agents/skills/hx-*` und `codex mcp list`. **Nicht** blind überschreiben —
   mergen.
 

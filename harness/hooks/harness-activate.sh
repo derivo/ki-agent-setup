@@ -16,8 +16,9 @@
 # context (the same mechanism plugin SessionStart hooks use). Keep the output
 # short — it is paid for on every session start.
 #
-# Lookup mirrors instructions/AGENTS.md: prefer $AGENT_HARNESS_ROOT, else the
-# per-client copy under the resolved config dir.
+# Lookup mirrors instructions/AGENTS.md: prefer $AGENT_HARNESS_ROOT, then the
+# client-neutral root ~/.agents/harness, else the per-client copy under the
+# resolved config dir.
 #
 # One exception to "keep the output short": after /compact the hook fires again
 # (source=compact), but the harness files read during the session are gone —
@@ -41,6 +42,8 @@ fi
 # Resolve the harness root the same way the global instructions tell the agent to.
 if [ -n "${AGENT_HARNESS_ROOT:-}" ] && [ -f "${AGENT_HARNESS_ROOT}/README.md" ]; then
   root="${AGENT_HARNESS_ROOT}"
+elif [ -f "$HOME/.agents/harness/README.md" ]; then
+  root="$HOME/.agents/harness"
 else
   cfg="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
   root="${cfg}/harness"

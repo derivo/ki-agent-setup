@@ -45,7 +45,7 @@ speziell.
 ### 6. Committen
 Atomarer Commit; in der Message steht, dass die URL in der Session aufgelöst wurde
 (Provenance). Danach ggf. Deploy-Mirror syncen (Linklist liegt unter `harness/`,
-wird per `rsync harness/ ~/.claude/harness/` mitgezogen — siehe `APPLY.md`).
+wird per `rsync harness/ ~/.agents/harness/` mitgezogen — siehe `APPLY.md`).
 
 ## Nicht Aufgabe dieses Skills
 Ausgeben/Ansehen der Liste → Command `/hx:linklist` (read-only). Dieser Skill

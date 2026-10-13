@@ -19,13 +19,15 @@ Quellen, die **periodisch abgefragt** werden, um Änderungen zu finden.
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [anthropic.com/engineering](https://www.anthropic.com/engineering) | `curl` + grep auf `(Mon) DD, YYYY`; Index ist datiert | Methoden-Primärquelle. Hersteller mit Produktionsdaten. |
+| [anthropic.com/engineering](https://www.anthropic.com/engineering) | `curl` + grep auf `(Mon) DD, YYYY`; Index ist datiert | Methoden-Primärquelle. Hersteller mit Produktionsdaten. **Seit 23.04.2026 ohne neuen Post** (Stand 11.10.2026) — allein kein Ausschluss mehr, nur zusammen mit claude.dev. |
+| [claude.dev](https://claude.dev/) | `curl https://claude.dev/` (`/blog/` leitet dorthin), grep auf `(Mon) DD, YYYY` + `href="/blog/<slug>/"`; je Post JSON-LD `datePublished` + `articleSection` (Engineering / Playbooks / Agents) | Anthropics Engineering-Posts erscheinen **seit mindestens 24.07.2026 hier** statt auf anthropic.com/engineering. Hersteller: Produkt-Interesse, Zahlen meist aus eigenen Tests ohne Kontrollarm. |
 | [martinfowler.com/articles/harness-engineering.html](https://martinfowler.com/articles/harness-engineering.html) | `curl` + grep auf `Significant Revisions` | Vokabular/Konzepte. Revisionsdatum im Dokument. |
 | [Claude Code CHANGELOG](https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md) | **nur die Raw-URL.** Mit `curl`+`awk` lesen, nicht per Fetch-Zusammenfassung | Plattform-Takt. Eine Plattform-Änderung kann eine Harness-Regel verbilligen oder erübrigen. |
 | [simonwillison.net/tags/coding-agents/](https://simonwillison.net/tags/coding-agents/) | `curl` + grep auf `<h3>` und Datum | Der **unabhängige Prüfer** der Liste: verifiziert primär und widerspricht Hersteller-Zahlen. |
 
-Die ersten beiden sind der günstigste Ausschluss: unverändertes Datum → kein Fund, ohne
-weitere Abrufe.
+Die ersten drei sind der günstigste Ausschluss: unverändertes Datum → kein Fund, ohne
+weitere Abrufe. Ein Ausschluss gilt nur, solange die Quelle noch der Ort ist, an dem
+publiziert wird — ein über Monate stehendes Datum ist ein Anlass, das zu prüfen.
 
 **Jeden Lauf, teurer:**
 
@@ -43,7 +45,7 @@ weitere Abrufe.
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/owner/repo"`; `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. |
+| [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/owner/repo"`; `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. **Kadenz: wöchentlich.** |
 | GitHub Search API | **`gh search repos` statt `curl`** — authentifiziert 30 Anfragen/min statt 10. `--sort stars`, Query mit `created:>YYYY-MM-DD` für Neues | Gezielter als Trending: sucht einen Begriff statt eines Zeitfensters. |
 
 Stars sind **Aufmerksamkeit, nicht Qualität** — ein Werkzeug mit 7k Stars und zwei Wochen
@@ -60,9 +62,8 @@ oder Werkzeug** betrifft:
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [news.ycombinator.com](https://hn.algolia.com/?query=coding%20agent&sort=byPopularity&type=story) | Algolia-API/Suche, Begriff + Popularität | Früher Indikator für Werkzeuge. Kommentare oft wertvoller als der Link. |
-| [hamel.dev](https://hamel.dev/) | `curl`, datierter Index | LLM-Evals aus der Praxis — einschlägig fürs Gate-Thema. |
-| [huyenchip.com/blog](https://huyenchip.com/blog/) | `curl`, datierter Index | Systemdesign um LLMs, keine Produkt-PR. |
+| [news.ycombinator.com](https://hn.algolia.com/?query=coding%20agent&sort=byPopularity&type=story) | Algolia-API/Suche, Begriff + Popularität | Früher Indikator für Werkzeuge. Kommentare oft wertvoller als der Link. **Kadenz: wöchentlich.** |
+| [hamel.dev](https://hamel.dev/) | `curl`, grep auf `data-listing-date-sort` (Epoch-ms) + `data-listing-title-sort`; sichtbares Datum ist `M/D/YY`, ein grep auf `(Mon) DD, YYYY` findet nichts | LLM-Evals aus der Praxis — einschlägig fürs Gate-Thema. **Kadenz: monatlich.** |
 
 Ist eine Meldung aus `ki-news` methodisch einschlägig, wird sie **hier** geprüft (gegen
 §4), nicht dort — das Briefing berichtet, diese Routine urteilt.
@@ -104,6 +105,7 @@ Erfüllt sie es nicht, kommt sie nach §5 — damit kein Folgelauf sie erneut pr
 |---|---|
 | [metr.org/blog](https://metr.org/blog) | Lebt, misst aber **Modelle** (Predeployment-Evals, Task-Horizons), nicht Harness-Methode. |
 | openai.com/index/harness-engineering | **403 für Fetch**, mehrfach bestätigt. Nicht pollbar; bleibt Sekundärzitat. |
+| [huyenchip.com/blog](https://huyenchip.com/blog/) | Gestrichen 2026-10-13: letzter Post 16.01.2025, seit über anderthalb Jahren kein Ertrag. Wieder aufnehmen nur bei neuer Publikationstätigkeit. |
 | YouTube-Kanäle zu Agenten-Praxis | Titel-Triage möglich (`WebSearch` mit `allowed_domains`), Inhalte nicht: Consent-Wall, kein `yt-dlp`. Hat noch nie eine Methodenregel getragen. |
 | Awesome-Listen (`awesome-harness-engineering` u. a.) | Linksammlung ohne Erhebung. Einmal nach neuen Primärquellen durchsehen, nicht aufnehmen. |
 | Medium-/SEO-Schicht zu „agent harness" | Wiederholt geprüft, nie ein Methodenfund. |

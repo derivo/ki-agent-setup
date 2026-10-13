@@ -140,6 +140,22 @@ zeigt auf den Sweep). Legt das Projekt fest, dass es keinen Formatter und keine
 statische Analyse führt, entfällt die Pflicht — sie rechtfertigt nicht, ein
 solches Werkzeug dafür einzuführen.
 
+### Reparatur vor Fortschritt
+Ein **Defekt** — rotes Gate, veralteter Snapshot oder Baseline, kaputter Test,
+Typfehler — wird behoben, **bevor** der nächste Plan oder Schritt beginnt, auch
+wenn er nicht aus der eigenen Änderung stammt. Nach jedem Plan werden die Gates
+des Stacks vollständig gemessen, nicht nur die des eigenen Diffs; ein roter Rest
+ist kein „Carryforward", sondern der nächste Arbeitsschritt. Was bewusst stehen
+bleibt, wird mit Datei:Zeile, Grund und späteren Kosten in der Schuldenliste des
+Projekts geführt, nicht nur im Summary.
+
+Grenzen, damit das *Surgical Changes* nicht aushebelt: gilt für Defekte, nicht für
+Dead-Code oder Stil (die bleiben „nur erwähnen"); behoben wird der Defekt, kein
+Sweep; ein Fix, der mehr als einen Handgriff braucht, wird als Plan vorgelegt
+(→ Autonome Batches); Commits weiter nur mit Freigabe. Ein Projekt darf strenger
+sein, nicht laxer. Anlass: Dennis, 2026-10-03 („reparieren und technische Schulden
+abbauen hat immer Vorrang").
+
 ### Consistency First
 Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleiche
 Bausteine für gleiche Zwecke (Buttons/UI, Fehlerbehandlung, API-Shapes, Naming).

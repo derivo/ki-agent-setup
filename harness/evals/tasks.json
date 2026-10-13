@@ -30,7 +30,7 @@
       ],
       "setup": "Scratch-Frontend mit Registrierungsformular und lauffähigem E2E-Runner.",
       "prompt": "Schreibe E2E-Tests für ein Registrierungsformular [Name, E-Mail, Passwort, PW-Bestätigung, AGB].",
-      "pass": "Volle Ein-Feld-falsch-Matrix (alle Felder rotiert), Keyboard-Submit als eigener Test, Assertions auf exakten Fehlertext, Happy Path zuletzt — die vier Pflichten aus `instructions/AGENTS.md` → Testing.",
+      "pass": "Volle Ein-Feld-falsch-Matrix (alle Felder rotiert), Keyboard-Submit als eigener Pfad (eigene Testfunktion oder eigener Parametrisierungs-Fall, der per Enter absendet — nicht nur als Nebenbemerkung in einem Click-Test), Assertions auf exakten Fehlertext, Happy Path zuletzt — die vier Pflichten aus `instructions/AGENTS.md` → Testing.",
       "discrimination": "unverified — never ablated"
     },
     {

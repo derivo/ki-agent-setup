@@ -438,7 +438,7 @@ Top-Level-Keys setzen (mit Bestehenden mergen):
 {
   "language": "deutsch",
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "tui": "fullscreen",
   "theme": "dark-ansi",
   "voice": { "enabled": true, "mode": "hold" }

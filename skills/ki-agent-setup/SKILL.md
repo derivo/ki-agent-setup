@@ -48,7 +48,7 @@ Verify-Kriterium, bevor du weitergehst:
 5. Hooks eintragen (GSD-Guards, Tool-Guard). **Plugin-eigene Hooks nicht** —
    ponytail bringt seine Aktivierungs-/Tracker-Hooks selbst mit, ein zweiter
    Eintrag in `settings.json` lässt sie doppelt feuern (`APPLY.md` B1.5).
-6. Globale Settings setzen (Deutsch, Thinking, effort high, Theme …).
+6. Globale Settings setzen (Deutsch, Thinking, effort medium, Theme …).
 7. Globale Arbeitsregeln (`AGENTS.md`/`CLAUDE.md`, inkl. Codex-Abschnitt in
    `AGENTS.md`) sicherstellen.
 8. Zusätzliche Skills außerhalb von GSD und den Plugins nach

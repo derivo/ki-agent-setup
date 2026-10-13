@@ -152,6 +152,9 @@ Bevor du „alle / vollständig / jedes X" meldest: die tatsächliche Grundgesam
 von X aus der **Ground Truth** enumerieren (Controller, Routen, Dateien, DB), nie
 aus einem Proxy (Feature-Flag-Liste, Doku-Kapitel, Erinnerung). Die Zählung selbst
 ist Teil des Fertig-Kriteriums — nicht nur „ist jedes bekannte Element geprüft".
+Ein Bericht über eine verlangte Menge (Dateien, Seiten, Einträge) weist **gelesen /
+gesamt** aus („12/15 gelesen") und benennt das Ungelesene — sonst klingt Teilabdeckung
+wie Vollständigkeit.
 
 ### Regel — Abwesenheit so streng belegen wie Anwesenheit
 Eine „X fehlt / nicht vorhanden / nicht verdrahtet"-Aussage braucht dieselbe
@@ -345,6 +348,10 @@ Prüftiefe.
 - **Unsichere Defaults:** Keine deaktivierte Zertifikatsprüfung, kein `eval`/
   dynamische Deserialisierung auf Nutzerdaten, keine offenen CORS-/Debug-Flags in
   Produktionspfaden.
+- **Domänen-Fallen:** Geld als Decimal/Cent, gerundet erst am Ende, kein
+  Float-Vergleich; wiederholbare Handler idempotent (Idempotency-Key); Passwörter nur
+  gesalzen und langsam gehasht (bcrypt/argon2); Redirect- und Pfad-Ziele gegen eine
+  Allowlist validiert.
 - **Abhängigkeiten:** Neue Dependency bewusst gewählt (Zweck, Pflege, Herkunft) —
   nicht blind hinzugefügt.
 

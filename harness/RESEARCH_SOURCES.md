@@ -47,6 +47,7 @@ publiziert wird — ein über Monate stehendes Datum ist ein Anlass, das zu prü
 |---|---|---|
 | [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/owner/repo"`; `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. **Kadenz: wöchentlich.** |
 | GitHub Search API | **`gh search repos` statt `curl`** — authentifiziert 30 Anfragen/min statt 10. `--sort stars`, Query mit `created:>YYYY-MM-DD` für Neues | Gezielter als Trending: sucht einen Begriff statt eines Zeitfensters. |
+| [agentskills.io/specification](https://agentskills.io/specification) | `curl` + grep auf JSON-LD `"dateModified"` (Stand 04.08.2026); `gitLastModified` ist leer | Primär-Spec des Skill-Formats, das die Repo-Skills (`skills/`) client-übergreifend tragen. Von Anthropic gestartet, offene Beiträge, kein Normungsgremium. **Kadenz: quartalsweise.** |
 
 Stars sind **Aufmerksamkeit, nicht Qualität** — ein Werkzeug mit 7k Stars und zwei Wochen
 Historie ist ein Kandidat, kein Standard. Was ein GitHub-Fund belegen muss, steht in §4.
@@ -109,6 +110,12 @@ Erfüllt sie es nicht, kommt sie nach §5 — damit kein Folgelauf sie erneut pr
 | YouTube-Kanäle zu Agenten-Praxis | Titel-Triage möglich (`WebSearch` mit `allowed_domains`), Inhalte nicht: Consent-Wall, kein `yt-dlp`. Hat noch nie eine Methodenregel getragen. |
 | Awesome-Listen (`awesome-harness-engineering` u. a.) | Linksammlung ohne Erhebung. Einmal nach neuen Primärquellen durchsehen, nicht aufnehmen. |
 | Medium-/SEO-Schicht zu „agent harness" | Wiederholt geprüft, nie ein Methodenfund. |
+| arxiv cs.AI / cs.CL als zweiter Paper-Feed | Geprüft 2026-10-15: alle einschlägigen Paper des Laufs (2602.11988, 2603.00539, 2610.10610, 2610.14460) haben `cs.SE` als Primärkategorie — der bestehende Feed fängt sie. Mehr Volumen, kein Mehrertrag. |
+| [modelcontextprotocol.io/specification/versioning](https://modelcontextprotocol.io/specification/versioning) | Löst auf, datierte Versionen. Aber Plattform-Ebene: Client-Unterstützung zeigt der Claude-Code-CHANGELOG, das Repo führt nur Server-Auswahl (`MCP_SERVERS.md`), keine Protokoll-Details. |
+| [havoptic.com](https://www.havoptic.com/whats-new/claude-code) | Aggregator des Claude-Code-CHANGELOG; einziger Mehrwert sind Release-Daten. Primär bleibt die Raw-URL. |
+| Paper-Aggregatoren: [hyper.ai](https://hyper.ai/en/news/42900), [awesome-ai-agent-papers](https://github.com/VoltAgent/awesome-ai-agent-papers), [corca.substack.com](https://corca.substack.com/about) | Sekundär, referieren arxiv-Primärquellen → verdoppeln Abrufkosten (§4 Punkt 4). |
+| [ArxivDigest](https://github.com/dmytro-spodarets/ArxivDigest) | Werkzeug zum Filtern von arxiv-Feeds, keine Quelle. |
+| Papers with Code | [Eingestellt](https://www.codesota.com/papers-with-code/shutdown); nicht mehr pollbar. |
 
 ---
 

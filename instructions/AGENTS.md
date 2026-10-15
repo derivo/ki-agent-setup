@@ -156,6 +156,41 @@ Sweep; ein Fix, der mehr als einen Handgriff braucht, wird als Plan vorgelegt
 sein, nicht laxer. Anlass: Dennis, 2026-10-03 („reparieren und technische Schulden
 abbauen hat immer Vorrang").
 
+### Wartezeiten nutzen — Wartungsrunde anbieten
+Ist die laufende Aufgabe fertig oder wartet nur noch auf etwas Absehbares (langer
+Background-Lauf, CI, Deploy, Rückmeldung des Nutzers), **fragt** der Client, ob
+die Zeit für eine Wartungsrunde genutzt wird — er startet sie nicht ungefragt.
+Die Frage nennt den aktuellen Stand, belegt statt geschätzt:
+- offene technische Schulden (Schuldenliste des Projekts: Anzahl, teuerster Eintrag),
+- Doku-/State-Drift (`.planning/STATE.md` bzw. Worklog gegen `git log`),
+- letzter Review- und Kartografie-Stand (Datum, sonst `UNBEKANNT:`),
+- graphify-Voraussetzungen, je fehlende mit Befehl: CLI nicht installiert
+  (`command -v graphify` leer) → `uv tool install graphifyy`; im Projekt nicht
+  aktiv → `node ~/.claude/gsd-core/bin/gsd-tools.cjs config-set graphify.enabled true`.
+  Installieren und Aktivieren nur auf Zuruf.
+
+Bei Zustimmung in dieser Reihenfolge:
+1. **Technische Schulden lösen** — nach *Reparatur vor Fortschritt*.
+2. **Doku und State** auf den belegten Stand bringen (Doc-Harness).
+3. **Stand reviewen** durch den jeweils anderen Client — nur in genau diesen
+   zwei Richtungen und nur, wenn dessen CLI installiert ist:
+   - Client ist **Claude Code** und `command -v codex` trifft → Codex über das
+     codex-Plugin (`/codex:rescue`).
+   - Client ist **Codex** und `command -v claude` trifft → Claude Code
+     headless (`claude -p`).
+
+   Andere Clients oder fehlende CLI → kein Cross-Review; der Schritt wird als
+   übersprungen gemeldet (mit Grund), nicht ersetzt. Auftrag: aktuelle Codebase
+   analysieren, trägt das Konzept, hat der Code Bugs. Findings werden geprüft,
+   nicht übernommen (→ Haltung).
+4. **Code kartografieren** mit `/gsd-graphify build`. Setzt
+   `graphify.enabled: true` in `.planning/config.json` voraus; fehlt das, wird der
+   Schritt als übersprungen gemeldet, nicht still eingeschaltet.
+
+Grenzen: Commits weiter nur mit Freigabe; Fixes über einen Handgriff → Plan
+(→ Autonome Batches); kommt die eigentliche Aufgabe zurück, hat sie Vorrang.
+Anlass: Dennis, 2026-10-14.
+
 ### Consistency First
 Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleiche
 Bausteine für gleiche Zwecke (Buttons/UI, Fehlerbehandlung, API-Shapes, Naming).

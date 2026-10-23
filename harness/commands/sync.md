@@ -8,7 +8,7 @@ an*, er ändert das Repo nicht.
 
 ## Was dieser Command nicht selbst weiß
 
-Die Einzelschritte stehen in [`APPLY.md`](../../APPLY.md) und werden vom
+Die Einzelschritte stehen in `APPLY.md` im ki-agent-setup-Checkout und werden vom
 Skill `ki-agent-setup` orchestriert. Dieser Command **dupliziert sie nicht** — er
 ist der Einstiegspunkt und ergänzt die zwei Schritte, die beim reinen Sync
 zusätzlich anfallen. Bei Widerspruch gewinnt `APPLY.md`.

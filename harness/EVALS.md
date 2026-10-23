@@ -124,7 +124,7 @@ keine über Wirksamkeit.
   „nicht reproduziert" führen — weder als Regression noch als Infrastruktur-Noise
   verbuchen, solange keine Infra-Ursache belegt ist. Ein grüner Zweitlauf
   unterscheidet einen stochastischen Fehler nicht von einem Umgebungsproblem
-  (GUARDRAILS.md C → Stochastische Defekte). Ein Ein-Lauf-Fail belegt keine Regression — analog zu
+  (DEBUG.md → Stochastische Defekte). Ein Ein-Lauf-Fail belegt keine Regression — analog zu
   „Abwesenheit so streng belegen wie Anwesenheit" (GUARDRAILS.md C). Infra-Konfig
   kann Ergebnisse messbar schwanken lassen (dokumentiert: Swings größer als der
   Abstand zwischen Top-Modellen), also mehr als der Effekt, den ein Lauf gerade

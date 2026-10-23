@@ -139,7 +139,7 @@ const dir = data.workspace?.current_dir || process.cwd();
 let gsdLine = '';
 try {
   gsdLine = execFileSync(process.execPath, [path.join(__dirname, 'gsd-statusline.js')], {
-    input, encoding: 'utf8',
+    input, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'],
   }).replace(/\n+$/, '');
   // The GSD renderer prints a full four-line block of its own; only its last
   // line carries the milestone/phase/project cells. Keeping the whole output
@@ -175,7 +175,7 @@ const rows = [];
 {
   const rl = data.rate_limits || {};
   const limit = (window, withDay) => {
-    if (!window) return DIM + NONE + OFF;
+    if (typeof window?.used_percentage !== 'number') return DIM + NONE + OFF;
     const at = resetTime(window.resets_at, withDay);
     return meter(window.used_percentage) + (at ? `${DIM} - ${at}${OFF}` : '');
   };

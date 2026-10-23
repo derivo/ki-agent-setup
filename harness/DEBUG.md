@@ -1,4 +1,5 @@
-> **Lade wenn:** ein Bug hat eine normale Runde überlebt.
+> **Lade wenn:** ein Bug hat eine normale Runde überlebt, der Nutzer meldet ihn nach
+> einem Fix als weiter bestehend, oder er tritt nicht bei jedem Lauf auf.
 
 # Debuggen — der hypothesengetriebene Investigations-Loop
 
@@ -89,6 +90,41 @@ Bei Performance-/Latenz-/Timing-Bugs steht am Anfang **Instrumentierung**, nicht
 eine Vermutung: definierte Messpunkte (z. B. `[TIMING]`-Marker je Stufe) einziehen,
 damit die nächste Beschwerde **gemessen** statt geschätzt wird. Ein Bug, der sich
 nicht messen lässt, lässt sich nicht sauber falsifizieren.
+
+---
+
+## Immer noch kaputt — reproduzieren, nicht raten
+Meldet der Nutzer nach einem Fix, dass ein Verhalten/visueller Bug weiter besteht,
+wird VOR dem nächsten Fix eine deterministische Reproduktion des exakten Symptoms
+gebaut (Skript, DOM-/State-Sample, Video, Log) und die Ursache daran belegt. Kein
+zweiter spekulativer Fix ohne Reproduktion — gestapelte Vermutungs-Fixes kaschieren
+die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z. B.
+Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
+als „gefixt / nicht reproduzierbar" gewertet.
+
+Ist der Defekt an eine Umgebung gebunden, die der Agent nicht selbst fahren kann
+(fremder Browser, fremdes OS, Gerät des Nutzers), ersetzt eine andere Umgebung die
+Reproduktion NICHT. Dann werden Messwerte aus der betroffenen Umgebung angefordert
+(Konsolen-Snippet, Log, Ausschnitt) und die Beobachtung zuerst in Klassen zerlegt —
+bei Rendering-Befunden Geometrie gegen Paint gegen Umgebungs-Chrome. Ein Mechanismus
+wird erst benannt, wenn die Messung die anderen Klassen ausschließt; bis dahin gilt
+der Befund als offen, auch wenn ein Fix plausibel wirkt. Ein vermuteter Mechanismus
+gehört nicht in ein dauerhaftes Artefakt (PR-Body, Commit, Doku).
+
+## Stochastische Defekte — Rate samt Unsicherheit messen
+Tritt ein Defekt **nicht bei jedem Lauf** auf, ist ein grüner Lauf **kein**
+Fertig-Beleg — ein ungefixter Stand liefert bei kleiner Stichprobe genauso grün.
+Wenn sicher und praktikabel, vor dem Fix eine **Baseline** als
+`Fehlschläge/Läufe` mit benanntem `n` und Bedingungen messen; nach dem Fix unter
+vergleichbarer Exposition wiederholen und **beide Zahlen** melden. `0/n` ist keine
+bewiesene Nullrate, sondern eine endliche Stichprobe.
+
+Ist eine Baseline unsicher, unverhältnismäßig oder nicht mehr reproduzierbar, wird
+der Defekt nicht eigens dafür erneut ausgelöst. Dann vorhandene Evidenz, eine
+sichere deterministische Fixture oder den belegten Ursachenpfad verwenden und die
+fehlende Vorher-/Nachher-Rate benennen. „Gefixt" setzt zusätzlich voraus, dass der
+Fix den belegten Fehlerpfad schließt; nur bessere Sichtbarkeit oder eine nicht
+messbar gesenkte Rate wird als Mitigation ausgewiesen.
 
 ---
 

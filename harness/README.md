@@ -1,8 +1,8 @@
 # Harness — dokumentarisches Entwicklungs-Set
 
 Dieses Verzeichnis ist ein **Anleitungs-Set** für Softwareentwicklung, kein
-Werkzeug. Es enthält keine Skripte und keine CI-Pipeline — nur Dokumentation, aus
-der ein KI-Agent ableiten kann, *wie* entwickelt wird: von der Idee über die Spec
+Werkzeug. Die Methode ist reine Dokumentation (Hilfsskripte gibt es nur für Hooks
+unter `hooks/` und den Eval-Validator unter `evals/`) — aus ihr leitet ein KI-Agent ableiten kann, *wie* entwickelt wird: von der Idee über die Spec
 und die Tests zum Code, abgesichert durch selbst-erzwungene Gates.
 
 Der Gedanke: Das Harness sind die Leitplanken (was gilt), der Agent ist der
@@ -17,7 +17,7 @@ unter [`stacks/`](stacks/) und werden auf die generelle Methode aufgesetzt.
 
 **Global verfügbar.** Das Harness gilt für *jedes* Softwareprojekt, nicht optional
 pro Projekt. Es wird global hinterlegt (client-neutral unter `~/.agents/harness/`) und von den globalen
-Instructions referenziert (siehe `../instructions/`). Bei einem konkreten Projekt
+Instructions referenziert (im ki-agent-setup-Repo unter `instructions/`). Bei einem konkreten Projekt
 wählt der Agent den passenden Stack-Adapter; gibt es keinen, arbeitet er nach der
 generellen Methode und legt bei Bedarf einen neuen Adapter an.
 
@@ -26,8 +26,8 @@ generellen Methode und legt bei Bedarf einen neuen Adapter an.
 ## Dateien & Lade-Trigger
 
 **Es gibt keine Lesereihenfolge, die man immer durchläuft.** Das ganze Set sind
-rund 115 KB Methode plus ein Stack-Adapter — als Pflichtlektüre vor jedem Write
-wären das ~34k Token, auch für einen Ein-Zeilen-Fix. Kontext, der für die
+rund 150 KB Methode plus ein Stack-Adapter — als Pflichtlektüre vor jedem Write
+wären das ~35k Token, auch für einen Ein-Zeilen-Fix. Kontext, der für die
 Aufgabe nichts entscheidet, verdrängt Kontext, der etwas entscheidet.
 
 Deshalb gilt: **Tier 1 immer, alles andere gegen seinen Trigger.** Jede Datei
@@ -38,11 +38,12 @@ Datei zu lesen.
 
 | Datei | Größe | Wann |
 |---|---|---|
-| **[GUARDRAILS.md](GUARDRAILS.md)** | ~6k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. |
-| **passender [Stack-Adapter](stacks/)** | ~5k Token | **Sobald Code entsteht.** Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. Reine Spec-/Planungsarbeit ohne Zielstack: entfällt. |
+| **[GUARDRAILS.md](GUARDRAILS.md)** | ~5,7k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. |
+| **passender [Stack-Adapter](stacks/)** | ~4k Token | **Sobald Code entsteht.** Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. Reine Spec-/Planungsarbeit ohne Zielstack: entfällt. |
 
-Das Minimum ist damit ~6k Token für reine Spec-Arbeit, ~11k sobald Code
-entsteht. Wer mehr lädt, braucht dafür einen Trigger aus der nächsten Tabelle.
+Das Minimum ist damit ~6k Token für reine Spec-Arbeit, ~10k sobald Code
+entsteht. (Alle Größen hier: Wörter × 1,85, gemessen 2026-10-23 — eine Schätzung,
+kein Tokenizer-Lauf.) Wer mehr lädt, braucht dafür einen Trigger aus der nächsten Tabelle.
 
 **„Code" wäre hier die falsche Grenze**, und zwar aus einem konkreten Grund:
 `GUARDRAILS.md` Abschnitt 0 heißt „Eigene Specs und Tests erweitern den Auftrag
@@ -55,20 +56,20 @@ an der **Fertig-Meldung**, nicht am Schreiben von Code.
 
 | Datei | Größe | Lade wenn |
 |---|---|---|
-| [AGENT_LOOP.md](AGENT_LOOP.md) | ~2,4k | Die Arbeit ist mehrschrittig (Spec → Test → Code → Gate → Korrektur), nicht ein einzelner Edit. |
-| [TESTS.md](TESTS.md) | ~4,0k | Tests werden geschrieben oder umgebaut — Teststrategie, Durchstich, Zustands-Assertion. |
+| [AGENT_LOOP.md](AGENT_LOOP.md) | ~2,3k | Die Arbeit ist mehrschrittig (Spec → Test → Code → Gate → Korrektur), nicht ein einzelner Edit. |
+| [TESTS.md](TESTS.md) | ~4,3k | Tests werden geschrieben oder umgebaut — Teststrategie, Durchstich, Zustands-Assertion. |
 | [SPEC_WORKFLOW.md](SPEC_WORKFLOW.md) | ~0,8k | Aus einer groben Idee soll eine zerlegte, testbare Spec werden. |
-| [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) | ~0,5k | Eine Spec wird tatsächlich geschrieben (Form des Ergebnisses). |
+| [FEATURE_TEMPLATE.md](FEATURE_TEMPLATE.md) | ~0,7k | Eine Spec wird tatsächlich geschrieben (Form des Ergebnisses). |
 | [ADR_TEMPLATE.md](ADR_TEMPLATE.md) | ~0,7k | Eine architektonisch signifikante Entscheidung fällt an und wird festgehalten. |
-| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~4,9k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). Konsistenz (G) **und** Nutzbarkeit (I: Zielgröße, Feedback, Eingabe-Toleranz, Gliederung). API-/CLI-Projekte nie. |
-| [ENGINEERING.md](ENGINEERING.md) | ~2,4k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren) — oder ein Architektur-/Workflow-/Sequenz-/Datenfluss-/Zustandsdiagramm entsteht (§8, `archify`). |
-| [DEBUG.md](DEBUG.md) | ~1,2k | Ein Bug hat eine normale Runde überlebt — hypothesengetriebener Loop mit persistentem Debug-State. |
-| [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) | ~1,7k | Eine Regel soll geschärft werden (Harness Correction) oder die prüfende Schleife greift nicht. |
-| [REVIEW_PANEL.md](REVIEW_PANEL.md) | ~1,9k | Der Diff erreicht die Panel-Schwelle (dort definiert) — nicht als Standardschritt. |
+| [GUARDRAILS_UI.md](GUARDRAILS_UI.md) | ~6,0k | Ein UI-Write steht an (Komponente, Stylesheet, Token, `DESIGN.md`). Konsistenz (G) **und** Nutzbarkeit (I: Zielgröße, Feedback, Eingabe-Toleranz, Gliederung). API-/CLI-Projekte nie. |
+| [ENGINEERING.md](ENGINEERING.md) | ~2,5k | Eine Design-Entscheidung steht an (Modularität, Kohäsion, Interface-Richtung, Wann-abstrahieren) — oder ein Architektur-/Workflow-/Sequenz-/Datenfluss-/Zustandsdiagramm entsteht (§8, `archify`). |
+| [DEBUG.md](DEBUG.md) | ~1,7k | Ein Bug hat eine normale Runde überlebt, besteht nach einem Fix weiter oder tritt nicht bei jedem Lauf auf — hypothesengetriebener Loop mit persistentem Debug-State. |
+| [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) | ~2,0k | Eine Regel soll geschärft werden (Harness Correction) oder die prüfende Schleife greift nicht. |
+| [REVIEW_PANEL.md](REVIEW_PANEL.md) | ~1,8k | Der Diff berührt Auth, Krypto, Migrationen, Secrets oder das Harness, ist eine große unabhängige Änderung, oder ein Panel ist ausdrücklich gewünscht — nicht als Standardschritt. |
 | [ROADMAP.md](ROADMAP.md) | ~1,0k | Der Autonomiegrad ist unklar: wie weit darf ohne Rückfrage gearbeitet werden. |
 | [feature.md](feature.md) | ~0,7k | Ein kompletter Feature-Lauf wird abgearbeitet (Runbook). |
-| [RESEARCH_SOURCES.md](RESEARCH_SOURCES.md) | ~1,2k | Eine Recherche nach neuen Erkenntnissen/Standards/Werkzeugen läuft (Skill `trend-scout`) oder eine Quelle soll aufgenommen/verworfen werden. |
-| [linklist.md](linklist.md) | ~0,8k | `/hx:linklist` wurde aufgerufen oder eine Quelle wird gesucht. |
+| [RESEARCH_SOURCES.md](RESEARCH_SOURCES.md) | ~2,2k | Eine Recherche nach neuen Erkenntnissen/Standards/Werkzeugen läuft (Skill `trend-scout`) oder eine Quelle soll aufgenommen/verworfen werden. |
+| [linklist.md](linklist.md) | ~0,6k | `/hx:linklist` wurde aufgerufen oder eine Quelle wird gesucht. |
 
 ### Nie im Executor-Kontext
 
@@ -153,4 +154,4 @@ SessionStart-Hook, der beim Session-Start einen kurzen Reminder (Lookup +
 Ablauf + Fertig-Kriterium) in den Kontext injiziert. Er blockiert nichts und
 gatet nichts; er macht nur den ohnehin in `instructions/AGENTS.md` stehenden
 Pointer salient, damit der Agent das Harness nicht überliest. Deploy +
-Registrierung: [`APPLY.md`](../APPLY.md) → Abschnitt B1.6.
+Registrierung: `APPLY.md` im ki-agent-setup-Repo → Abschnitt B1.6.

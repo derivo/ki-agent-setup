@@ -11,6 +11,10 @@ das Multi-Agent-Review-Panel.
    - **Security** — Injection, Secrets im Code, Auth/Autorisierung, unsichere
      Defaults (siehe GUARDRAILS Security-Pass).
    - **Performance** — N+1, unnötige IO, offensichtliche Hotspots.
+   - **Trajektorie** — folgt die Umsetzung Spec und Plan, wurde ein
+     Akzeptanzkriterium still umgangen?
+   - **Sichtbare Qualität** — nur bei UI-Diffs, am gerenderten Zustand.
+   Weitere Lenses je Diff (REVIEW_PANEL.md → Die Lenses).
 3. **Belegen, nicht vorab wegwerfen**: jeder Fund wird am Code belegt
    (Datei:Zeile, Repro). Hält der Beleg nicht, fällt er raus; bei Unsicherheit
    wird er gemeldet **und als unsicher markiert** — nicht unterdrückt.

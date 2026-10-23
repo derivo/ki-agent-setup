@@ -153,8 +153,10 @@ Dazu pro Formular:
   (→ leer statt ungültig). Beim Setzen per Skript den date-Input auf `text`
   kippen bzw. die fehlende Option injizieren — sonst prüfst du den Required-
   statt den Format-/Auswahl-Pfad.
-- **Happy Path als LETZTER Test der Gruppe** — er baut auf dem Zustand der
-  Edge-Cases auf.
+- **Happy Path als LETZTER Test der Gruppe** — er ist der Fall, der Zustand
+  schreibt; zuletzt ausgeführt, kann sein Datensatz keinen Edge-Case verfälschen
+  (etwa „E-Mail schon vergeben" statt „Format-Fehler"). Die Isolation unten gilt
+  trotzdem: jeder Test seedet seine Daten selbst.
 
 ### Stabilität — keine Flakiness einbauen
 - **Stabile Selektoren.** Über `data-testid`/Rollen ansprechen, nicht über
@@ -174,6 +176,14 @@ Dazu pro Formular:
   (Welche Engines konkret: Stack-Adapter.)
 - **Doppel-Submit/Race.** Doppelklick auf Submit und langsames Netz dürfen keine
   doppelte Wirkung erzeugen — als eigenen Test absichern.
+
+### Geltung der folgenden Abschnitte
+Querschnitt-Checkliste, Verhaltens-Tests und die Matrix über das Formular hinaus
+(unten) sind **Techniken für beauftragte Testabdeckung** — ein Gap-Audit (Skill
+`ui-test-gap-audit`), der ausdrückliche Auftrag „Tests ergänzen" oder Verträge, die
+die Spec als Akzeptanzkriterium nennt. Sie erweitern keinen Feature-Auftrag
+(GUARDRAILS.md §0). Die einzige gesetzte Ausnahme ist die Formular-Matrix oben
+(AGENTS.md → Testing).
 
 ### Querschnitt-Checkliste — über die Formular-Matrix hinaus
 Soweit auf das Projekt zutreffend, je ein E2E-/Durchstich-Test:
@@ -239,8 +249,9 @@ Rauschen).
 ## Matrix über das Formular hinaus
 
 Das **Ein-Feld-falsch-Prinzip** der Formular-Matrix (oben; volle Regel im
-Instruktions-Standard AGENTS.md → „Testing — Pflichtstandard Edge Cases") gilt für
-**jede aufzählbare Eingabe-/Zustandsmenge**, nicht nur für UI-Formulare. Drei
+Instruktions-Standard AGENTS.md → „Testing — Pflichtstandard Edge Cases") lässt sich
+auf **jede aufzählbare Eingabe-/Zustandsmenge** anwenden, nicht nur auf UI-Formulare
+— als Technik, wenn die Abdeckung beauftragt ist (Geltung oben). Drei
 hochwirksame Anwendungen — je auf der richtigen Schicht, exakte Erwartung je Zelle,
 Happy Path zuletzt:
 

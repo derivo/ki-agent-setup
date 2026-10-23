@@ -1,4 +1,5 @@
-> **Tier 1 — immer.** Vor jedem Write/Edit an Code und vor jeder Fertig-Meldung.
+> **Tier 1 — immer.** Vor jedem Write/Edit an einem Auftrags-Artefakt (Code, Spec,
+> Test, Plan) und vor jeder Fertig-Meldung.
 > Nur Abschnitt G (UI) ist ausgelagert nach [GUARDRAILS_UI.md](GUARDRAILS_UI.md).
 
 # Guardrails — die harten Regeln
@@ -10,7 +11,11 @@ Fertig-Meldung (Fertig-Kriterium).
 Wenn du als Agent gegen eine dieser Regeln verstoßen würdest: nicht schreiben,
 sondern korrigieren. Wenn eine Regel fehlt, die einen Fehler verhindert hätte:
 ergänze sie (Harness Correction Development) — generelle Regeln hier, stack-
-spezifische im Stack-Adapter.
+spezifische im Stack-Adapter. Ergänzt wird im Setup-Checkout (`ki-agent-setup`)
+mit Freigabe; in jedem anderen Projekt ist das geladene Harness ein Deploy-Spiegel —
+dort die Regel nur als belegten Kandidaten festhalten (`/hx:park`) und per
+`/hx:retro` ins Setup-Repo bringen, nicht in den Spiegel und nicht in den
+Feature-Diff schreiben.
 
 Die konkreten Schicht-/Ordnernamen und Verbots-Muster (Imports, Zugriffe) stehen
 im **Stack-Adapter** ([`stacks/`](stacks/)). Hier steht das Prinzip.
@@ -120,8 +125,9 @@ Typprüfung, Formatter und Tests bündelt (welches genau: Stack-Adapter).
 Solange das Gate rot ist:
 - Beheben statt beenden. **Die Ursache** fixen, nicht das Symptom.
 - Keine Suppressions, keine Test-Manipulation, damit es grün aussieht.
-- Zeigt der Fehler, dass eine Harness-Regel fehlte: passende Regel ergänzen
-  (hier oder im Adapter), dann erneut laufen lassen.
+- Zeigt der Fehler, dass eine Harness-Regel fehlte: Regel-Kandidat festhalten
+  (wo und wie: Kopf dieser Datei), den Code-Fix trotzdem zu Ende bringen, dann
+  erneut laufen lassen.
 
 Erst wenn das Gate sauber durchläuft, darfst du "fertig" melden — mit der
 Beobachtung (Befehl + Ergebnis).

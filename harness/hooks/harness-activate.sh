@@ -49,7 +49,7 @@ else
   root="${cfg}/harness"
 fi
 
-# Nothing to point at → stay silent (never fabricate a path).
+# Nothing to point at → no pointer, just the bare ack (never fabricate a path).
 [ -f "${root}/README.md" ] || { printf 'OK'; exit 0; }
 
 # Dev- and doc-harness are sibling directories in both client-local and central
@@ -59,7 +59,7 @@ doc="$(dirname "${root%/}")/doc-harness"
 docline=""
 [ -f "${doc}/README.md" ] && docline=" Doku-Arbeit → ${doc}/README.md."
 
-printf 'HARNESS AKTIV — bei Feature-/Code-Arbeit gilt das Entwicklungs-Harness (nicht bei trivialen Tasks oder reiner Konversation).\n'
+printf 'HARNESS AKTIV — bei Feature-/Code-Arbeit gilt das Entwicklungs-Harness, auch beim Ein-Zeilen-Fix (nicht bei reiner Konversation).\n'
 printf 'Tier 1 = %s/GUARDRAILS.md — vor dem ersten Write/Edit an einem Auftrags-Artefakt (Code, Spec, Test, Plan) UND vor jeder Fertig-Meldung.\n' "${root}"
 printf 'Sobald Code entsteht, zusätzlich der zum Projekt passende Adapter unter %s/stacks/; bei reiner Spec-/Planungsarbeit ohne Zielstack entfällt er.\n' "${root}"
 printf 'Alles Weitere NUR gegen seinen Trigger nachladen (Tabelle: %s/README.md; jede Datei trägt oben eine "Lade wenn:"-Zeile). Nicht vorsorglich alles lesen.%s\n' "${root}" "${docline}"

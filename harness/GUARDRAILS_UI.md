@@ -8,9 +8,9 @@ Ausgelagerter **Abschnitt G** der [GUARDRAILS.md](GUARDRAILS.md). Buchstabe und
 Regelnummern (6, 7) bleiben unverändert, damit ältere Verweise auf „GUARDRAILS
 Abschnitt G / Regel 6/7" weiter zutreffen — nur die Datei ist eine eigene, weil
 diese Regeln nur bei Frontend-Arbeit gelten und den immer-geltenden Kern sonst um
-rund ein Drittel aufblähen.
+deutlich aufblähen.
 
-Dazu **Abschnitt I** (Regeln 12–16): Nutzbarkeit. G sorgt dafür, dass die
+Dazu **Abschnitt I** (Regeln 13–18): Nutzbarkeit. G sorgt dafür, dass die
 Oberfläche *einheitlich* ist — das sagt nichts darüber, ob man sie *bedienen*
 kann. Beide Achsen gelten bei UI-Arbeit, deshalb stehen sie in derselben Datei
 und laden mit demselben Trigger.
@@ -178,8 +178,8 @@ lässt — das ist derselbe Filter wie in [GUARDRAILS.md](GUARDRAILS.md) Abschni
 von dort.
 
 **Die Auswahl ist bewusst klein.** Von den rund 30 Gesetzen der Sammlung sind acht
-in die sechs Regeln 12–17 eingegangen (Regel 14 stützt sich auf Tesler *und* Hick,
-Regel 17 auf Chunking *und* Miller), eines steht als Beleg-Verbot im
+in die sechs Regeln 13–18 eingegangen (Regel 15 stützt sich auf Tesler *und* Hick,
+Regel 18 auf Chunking *und* Miller), eines steht als Beleg-Verbot im
 Nachweis-Abschnitt (Aesthetic-Usability), eines als Querverweis: **Jakob's Law** (Nutzer erwarten,
 dass sich diese Seite verhält wie die anderen, die sie kennen) ist keine eigene
 Regel, weil *Consistency First* in `instructions/AGENTS.md` dieselbe Forderung
@@ -190,7 +190,7 @@ falsch; sie lassen sich nur an einem Diff nicht prüfen, und eine Regel, deren
 Verletzung niemand feststellen kann, ist eine Absichtserklärung. Solche gehören in
 ein Design-Review, nicht in ein Gate.
 
-### Regel 12 — Interaktive Ziele sind groß genug und stoßen nicht aneinander
+### Regel 13 — Interaktive Ziele sind groß genug und stoßen nicht aneinander
 Jedes Ziel für Zeigereingaben ist mindestens **24 × 24 CSS-Pixel**
 ([WCAG 2.2, SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
 Level AA) — das ist die Untergrenze, nicht das Ziel. Für primäre, häufige oder
@@ -211,7 +211,7 @@ getroffen, sondern verfehlt. Steht eine **zerstörende** Aktion (Löschen, Abbre
 mit Datenverlust) neben einer harmlosen, ist der Abstand kein Feinschliff, sondern
 der Schutz vor dem Fehlgriff.
 
-### Regel 13 — Was länger als 400 ms dauert, zeigt das
+### Regel 14 — Was länger als 400 ms dauert, zeigt das
 Wird das Ergebnis einer Nutzeraktion nicht innerhalb von **400 ms** sichtbar,
 bekommt die Aktion sichtbares Feedback: Zustandswechsel am auslösenden Element,
 Skeleton, Fortschritt. Kein stiller Zustand, in dem die Oberfläche unverändert
@@ -224,7 +224,7 @@ Ein Element, das eine laufende Aktion ausgelöst hat, nimmt bis zu deren Ende
 **keine zweite** entgegen. Das ist kein Komfort-Detail: doppelt abgeschickte
 Formulare sind doppelte Datensätze.
 
-### Regel 14 — Die Komplexität trägt das System, nicht der Nutzer
+### Regel 15 — Die Komplexität trägt das System, nicht der Nutzer
 [Tesler's Law](https://lawsofux.com/teslers-law/): jeder Vorgang hat einen Kern an
 Komplexität, der sich nicht wegdesignen lässt — er landet entweder im System oder
 beim Nutzer. Voreinstellung ist: im System. Konkret heißt das, dass eine Auswahl
@@ -242,7 +242,7 @@ Die Gegenrichtung gilt genauso: Komplexität, die dem Nutzer gehört, wird ihm n
 genommen. Ein Feld, dessen Wert nur er kennt, wird nicht mit einem geratenen Default
 vorbelegt.
 
-### Regel 15 — Zusammengehöriges steht enger als Getrenntes
+### Regel 16 — Zusammengehöriges steht enger als Getrenntes
 Der Abstand **innerhalb** einer Gruppe ist kleiner als der Abstand **zwischen**
 Gruppen ([Law of Proximity](https://lawsofux.com/law-of-proximity/): was nah
 beieinander steht, wird als zusammengehörig gelesen). Ein Label gehört sichtbar zu
@@ -253,7 +253,7 @@ Beide Abstände kommen aus der Skala (Regel 7); die Regel verlangt zwei
 **verschiedene Stufen**, keinen ad-hoc-Wert. Das macht sie prüfbar: welche Stufe
 innen, welche außen.
 
-### Regel 16 — Eingaben werden angenommen, wie Menschen sie tippen
+### Regel 17 — Eingaben werden angenommen, wie Menschen sie tippen
 An der Formular-Grenze wird tolerant gelesen und streng gespeichert
 ([Postel's Law](https://lawsofux.com/postels-law/)): führende und folgende
 Leerzeichen, Gruppierungs-Zeichen in IBAN/Telefon/Kartennummer, Groß-/Kleinschreibung
@@ -267,7 +267,7 @@ abgelehnt, und zwar mit der konkreten Bedingung, nicht mit „ungültige Eingabe
 Edge-Case-Matrix (→ Testing) bereits eine benannte Ausnahme führt. Sie ist kein
 Freibrief, in gewöhnlicher Funktionslogik Eingaben zu normalisieren.
 
-### Regel 17 — Lange Inhalte und lange Formulare werden zerlegt
+### Regel 18 — Lange Inhalte und lange Formulare werden zerlegt
 Eine lange Zeichenkette, eine lange Liste, ein langes Formular wird in benannte,
 sichtbar getrennte Einheiten gegliedert statt am Stück ausgeliefert
 ([Chunking](https://lawsofux.com/chunking/)): die Kartennummer in Vierergruppen,
@@ -280,11 +280,11 @@ deren „magische Zahl Sieben" in der Gestaltung fast durchgehend als Item-Limit
 missverstanden wird; [Miller's Law](https://lawsofux.com/millers-law/) formuliert
 als ersten Takeaway ausdrücklich das Gegenteil: „Don't use the 'magical number
 seven' to justify unnecessary design limitations." Die Regel verlangt eine
-*Gliederung*, keine Zahl — dieselbe Begründung wie bei Regel 14.
+*Gliederung*, keine Zahl — dieselbe Begründung wie bei Regel 15.
 
-**Abgrenzung:** Regel 14 betrifft die **Auswahl** (Default, Staffelung, damit man
-nicht alles lesen muss, um zu entscheiden), Regel 15 den **Abstand** zwischen
-bereits gebildeten Gruppen, Regel 17 die **Bildung** der Gruppen selbst. Drei
+**Abgrenzung:** Regel 15 betrifft die **Auswahl** (Default, Staffelung, damit man
+nicht alles lesen muss, um zu entscheiden), Regel 16 den **Abstand** zwischen
+bereits gebildeten Gruppen, Regel 18 die **Bildung** der Gruppen selbst. Drei
 Kriterien, drei Nachweise; sie ersetzen einander nicht.
 
 ### Nachweis statt Zusicherung (Abschnitt I)
@@ -292,16 +292,16 @@ Kriterien, drei Nachweise; sie ersetzen einander nicht.
 Wie bei Regel 6/7 wird belegt, nicht zugesichert. Je berührter UI-Einheit, soweit
 die Regel greift:
 
-- **Regel 12** → gemessene Box des Ziels (Zahl × Zahl) oder die benannte
+- **Regel 13** → gemessene Box des Ziels (Zahl × Zahl) oder die benannte
   WCAG-Ausnahme, mit `Datei:Zeile` der Größenquelle.
-- **Regel 13** → das beobachtete Feedback-Element und die Aktion, an der es hängt.
+- **Regel 14** → das beobachtete Feedback-Element und die Aktion, an der es hängt.
   Bei nachweislich synchronen Aktionen (kein IO) entfällt die Regel — das wird
   gesagt, nicht stillschweigend angenommen.
-- **Regel 14** → welcher Default gesetzt ist bzw. wie gestaffelt wurde.
-- **Regel 15** → die beiden Token-Stufen (innen/außen) mit `Datei:Zeile`.
-- **Regel 16** → welche Eingabe-Varianten normalisiert werden, mit dem Test, der
+- **Regel 15** → welcher Default gesetzt ist bzw. wie gestaffelt wurde.
+- **Regel 16** → die beiden Token-Stufen (innen/außen) mit `Datei:Zeile`.
+- **Regel 17** → welche Eingabe-Varianten normalisiert werden, mit dem Test, der
   sie abdeckt.
-- **Regel 17** → die Einheiten und woran ihre Grenze sichtbar ist.
+- **Regel 18** → die Einheiten und woran ihre Grenze sichtbar ist.
 
 Bewusste Abweichung → ADR nach [ADR_TEMPLATE.md](ADR_TEMPLATE.md), wie in
 Abschnitt G. Ohne ADR gilt die Regel.
@@ -316,7 +316,7 @@ zieht daraus ausdrücklich: „Visually pleasing design can mask usability probl
 and prevent issues from being discovered during usability testing."
 
 Für dieses Harness heißt das: „sieht gut aus", „wirkt aufgeräumt", „fühlt sich
-rund an" — vom Agenten wie vom Nutzer — belegt **keine** der Regeln 12 bis 17 und
+rund an" — vom Agenten wie vom Nutzer — belegt **keine** der Regeln 13 bis 18 und
 ersetzt keine der Nachweis-Zeilen oben. Es ist derselbe Fehler wie eine
 Fertig-Meldung ohne Gate-Lauf ([GUARDRAILS.md](GUARDRAILS.md) C): ein Eindruck
 steht anstelle einer Beobachtung. Umgekehrt entwertet der Effekt gute Gestaltung

@@ -120,8 +120,11 @@ keine über Wirksamkeit.
   Regeln, die nur implizit getragen wurden, brechen bei Modellwechseln zuerst.
 - **Rot, aber Ursache nicht reproduzierbar** → vor dem Regressions-Schluss einmal
   in frischer Session re-runnen (anderer Zeitpunkt/Umgebung). Bleibt es dann grün,
-  war es Infrastruktur-Noise (transiente Ressourcen-Spikes, Nichtdeterminismus),
-  keine Regression. Ein Ein-Lauf-Fail belegt keine Regression — analog zu
+  ist die Ursache **offen**: Erst- und Wiederholungslauf getrennt berichten und als
+  „nicht reproduziert" führen — weder als Regression noch als Infrastruktur-Noise
+  verbuchen, solange keine Infra-Ursache belegt ist. Ein grüner Zweitlauf
+  unterscheidet einen stochastischen Fehler nicht von einem Umgebungsproblem
+  (GUARDRAILS.md C → Stochastische Defekte). Ein Ein-Lauf-Fail belegt keine Regression — analog zu
   „Abwesenheit so streng belegen wie Anwesenheit" (GUARDRAILS.md C). Infra-Konfig
   kann Ergebnisse messbar schwanken lassen (dokumentiert: Swings größer als der
   Abstand zwischen Top-Modellen), also mehr als der Effekt, den ein Lauf gerade
@@ -170,30 +173,19 @@ ist über PR #20 in `main` — die E2-Tabelle unten ist der gültige Stand.)*
 
 | Modell | ohne die Einzelfunktions-Schärfung | mit ihr |
 |---|---|---|
-| Opus 4.8 | **3/3 FAIL** (über-engineert reproduzierbar) | 2/2 PASS |
-| Opus 5 | **2/2 PASS** (2026-07-27, Protokoll unten) | 1/1 PASS (ältere, kürzere Regelfassung) |
+| Opus 4.8 | **3/3 FAIL** (über-engineert reproduzierbar, 2026-07-23) | 2/2 PASS |
+| Opus 5 | **1/2** — sauberer Ohne-Arm per `claude -p` (2026-08-29): Durchgang 2 baute einen ungefragten `currency`-Parameter | Protokoll 2026-08-29 |
 
-Auf Opus 5 ist die Schärfung damit **kein Discriminator** mehr: beide Läufe ohne sie
-verdrahteten Locale/Währung als Default hart, parametrisierten nichts und bauten
-keine Guards ein. Nach der Regel oben folgt daraus **nicht** Streichen, sondern
-**Drift-Wächter** — Streichen verlangt ein zweites Kein-Discriminator-Ergebnis über
-einen weiteren Modellwechsel hinweg. E2 bleibt als Aufgabe unverändert und fängt den
-Rückfall, falls ein künftiges Modell wieder über-engineert.
+Damit ist E2 auf Opus 5 **offen**, nicht „kein Discriminator": nach der 2-von-2-Regel
+entscheidet ein 1/2 nichts. Das frühere „2/2 PASS ohne Regel" (2026-07-27) zählt
+nicht — beide Ohne-Arme liefen als Subagent, und der erbt `~/.claude/CLAUDE.md` samt
+`AGENTS.md`, also genau den entfernten Absatz (Probe im Lauf vom 2026-08-29).
 
-Grenze dieses Befunds, damit er nicht mehr trägt als er kann: für die **aktuelle**
-(durch PR #17 erweiterte) Regelfassung existieren zwei Ohne-Läufe, aber **keine
-frische Mit-Kontrolle** — die Kontrolle lief gegen den kürzeren Vorgängertext. Der
-Befund sagt „Opus 5 braucht die Regel hier nicht", nicht „die Regel wirkt nicht".
-
-**E2 ist der einzige aktive Discriminator** — und sein Status hängt jetzt am Modell:
-- **Opus 4.8:** reproduzierbar FAIL ohne die geschärfte Simplicity-First-Regel (3/3),
-  PASS mit ihr (2/2). Die Regel trägt dort.
-- **Opus 5:** der Sweep vom 2026-07-25 lief auf einem Branch, dem die Schärfung
-  **fehlte** — E2 bestand trotzdem (Executor verdrahtete Locale/Währung bewusst hart
-  und benannte die Annahme statt sie zu parametrisieren). Das ist **ein** Lauf, also
-  noch kein Urteil: nach der Regel unten braucht ein „kein Discriminator"-Schluss
-  einen **wiederholten** Pass-ohne-Regel. Fällig ist damit ein gezieltes A/B von E2
-  auf Opus 5, nicht das Streichen der Schärfung.
+**Verified sind E2 (auf Opus 4.8) und E7 (auf Opus 5)** — siehe Stand unten. Für jede
+Ablation vor 2026-08-29 gilt dieselbe Grenze wie bei E2: das Protokoll vom
+2026-08-29 nennt jenen Lauf „die erste Ablation, die den Ohne-Arm wirklich ohne die
+Regel fährt". Ein „kein Discriminator" aus früheren Läufen (E11, E12) steht deshalb
+unter Vorbehalt; nur der `claude -p`-Arm ist eine belegt saubere Ablation.
 
 Der Modellwechsel auf Opus 5 hat den Drift-Wächter-Status der übrigen Aufgaben **nicht**
 entschärft: dass das Set grün bleibt, heißt nur, dass die Regeln nicht *widersprochen*
@@ -243,7 +235,8 @@ Aufgabe dokumentiert eine Absicht statt einen Nachweis. Ein `unverified` wird
 nicht versteckt — es sagt dem Leser, wie viel ein Grün wert ist.
 
 Stand: **2 verified** (E2 auf Opus 4.8, E7 auf Opus 5), **8 unverified**,
-**3 no-discriminator** (E5, E11, E12 — als Drift-Wächter behalten). Diese Verteilung
+**3 no-discriminator** (E5, E11, E12 — als Drift-Wächter behalten; E11/E12 aus
+Ablationen vor 2026-08-29, Isolation nicht belegt). Diese Verteilung
 ist das ehrliche Bild der Messtiefe, nicht ein Mangel, der zu verschweigen wäre.
 
 ---

@@ -130,7 +130,7 @@ lange Läufe zu halten (der durable State oben ist der erste davon):
 - **Just-in-time-Retrieval statt Vorab-Dump.** Leichte Identifier halten (Dateipfade,
   Queries, Ticket-IDs) und erst bei Bedarf nachladen — nicht ganze Dateien/Ergebnisse
   auf Vorrat in den Context ziehen. Ordnerstruktur/Namen leiten den Agenten zum
-  richtigen Ort (deckt sich mit "Context-Budget schlank" in `../instructions/AGENTS.md`).
+  richtigen Ort (deckt sich mit "Context-Budget schlank" in der globalen `AGENTS.md`).
 - **Tool-Ausgabe an der Quelle kürzen.** Ein Gate/Befehl, der Roh-Output in Massen
   erzeugt, wird **produzentenseitig** reduziert, *bevor* er ins Fenster landet — nicht
   voll aufnehmen und danach aufräumen (das ist der Reset-Hebel unten, reaktiv und

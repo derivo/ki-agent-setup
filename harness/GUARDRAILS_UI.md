@@ -52,7 +52,7 @@ Front-Matter: `colors`/`typography`/`spacing`/`rounded`/`components`, Token-Refs
 `{colors.primary}`) — dann ist **diese Datei** die „eine Quelle" oben: Tokens sind
 **normativ**, die Prosa gibt nur den Kontext. Vor jedem UI-Write gelesen, Token-Refs
 aufgelöst statt Werte dupliziert, Kontrast gegen **WCAG AA** (≥ 4.5:1 Text) geprüft.
-Wo die Datei liegt und mit welchem Kommando sie validiert wird: Stack-Adapter.
+Validiert wird sie wie unten („Validator"); wo Tokens und Komponenten liegen: Stack-Adapter.
 
 Das Format ist **`version: alpha`** — die Spec kann sich ändern. Deshalb wird nicht
 aus dem Gedächtnis geschrieben: die Schema-Wahrheit kommt per `npx @google/design.md spec`
@@ -94,8 +94,36 @@ Austauschformat nach außen ist das
 `DESIGN.md` stammt davon ab (typisierte Gruppen, `{path.to.token}`-Refs). Kann das
 Zielsystem `DESIGN.md` nicht direkt konsumieren, erzeugt ein minimales
 reproduzierbares Build-/Adapter-Kommando die Runtime-Tokens aus dieser Quelle
-(Kommando: Stack-Adapter). Hex-/Skalenwerte von Hand in CSS/JS zu kopieren und nur
+(Kommando: `export`, unten). Hex-/Skalenwerte von Hand in CSS/JS zu kopieren und nur
 per Drift-Test zu vergleichen ist keine Token-Auflösung.
+
+**Validator `@google/design.md` — der Exit-Code allein belegt nichts.** Liegt eine
+`DESIGN.md` vor, gehören `lint` **und** `export` ins Gate (Node/`npx` vorausgesetzt;
+Version im Projekt pinnen, `npx @google/design.md@<geprüfte Version>` — die Angaben
+hier sind an 0.3.0 und 0.4.0 verifiziert):
+- **`lint DESIGN.md`:** strukturelle Fehler → Exit 1, ein **Kontrast-Verstoß** kommt
+  nur als `warning` bei **Exit 0**. Die `findings` lesen und Kontrast-Warnungen als
+  blockierend behandeln (oder `warnings > 0` selbst zum Fehler machen).
+- **`export`:** Tailwind aus der Datei erzeugen statt Werte doppeln —
+  `--format css-tailwind` (v4) bzw. `--format json-tailwind` (v3), damit
+  `tailwind.config` deriviert bleibt; `--format dtcg` liefert das DTCG-Austauschformat
+  (`$value`/`$type`-JSON, `$schema` 2025.10). **Ausgabe prüfen, nicht den Exit-Code:**
+  jede populierte Sektion muss ihre Familie emittieren (`colors` → `--color-*`,
+  `typography.<n>.fontFamily` → `--font-*`, `.fontSize` → `--text-*`, `rounded` →
+  `--radius-*`, `spacing` → `--spacing-*`); fehlt eine, ist die Front-Matter falsch
+  geformt, obwohl der Export mit Exit 0 läuft. Ausnahme: `components` emittiert in
+  keinem Target — Limitation, kein Fehler, nicht durch Löschen „reparieren".
+- **`components`-Sub-Tokens nur aus dem Schema** (`backgroundColor`, `textColor`,
+  `typography`, `rounded`, `padding`, `size`, `height`, `width`). Ein erfundener Name
+  gibt `warning` bei Exit 0, und weil `components` nirgends exportiert wird, ist der
+  Lint die einzige Prüfung dafür.
+- **`lint` grün belegt keine exportierbare Datei:** ein Token-Name, der
+  `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt, passiert `lint` mit Exit 0 und bricht
+  `export` mit `INVALID_TOKEN_NAME` und Exit 1.
+- **`diff <alt> DESIGN.md`** vor dem Ersetzen einer bestehenden `DESIGN.md`: JSON mit
+  `tokens` (`added`/`removed`/`modified` je Gruppe), `findings` und **`regression`**
+  (Exit 0) — der `regression`-Key zeigt, ob eine akzeptierte Entscheidung still
+  verschwindet, nicht der Exit-Code.
 
 **Regel 7 gehört ins Gate, nicht in den Selbstcheck.** Was ein `grep` entscheiden
 kann, wird mechanisch geprüft — sonst bleibt es Selbstauskunft. Eine Datei
@@ -187,7 +215,7 @@ Abschlussmeldung, sondern eine festgehaltene Entscheidung: ADR nach
 GUARDRAILS-Regel" steht dort bereits als Anlass. Ohne ADR gibt es keine
 Abweichung, dann gilt die Regel.
 
-Das ersetzt den mechanischen Check des Stack-Adapters nicht: der fängt Inline-Hex
+Das ersetzt den mechanischen Check (`design-check.sh`, oben) nicht: der fängt Inline-Hex
 und Magic-Number, nicht die zweite Komponente, die eine bestehende nachbaut.
 
 ### Selbstcheck vor "fertig" (UI)

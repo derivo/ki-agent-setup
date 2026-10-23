@@ -142,7 +142,7 @@ Konventionsdateien.
 - Ergebnis der Prüfung: für Sichtbarkeit/SEO ist **keine** Wirkung belegt.
 
 `llms.txt` ist trotzdem **gesetzter Hausstandard** — Teil der Web-Baseline neben
-`robots.txt` und `sitemap.xml` (`../instructions/AGENTS.md` → Konventionen). Das ist
+`robots.txt` und `sitemap.xml` (globale `AGENTS.md` → Konventionen). Das ist
 eine **Baseline-Entscheidung, keine Evidenz-Aussage**: begründet mit
 Vollständigkeit und nahezu null Erstellungskosten, nicht mit gemessenem Nutzen. Die
 Prüfreihenfolge oben bleibt davon unberührt und gilt für jedes *andere*
@@ -154,10 +154,10 @@ nicht von Hand gepflegt.
 ## 8. Diagramme — `archify` als Werkzeug
 
 Ein Diagramm ist ein Artefakt wie Code: es behauptet eine Struktur und kann
-veralten. Deshalb gilt die Diagramm-Baseline (`../instructions/AGENTS.md` →
+veralten. Deshalb gilt die Diagramm-Baseline (globale `AGENTS.md` →
 Konventionen): Architektur-, Workflow-, Sequenz-, Datenfluss- und
 Zustandsdiagramme entstehen mit dem Skill `archify` (Quelle und Installation:
-`../SKILLS.md`), weil er ein **validiertes** Ergebnis liefert statt eines
+`SKILLS.md` im ki-agent-setup-Repo), weil er ein **validiertes** Ergebnis liefert statt eines
 Bildes, das nur gut aussieht.
 
 - **Typ aus der Frage, nicht aus dem Werkzeug.** Die fünf archify-Typen

@@ -86,6 +86,14 @@ bündelt:
 Als `quality`-Target im `Makefile` (bzw. `[tool.hatch.envs]`-Script) definieren.
 Erst wenn es sauber durchläuft, gilt "fertig".
 
+**Security-Pass-Werkzeuge (konkretisiert GUARDRAILS.md E):** `pip-audit` prüft die
+Abhängigkeiten auf bekannte Schwachstellen (Exit ≠ 0 bei Fund), ein Secret-Scan
+(z. B. `gitleaks`) den eigenen Diff. Führt das Projekt beides, gehört es ins Gate;
+fehlt es, wird der Security-Pass als Selbstcheck gemeldet, nicht als geprüft.
+
+**A11y-Nachweis** (globale AGENTS.md → Barrierefreiheit): gegen die laufende App
+je berührter Seite, z. B. `npx pa11y <url>` oder `npx @axe-core/cli <url>`.
+
 **Formatter auf Bestandsprojekten.** Ein Repo, das nie durch `ruff format` lief,
 meldet beim ersten `--check .` hunderte Verstöße in fremden Dateien. Das setzt die
 Regel aus AGENTS.md → "Surgical Changes" nicht außer Kraft, es verschiebt nur den
@@ -183,33 +191,10 @@ ein separates JS-Frontend).
   (Farben, Spacing, Radien, Schrift) — bzw. zentrale CSS-Custom-Properties. Keine
   Inline-`style="…"`, kein Hex direkt im Template; Abstände/Höhen über die
   Utility-/Token-Skala, nicht Einzelfall-`px`.
-- **`DESIGN.md` als Token-Quelle (`GUARDRAILS_UI.md` G/Regel 7):** liegt eine `DESIGN.md`
-  im Repo-Root, ist sie die normative Quelle. Der Validator ist node-basiert (setzt
-  ein vorhandenes Node/`npx` voraus — nur relevant, wenn das Frontend Tailwind/JS
-  nutzt): `npx @google/design.md lint DESIGN.md` vor UI-Write.
-  **Achtung Exit-Code:** strukturelle Fehler → Exit 1, aber
-  ein **Kontrast-Verstoß kommt nur als `warning` (Exit bleibt 0)** — verifiziert.
-  Exit 0 heißt *nicht* „Kontrast ok"; `findings` lesen und Kontrast-Warnungen als
-  blockierend behandeln. Tailwind aus ihr generieren statt Werte doppeln:
-  `npx @google/design.md export --format css-tailwind DESIGN.md` (v4) bzw.
-  `--format json-tailwind` (v3) — so bleibt `tailwind.config` deriviert.
-- **Export-Ausgabe prüfen, nicht den Exit-Code** (dieselbe Falle wie beim Lint): jede
-  populierte Token-Sektion muss ihre Familie emittieren (`colors` → `--color-*`,
-  `typography` → `--font-*`/`--text-*`, `rounded` → `--radius-*`, `spacing` →
-  `--spacing-*`). Fehlt eine, ist die Front-Matter falsch geformt, obwohl der Export
-  mit **Exit 0** durchläuft. Verifizierte Ausnahme: `components` emittiert **kein**
-  Target — Token-Ebenen können es nicht darstellen, das ist Limitation, kein Fehler.
-- **`components`-Sub-Tokens nur aus dem Schema** (`backgroundColor`, `textColor`,
-  `typography`, `rounded`, `padding`, `size`, `height`, `width`). Erfundene Namen geben
-  `warning` bei **Exit 0**, und weil `components` nirgends exportiert wird, ist der Lint
-  die einzige Prüfung dafür.
-- **Der `lint` belegt keine exportierbare Datei:** ein Token-Name, der
-  `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt, passiert `lint` mit **Exit 0**, bricht aber
-  `export` mit `INVALID_TOKEN_NAME` und **Exit 1** (an 0.3.0 und 0.4.0 verifiziert). Beide
-  Kommandos ins Gate, nicht nur den Lint.
-- **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
-  zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte
-  Entscheidung still verschwindet.
+- **`DESIGN.md` als Token-Quelle:** liegt eine `DESIGN.md` im Repo-Root, ist sie die
+  normative Quelle; `tailwind.config` wird daraus exportiert, nicht von Hand gepflegt.
+  Validator-Kommandos und ihre Exit-Code-Fallen: `GUARDRAILS_UI.md` → Regel 7.
+  Der Validator braucht Node/`npx` — nur relevant, wenn das Frontend Tailwind/JS nutzt.
 - **Regel 7 gehört ins Gate:** `scripts/design-check.sh` aus `GUARDRAILS_UI.md`
   (Regel 7), als `design-check`-Target im `Makefile` im `quality`-Bündel.
   Dateitypen: `set -- '*.html' '*.jinja' '*.css' ':(exclude)<Token-Datei>'`.

@@ -14,7 +14,8 @@ nichts (siehe „Wann" gleich darunter).
 
 Wann: **immer** bei Diffs, die Auth, Krypto, Migrationen, Secrets oder das Harness
 berühren — dazu bei großen, wirklich unabhängigen Änderungen (breite
-Multi-File-Arbeit, Massen-Rollout) und bei PR-Vorbereitung.
+Multi-File-Arbeit, Massen-Rollout) und auf ausdrücklichen Wunsch. PR-Vorbereitung
+allein ist kein Signal.
 
 **Nicht** pauschal bei jeder nicht-trivialen Änderung. Der Default ist Single-Pass
 und spec-gegründet; eine zweite Runde braucht ein **strukturelles Signal**, nicht
@@ -142,6 +143,6 @@ Code** — nicht in Wiederholung derselben Perspektive und nicht in einer weiter
 Abstimmungsrunde.
 
 ## Aufruf
-Per [`commands/review.md`](commands/README.md) (`/hx:review`) oder direkt im Loop,
+Per [`commands/review.md`](commands/review.md) (`/hx:review`) oder direkt im Loop,
 wenn ein Diff die Schwelle oben erreicht. Bei großen Batch-Änderungen können die Lens-Agents in
 isolierten Worktrees laufen, jeder testet E2E vor dem Zusammenführen.

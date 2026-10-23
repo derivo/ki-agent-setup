@@ -9,10 +9,15 @@ Bereite einen Pull Request für "$ARGUMENTS" (oder den aktuellen Branch) vor.
 5. PR erstellen (`gh pr create`). **Merge/Deploy bleibt beim Menschen** —
    nur vorbereiten, nicht mergen.
 6. **Nach einem Merge aufräumen** (eigener Zug, nicht Teil des PR): gemergte
-   Branches lokal und auf dem Remote löschen, `git worktree prune`. Nur was
-   nachweislich in den Default-Branch gemergt ist (`git branch --merged`), und
-   mit `git branch -d` statt `-D` — ein Branch mit ungemergten Commits soll
-   stehenbleiben. Fremde Branches bleiben unangetastet: ein gemergter Branch kann
-   in einer anderen Session oder auf einer anderen Maschine ausgecheckt sein.
+   Branches lokal und auf dem Remote löschen, `git worktree prune`. Erst
+   `git fetch --prune` (GUARDRAILS Regel 11: lokales `main` ist ein Cache), dann
+   nur, was nachweislich im **Remote**-Default-Branch steckt
+   (`git branch --merged origin/<default>`), und mit `git branch -d` statt `-D` —
+   ein Branch mit ungemergten Commits soll stehenbleiben. Squash- oder
+   Rebase-Merges erkennt `--merged` nicht; dort entscheidet der PR-Status
+   (`gh pr view <branch> --json state`), nicht die Ancestry. Remote-Branches erst
+   nach Rückfrage löschen. Fremde Branches bleiben unangetastet: ein gemergter
+   Branch kann in einer anderen Session oder auf einer anderen Maschine
+   ausgecheckt sein.
 
 Harness-Referenz (Root per Lookup wie in `/hx:start`): `AGENT_LOOP.md`, `feature.md`.

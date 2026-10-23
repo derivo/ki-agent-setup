@@ -6,9 +6,6 @@ Client-Datei (z. B. `CLAUDE.md`), die diese Basis erweitert — nicht ersetzt. W
 ein Client hier kein eigenes Delta nutzt (Codex), bleiben die Hinweise in dieser
 Datei klar markiert.
 
-Standard: [AGENTS.md](https://agents.md) (Cross-Tool-Format, von OpenAI gestartet,
-heute unter der Linux Foundation / Agentic AI Foundation).
-
 ---
 
 ## Sprache & Stil
@@ -25,14 +22,11 @@ heute unter der Linux Foundation / Agentic AI Foundation).
 - Bei mehrschrittiger Arbeit nur das **Delta seit der letzten Meldung** berichten,
   nicht den Gesamtstand neu erzählen. Was unverändert ist, bleibt unerwähnt.
 - Jede Antwort beginnt mit dem Vornamen des Nutzers als Marker (`<Vorname> —`),
-  direkt gefolgt von der Antwort — eine Adressierung, kein Vorwort. Der Name kommt
-  aus der Umgebung (was der Client als Git-/Session-Identität mitliefert, sonst
-  `git config user.name`) und steht deshalb **nicht** in dieser Datei; das Harness
-  läuft auch auf fremden Maschinen. Ist kein Name auflösbar, entfällt der Marker
-  und das wird einmal als `UNBEKANNT: Nutzername` benannt. Zweck ist eine
-  Drift-Anzeige: fehlt der Marker, ist die Antwort aus diesen Regeln gelaufen.
-  Sein Vorhandensein belegt umgekehrt nichts über den Inhalt — die übrigen
-  Prüfungen (→ Ausgabe-Check) ersetzt er nicht.
+  direkt gefolgt von der Antwort. Der Name kommt aus der Umgebung (Git-/Session-
+  Identität des Clients, sonst `git config user.name`), nicht aus dieser Datei; ist
+  keiner auflösbar, entfällt der Marker, einmal benannt als `UNBEKANNT: Nutzername`.
+  Zweck: Drift-Anzeige — fehlt der Marker, ist die Antwort aus diesen Regeln
+  gelaufen; sein Vorhandensein belegt nichts über den Inhalt.
 
 ### Ponytail + Caveman — gemeinsam aktiv für alle Clients
 
@@ -119,10 +113,9 @@ Währung) auf Verdacht — genau die eine gefragte Sache mit offensichtlichen
 Defaults. Das gilt auch für selbst geschriebene Specs und Tests: Sie dürfen den
 Auftrag nicht eigenmächtig um Invalid-Input-Fälle oder andere Fehlerpfade
 erweitern. Annahmen benennen statt sie als Parameter, Guard oder zusätzliches
-Akzeptanzkriterium zu verbauen.
-
-Tradeoff: Diese Regeln biasen Richtung Vorsicht statt Tempo. Bei trivialen Tasks
-Urteilsvermögen nutzen.
+Akzeptanzkriterium zu verbauen. (Dieser Absatz ist die gemessene Regel hinter E2,
+`harness/EVALS.md` — nicht ohne A/B kürzen.) Bei trivialen Tasks Urteilsvermögen
+nutzen.
 
 ### Surgical Changes
 Nur anfassen was nötig ist. Kein "Verbessern" von angrenzendem Code. Style des
@@ -130,15 +123,10 @@ Bestands matchen. Orphans aus eigenen Änderungen entfernen, fremden Dead-Code n
 erwähnen — nicht löschen. Jede geänderte Zeile rückführbar auf User-Request.
 
 **Formatter nur auf berührte Dateien.** Vor "fertig" den Formatter des Stacks im
-Prüfmodus auf den eigenen Diff laufen lassen (`--dirty` bzw. `--diff=<base>` oder
-Äquivalent) und Verstöße *im eigenen Diff* beheben. Ist das Repo insgesamt nicht
-formatter-konform, ändert das nichts an dieser Pflicht — es verbietet nur den
-repo-weiten Lauf. Ein Sweep über fremde Dateien ist eine eigene Aufgabe mit
-eigener Freigabe und eigenem Commit, nie Nebenwirkung eines Feature-Diffs
-(sonst ertrinkt die inhaltliche Änderung im Format-Rauschen und `git blame`
-zeigt auf den Sweep). Legt das Projekt fest, dass es keinen Formatter und keine
-statische Analyse führt, entfällt die Pflicht — sie rechtfertigt nicht, ein
-solches Werkzeug dafür einzuführen.
+Prüfmodus auf den eigenen Diff laufen lassen und Verstöße dort beheben (Befehle:
+Stack-Adapter) — auch wenn das Repo insgesamt nicht konform ist. Ein Sweep über fremde Dateien ist eine eigene Aufgabe mit eigener
+Freigabe und eigenem Commit. Führt das Projekt bewusst keinen Formatter, entfällt
+die Pflicht — sie rechtfertigt nicht, einen einzuführen.
 
 ### Reparatur vor Fortschritt
 Ein **Defekt** — rotes Gate, veralteter Snapshot oder Baseline, kaputter Test,
@@ -153,14 +141,14 @@ Grenzen, damit das *Surgical Changes* nicht aushebelt: gilt für Defekte, nicht 
 Dead-Code oder Stil (die bleiben „nur erwähnen"); behoben wird der Defekt, kein
 Sweep; ein Fix, der mehr als einen Handgriff braucht, wird als Plan vorgelegt
 (→ Autonome Batches); Commits weiter nur mit Freigabe. Ein Projekt darf strenger
-sein, nicht laxer. Anlass: Dennis, 2026-10-03 („reparieren und technische Schulden
-abbauen hat immer Vorrang").
+sein, nicht laxer.
 
 ### Wartezeiten nutzen — Wartungsrunde anbieten
 Ist die laufende Aufgabe fertig oder wartet nur noch auf etwas Absehbares (langer
 Background-Lauf, CI, Deploy, Rückmeldung des Nutzers), **fragt** der Client, ob
 die Zeit für eine Wartungsrunde genutzt wird — er startet sie nicht ungefragt.
-Die Frage nennt den aktuellen Stand, belegt statt geschätzt:
+Diese Frage ist die eine gesetzte Ausnahme zu „kein Abschlusssatz mit Angebot"
+(Sprache & Stil). Sie nennt den aktuellen Stand, belegt statt geschätzt:
 - offene technische Schulden (Schuldenliste des Projekts: Anzahl, teuerster Eintrag),
 - Doku-/State-Drift (`.planning/STATE.md` bzw. Worklog gegen `git log`),
 - letzter Review- und Kartografie-Stand (Datum, sonst `UNBEKANNT:`),
@@ -189,7 +177,6 @@ Bei Zustimmung in dieser Reihenfolge:
 
 Grenzen: Commits weiter nur mit Freigabe; Fixes über einen Handgriff → Plan
 (→ Autonome Batches); kommt die eigentliche Aufgabe zurück, hat sie Vorrang.
-Anlass: Dennis, 2026-10-14.
 
 ### Consistency First
 Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleiche
@@ -198,17 +185,12 @@ Vor einer neuen Variante prüfen, ob es das schon gibt. Abweichungen von
 etablierten Projekt-Konventionen brauchen explizite Freigabe — nicht still einführen.
 
 ### Modular by Default
-Software modular bauen: klar abgegrenzte Einheiten mit einer Verantwortung,
-Kommunikation über schmale Schnittstellen statt geteiltem Zustand. Geschäftslogik
-raus aus Einstiegspunkten (Controller/Handler/CLI) in Module/Services. Ein Modul =
-ein Grund zu ändern; keine Gott-Klassen/-Dateien. Tiefe/Muster: `harness/ENGINEERING.md`.
+Klar abgegrenzte Einheiten mit einer Verantwortung, schmale Schnittstellen statt
+geteiltem Zustand, Geschäftslogik nicht in Einstiegspunkten. Schichtregeln:
+`harness/GUARDRAILS.md` A; Tiefe/Muster: `harness/ENGINEERING.md`.
 
 ### Goal-Driven Execution
-Verifizierbare Ziele formulieren:
-- "Add validation" → "Tests für invalid inputs, dann grün machen"
-- "Fix the bug" → "Test der Bug reproduziert, dann grün machen"
-- "Refactor X" → "Tests vorher + nachher grün"
-
+Verifizierbare Ziele formulieren (Bug → erst ein Test, der ihn reproduziert);
 Multi-Step → kurzer Plan mit Verify-Check pro Schritt.
 
 **Fertig-Definition:** "Fertig" nennt ein mechanisch geprüftes Kriterium
@@ -272,13 +254,12 @@ Bei Abbruch / Token-Ende: State-Files lesen, nahtlos fortsetzen. Projekte ohne
 
 Bei Feature-/Code-Arbeit nach dem **Harness** entwickeln: Spec → Test → Code →
 Gate → Korrektur, mit selbst-erzwungenen Guardrails und mechanischem
-Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg und Methode in
-dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/README.md`, dann
-`~/.agents/harness/README.md` (client-neutrales Root), dann die Client-Kopien
-`~/.claude/harness/README.md`, `~/.codex/harness/README.md`,
-`~/.config/opencode/harness/README.md`, sonst `harness/README.md` im
-ki-agent-setup-Repo. Danach den passenden Stack-Adapter unter dem gefundenen
-`harness/stacks/` wählen.
+Fertig-Kriterium. Das Harness ist global hinterlegt; Einstieg (`README.md`) in
+dieser Reihenfolge suchen: `$AGENT_HARNESS_ROOT/`, dann `~/.agents/harness/`
+(client-neutral), dann die Kopie des eigenen Clients (Claude Code
+`~/.claude/harness/`, Codex `~/.codex/harness/`, OpenCode
+`~/.config/opencode/harness/`), sonst `harness/` im ki-agent-setup-Repo. Danach
+den passenden Stack-Adapter unter `stacks/` des gefundenen Roots wählen.
 (Dokumentarisch, kein Zwang per Hook — der Agent wendet es selbst an.)
 
 **Nicht das ganze Harness laden.** Pflicht sind nur `GUARDRAILS.md` und der zum
@@ -287,20 +268,16 @@ nachgeladen (Tabelle in `harness/README.md`, `Lade wenn:`-Zeile im Kopf jeder
 Datei). Vorsorglich alles zu lesen ist ein Verstoß gegen „Context-Budget schlank"
 oben, nicht Gründlichkeit.
 
-Engineering-Prinzipien (Modularität, Kohäsion/Kopplung, Interface-/Dependency-
-Richtung, Fehler-Shape, Wann-abstrahieren) sind vertieft in `harness/ENGINEERING.md`
-— gleiche Lookup-Reihenfolge wie oben, Referenz-Doc (on-demand gelesen, expandiert
-die terse Arbeitsweise-Regeln oben, dupliziert GUARDRAILS/AGENTS nicht).
+Engineering-Prinzipien (Modularität, Kopplung, Interface-Richtung, Fehler-Shape,
+Wann-abstrahieren) vertieft `harness/ENGINEERING.md` — on-demand gegen seinen
+Trigger, nicht vorab.
 
 ## Doku-Projekte — Doc-Harness
 
 Für Doku-Arbeit (README-Sammlungen, Handbücher, API-Doku) gilt analog das
-**Doc-Harness** (Claims-gegen-Quelle als Gate). Suchreihenfolge:
-wenn `$AGENT_HARNESS_ROOT` gesetzt ist, zuerst
-`$AGENT_HARNESS_ROOT/../doc-harness/README.md`, dann
-`~/.agents/doc-harness/README.md`, `~/.claude/doc-harness/README.md`,
-`~/.codex/doc-harness/README.md`, `~/.config/opencode/doc-harness/README.md`,
-sonst `doc-harness/README.md` im ki-agent-setup-Repo. Generierte Projekt-Doku
+**Doc-Harness** (Claims-gegen-Quelle als Gate). Suchreihenfolge wie beim Harness,
+mit `doc-harness/` statt `harness/` (bei `$AGENT_HARNESS_ROOT` dessen
+Geschwisterverzeichnis). Generierte Projekt-Doku
 braucht eine **vorher definierte Struktur** (`docs/README.md`/`docs/CLAUDE.md`
 im Projekt, Vorlage:
 `doc-harness/DOC_TEMPLATE.md`) — ohne definierte Struktur keine generierte Doku.
@@ -317,18 +294,9 @@ anderer Logik.
 UI-Formular (E2E / Widget / Browser) → vollständige Edge-Case-Matrix. Prinzip:
 **immer genau ein Feld falsch, alle anderen korrekt** — durch alle Felder rotieren.
 
-Beispiel Registrierung [Name, E-Mail, Passwort, PW-Best., AGB]:
-
-| Test | Name | E-Mail | PW | PW-Best. | AGB | Ergebnis |
-|---|---|---|---|---|---|---|
-| 1 | ✓ | leer | ✓ | ✓ | ✓ | E-Mail fehlt |
-| 2 | ✓ | ungültig | ✓ | ✓ | ✓ | Format-Fehler |
-| 3 | ✓ | ✓ | leer | ✓ | ✓ | PW fehlt |
-| 4 | ✓ | ✓ | zu kurz | ✓ | ✓ | min. 10 Zeichen |
-| 5 | ✓ | ✓ | ✓ | abweichend | ✓ | stimmen nicht überein |
-| 6 | leer | ✓ | ✓ | ✓ | ✓ | Name fehlt |
-| 7 | ✓ | ✓ | ✓ | ✓ | ✗ | Submit blockiert |
-| 8 | ✓ | ✓ | ✓ | ✓ | ✓ | Happy Path (immer zuletzt) |
+Beispiel Registrierung [Name, E-Mail, Passwort, PW-Best., AGB]: je ein Lauf mit
+leerem bzw. ungültigem Feld, abweichender Bestätigung, fehlender AGB — und der
+Happy Path zuletzt.
 
 Zusätzlich:
 - **Keyboard-Submit** (Enter / onSubmitted) eigener Pfad — kann Button-Validierung umgehen.
@@ -363,7 +331,6 @@ eine strengere Projektvorgabe (z. B. AAA-Kontrast) schlägt sie.
 
 - Sensible / konfigurierbare Werte in `.env`. Kein Hardcoding von Credentials /
   API-Keys / Umgebungswerten.
-- Controller schlank — Geschäftslogik in Services / Actions.
 - Migrations mit Rollback (`down()` / Alembic `downgrade()`).
 - API-Routen versioniert (`/api/v1/...`).
 - **Web-Baseline** — eine ausgelieferte Website bringt `robots.txt`, `sitemap.xml`
@@ -372,17 +339,12 @@ eine strengere Projektvorgabe (z. B. AAA-Kontrast) schlägt sie.
   `harness/ENGINEERING.md` §7). Inhalte aus der echten Struktur generieren, nicht
   von Hand pflegen — eine veraltete Datei ist schlechter als keine.
 - **Diagramm-Baseline** — Architektur-, Workflow-, Sequenz-, Datenfluss- und
-  Zustandsdiagramme entstehen per Default mit dem `archify`-Skill (`SKILLS.md`),
-  sobald der Fall einem dieser fünf Typen entspricht; Ergebnis ist validiertes
-  Standalone-HTML/SVG. Passt der Typ nicht (Charts/Datenvisualisierung,
-  UI-Mockups) oder wird das Diagramm **in** ein anderes Dokument eingebettet
-  (Repo-`.md`, Artifact-Seite), bleibt es bei Inline-Mermaid unter dem
-  Render-Check des Doc-Harness (`doc-harness/VERIFY.md`). Tiefe und
-  Fertig-Kriterium: `harness/ENGINEERING.md` §8.
+  Zustandsdiagramme per Default mit dem `archify`-Skill; eingebettet in ein anderes
+  Dokument oder anderer Typ → Inline-Mermaid (`doc-harness/VERIFY.md`). Details:
+  `harness/ENGINEERING.md` §8.
 
-**Laravel-spezifisch:**
-- Eloquent: `$fillable` / `$guarded` korrekt setzen.
-- Autorisierung über Policies / Gates (Spatie Permission Paket).
+**Laravel-spezifisch:** Autorisierung über Policies/Gates mit dem Spatie-Permission-
+Paket; Mass Assignment und Weiteres: PHP-Stack-Adapter.
 
 ## Codex-spezifisch
 
@@ -390,13 +352,10 @@ Codex hat in diesem Setup kein separates `CODEX.md`-Delta. Codex liest die
 globale bzw. projektlokale `AGENTS.md`; deshalb stehen die wenigen
 Codex-spezifischen Hinweise hier und bleiben klar auf Codex begrenzt.
 
-- GSD-Runtime-Daten liegen unter `~/.codex/gsd-core` (seit dem Rename von
-  `get-shit-done/`; ein Verzeichnis dieses alten Namens ist Altbestand).
-- Harness-Lookup für Codex: zuerst `$AGENT_HARNESS_ROOT/README.md`, dann
-  `~/.agents/harness/README.md`, dann `~/.codex/harness/README.md`, sonst
-  `harness/README.md` im `ki-agent-setup`-Repo.
-  Vor Feature-/Code-Arbeit den dortigen Einstieg und den passenden Stack-Adapter
-  lesen.
+- GSD-Runtime-Daten liegen unter `~/.codex/gsd-core` (ein `get-shit-done/` daneben
+  ist Altbestand).
+- Harness-Lookup: wie unter „Software-Entwicklung — Harness" (Client-Kopie
+  `~/.codex/harness/`).
 - Wenn verschachtelte Codex-Läufe nicht nach `~/.codex` schreiben können, via
   `codex-tmp` starten, damit `CODEX_HOME` auf `/tmp/codex-$USER` zeigt.
 - Projektspezifische Anweisungen gehören ins Repository (`AGENTS.md` bzw.

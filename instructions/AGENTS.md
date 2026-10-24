@@ -333,7 +333,8 @@ Beispiel Registrierung [Name, E-Mail, Passwort, PW-Best., AGB]:
 Zusätzlich:
 - **Keyboard-Submit** (Enter / onSubmitted) eigener Pfad — kann Button-Validierung umgehen.
 - **Pro Fehlermeldung** Assertion auf exakten Text, nicht nur auf "FEHLER".
-- **Happy Path zuletzt** — baut auf State der Edge-Cases auf.
+- **Happy Path zuletzt** — er schreibt Zustand und darf keinen Edge-Case
+  verfälschen; jeder Test seedet trotzdem selbst.
 - **Keine parallelen Test-Suites gegen eine geteilte Datenbank** — sequenziell
   ausführen, sonst DB-Kollisionen, Deadlocks und Falschfehler.
 

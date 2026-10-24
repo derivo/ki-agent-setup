@@ -6,7 +6,7 @@ Nachschlage-Liste stabiler externer Quellen, auf die sich Setup/Harness stützen
 oder die bei Design-/Frontend-Arbeit wiederkehren. **Kuratiert, nicht gesammelt:**
 jeder Link genau **einmal**, in dem Block, wo er thematisch hingehört.
 
-- Wie ein Link hier hineinkommt: Skill [`linklist-curator`](../skills/linklist-curator/SKILL.md).
+- Wie ein Link hier hineinkommt: Skill `linklist-curator` (im ki-agent-setup-Repo unter `skills/`).
 - Ausgeben: `/hx:linklist`.
 - **Provenance:** jede URL wird beim Eintragen in derselben Session aufgelöst; nicht
   auflösbare Links werden nicht aufgenommen (siehe Skill).

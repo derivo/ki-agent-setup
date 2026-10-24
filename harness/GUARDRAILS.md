@@ -53,21 +53,10 @@ eine Zeile in der Abschlussmeldung, welche Quelle verworfen wurde und warum. Ist
 die tieferstehende Quelle inhaltlich im Recht, ist das ein Fall für Harness
 Correction (oben) — Regel hier schärfen, nicht die Rangfolge umdrehen.
 
-**Eine `DESIGN.md` hat in dieser Rangfolge keinen eigenen Rang.** Abschnitt G
-([GUARDRAILS_UI.md](GUARDRAILS_UI.md), Regel 7) setzt nur die *Form* — `DESIGN.md` ist das gesetzte Format, und Tokens
-sind normativ *innerhalb* dieser Datei. Als Guardrail begrenzt das das *Wie*
-(Rang 2) und macht die Datei nicht zur höherrangigen **Inhalts**quelle gegenüber
-anderen Design-Vorgaben des Projekts. Ein inhaltlicher Widerspruch zwischen
-`DESIGN.md` und einem `STYLEGUIDE.md`, `docs/design-*` oder einem Design-Kapitel
-wird von dieser Rangfolge deshalb **nicht** entschieden — sie ordnet Scope- und
-Wie-Quellen, nicht die Frage, welcher Design-*Inhalt* richtig ist. Das gilt auch
-dort, wo die konkurrierende Quelle selbst einen Rang hat (Projekt-`CLAUDE.md`/
-`AGENTS.md`, Rang 3): ein höherer Rang setzt sie nicht automatisch durch, weil der
-Rang über Scope und Vorgehen entscheidet, nicht über den Farbwert. Der Fall geht an
-„Bestand zuerst — nichts vorschlagen in einen besetzten Platz"
-([GUARDRAILS_UI.md](GUARDRAILS_UI.md), Abschnitt G) —
-beide Fundstellen mit Datei und Zeile benennen, der Nutzer entscheidet, bis dahin
-wird nichts überschrieben.
+**Eine `DESIGN.md` hat in dieser Rangfolge keinen eigenen Rang.** Die Rangfolge
+ordnet Scope- und Wie-Quellen, nicht Design-*Inhalt*. Widerspricht eine `DESIGN.md`
+einer anderen Design-Vorgabe des Projekts, entscheidet der Nutzer
+([GUARDRAILS_UI.md](GUARDRAILS_UI.md) → „Bestand zuerst").
 
 ---
 
@@ -183,38 +172,12 @@ Scope still — entfernen „leere" Wrapper, lassen Teile aus, melden trotzdem E
 Ein grüner Compile-Check ist kein Runtime-Beleg, wenn die Änderung Verhalten
 (Interaktion, dynamische UI) berührt: dann zusätzlich am gerenderten Zustand prüfen.
 
-### Regel — „Immer noch kaputt" heißt reproduzieren, nicht raten
-Meldet der Nutzer nach einem Fix, dass ein Verhalten/visueller Bug weiter besteht,
-wird VOR dem nächsten Fix eine deterministische Reproduktion des exakten Symptoms
-gebaut (Skript, DOM-/State-Sample, Video, Log) und die Ursache daran belegt. Kein
-zweiter spekulativer Fix ohne Reproduktion — gestapelte Vermutungs-Fixes kaschieren
-die wahre Ursache und kosten Runden. Kennt das Beobachtungs-Tool eine Grenze (z. B.
-Playwright-Page-Video erfasst keinen Inter-Dokument-Paint), wird das benannt statt
-als „gefixt / nicht reproduzierbar" gewertet.
-
-Ist der Defekt an eine Umgebung gebunden, die der Agent nicht selbst fahren kann
-(fremder Browser, fremdes OS, Gerät des Nutzers), ersetzt eine andere Umgebung die
-Reproduktion NICHT. Dann werden Messwerte aus der betroffenen Umgebung angefordert
-(Konsolen-Snippet, Log, Ausschnitt) und die Beobachtung zuerst in Klassen zerlegt —
-bei Rendering-Befunden Geometrie gegen Paint gegen Umgebungs-Chrome. Ein Mechanismus
-wird erst benannt, wenn die Messung die anderen Klassen ausschließt; bis dahin gilt
-der Befund als offen, auch wenn ein Fix plausibel wirkt. Ein vermuteter Mechanismus
-gehört nicht in ein dauerhaftes Artefakt (PR-Body, Commit, Doku).
-
-### Regel — Stochastische Defekte: Rate samt Unsicherheit messen
-Tritt ein Defekt **nicht bei jedem Lauf** auf, ist ein grüner Lauf **kein**
-Fertig-Beleg — ein ungefixter Stand liefert bei kleiner Stichprobe genauso grün.
-Wenn sicher und praktikabel, vor dem Fix eine **Baseline** als
-`Fehlschläge/Läufe` mit benanntem `n` und Bedingungen messen; nach dem Fix unter
-vergleichbarer Exposition wiederholen und **beide Zahlen** melden. `0/n` ist keine
-bewiesene Nullrate, sondern eine endliche Stichprobe.
-
-Ist eine Baseline unsicher, unverhältnismäßig oder nicht mehr reproduzierbar, wird
-der Defekt nicht eigens dafür erneut ausgelöst. Dann vorhandene Evidenz, eine
-sichere deterministische Fixture oder den belegten Ursachenpfad verwenden und die
-fehlende Vorher-/Nachher-Rate benennen. „Gefixt" setzt zusätzlich voraus, dass der
-Fix den belegten Fehlerpfad schließt; nur bessere Sichtbarkeit oder eine nicht
-messbar gesenkte Rate wird als Mitigation ausgewiesen.
+### Regel — Ein Fix, der nicht hält, ist kein Fertig-Beleg
+Meldet der Nutzer nach einem Fix, dass das Verhalten weiter besteht, oder tritt der
+Defekt nicht bei jedem Lauf auf: **vor** dem nächsten Fix eine deterministische
+Reproduktion bauen bzw. die Rate `Fehlschläge/Läufe` messen — ein einzelner grüner
+Lauf belegt hier nichts. Vorgehen und Grenzen: [DEBUG.md](DEBUG.md) → „Immer noch
+kaputt" und „Stochastische Defekte".
 
 ### Regel — Messinstrument vor dem Ergebnis prüfen
 Ein neu gebauter Detektor, Test oder Probe wird zuerst gegen **bekannte** Fälle
@@ -240,28 +203,14 @@ gemeldet. Erkennungsregel: verschwindet die Meldung, wenn derselbe Pfad ohne das
 Werkzeug läuft, ist das ein starker Hinweis auf das Werkzeug — kein Beweis, denn
 das Werkzeug kann auch einen echten Fehler erst auslösen (Timing, Last). Bevor
 eine Meldung als Artefakt verworfen wird, deren Herkunft im Werkzeug benennen
-(Quelle, Injektionsstelle). Beobachtet mit Playwright-injizierten
-CSP-/Stylesheet-Warnungen, die zweimal als Befund verfolgt und wieder verworfen
-werden mussten. Umgekehrt gilt die Vorsicht genauso: „ist bestimmt nur das
+(Quelle, Injektionsstelle). Umgekehrt gilt die Vorsicht genauso: „ist bestimmt nur das
 Tooling" ohne diese Probe ist ebenfalls unbelegt.
 
 ### Regel — Prüfmittel nicht aus derselben Quelle wie das Prüfobjekt
 Eine Prüfung, deren Erwartung aus derselben Quelle stammt wie das Prüfobjekt, ist
-tautologisch und bleibt auch dann grün, wenn die Quelle verschwindet. Beobachtet
-an einer Übersetzungs-Assertion der Form `assertSee(__('<key>'))` — fehlt der
-Schlüssel, liefern View **und** Assertion den Schlüsselnamen, der Test bestätigt
-nur sich selbst. Tragfähig wird er erst, wenn die Existenz separat geprüft wird
-(im Laravel-Fall `Lang::has`) und zusätzlich negativ auf den Schlüsselnamen
-assertet wird.
-
-Ebenso muss ein Test die Grenze auf dem Pfad treffen, auf dem sie **wirkt**.
-Beobachtet: ein Fake-Upload von 11 MB bestätigte die Framework-Regel
-`max:10240` grün, während die Laufzeit-Grenze `upload_max_filesize` im echten
-Upload vorher abbrach — die geprüfte Fehlermeldung war in beiden Umgebungen
-unerreichbar, der grüne Test behauptete einen Schutz, den es nicht gab. Ein Fake,
-der die Schicht überspringt, die die Grenze durchsetzt, belegt die Grenze nicht;
-dann gehört die Invariante zwischen App-Grenze und Laufzeit-Grenze selbst in
-einen Test.
+tautologisch und bleibt grün, wenn die Quelle verschwindet; ein Test, der die
+Schicht überspringt, die eine Grenze durchsetzt, belegt die Grenze nicht. Beispiele
+und Gegenprobe: [TESTS.md](TESTS.md) → „Grün ist nicht gleich gültig".
 
 ### Regel — Messlauf-Umfang vor der Zahl prüfen
 Bevor eine Lauf-Zahl (Tests grün/rot, Treffer, Fundstellen) als Baseline oder
@@ -367,7 +316,7 @@ Prüftiefe.
   nicht blind hinzugefügt.
 
 Findet der Pass etwas, gilt dieselbe Regel wie beim Gate: Ursache fixen, nicht
-verstecken. Stack-spezifische Tools (SAST, Secret-Scanner) nennt der Adapter.
+verstecken. Stack-spezifische Tools (Dependency-Audit, Secret-Scanner) nennt der Adapter.
 
 ---
 
@@ -429,12 +378,9 @@ Format-Invariante geprüft (öffnendes Quote braucht ein schließendes, Klammern
 balancieren) — nicht ersatzweise etwas Zählbares.
 
 Struktur-Proxys belegen **Wohlgeformtheit nicht**: Marker-Anzahl, Feldanzahl,
-Zeilenzahl des Rumpfs, Mindestlänge eines Werts. Beobachtet am 2026-08-18 beim
-Kürzen von Agent-Beschreibungen: der Schnitt entfernte das schließende `"` eines
-gequoteten `description:`-Werts. Vier solcher Proxys meldeten grün, während die
-Datei für den Loader ungültig war und der Agent aus der Registry fiel. Der Defekt
-fiel nicht bei der Prüfung auf, sondern erst, als das Werkzeug ihn vermisste —
-also außerhalb der Schleife, die ihn hätte fangen sollen.
+Zeilenzahl des Rumpfs, Mindestlänge eines Werts. Wohlgeformtheit belegt nur der
+Parser, der die Datei tatsächlich lädt (2026-08-18: vier Proxys grün, ein
+fehlendes `"` machte die Datei für den Loader ungültig).
 
 ### Regel 10 — Kein zweiter Agent auf demselben Working Tree; vor Commit Zustand prüfen
 Zwei Agenten-Sessions im selben Git-Working-Tree/Branch teilen Dateizustand,
@@ -449,11 +395,8 @@ jedem Commit `git status` lesen und mit expliziten Pfaden stagen statt `git add 
 Aussagen über „gemergt", „gestrandet", „ohne PR", „verloren" brauchen ein
 `git fetch` unmittelbar davor und den Vergleich gegen `origin/<default>` — nie
 gegen lokales `main`, das beliebig alt sein darf. Ohne fetch lautet die Antwort
-„unbekannt", nicht „nicht gemergt". Beobachtet: lokales `main` lag 93 Commits
-hinter `origin/main`; daraus wurde „fünf Commits ohne PR, Ein-Platten-Risiko"
-gemeldet — alle fünf lagen längst auf `origin/main`. Zweimal beobachtet, davor
-schon mit `git branch --no-merged main` ohne fetch, wo ein über PR gemergter
-Branch als gestrandet gemeldet wurde.
+„unbekannt", nicht „nicht gemergt" (zweimal beobachtet: gemergte Arbeit als
+„ohne PR" bzw. „gestrandet" gemeldet, weil lokales `main` weit zurücklag).
 
 `git branch --contains` und `--no-merged` sind ebenfalls erst nach fetch
 aussagekräftig. PR-/Issue-Nummern kommen aus `gh`-Output, nicht aus dem
@@ -467,16 +410,11 @@ beide beobachtet:
 
 **Konfliktfrei heißt nicht korrekt.** Fügen beide Seiten denselben Schlüssel an
 verschiedenen Stellen einer additiven Liste ein, sind das für git zwei
-unabhängige Hunks — kein Konflikt, aber ein Duplikat. Beobachtet an einer
-Kubernetes-`env:`-Liste, die nach dem Merge `LOG_CHANNEL`, `LOG_LEVEL` und
-`LOG_STDERR_FORMATTER` doppelt trug; die einzige Datei mit Konfliktmarkern war
-eine andere. Gilt genauso für `volumeMounts`, Dependency-Listen, `.gitignore`,
-Import-Blöcke. Nach jedem Merge auf Duplikate prüfen, nicht nur auf `<<<<<<<`.
+unabhängige Hunks — kein Konflikt, aber ein Duplikat (beobachtet an einer
+Kubernetes-`env:`-Liste). Gilt genauso für `volumeMounts`, Dependency-Listen,
+`.gitignore`, Import-Blöcke. Nach jedem Merge auf Duplikate prüfen, nicht nur auf `<<<<<<<`.
 
 **„Nimmt ein späterer Merge X wieder zurück?" beantwortet `git merge-base
 --is-ancestor`, nicht der Vergleich der Dateiinhalte beider Branches.** Ist der
 Quell-Branch bereits Ancestor des Ziels, ist sein Merge ein No-op — unabhängig
-davon, was seine Dateien enthalten. Beobachtet: aus „Branch A trägt das Flag
-nicht" wurde geschlossen „A nach B gemergt entfernt das Flag wieder", obwohl A
-nach einer Reconciliation Ancestor von B war und der Merge nichts geändert
-hätte.
+davon, was seine Dateien enthalten.

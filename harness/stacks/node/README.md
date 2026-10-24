@@ -82,6 +82,14 @@ bündelt (als `quality`-Script in `package.json`):
 
 Erst wenn es sauber durchläuft, gilt "fertig".
 
+**Security-Pass-Werkzeuge (konkretisiert GUARDRAILS.md E):** `npm audit --audit-level=high` prüft die
+Abhängigkeiten auf bekannte Schwachstellen (Exit ≠ 0 bei Fund), ein Secret-Scan
+(z. B. `gitleaks`) den eigenen Diff. Führt das Projekt beides, gehört es ins Gate;
+fehlt es, wird der Security-Pass als Selbstcheck gemeldet, nicht als geprüft.
+
+**A11y-Nachweis** (globale AGENTS.md → Barrierefreiheit): gegen die laufende App
+je berührter Seite, z. B. `npx pa11y <url>` oder `npx @axe-core/cli <url>`.
+
 **Formatter auf Bestandsprojekten.** Ein Repo, das nie durch `prettier` lief, meldet
 beim ersten `--check .` hunderte Verstöße in fremden Dateien. Das setzt die Regel aus
 AGENTS.md → "Surgical Changes" nicht außer Kraft, es verschiebt nur den Umfang: den
@@ -178,41 +186,9 @@ Components oder Server-Templates EJS/Nunjucks/Pug, ggf. + Tailwind).
   Theme-Objekt) bzw. die `theme`-Sektion in `tailwind.config.{js,ts}` (Farben,
   Spacing, Radien, Schrift). Keine Inline-`style={{…}}`/`style="…"`, kein Hex direkt
   im JSX/Template; Abstände/Höhen über die Token-/Utility-Skala, nicht Einzelfall-`px`.
-- **`DESIGN.md` als Token-Quelle (`GUARDRAILS_UI.md` G/Regel 7):** liegt eine `DESIGN.md`
-  im Repo-Root, ist sie die normative Quelle. Vor UI-Write validieren und ins Gate
-  hängen: `npx @google/design.md lint DESIGN.md`. **Achtung Exit-Code:** strukturelle
-  Fehler → Exit 1, aber ein **Kontrast-Verstoß kommt nur als `warning` (Exit bleibt
-  0)** — verifiziert am Validator. Exit 0 heißt also *nicht* „Kontrast ok"; die
-  `findings` lesen und Kontrast-Warnungen im UI-Selbstcheck als blockierend behandeln
-  (oder `warnings > 0` selbst zum Fehler machen). Tailwind aus ihr generieren statt Werte doppeln:
-  `npx @google/design.md export --format css-tailwind DESIGN.md > theme.css`
-  (v4) bzw. `--format json-tailwind` (v3) — dann bleibt `tailwind.config` deriviert,
-  keine zweite Wahrheit. Braucht externes Token-Tooling (Style Dictionary, Tokens
-  Studio) das DTCG-Austauschformat, liefert `--format dtcg` es direkt — `$value`/
-  `$type`-JSON mit `$schema` der DTCG-Version 2025.10 (an 0.3.0 und 0.4.0 verifiziert).
-- **Export-Ausgabe prüfen, nicht den Exit-Code** (zweite Instanz derselben Falle):
-  jede populierte Token-Sektion muss ihre Familie emittieren — `colors` → `--color-*`,
-  `typography.<n>.fontFamily` → `--font-*`, `.fontSize` → `--text-*`, `rounded` →
-  `--radius-*`, `spacing` → `--spacing-*`. Fehlt eine, ist die Front-Matter falsch
-  geformt, obwohl der Export mit **Exit 0** durchläuft. **Ausnahme, verifiziert:**
-  `components` emittiert **kein** Target (weder `css-tailwind` noch `dtcg`) — beide
-  sind Token-Ebenen. Das ist Target-Limitation, kein Schema-Fehler; nicht „reparieren"
-  durch Löschen der Sektion.
-- **`components`-Sub-Tokens nur aus dem Schema.** Gültig sind `backgroundColor`,
-  `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, `width`. Ein
-  erfundenes `background`/`color` liefert `warning` bei **Exit 0** (verifiziert) — und
-  weil `components` nirgends exportiert wird, ist der Lint die *einzige* Prüfung
-  dafür. `warnings > 0` hier als blockierend behandeln.
-- **Der `lint` belegt keine exportierbare Datei.** Verifiziert an 0.3.0 und 0.4.0: ein
-  Token-Name, der `^[a-zA-Z0-9][a-zA-Z0-9-]*$` verletzt (`Background_Primary`), lässt
-  `lint` mit **Exit 0** passieren, während `export` mit `INVALID_TOKEN_NAME` und
-  **Exit 1** bricht. Deshalb gehören beide Kommandos ins Gate, nicht nur der Lint.
-- **`diff` als Regressions-Werkzeug bei Änderungen an `DESIGN.md`:**
-  `npx @google/design.md diff <alt> DESIGN.md` liefert JSON mit den Top-Level-Keys
-  `tokens` (je Gruppe `added`/`removed`/`modified`), `findings` und **`regression`**
-  (Exit 0, an 0.3.0 und 0.4.0 verifiziert). Vor dem Ersetzen einer bestehenden
-  `DESIGN.md` damit prüfen, ob eine akzeptierte Entscheidung still verschwindet — der
-  `regression`-Key ist genau dafür da, nicht der Exit-Code.
+- **`DESIGN.md` als Token-Quelle:** liegt eine `DESIGN.md` im Repo-Root, ist sie die
+  normative Quelle; `tailwind.config` wird daraus exportiert, nicht von Hand gepflegt.
+  Validator-Kommandos und ihre Exit-Code-Fallen: `GUARDRAILS_UI.md` → Regel 7.
 - **Regel 7 gehört ins Gate:** `scripts/design-check.sh` aus `GUARDRAILS_UI.md`
   (Regel 7), als `design:check`-Script in `package.json` im `quality`-Bündel.
   Dateitypen nach der UI-Technik des Projekts, z. B. `set -- '*.tsx' '*.jsx' '*.vue'

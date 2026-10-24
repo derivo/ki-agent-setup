@@ -133,7 +133,11 @@ Kommando ist idempotent (mehrfach aufrufbar) und räumt bei Bedarf sauber ab.
 Smoke pollt, bis er 200 liefert — kein fester Sleep:
 
 ```
-until curl -fsS http://localhost:8000/health >/dev/null; do sleep 0.5; done
+i=0   # Abbruch statt Endlosschleife: 60 Versuche, je Request max. 2 s
+until curl -fsS --max-time 2 http://localhost:8000/health >/dev/null; do
+  i=$((i+1)); [ "$i" -lt 60 ] || { echo "health: kein 200 nach 60 Versuchen" >&2; exit 1; }
+  sleep 0.5
+done
 curl -fsS http://localhost:8000/api/v1/tasks/1 | grep -q '"status"'   # ein Durchstich
 ```
 
@@ -182,36 +186,9 @@ Filament, ggf. + Tailwind).
 - **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
   zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte
   Entscheidung still verschwindet.
-- **Regel 7 gehört ins Gate, nicht in den Selbstcheck.** Was ein `grep` entscheiden
-  kann, wird mechanisch geprüft — sonst bleibt es Selbstauskunft. Als
-  `design:check`-Script in `composer.json`, im `quality`-Bündel:
-
-  ```bash
-  files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
-    | grep -E '\.(blade\.php|css)$' | sort -u )
-  if [ -z "$files" ]; then exit 0; fi
-  hits=$(printf '%s\n' "$files" \
-    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' \
-    | sed -e 's/{{--.*--}}//g' -e 's/<!--.*-->//g' -e 's#/\*.*\*/##g' \
-    | grep -E 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' || true)
-  if [ -n "$hits" ]; then printf '%s\n' "$hits"; exit 1; fi
-  exit 0
-  ```
-
-  Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
-  ist der häufigste Verstoß und steht in keinem `git diff HEAD` (am Snippet
-  verifiziert). Es gilt dieselbe Leer-Listen-Falle wie beim Formatter oben: einmal beweisen, dass
-  der Check rot werden **kann**.
-
-  Der `sed`-Schritt schneidet **einzeilige Kommentarspannen** aus der Trefferzeile
-  und bewertet erst danach — ein Hex in `{{-- … --}}`, `<!-- … -->` oder `/* … */`
-  ist keine Ad-hoc-Farbe. Steht auf derselben Zeile zusätzlich ein echter Verstoß,
-  bleibt der Treffer rot (am Snippet verifiziert). Zwei Grenzen bleiben und werden
-  nicht kaschiert: ein **mehrzeiliger** Kommentar wird weiter gemeldet, und
-  generierte Assets gehören über den **Pfad** ausgenommen, nicht über das Muster.
-  Die `if`-Form statt `[ … ] && …` ist nicht Kosmetik: der Check hat jetzt zwei
-  Stufen (greppen, Kommentare schneiden, erneut bewerten), und eine `&&`-Kette bildet
-  das nicht ab.
+- **Regel 7 gehört ins Gate:** `scripts/design-check.sh` aus `GUARDRAILS_UI.md`
+  (Regel 7), als `design:check`-Script in `composer.json` im `quality`-Bündel.
+  Dateitypen: `set -- '*.blade.php' '*.css' ':(exclude)<Token-Datei>'`.
 - **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die eine
   vorhandene `<x-…>`-Komponente nachbauen. Ob zwei Bausteine denselben Zweck haben,
   entscheidet kein `grep` — das prüft `/hx:audit` über den Bestand.

@@ -97,6 +97,50 @@ reproduzierbares Build-/Adapter-Kommando die Runtime-Tokens aus dieser Quelle
 (Kommando: Stack-Adapter). Hex-/Skalenwerte von Hand in CSS/JS zu kopieren und nur
 per Drift-Test zu vergleichen ist keine Token-Auflösung.
 
+**Regel 7 gehört ins Gate, nicht in den Selbstcheck.** Was ein `grep` entscheiden
+kann, wird mechanisch geprüft — sonst bleibt es Selbstauskunft. Eine Datei
+`scripts/design-check.sh` im Projekt, vom `design:check`-Script bzw.
+`design-check`-Target im `quality`-Bündel aufgerufen; der Stack-Adapter nennt nur
+die Dateitypen (die `set --`-Zeile):
+
+```sh
+#!/bin/sh
+# design:check: ad-hoc values in the own diff (GUARDRAILS_UI.md, Regel 7)
+set -eu
+base=$(git merge-base HEAD "${DESIGN_BASE:-origin/main}")
+list=$(mktemp); hits=$(mktemp); trap 'rm -f "$list" "$hits"' EXIT
+set -- '*.blade.php' '*.css' ':(exclude)resources/css/tokens.css'
+git diff -z --name-only --diff-filter=ACMR "$base" -- "$@" >"$list"
+git ls-files -z -o --exclude-standard -- "$@" >>"$list"
+[ -s "$list" ] || exit 0
+pat='style=\{\{|style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b'
+xargs -0 sh -c 'grep -nHE "$0" "$@"; [ $? -le 1 ]' "$pat" <"$list" >"$hits" || exit 2
+sed -E -e 's/\{\{--([^-]|-[^-])*--\}\}//g' -e 's/\{#([^#]|#[^}])*#\}//g' \
+  -e 's/<!--([^-]|-[^-])*-->//g' -e 's#/\*([^*]|\*+[^*/])*\*+/##g' \
+  -e 's/href="#[^"]*"//g' "$hits" >"$list"
+rc=0; grep -E "$pat" "$list" || rc=$?
+[ "$rc" -eq 1 ]
+```
+
+Was die Form leistet (an einer 14-Fall-Matrix unter `sh`, `dash`, bash 3.2 und
+zsh verifiziert; die vorherige Pipeline-Form fiel in 10 der 14 Fälle durch):
+- **Dateisatz = eigener Diff:** alles seit dem Abzweig (`merge-base`, also auch
+  schon committete Branch-Arbeit — die CI sieht sonst nichts), dazu Ungestagtes
+  und **Untracktes** (die frisch angelegte Komponente ist der häufigste Verstoß).
+- **Kein stummes Grün:** fehlt die Vergleichs-Ref (Shallow-Clone) oder das Repo,
+  bricht `merge-base` mit Exit ≠ 0 ab; ein Lesefehler von `grep` endet mit Exit 2.
+  Exit 1 heißt Treffer, Exit 0 heißt geprüft und sauber. Trotzdem einmal beweisen,
+  dass der Check rot werden **kann** (Negativkontrolle, TESTS.md).
+- **Dateinamen mit Leerzeichen** laufen NUL-getrennt (`-z`/`xargs -0`).
+- **Kommentarspannen** (`{{-- --}}`, `{# #}`, `<!-- -->`, `/* */`, also auch JSX
+  `{/* */}`) werden einzeln und nicht gierig herausgeschnitten, dann wird neu
+  bewertet: ein Verstoß **zwischen** zwei Kommentaren bleibt rot. `//`-Kommentare
+  werden bewusst nicht gefiltert (das fräse alles hinter `http://` weg).
+  Mehrzeilige Kommentare melden weiter.
+- **Legitime Fundstellen gehören über den Pfad ausgenommen**, nicht über das
+  Muster: die kanonische Token-Datei (`:root { --color-…: #… }`) und generierte
+  Assets per `:(exclude)…`; In-Page-Anker `href="#…"` schneidet das Skript selbst.
+
 ### Bestand zuerst — nichts vorschlagen in einen besetzten Platz
 
 **Vor** dem Vorschlag einer `DESIGN.md` und vor dem ersten UI-Write wird nachgesehen,

@@ -95,38 +95,35 @@ Anders als Laravels `pint` hat `ruff` **keinen eingebauten** "nur geänderte
 Dateien"-Modus — der Dateisatz kommt aus git:
 
 ```bash
-# nur was seit HEAD geändert ist (inkl. staged), prüft nur
-files=$(git diff --name-only --diff-filter=ACMR HEAD -- '*.py')
-[ -n "$files" ] && printf '%s\n' "$files" | xargs ruff format --check
-[ -n "$files" ] && printf '%s\n' "$files" | xargs ruff check
-
-# alles seit Abzweig von main
-files=$(git diff --name-only --diff-filter=ACMR main -- '*.py')
+set -eu
+base=$(git merge-base HEAD origin/main)    # Abzweig; fehlt die Ref → Exit ≠ 0
+list=$(mktemp); trap 'rm -f "$list"' EXIT
+git diff -z --name-only --diff-filter=ACMR "$base" -- '*.py' >"$list"
+git ls-files -z -o --exclude-standard -- '*.py' >>"$list"
+[ -s "$list" ] || exit 0                    # nichts geändert: geprüft und leer
+xargs -0 ruff format --check <"$list"
+xargs -0 ruff check <"$list"
 ```
 
-Diese Form gehört ins Gate, solange das Repo nicht konform ist; erst nach einem
-freigegebenen Sweep ist `--check .` sinnvoll. Drei Fallen:
+Der Dateisatz ist der eigene Diff: alles seit dem Abzweig (auch schon committete
+Branch-Arbeit, die die CI sonst nicht sähe), Ungestagtes und **Untracktes** (eine
+neue Datei steht in keinem `git diff HEAD`). Diese Form gehört ins Gate, solange
+das Repo nicht konform ist; erst nach einem freigegebenen Sweep ist `--check .`
+sinnvoll. Drei Fallen:
 
-**Falle 1 — die leere Dateiliste meldet stillschweigend Erfolg.** Der Dateisatz
-kommt aus Git. Erreicht `git` kein Repository — Formatter im Container gemountet,
-der nur das Anwendungsverzeichnis sieht und `.git` draußen lässt; oder `main`
-fehlt lokal (Shallow-Clone in CI) — dann ist `$files` leer, die `[ -n … ]`-Abfrage
-überspringt, und das Gate ist **grün ohne eine einzige geprüfte Datei**. Der
-Guard, der das Leer-Aufrufen verhindert, macht den Fehlschlag also *stumm*.
-Deshalb: **vor dem ersten Verlassen auf diese Form einmal beweisen, dass das Gate
-rot werden kann** — Formatverstoß in eine berührte Datei einbauen, Prüfmodus
-laufen lassen, Exit ≠ 0 sehen, zurückbauen (dasselbe Prinzip wie die
-Negativkontrolle in TESTS.md → „Grün ist nicht gleich gültig"). Wer es härter
-will, lässt das Gate scheitern statt überspringen, wenn `git` kein Repo findet:
+**Falle 1 — eine leere Dateiliste darf nicht stumm grün sein.** Erreicht `git` kein
+Repository (Formatter im Container, der `.git` nicht sieht) oder fehlt die
+Vergleichs-Ref (Shallow-Clone in CI), bricht `merge-base` unter `set -eu` mit
+Exit ≠ 0 ab, statt eine leere Liste zu liefern. Die frühere Form
+(`files=$(git diff …)`, dann `[ -n "$files" ] && …`) war in genau diesen Fällen
+**grün ohne eine einzige geprüfte Datei**. Trotzdem vor dem ersten Verlassen
+einmal beweisen, dass das Gate rot werden kann: Formatverstoß in eine berührte
+Datei einbauen, Prüfmodus laufen lassen, Exit ≠ 0 sehen, zurückbauen (Prinzip
+der Negativkontrolle, TESTS.md → „Grün ist nicht gleich gültig").
 
-```bash
-git rev-parse --git-dir >/dev/null 2>&1 || { echo "kein git-Repo"; exit 1; }
-```
-
-**Falle 2 — Shell-Fallstricke** (GUARDRAILS Regel 8): `$files` **nicht** unquoted
-an `xargs` weiterreichen (zsh splittet nicht auf Newlines, der ganze Blob wird ein
-Argument), und die `[ -n … ]`-Abfrage nicht durch `xargs -r` ersetzen — das ist
-GNU-only und fehlt auf macOS.
+**Falle 2 — Shell-Fallstricke** (GUARDRAILS Regel 8): die Dateiliste NUL-getrennt
+übergeben (`-z`/`xargs -0`), nie als unquotete Variable — zsh splittet nicht auf
+Newlines, und Dateinamen mit Leerzeichen zerfallen sonst in zwei Argumente.
 
 **Falle 3 — der Formatter formatiert ganze Dateien**, nicht nur geänderte Zeilen.
 Eine kleine Änderung in einer stark abweichenden Bestandsdatei bläht den Diff
@@ -159,7 +156,11 @@ Kommando ist idempotent (mehrfach aufrufbar) und räumt bei Bedarf sauber ab.
 bis er 200 liefert — kein fester Sleep:
 
 ```
-until curl -fsS http://localhost:8000/health >/dev/null; do sleep 0.5; done
+i=0   # Abbruch statt Endlosschleife: 60 Versuche, je Request max. 2 s
+until curl -fsS --max-time 2 http://localhost:8000/health >/dev/null; do
+  i=$((i+1)); [ "$i" -lt 60 ] || { echo "health: kein 200 nach 60 Versuchen" >&2; exit 1; }
+  sleep 0.5
+done
 curl -fsS http://localhost:8000/api/v1/tasks/1 | grep -q '"status"'   # ein Durchstich
 ```
 
@@ -209,36 +210,9 @@ ein separates JS-Frontend).
 - **`diff` bei Änderungen an `DESIGN.md`:** `npx @google/design.md diff <alt> DESIGN.md`
   zeigt `added`/`removed`/`modified` je Token-Gruppe — verhindert, dass eine akzeptierte
   Entscheidung still verschwindet.
-- **Regel 7 gehört ins Gate, nicht in den Selbstcheck.** Was ein `grep` entscheiden
-  kann, wird mechanisch geprüft — sonst bleibt es Selbstauskunft. Als
-  `design-check`-Target im `Makefile`, im `quality`-Bündel:
-
-  ```bash
-  files=$( { git diff --name-only --diff-filter=ACMR HEAD; git ls-files -o --exclude-standard; } \
-    | grep -E '\.(html|jinja|css)$' | sort -u )
-  if [ -z "$files" ]; then exit 0; fi
-  hits=$(printf '%s\n' "$files" \
-    | xargs grep -nE 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' \
-    | sed -e 's/{#.*#}//g' -e 's/<!--.*-->//g' -e 's#/\*.*\*/##g' \
-    | grep -E 'style="|#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b' || true)
-  if [ -n "$hits" ]; then printf '%s\n' "$hits"; exit 1; fi
-  exit 0
-  ```
-
-  Der Dateisatz nimmt **untrackte** Dateien mit — eine frisch angelegte Komponente
-  ist der häufigste Verstoß und steht in keinem `git diff HEAD` (am Snippet
-  verifiziert). Läuft der Check gegen eine leere Dateiliste, ist er **grün ohne geprüfte Datei** —
-  einmal beweisen, dass er rot werden **kann**.
-
-  Der `sed`-Schritt schneidet **einzeilige Kommentarspannen** aus der Trefferzeile
-  und bewertet erst danach: Jinja `{# … #}`, HTML `<!-- … -->`, CSS `/* … */`. Der
-  Jinja-Fall ist hier der wichtigste — `{#` und `#}` enthalten selbst das
-  Doppelkreuz, an dem das Hex-Muster hängt. Steht auf derselben Zeile zusätzlich ein
-  echter Verstoß, bleibt der Treffer rot (am Snippet verifiziert). Mehrzeilige
-  Kommentare und generierte Assets bleiben Sache der **Pfad**-Ausnahme, nicht des
-  Musters. Die `if`-Form statt `[ … ] && …` ist nicht Kosmetik: der Check hat jetzt
-  zwei Stufen (greppen, Kommentare schneiden, erneut bewerten), und eine `&&`-Kette
-  bildet das nicht ab.
+- **Regel 7 gehört ins Gate:** `scripts/design-check.sh` aus `GUARDRAILS_UI.md`
+  (Regel 7), als `design-check`-Target im `Makefile` im `quality`-Bündel.
+  Dateitypen: `set -- '*.html' '*.jinja' '*.css' ':(exclude)<Token-Datei>'`.
 - **Selbstcheck bleibt für Regel 6:** rohe `<button`/`<table`-Blöcke, die ein
   vorhandenes Macro/Partial nachbauen. Ob zwei Bausteine denselben Zweck haben,
   entscheidet kein `grep` — das prüft `/hx:audit` über den Bestand.

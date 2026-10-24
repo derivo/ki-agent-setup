@@ -237,7 +237,10 @@ CSP-Meldungen, ein Test-Runner setzt Umgebungsvariablen, ein Profiler verlangsam
 den Pfad, den er misst. Solche Spuren stammen vom Messaufbau und werden **vor**
 der Bewertung abgezogen — sonst wird das Werkzeug als Fehler des Systems
 gemeldet. Erkennungsregel: verschwindet die Meldung, wenn derselbe Pfad ohne das
-Werkzeug läuft, gehört sie dem Werkzeug. Beobachtet mit Playwright-injizierten
+Werkzeug läuft, ist das ein starker Hinweis auf das Werkzeug — kein Beweis, denn
+das Werkzeug kann auch einen echten Fehler erst auslösen (Timing, Last). Bevor
+eine Meldung als Artefakt verworfen wird, deren Herkunft im Werkzeug benennen
+(Quelle, Injektionsstelle). Beobachtet mit Playwright-injizierten
 CSP-/Stylesheet-Warnungen, die zweimal als Befund verfolgt und wieder verworfen
 werden mussten. Umgekehrt gilt die Vorsicht genauso: „ist bestimmt nur das
 Tooling" ohne diese Probe ist ebenfalls unbelegt.
@@ -309,8 +312,10 @@ Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — D
 grep-Zähler, Test-Name + Ergebnis, beobachtete Ausgabe — nicht die Zusage „erledigt".
 Ein Kriterium ohne Beleg gilt als **nicht** verifiziert. Was **nur** zur Laufzeit
 prüfbar ist (Sandbox-Verhalten, echtes Rendering, Keychain/OS-Integration, Deploy-
-Pfad), wird nicht als maschinell verifiziert ausgegeben, sondern als **eigener
-Human-Verify-Checkpoint** ausgewiesen. Code-Gate (maschinell) und Runtime-Gate
+Pfad), wird nicht als maschinell verifiziert ausgegeben, solange es nicht in der
+echten Umgebung automatisiert beobachtet wurde (Browser-Lauf, `/hx:verify`,
+Deploy-Smoke). Kann der Agent diese Umgebung nicht selbst fahren, wird es als
+**eigener Human-Verify-Checkpoint** ausgewiesen. Code-Gate (maschinell) und Runtime-Gate
 (Mensch/echte Umgebung) sind getrennte Ebenen — die eine überdeckt nie die andere.
 
 ---
@@ -380,11 +385,11 @@ benennen.
 ## G. UI-Konsistenz und I. UI-Nutzbarkeit → [GUARDRAILS_UI.md](GUARDRAILS_UI.md)
 
 Abschnitt G (Regel 6 und 7: Komponenten-Wiederverwendung, Token-Quelle,
-`DESIGN.md`) und Abschnitt I (Regel 12–17: Zielgröße, Antwortzeit-Feedback,
+`DESIGN.md`) und Abschnitt I (Regel 13–18: Zielgröße, Antwortzeit-Feedback,
 Entscheidungslast, Gruppierung, Eingabe-Toleranz, Chunking) stehen in einer
-**eigenen Datei**, weil sie nur bei Frontend-Arbeit gelten und sonst rund 45 %
-dieser immer-geltenden Datei ausmachen würden. Rang und Regelnummern sind
-unverändert.
+**eigenen Datei**, weil sie nur bei Frontend-Arbeit gelten und sonst einen großen
+Teil dieser immer-geltenden Datei ausmachen würden. Der Rang ist unverändert; die
+Regeln von Abschnitt I hießen bis 2026-10-23 12–17 (Kollision mit Regel 12 in H).
 
 **Lade [GUARDRAILS_UI.md](GUARDRAILS_UI.md), sobald ein UI-Write ansteht** —
 Komponente, Stylesheet, Token, `DESIGN.md`. Reine API-/CLI-Projekte überspringen

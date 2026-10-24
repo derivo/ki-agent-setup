@@ -44,7 +44,7 @@ bei aktuellen Modellen keinen Qualitätsgewinn.
 ## Der Ablauf als Bild
 
 ```
-/feature  ──>  Spec prüfen/zerlegen
+feature.md ─>  Spec prüfen/zerlegen
                       │
                       ▼
             ┌── Teilaufgabe ────────────────────┐
@@ -90,8 +90,9 @@ sie persistiert nicht. Für Aufgaben, die über ein Fenster hinausreichen, brauc
 - **Git-Historie** — atomare Commits pro abgeschlossenem Schritt sind das primäre,
   prüfbare Gedächtnis. Was committet ist, ist sicher; der Rest ist Arbeitsstand.
 - **Progress-Log** — eine schlanke Datei (erledigt / als Nächstes / offene Punkte),
-  an jeder Schritt-Grenze aktualisiert. In `.planning/`-Projekten ist das `STATE.md`
-  (siehe `../instructions/AGENTS.md`); sonst eine `PROGRESS.md`.
+  an jeder Schritt-Grenze aktualisiert. In `.planning/`-Projekten ist das `STATE.md`,
+  sonst der Stand-Abschnitt in `PROJECT.md` bzw. `README.md` — dieselben Orte, die
+  `/hx:start` und `/hx:eod` lesen (globale AGENTS.md → Arbeits-Tracking).
 
 Beim Wiederaufsetzen liest der Agent git-Log + Progress-Log, nicht den
 (komprimierten) Gesprächsverlauf. Optional bei großen Vorhaben: der erste Lauf
@@ -102,8 +103,9 @@ machen je einen Schritt — so liegt die Context-Grenze immer an einer sauberen 
 Zustand lesen genügt nicht. Bevor ein Folge-Lauf neue Arbeit draufsattelt, fährt
 er die App per **Bring-up-Kommando** hoch und lässt einen **schnellen Smoke-/
 Durchstich-Lauf** laufen. Bricht der, wird zuerst die (oft undokumentierte) Drift
-der Vor-Session gefixt oder im Progress-Log benannt — **erst dann** das nächste
-Feature. Sonst baut Lauf N auf dem kaputten Stand von Lauf N-1, und der Bug
+der Vor-Session gefixt — **erst dann** das nächste Feature. Braucht der Fix mehr als
+einen Handgriff, wird er als Plan vorgelegt; bloßes Benennen im Progress-Log gibt
+den nächsten Schritt nicht frei (AGENTS.md → Reparatur vor Fortschritt). Sonst baut Lauf N auf dem kaputten Stand von Lauf N-1, und der Bug
 versteckt sich hinter scheinbar frischer Arbeit. (Anthropic-Harness: "Initial
 Health Checks".)
 
@@ -122,8 +124,8 @@ hoch-signalhafter Tokens, nicht das größtmögliche Fenster. Fünf Hebel, um da
 lange Läufe zu halten (der durable State oben ist der erste davon):
 
 - **Note-Taking als externes Gedächtnis.** Fortschritt/offene Punkte/Kern-
-  Entscheidungen in eine Datei außerhalb des Fensters schreiben (`PROGRESS.md`
-  bzw. `.planning/STATE.md`, siehe oben), nicht im Verlauf halten. Das ist der
+  Entscheidungen in eine Datei außerhalb des Fensters schreiben (der Progress-Log
+  oben), nicht im Verlauf halten. Das ist der
   Progress-Log von oben — hier als bewusster Kontext-Hebel benannt.
 - **Just-in-time-Retrieval statt Vorab-Dump.** Leichte Identifier halten (Dateipfade,
   Queries, Ticket-IDs) und erst bei Bedarf nachladen — nicht ganze Dateien/Ergebnisse
@@ -158,5 +160,6 @@ Correction), steht ausführlich in [SELF_OPTIMIZATION.md](SELF_OPTIMIZATION.md) 
 der wichtigste Teil, wenn der Agent autonom laufen soll.
 
 Kurzform: Gate fängt einen Fehler, den eine Regel hätte verhindern können → nicht
-nur den Code fixen, sondern die fehlende Regel ergänzen (GUARDRAILS.md generell,
-Stack-Adapter stack-spezifisch). So wird das Harness mit jedem Lauf schärfer.
+nur den Code fixen, sondern die fehlende Regel als Kandidaten festhalten und im
+Setup-Repo ergänzen (GUARDRAILS.md Kopf: wo und mit welcher Freigabe). So wird das
+Harness mit jedem Lauf schärfer.

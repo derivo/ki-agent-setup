@@ -113,7 +113,9 @@ Prüfreihenfolge, bevor so ein Artefakt gebaut oder gepflegt wird:
 2. **Konsument benannt** — *wer* liest es? Eine Zusage oder Doku des Konsumenten
    zählt, eine Ankündigung oder ein Blog-Post über die Konvention nicht.
 3. **Abruf-Signal messbar** — wird die Datei in den eigenen Server-Logs geholt, und
-   von wem? Fehlt das Signal, ist die Annahme widerlegt, nicht offen.
+   von wem? Fehlt das Signal über einen belegten Zeitraum bei funktionierendem
+   Logging, spricht das gegen den Konsumenten; widerlegt ist er erst, wenn auch
+   dessen eigene Doku keinen Abruf zusagt (Punkt 2).
 4. **Pflegekosten** — veraltet das Artefakt still, wenn die Quelle sich ändert? Dann
    ist es schlechter als keins (Doku ≠ Realität, `../doc-harness/README.md`).
 

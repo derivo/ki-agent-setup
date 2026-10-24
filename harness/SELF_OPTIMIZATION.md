@@ -159,4 +159,4 @@ Menschen einbeziehen, wenn:
   qualitativen Abbruch-Gründe oben um ein quantitatives.
 
 Benennen, was klemmt, statt es zu überspielen (siehe Ehrlichkeit in
-`../instructions/AGENTS.md`).
+der globalen `AGENTS.md`).

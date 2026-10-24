@@ -1,5 +1,6 @@
-> **Lade wenn:** der Diff erreicht die Panel-Schwelle (unten definiert) — kein
-> Standardschritt.
+> **Lade wenn:** der Diff berührt Auth, Krypto, Migrationen, Secrets oder das Harness,
+> ist eine große unabhängige Änderung, oder ein Panel ist ausdrücklich gewünscht —
+> kein Standardschritt.
 
 # Review-Panel — Multi-Agent-Validierung für risikoreiche Diffs
 

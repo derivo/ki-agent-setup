@@ -592,7 +592,8 @@ repo-eigener Skill umbenannt oder gelöscht (passiert: `af9a506` hat
 liegen und zeigt ins Leere; er muss von Hand gelöscht werden. Ein Präfix-Namespace,
 den der Deploy löschen dürfte (wie `hx-` bei Codex, B2.3), ginge nicht ohne die
 `name:`-Frontmatter umzuschreiben — dafür ist der Fall zu klein. Zweiter Preis des
-Links: der Checkout muss an seinem Pfad bleiben (`~/code/ki-agent-setup`).
+Links: der Checkout muss an seinem Pfad bleiben — wird er verschoben, zeigen alle
+Links ins Leere und der Deploy muss neu laufen.
 
 Die anderen Clients werden hier **bewusst nicht** verdrahtet: die Links liegen unter
 `~/.claude/skills/`, nicht im geteilten `~/.agents/skills/`, das mit dem

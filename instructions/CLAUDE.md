@@ -57,6 +57,11 @@ Model pro Aufgabe wählen: eng umrissene mechanische Arbeit → kleineres Model
 kontext-abhängige Aufgaben bleiben im Hauptthread — ein Subagent startet ohne
 Gesprächskontext; bei kurzen Aufgaben ist er Overhead plus Qualitätsverlust,
 kein Gewinn.
+Jeder laufende Background-Agent kostet zusätzlich: Claude Code schickt sein
+Transkript periodisch ans Modell, nur für die Statuszeile — Nutzermessungen:
+16–26 % der Kosten bzw. Requests, ohne Setting zum Abschalten (Stand
+02.11.2026, [anthropics/claude-code#86879](https://github.com/anthropics/claude-code/issues/86879)).
+Nicht mehr Background-Agents parallel als nötig.
 
 - **Der Chat ist die Queue.** Neue Aufgaben jederzeit als Nachricht reingeben,
   auch während laufender Arbeit — sie werden gequeued und beim nächsten Zug

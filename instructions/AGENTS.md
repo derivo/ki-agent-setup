@@ -315,6 +315,13 @@ Zusätzlich:
 - **Keine parallelen Test-Suites gegen eine geteilte Datenbank** — sequenziell
   ausführen, sonst DB-Kollisionen, Deadlocks und Falschfehler.
 
+**Temporäre Testdaten wieder wegräumen** — gilt für jeden Testlauf, nicht nur
+Formulare. Was ein Lauf eigens erzeugt (generierte Fixtures, Dumps,
+Screenshots/Videos/Traces, Container und Volumes, Temp-Verzeichnisse), wird danach
+entfernt — im Teardown bzw. per `trap`, damit es auch bei Abbruch oder Fehlschlag
+greift. Behalten wird nur, was die Diagnose eines Fehlschlags braucht, mit Pfad und
+Größe in der Meldung. Was nicht aus dem Lauf stammt, wird nicht angefasst.
+
 ### Barrierefreiheit — Pflichtnachweis bei jeder UI-Änderung
 
 Jede Änderung an sichtbarer Oberfläche (Templates/Views, Komponenten, CSS,

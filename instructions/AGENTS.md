@@ -189,6 +189,9 @@ Bestehende Muster/Komponenten wiederverwenden statt Varianten erfinden — gleic
 Bausteine für gleiche Zwecke (Buttons/UI, Fehlerbehandlung, API-Shapes, Naming).
 Vor einer neuen Variante prüfen, ob es das schon gibt. Abweichungen von
 etablierten Projekt-Konventionen brauchen explizite Freigabe — nicht still einführen.
+Wird ein bestehendes Muster bewusst abgelöst, steht die neue Priorität als
+geschriebene Regel im Projekt (AGENTS.md/ADR) — Code-Beispiele allein reichen
+nicht, der Agent folgt sonst dem Bestand.
 
 ### Modular by Default
 Klar abgegrenzte Einheiten mit einer Verantwortung, schmale Schnittstellen statt

@@ -45,7 +45,7 @@ publiziert wird — ein über Monate stehendes Datum ist ein Anlass, das zu prü
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/owner/repo"`; `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. **Kadenz: wöchentlich.** |
+| [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/<owner>/<repo>/stargazers"` (ein grep auf `href="/owner/repo"` trifft auch Navigation; Stand 02.11.2026); `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. **Kadenz: wöchentlich.** |
 | GitHub Search API | **`gh search repos` statt `curl`** — authentifiziert 30 Anfragen/min statt 10. `--sort stars`, Query mit `created:>YYYY-MM-DD` für Neues | Gezielter als Trending: sucht einen Begriff statt eines Zeitfensters. |
 | [agentskills.io/specification](https://agentskills.io/specification) | `curl` + grep auf JSON-LD `"dateModified"` (Stand 04.08.2026); `gitLastModified` ist leer | Primär-Spec des Skill-Formats, das die Repo-Skills (`skills/`) client-übergreifend tragen. Von Anthropic gestartet, offene Beiträge, kein Normungsgremium. **Kadenz: quartalsweise.** |
 
@@ -63,7 +63,7 @@ oder Werkzeug** betrifft:
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [news.ycombinator.com](https://hn.algolia.com/?query=coding%20agent&sort=byPopularity&type=story) | Algolia-API/Suche, Begriff + Popularität | Früher Indikator für Werkzeuge. Kommentare oft wertvoller als der Link. **Kadenz: wöchentlich.** |
+| [news.ycombinator.com](https://hn.algolia.com/?query=coding%20agent&sort=byPopularity&type=story) | Algolia-API `hn.algolia.com/api/v1/search?query=…&tags=story&numericFilters=created_at_i%3E<epoch>` — `>` **URL-kodiert** als `%3E`, sonst kommt kein JSON (Stand 02.11.2026); nach `points` sortieren | Früher Indikator für Werkzeuge. Kommentare oft wertvoller als der Link. **Kadenz: wöchentlich.** |
 | [hamel.dev](https://hamel.dev/) | `curl`, grep auf `data-listing-date-sort` (Epoch-ms) + `data-listing-title-sort`; sichtbares Datum ist `M/D/YY`, ein grep auf `(Mon) DD, YYYY` findet nichts | LLM-Evals aus der Praxis — einschlägig fürs Gate-Thema. **Kadenz: monatlich.** |
 
 Ist eine Meldung aus `ki-news` methodisch einschlägig, wird sie **hier** geprüft (gegen
@@ -115,6 +115,7 @@ Erfüllt sie es nicht, kommt sie nach §5 — damit kein Folgelauf sie erneut pr
 | [havoptic.com](https://www.havoptic.com/whats-new/claude-code) | Aggregator des Claude-Code-CHANGELOG; einziger Mehrwert sind Release-Daten. Primär bleibt die Raw-URL. |
 | Paper-Aggregatoren: [hyper.ai](https://hyper.ai/en/news/42900), [awesome-ai-agent-papers](https://github.com/VoltAgent/awesome-ai-agent-papers), [corca.substack.com](https://corca.substack.com/about) | Sekundär, referieren arxiv-Primärquellen → verdoppeln Abrufkosten (§4 Punkt 4). |
 | [ArxivDigest](https://github.com/dmytro-spodarets/ArxivDigest) | Werkzeug zum Filtern von arxiv-Feeds, keine Quelle. |
+| doublepulsar.com | Geprüft 2026-11-02: Cloudflare-Sperre („Attention Required“) für `curl`, nicht pollbar. Meldungen von dort über die Primärquelle (Advisory des Entdeckers) prüfen. |
 | Papers with Code | [Eingestellt](https://www.codesota.com/papers-with-code/shutdown); nicht mehr pollbar. |
 
 ---

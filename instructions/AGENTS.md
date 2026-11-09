@@ -231,13 +231,9 @@ UI), nicht nur über Unit-Tests.
   Review-Zusammenfassungen und Inline-Kommentare gleichermaßen, und auch
   gegenüber eigenen früheren Kommentaren (zweite Review-Runde). Statt der
   Wiederholung: auf den bestehenden Kommentar verweisen — oder nichts posten.
-- **Reviewer heißt Review-Anfrage:** Wer einen Reviewer für einen PR nennt — im
-  Body, als Assignee oder im Chat —, fragt das Review auch über die Plattform an
-  (GitHub: `gh pr edit <n> --add-reviewer <login>`). Ein nur genannter Reviewer
-  bekommt keine Benachrichtigung, und das Review bleibt liegen. Danach prüfen,
-  dass die Anfrage wirklich gesetzt ist (`gh pr view <n> --json reviewRequests`):
-  eine Komma-Liste übernimmt `gh pr edit` nicht verlässlich, im Zweifel einzeln
-  anfragen.
+- **Reviewer heißt Review-Anfrage:** Nennt ein PR-Body einen Reviewer, wird das
+  Review über die Plattform angefragt und die Anfrage geprüft (→ `/hx:pr`,
+  Schritt 5).
 - **Selbst-Review bei Konfig-Edits:** Edits an der Agent-Konfiguration
   (Instruction-Files, Hooks, Skills, Settings) durchlaufen vor "fertig" eine
   adversariale Selbst-Review des eigenen Diffs. Vor dem Edit muss ein Weg zurück

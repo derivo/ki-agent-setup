@@ -85,16 +85,6 @@ ist das eine festgehaltene Entscheidung, keine stille Ausnahme: ADR nach
 [ADR_TEMPLATE.md](ADR_TEMPLATE.md), das die betroffene Grenze benennt. Ohne ADR gilt
 die Regel — eine Ausnahme, die nur in der Abschlussmeldung steht, ist keine.
 
-### Regel — Ein Kommentar trägt nur, was beim Ändern sonst schiefginge
-Ein Code-Kommentar hält fest, was jemand beim Ändern der Datei ohne ihn falsch
-machen würde: eine nicht sichtbare Vorgabe, eine Falle, einen Grund gegen die
-naheliegende Lösung. Er steht **einmal**, an der Stelle, an der der Fehler passieren
-würde — nicht zusätzlich beim Aufrufer oder im Nachbar-Docblock. Was der Code
-darunter zeigt, was das Framework oder die Utility-Klasse selbst erklärt, und
-Vorgeschichte oder Layout-Begründung gehören nicht hinein; Letztere stehen in der
-Commit-Message. Beim Kürzen eines Kommentars bleibt ein vollständiger Satz stehen,
-und ein Verweis auf eine gelöschte Begründung wird mit entfernt.
-
 ---
 
 ## B. Sensible Daten & Secrets (hart)
@@ -272,7 +262,8 @@ synchron, JSON → Markdown, Endpunkt umbenannt), ist er erst fertig, wenn die
 Doku nach dem **alten** Begriff durchsucht ist — Klassen-, Datei- und
 Funktionsnamen, Formatendungen, Betriebsbefehle (`grep` über Doku, Skills,
 Manifest-Kommentare, Runbooks) — und jede Fundstelle im selben Diff nachgezogen
-oder als bewusst offen benannt ist. Eine Code-Karte oder ein Skill, der den alten
+oder als bewusst offen in der Schuldenliste des Projekts geführt ist
+(→ `AGENTS.md` „Reparatur vor Fortschritt"). Eine Code-Karte oder ein Skill, der den alten
 Weg beschreibt, schickt die nächste Session in den falschen Pfad.
 
 ### Regel — Verifikation belegen: Evidence, nicht Behauptung
@@ -437,3 +428,18 @@ Kubernetes-`env:`-Liste). Gilt genauso für `volumeMounts`, Dependency-Listen,
 --is-ancestor`, nicht der Vergleich der Dateiinhalte beider Branches.** Ist der
 Quell-Branch bereits Ancestor des Ziels, ist sein Merge ein No-op — unabhängig
 davon, was seine Dateien enthalten.
+
+
+---
+
+## J. Code-Kommentare (vor jedem Write/Edit an Code)
+
+### Regel — Ein Kommentar trägt nur, was beim Ändern sonst schiefginge
+Ein Code-Kommentar hält fest, was jemand beim Ändern der Datei ohne ihn falsch
+machen würde: eine nicht sichtbare Vorgabe, eine Falle, einen Grund gegen die
+naheliegende Lösung. Er steht **einmal**, an der Stelle, an der der Fehler passieren
+würde — nicht zusätzlich beim Aufrufer oder im Nachbar-Docblock. Was der Code
+darunter zeigt oder das Framework selbst erklärt, gehört nicht hinein;
+Vorgeschichte und die Begründung, warum die Änderung so aufgebaut ist, stehen in
+der Commit-Message. Wird ein Kommentar gekürzt, bleibt kein Satzfragment stehen,
+und ein Verweis auf eine gelöschte Begründung fällt mit weg.

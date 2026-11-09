@@ -38,11 +38,11 @@ Datei zu lesen.
 
 | Datei | Größe | Wann |
 |---|---|---|
-| **[GUARDRAILS.md](GUARDRAILS.md)** | ~5,7k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass. |
+| **[GUARDRAILS.md](GUARDRAILS.md)** | ~6,1k Token | **Immer.** Vor dem ersten Write/Edit an einem Auftrags-Artefakt — Code, **Spec, Test, Plan** — und vor jeder Fertig-Meldung. Die harten Regeln: Scope-Minimum, Architektur-Reinheit, Secrets, das Fertig-Kriterium, Security-Pass, Code-Kommentare. |
 | **passender [Stack-Adapter](stacks/)** | ~4k Token | **Sobald Code entsteht.** Das konkrete Gate-Kommando, die Schichtnamen, das Test-Framework. Ohne ihn ist das Fertig-Kriterium nicht ausführbar. Reine Spec-/Planungsarbeit ohne Zielstack: entfällt. |
 
 Das Minimum ist damit ~6k Token für reine Spec-Arbeit, ~10k sobald Code
-entsteht. (Alle Größen hier: Wörter × 1,85, gemessen 2026-10-23 — eine Schätzung,
+entsteht. (Alle Größen hier: Wörter × 1,85, gemessen 2026-10-23, GUARDRAILS.md 2026-11-09 — eine Schätzung,
 kein Tokenizer-Lauf.) Wer mehr lädt, braucht dafür einen Trigger aus der nächsten Tabelle.
 
 **„Code" wäre hier die falsche Grenze**, und zwar aus einem konkreten Grund:

@@ -6,6 +6,10 @@ Bereite einen Pull Request für "$ARGUMENTS" (oder den aktuellen Branch) vor.
 3. **AC-Abdeckung** — kurz zusammenfassen, welche Akzeptanzkriterien durch welche
    Tests abgedeckt sind (aus der Spec, falls vorhanden).
 4. **PR-Body** — Was + Warum, Test-/Verify-Nachweis, offene Punkte. Knapp.
+   `Closes #N` nur, wenn der PR **jedes** Akzeptanzkriterium des Issues erfüllt;
+   bleibt eines offen (Folge-PR, Post-Deploy-Prüfung, Text in einem anderen
+   Issue), steht `Refs #N` und das offene Kriterium im Body — sonst schließt der
+   Merge das Issue, und das Kriterium verschwindet aus dem Tracking.
 5. PR erstellen (`gh pr create`). **Merge/Deploy bleibt beim Menschen** —
    nur vorbereiten, nicht mergen.
 6. **Nach einem Merge aufräumen** (eigener Zug, nicht Teil des PR): gemergte

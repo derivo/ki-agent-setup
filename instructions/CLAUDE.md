@@ -78,11 +78,14 @@ Nicht mehr Background-Agents parallel als nötig.
 
 ## Verifikation — kein Doppel-Check auf eigene Arbeit
 
-Aktuelle Claude-Modelle prüfen und korrigieren ihre Arbeit selbst. Deshalb **kein
+Ein Modell-Review trennt richtigen von falschem Code kaum: Claude-Reviewer
+akzeptierten 77–95 % falscher Implementierungen, auch mit eigenen Tests
+([arXiv 2611.02207](https://arxiv.org/abs/2611.02207), Preprint, 10 Modelle). Deshalb **kein
 zusätzlicher Verifikations-Subagent** auf die eigene Arbeit und kein separater
 Nachprüf-Schritt „zur Sicherheit". Subagents sind für echte Parallelarbeit
 (breite Recherche, unabhängige Tracks) — nicht zum Nachrechnen dessen, was du
-gerade selbst geschrieben hast.
+gerade selbst geschrieben hast. Verlässlich ist nur die externe Beobachtung
+unten.
 
 **Unberührt — das sind externe Beobachtungen, keine Selbstprüfung:**
 - das mechanische **Gate** (`GUARDRAILS.md` C) — ein Tool-Lauf, kein Urteil,

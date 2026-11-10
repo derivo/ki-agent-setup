@@ -10,7 +10,7 @@ Dagegen hilft **mehrere Reviewer mit getrennten Lenses, parallel, jeder Fund am
 Code belegt** — eine Urteilsebene, die das mechanische Gate nicht liefert.
 
 Das ist ein Werkzeug für den Ausnahmefall, kein Standardschritt: bei normalen
-Änderungen prüft das Modell seine Arbeit selbst, und ein Panel darüber bringt
+Änderungen trägt das mechanische Gate, und ein Panel darüber bringt
 nichts (siehe „Wann" gleich darunter).
 
 Wann: **immer** bei Diffs, die Auth, Krypto, Migrationen, Secrets oder das Harness
@@ -20,9 +20,10 @@ allein ist kein Signal.
 
 **Nicht** pauschal bei jeder nicht-trivialen Änderung. Der Default ist Single-Pass
 und spec-gegründet; eine zweite Runde braucht ein **strukturelles Signal**, nicht
-gefühlte Wichtigkeit (`instructions/AGENTS.md` → Review-Default). Aktuelle Modelle
-prüfen und korrigieren ihre Arbeit selbst — ein zusätzlicher Verifikations-Subagent
-auf die eigene Arbeit kostet Tokens ohne Qualitätsgewinn. Ein Panel „zur Sicherheit"
+gefühlte Wichtigkeit (`instructions/AGENTS.md` → Review-Default). Ein
+Modell-Review trennt richtigen von falschem Code kaum ([arXiv 2611.02207](https://arxiv.org/abs/2611.02207): Youden J ≤ 0,15
+über zehn Modelle) — ein zusätzlicher Verifikations-Subagent auf die eigene Arbeit
+kostet Tokens ohne verlässlichen Gewinn. Ein Panel „zur Sicherheit"
 ist Over-Verification, kein Schutz (Simplicity First).
 
 Das Panel ersetzt nichts, was **außerhalb** des Modells beobachtet wird: das
@@ -38,6 +39,9 @@ Datei:Zeile · Lens · Schwere · Fix), keinen Volltext-Dump von Code oder Gedan
 — der Hauptthread sammelt Funde, nicht Rohkontext.
 
 - **Korrektheit** — Bugs, Edge-Cases, falsche Annahmen, nicht abgedeckte ACs.
+  Ein leerer Korrektheits-Befund ist kein Korrektheitsbeleg — den liefern Gate
+  und ausgeführte Tests; diese Lens findet zusätzliche Fehler, sie bestätigt keine
+  Abwesenheit.
 - **Security** — Injection (SQL/Command/Path), Secrets im Code, fehlende
   Authz/Authn, unsichere Defaults, gefährliche Deserialisierung. (Details:
   GUARDRAILS Abschnitt E — Security-Pass.)

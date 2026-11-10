@@ -6,8 +6,18 @@ Bereite einen Pull Request für "$ARGUMENTS" (oder den aktuellen Branch) vor.
 3. **AC-Abdeckung** — kurz zusammenfassen, welche Akzeptanzkriterien durch welche
    Tests abgedeckt sind (aus der Spec, falls vorhanden).
 4. **PR-Body** — Was + Warum, Test-/Verify-Nachweis, offene Punkte. Knapp.
+   `Closes #N` nur, wenn der PR **jedes** Akzeptanzkriterium des Issues erfüllt;
+   bleibt eines offen (Folge-PR, Post-Deploy-Prüfung, Text in einem anderen
+   Issue), steht `Refs #N` und das offene Kriterium im Body — sonst schließt der
+   Merge in den Default-Branch das Issue, und das Kriterium verschwindet aus dem
+   Tracking.
 5. PR erstellen (`gh pr create`). **Merge/Deploy bleibt beim Menschen** —
-   nur vorbereiten, nicht mergen.
+   nur vorbereiten, nicht mergen. Nennt der Body einen Reviewer, wird das Review
+   auch angefragt: `gh pr edit <n> --add-reviewer <login>`, mehrere als `a,b`
+   ohne Leerzeichen (`"a, b"` liefert den ungültigen Login `" b"`). Nennung im
+   Body oder als Assignee benachrichtigt zwar, erzeugt aber keine
+   Review-Anfrage — das Review bleibt liegen. Danach prüfen, dass genau diese
+   Logins in `gh pr view <n> --json reviewRequests` stehen.
 6. **Nach einem Merge aufräumen** (eigener Zug, nicht Teil des PR): gemergte
    Branches lokal und auf dem Remote löschen, `git worktree prune`. Erst
    `git fetch --prune` (GUARDRAILS Regel 11: lokales `main` ist ein Cache), dann

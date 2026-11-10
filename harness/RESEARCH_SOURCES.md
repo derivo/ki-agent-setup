@@ -19,7 +19,7 @@ Quellen, die **periodisch abgefragt** werden, um Änderungen zu finden.
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [anthropic.com/engineering](https://www.anthropic.com/engineering) | `curl` + grep auf `(Mon) DD, YYYY`; Index ist datiert | Methoden-Primärquelle. Hersteller mit Produktionsdaten. **Seit 23.04.2026 ohne neuen Post** (Stand 11.10.2026) — allein kein Ausschluss mehr, nur zusammen mit claude.dev. |
+| [anthropic.com/engineering](https://www.anthropic.com/engineering) | `curl` + grep auf `(Mon) DD, YYYY`; nur Einträge mit Label „Engineering" bzw. nach „Grid view" zählen — die Seite trägt ein Research-Karussell mit eigenen Daten; Post-Links zeigen auf `/research/<slug>` (Stand 10.11.2026) | Methoden-Primärquelle. Hersteller mit Produktionsdaten. Posts wieder aktiv: 25.05., 13.10., 06.11.2026 (Stand 10.11.2026). Ausschluss nur zusammen mit claude.dev. |
 | [claude.dev](https://claude.dev/) | `curl https://claude.dev/` (`/blog/` leitet dorthin), grep auf `(Mon) DD, YYYY` + `href="/blog/<slug>/"`; je Post JSON-LD `datePublished` + `articleSection` (Engineering / Playbooks / Agents) | Anthropics Engineering-Posts erscheinen **seit mindestens 24.07.2026 hier** statt auf anthropic.com/engineering. Hersteller: Produkt-Interesse, Zahlen meist aus eigenen Tests ohne Kontrollarm. |
 | [martinfowler.com/articles/harness-engineering.html](https://martinfowler.com/articles/harness-engineering.html) | `curl` + grep auf `Significant Revisions` | Vokabular/Konzepte. Revisionsdatum im Dokument. |
 | [Claude Code CHANGELOG](https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md) | **nur die Raw-URL.** Mit `curl`+`awk` lesen, nicht per Fetch-Zusammenfassung | Plattform-Takt. Eine Plattform-Änderung kann eine Harness-Regel verbilligen oder erübrigen. |
@@ -33,13 +33,13 @@ publiziert wird — ein über Monate stehendes Datum ist ein Anlass, das zu prü
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [arxiv.org/list/cs.SE/recent](https://arxiv.org/list/cs.SE/recent) | `curl` auf `?skip=0&show=50`, IDs + Titel parsen. **`export.arxiv.org` scheitert in der Sandbox** (0 Byte), die API-URL per Fetch läuft in den Timeout | Primärforschung. Durchweg ungeprüfte Preprints → Qualitätsfilter §4 zwingend. |
+| [arxiv.org/list/cs.SE/recent](https://arxiv.org/list/cs.SE/recent) | `curl` auf `?skip=0&show=50`, IDs + Titel parsen. **`export.arxiv.org` scheitert in der Sandbox** (0 Byte), die API-URL per Fetch läuft in den Timeout. `recent` umfasst nur die letzten fünf Mailings — Lücke zum Vorlauf über `/list/cs.SE/YYYY-MM?skip=0&show=500` schließen (erster Abruf 429, zweiter 200; Stand 10.11.2026) | Primärforschung. Durchweg ungeprüfte Preprints → Qualitätsfilter §4 zwingend. |
 
 **Quartalsweise:**
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [cognition.com/blog](https://cognition.com/blog) | `curl` (301 von cognition.ai) | Zweiter Hersteller mit Produktionsdaten. Methoden-Posts selten, dazwischen Produkt/Umsatz. |
+| [cognition.com/blog](https://cognition.com/blog) | `curl` (301 von cognition.ai); Daten stehen als `YYYY-MM-DD` neben `href="/blog/<slug>"` — grep auf `(Mon) DD, YYYY` findet nichts (Stand 10.11.2026) | Zweiter Hersteller mit Produktionsdaten. Methoden-Posts selten, dazwischen Produkt/Umsatz. |
 
 ## 2. Werkzeuge & GitHub-Trends
 
@@ -116,6 +116,7 @@ Erfüllt sie es nicht, kommt sie nach §5 — damit kein Folgelauf sie erneut pr
 | Paper-Aggregatoren: [hyper.ai](https://hyper.ai/en/news/42900), [awesome-ai-agent-papers](https://github.com/VoltAgent/awesome-ai-agent-papers), [corca.substack.com](https://corca.substack.com/about) | Sekundär, referieren arxiv-Primärquellen → verdoppeln Abrufkosten (§4 Punkt 4). |
 | [ArxivDigest](https://github.com/dmytro-spodarets/ArxivDigest) | Werkzeug zum Filtern von arxiv-Feeds, keine Quelle. |
 | doublepulsar.com | Geprüft 2026-11-02: Cloudflare-Sperre („Attention Required“) für `curl`, nicht pollbar. Meldungen von dort über die Primärquelle (Advisory des Entdeckers) prüfen. |
+| apiiro.com/blog | Geprüft 2026-11-10: 403 für `curl` und Fetch, nicht pollbar. Meldungen von dort über HN-Thread bzw. Primär-Issue prüfen. |
 | Papers with Code | [Eingestellt](https://www.codesota.com/papers-with-code/shutdown); nicht mehr pollbar. |
 
 ---

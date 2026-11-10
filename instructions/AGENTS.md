@@ -204,7 +204,11 @@ Multi-Step → kurzer Plan mit Verify-Check pro Schritt.
 
 **Fertig-Definition:** "Fertig" nennt ein mechanisch geprüftes Kriterium
 (Testname + Ergebnis, Befehl + Exit-Code, beobachtete Datei/State, sichtbares
-Verhalten) und meldet die Beobachtung — nicht die Selbsteinschätzung. Sichtbares
+Verhalten) und meldet die Beobachtung — nicht die Selbsteinschätzung. Der
+Exit-Code ist der des Prüfbefehls selbst, nicht der einer Pipe (`| tail`/`| head`
+verdecken ihn — sonst `set -o pipefail`; `2>/dev/null` verdeckt die Fehlermeldung),
+und „0 Tests gelaufen" gilt als rot — in [arXiv 2611.09802](https://arxiv.org/abs/2611.09802)
+lief so in 19 von 40 Läufen der erste Fix-Check ohne einen einzigen Test. Sichtbares
 Verhalten wird End-to-End beobachtet (CLI-Exit + stdout, HTTP-Form, gerendertes
 UI), nicht nur über Unit-Tests.
 

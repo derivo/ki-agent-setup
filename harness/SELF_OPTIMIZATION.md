@@ -103,6 +103,11 @@ First):
   eine ganze Klasse von Fehlern abdeckt (z. B. "Domain importiert Framework").
 - **Keine Regel** für einen einmaligen Flüchtigkeitsfehler ohne Muster. Nur fixen.
 - Eine neue Regel ist **konkret und prüfbar** formuliert, nicht "sei sorgfältig".
+  Hypothese, ungeprüft (A/B nach [EVALS.md](EVALS.md) steht aus): als direkte
+  Anweisung mit eingebautem Geltungsbereich („Bei jeder Funktion, die du änderst:
+  X") statt als Wenn-dann-Satz — Claude Code mit Opus 5 befolgte die bedingte Form
+  in 64,2 % statt 78,0 % ([arXiv 2611.04367](https://arxiv.org/abs/2611.04367),
+  im Review, eine Policy, 10 Repos).
 
 ### Wann eine Regel wieder verschwindet
 

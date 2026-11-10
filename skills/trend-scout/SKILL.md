@@ -48,11 +48,13 @@ Drei Fragen, in dieser Reihenfolge:
    wird die **bestehende Zeile geschärft**. Anfügen ist die Ausnahme, nicht der Default —
    eine Liste, die nur wächst, verliert ihre Wirkung.
 
-### 5. Deckel auf die Vorschläge
-Liegt bereits ein unentschiedener Vorschlag offen, wird **nichts Neues nachgelegt**. Dann
-ist die Ausgabe eine **Entscheidungsfrage** zum Offenen (annehmen, priorisieren, verwerfen)
-— nicht ein weiterer Fund. Ein Stapel offener Vorschläge ist dasselbe Anti-Pattern wie eine
-Regelliste, die nur wächst.
+### 5. Funde als Branch, nicht als Liste
+Jeder Fund, den der Nutzer annimmt, wird ein **eigener Branch** von `origin/main`
+(`research/<YYYY-MM-DD>-<thema>`) mit der vorgeschlagenen Änderung als Commit. Der PR
+entsteht später, auf Zuruf. Es gibt kein Ledger und keine Liste offener Punkte: Was offen
+ist, zeigt `git branch -r --list 'origin/research/*' --no-merged origin/main`. Diese
+Liste vor dem Lauf lesen — ein Fund, den ein offener Branch schon trägt, wird nicht erneut
+vorgelegt.
 
 ### 6. Quellen-Roster pflegen
 - **Neue Quelle:** gegen das Fünf-Punkte-Gate in §4 des Rosters prüfen (aufgelöst, datiert,

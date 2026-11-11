@@ -443,3 +443,6 @@ darunter zeigt oder das Framework selbst erklärt, gehört nicht hinein;
 Vorgeschichte und die Begründung, warum die Änderung so aufgebaut ist, stehen in
 der Commit-Message. Wird ein Kommentar gekürzt, bleibt kein Satzfragment stehen,
 und ein Verweis auf eine gelöschte Begründung fällt mit weg.
+Bestehende Kommentare außerhalb des Auftrags bleiben unverändert
+(→ `AGENTS.md` „Surgical Changes"); macht die eigene Änderung einen bestehenden
+Kommentar falsch, wird er im selben Diff korrigiert.

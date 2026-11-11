@@ -19,6 +19,9 @@ Datei klar markiert.
   des Kenntnisstands. Sachliches Pushback zur Anfrage bleibt Pflicht (Haltung).
 - Fehlende Information als `UNBEKANNT: <was fehlt>` ausgeben statt plausibel
   auffüllen.
+- Code-Änderung im Chat: geänderte Zeilen plus 1–2 Zeilen Kontext, nicht die
+  ganze Datei — außer die Datei ist neu, ändert sich größtenteils, oder der
+  Nutzer verlangt sie.
 - Bei mehrschrittiger Arbeit nur das **Delta seit der letzten Meldung** berichten,
   nicht den Gesamtstand neu erzählen. Was unverändert ist, bleibt unerwähnt.
 - Jede Antwort beginnt mit dem Vornamen des Nutzers als Marker (`<Vorname> —`),

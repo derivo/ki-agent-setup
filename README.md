@@ -67,7 +67,8 @@ Entwicklungs-Agenten. Es hat zwei Ebenen:
   ([`SKILLS.md`](SKILLS.md)).
 
 - **Caveman** — knapper Antwortstil für alle Clients über
-  [`instructions/AGENTS.md`](instructions/AGENTS.md), parallel zu Ponytail.
+  [`instructions/AGENTS.md`](instructions/AGENTS.md), parallel zu Ponytail; in
+  Claude Code zusätzlich als Plugin `caveman@caveman`.
 
 **Claude-Code-spezifisch** — die Mechanik, die das in Claude Code einklinkt:
 - **ponytail** — Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor neuer
@@ -90,6 +91,7 @@ gemeinsamen Kern, Teil B pro Client die Ablage und die client-eigene Mechanik
 |---|---|---|---|
 | **GSD (get-shit-done)** | eigener Installer → runtime-spezifisch (`~/.claude/gsd-core`, `~/.codex/gsd-core`, …) | Hooks + Skills + Commands + Statusline | Phasen-/Roadmap-Workflow, State-Tracking, Commit-Guards |
 | **ponytail** | `DietrichGebert/ponytail` | Plugin (Marketplace) | Lösungs-Minimalismus, Level lite/full/ultra — **aktiv** |
+| **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Knapper Antwortstil, ergänzt die Regel aus `AGENTS.md` — **aktiv** |
 | **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Codex-CLI aus Claude Code: Review, adversariales Review, Delegation |
 | **claude-md-management**, **frontend-design**, **playwright** | `anthropics/claude-plugins-official` | Plugins (Marketplace) | CLAUDE.md-Pflege, Frontend-Design, Browser-Automatisierung |
 

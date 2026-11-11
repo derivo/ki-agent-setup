@@ -32,8 +32,11 @@ Zwei Stellen, an denen die Hausregeln vorgehen — Rangfolge wie in
 - „Ein Check reicht" ersetzt **nicht** die Edge-Case-Matrix für UI-Formulare
   (`AGENTS.md` → Testing).
 
-Caveman ist parallel als Antwortstil aktiv; die gemeinsame Regel steht in
-`AGENTS.md` → Sprache & Stil.
+Caveman ist parallel als Antwortstil aktiv: die gemeinsame Regel steht in
+`AGENTS.md` → Sprache & Stil, das Plugin `caveman@caveman` ergänzt in Claude Code
+den vollen Regelsatz. Bei Widerspruch gehen die Hausregeln vor — konkret die
+Pflichtform `Selbstkorrektur: … → …` (Pfeil trotz „No arrows") und kurze,
+vollständige Sätze statt Fragmenten.
 
 ## Skills
 

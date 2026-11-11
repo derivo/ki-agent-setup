@@ -66,7 +66,8 @@ two layers:
   ([`SKILLS.md`](SKILLS.md)).
 
 - **Caveman** — concise responses across clients through
-  [`instructions/AGENTS.md`](instructions/AGENTS.md), alongside Ponytail.
+  [`instructions/AGENTS.md`](instructions/AGENTS.md), alongside Ponytail; in
+  Claude Code also as the `caveman@caveman` plugin.
 
 **Claude-Code-specific** — the plumbing that wires it into Claude Code:
 - **ponytail** — solution minimalism (YAGNI ladder, stdlib/native before a new
@@ -90,6 +91,7 @@ target.
 |---|---|---|---|
 | **GSD (get-shit-done)** | own installer → runtime-specific (`~/.claude/gsd-core`, `~/.codex/gsd-core`, …) | hooks + skills + commands + statusline | phase/roadmap workflow, state tracking, commit guards |
 | **ponytail** | `DietrichGebert/ponytail` | plugin (marketplace) | solution minimalism, levels lite/full/ultra — **active** |
+| **caveman** | `JuliusBrussee/caveman` | plugin (marketplace) | Terse response style, complements the rule in `AGENTS.md` — **active** |
 | **codex** | `openai/codex-plugin-cc` | plugin (marketplace) | Codex CLI from Claude Code: review, adversarial review, delegation |
 | **claude-md-management**, **frontend-design**, **playwright** | `anthropics/claude-plugins-official` | plugins (marketplace) | CLAUDE.md upkeep, frontend design, browser automation |
 

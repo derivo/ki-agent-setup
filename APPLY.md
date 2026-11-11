@@ -345,7 +345,9 @@ claude plugin install caveman@caveman
 `ponytail` liefert den Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor
 neuer Dependency) + Hooks (B1.5) und ist der **aktive** Modus. Ab `5.x` bringt es
 zusätzlich ein eigenes Band-Modul (`hooks/claude-band.json`, keine Hooks) — es
-ersetzt die Statusline aus B1.5 nicht. Die drei
+ersetzt die Statusline aus B1.4 nicht. Das Band schreibt nach jedem Turn eine
+Zeile (Kosten, Turns, Tokens) nach `~/.config/ponytail/band/<projekt>.csv`
+(Plugin-Option `ledger`, Default an); ein Webhook ist optional und per Default leer. Die drei
 `@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege, Frontend-Design und
 Playwright-Browser-Automatisierung. `codex` bindet die Codex-CLI in Claude Code
 ein (Review, adversariales Review, Delegation über `/codex:*`) — es setzt eine
@@ -414,15 +416,15 @@ der Upstream-Marketplace vergibt keine stabilen Versionen; wo eine Semver-Angabe
 steht, stammt sie aus der `plugin.json` des Plugins, der Hash daneben ist der
 Marketplace-Stand, gegen den geprüft wurde.
 
-**`unknown` ist bei `playwright` der korrekte Eintrag, keine
-Drift** (`frontend-design` führt seit `1.1.1` ein `version`-Feld). Seine `plugin.json` führt kein `version`-Feld — `claude-md-management` aus
-demselben Marketplace führt eins, es liegt also am Plugin, nicht am Bezugsweg. Ein
-git-Hash kann dort auch nicht einspringen: `claude-plugins-official` liegt anders
-als die übrigen Marketplaces **nicht** als git-Repo vor, sondern als Snapshot —
-erkennbar an `.gcs-sha` im Marketplace-Verzeichnis statt eines `.git`. Es gibt für
-`playwright` also keinen Identifier. Die Hashes, die hier früher
-standen, bezeichneten nichts Prüfbares; wer sie wieder einträgt, dokumentiert eine
-Genauigkeit, die es nicht gibt.
+**`unknown` ist bei `playwright` der korrekte Eintrag, keine Drift.** Die
+`plugin.json` von `playwright` führt kein `version`-Feld (`frontend-design` und
+`claude-md-management` aus demselben Marketplace führen eins), es liegt also am
+Plugin, nicht am Bezugsweg. `claude plugin list` zeigt dafür nur eine lokale
+Cache-ID (Stand 2026-11-11: `43fd1f9db094`) — keine Upstream-Kennung und nicht
+gegen den Marketplace prüfbar: `claude-plugins-official` liegt anders als die
+übrigen Marketplaces **nicht** als git-Repo vor, sondern als Snapshot (erkennbar
+an `.gcs-sha` statt `.git`). Wer die Cache-ID als Version einträgt, dokumentiert
+eine Genauigkeit, die es nicht gibt.
 
 **Verify:** `claude plugin marketplace list` zeigt `ponytail`, `openai-codex`,
 `caveman` **und** `claude-plugins-official` (der Marketplace registriert sich als

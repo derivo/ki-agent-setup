@@ -341,7 +341,9 @@ claude plugin install frontend-design@claude-plugins-official
 claude plugin install playwright@claude-plugins-official
 ```
 `ponytail` liefert den Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor
-neuer Dependency) + Hooks (B1.5) und ist der **aktive** Modus. Die drei
+neuer Dependency) + Hooks (B1.5) und ist der **aktive** Modus. Ab `5.x` bringt es
+zusätzlich ein eigenes Band-Modul (`hooks/claude-band.json`, keine Hooks) — es
+ersetzt die Statusline aus B1.5 nicht. Die drei
 `@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege, Frontend-Design und
 Playwright-Browser-Automatisierung. `codex` bindet die Codex-CLI in Claude Code
 ein (Review, adversariales Review, Delegation über `/codex:*`) — es setzt eine
@@ -391,11 +393,11 @@ Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 
 | Plugin | Known-Good | geprüft |
 |---|---|---|
-| `ponytail@ponytail` | `4.9.0` (Marketplace-HEAD `2ed6c52c9d7e`) | 2026-08-19 |
-| `codex@openai-codex` | `1.0.6` (Marketplace-HEAD `db52e28f4d9d`) | 2026-08-19 |
-| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-08-19 |
-| `frontend-design@claude-plugins-official` | `unknown` (siehe unten) | 2026-08-19 |
-| `playwright@claude-plugins-official` | `unknown` (siehe unten) | 2026-08-19 |
+| `ponytail@ponytail` | `5.3.3` (Marketplace-HEAD `96608e078b2d`) | 2026-11-11 |
+| `codex@openai-codex` | `1.0.6` (Marketplace-HEAD `db52e28f4d9d`) | 2026-11-11 |
+| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-11-11 |
+| `frontend-design@claude-plugins-official` | `1.1.1` | 2026-11-11 |
+| `playwright@claude-plugins-official` | `unknown` (siehe unten) | 2026-11-11 |
 
 Bewusste Aktualisierung: `claude plugin marketplace update <name>` (ohne Namen:
 alle), dann `claude plugin update <plugin>@<marketplace>`, danach diese Tabelle
@@ -404,13 +406,13 @@ der Upstream-Marketplace vergibt keine stabilen Versionen; wo eine Semver-Angabe
 steht, stammt sie aus der `plugin.json` des Plugins, der Hash daneben ist der
 Marketplace-Stand, gegen den geprüft wurde.
 
-**`unknown` ist bei `frontend-design` und `playwright` der korrekte Eintrag, keine
-Drift.** Ihre `plugin.json` führt kein `version`-Feld — `claude-md-management` aus
+**`unknown` ist bei `playwright` der korrekte Eintrag, keine
+Drift** (`frontend-design` führt seit `1.1.1` ein `version`-Feld). Seine `plugin.json` führt kein `version`-Feld — `claude-md-management` aus
 demselben Marketplace führt eins, es liegt also am Plugin, nicht am Bezugsweg. Ein
 git-Hash kann dort auch nicht einspringen: `claude-plugins-official` liegt anders
 als die übrigen Marketplaces **nicht** als git-Repo vor, sondern als Snapshot —
 erkennbar an `.gcs-sha` im Marketplace-Verzeichnis statt eines `.git`. Es gibt für
-diese beiden also keinen Identifier pro Plugin. Die Hashes, die hier früher
+`playwright` also keinen Identifier. Die Hashes, die hier früher
 standen, bezeichneten nichts Prüfbares; wer sie wieder einträgt, dokumentiert eine
 Genauigkeit, die es nicht gibt.
 

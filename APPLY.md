@@ -333,12 +333,14 @@ liegen. Liegt dort schon eine `CLAUDE.md`, mergen statt überschreiben.
 claude plugin marketplace add DietrichGebert/ponytail
 claude plugin marketplace add openai/codex-plugin-cc
 claude plugin marketplace add anthropics/claude-plugins-official
+claude plugin marketplace add JuliusBrussee/caveman
 
 claude plugin install ponytail@ponytail
 claude plugin install codex@openai-codex
 claude plugin install claude-md-management@claude-plugins-official
 claude plugin install frontend-design@claude-plugins-official
 claude plugin install playwright@claude-plugins-official
+claude plugin install caveman@caveman
 ```
 `ponytail` liefert den Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor
 neuer Dependency) + Hooks (B1.5) und ist der **aktive** Modus. Ab `5.x` bringt es
@@ -351,8 +353,13 @@ installierte `codex`-CLI voraus (Teil B2).
 
 **Caveman ist für alle Clients als Antwortstil aktiv** — über
 `instructions/AGENTS.md` → Sprache & Stil, parallel zu Ponytail. Die Regel wird
-mit der gemeinsamen Basis an Claude Code, Codex und opencode verteilt; ein
-separates Caveman-Plugin ist dafür nicht erforderlich.
+mit der gemeinsamen Basis an Claude Code, Codex und opencode verteilt. In Claude
+Code liefert zusätzlich das Plugin `caveman@caveman` den vollständigen Regelsatz
+(SessionStart, SubagentStart) und eine Erinnerung pro Prompt (UserPromptSubmit;
+abschaltbar mit `CAVEMAN_REINFORCE=0`). Headless-Sessions (`claude -p`, Entry-Point
+`sdk-*`) startet das Plugin bewusst im Modus `manual`, also ohne Regelsatz —
+`CAVEMAN_DEFAULT_MODE=caveman` erzwingt ihn. Die Plugin-Hooks gehören, wie bei
+ponytail (B1.5), nicht zusätzlich in `settings.json`.
 
 **Reste einer früheren Installation.** Ein deinstalliertes Plugin nimmt seine
 Hook-Dateien nicht mit: unter `~/.claude/hooks/` bleiben `caveman-activate.js`,
@@ -398,6 +405,7 @@ Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 | `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-11-11 |
 | `frontend-design@claude-plugins-official` | `1.1.1` | 2026-11-11 |
 | `playwright@claude-plugins-official` | `unknown` (siehe unten) | 2026-11-11 |
+| `caveman@caveman` | `4.1.0` (Marketplace-HEAD `3dc497a7f858`) | 2026-11-11 |
 
 Bewusste Aktualisierung: `claude plugin marketplace update <name>` (ohne Namen:
 alle), dann `claude plugin update <plugin>@<marketplace>`, danach diese Tabelle
@@ -416,9 +424,9 @@ erkennbar an `.gcs-sha` im Marketplace-Verzeichnis statt eines `.git`. Es gibt f
 standen, bezeichneten nichts Prüfbares; wer sie wieder einträgt, dokumentiert eine
 Genauigkeit, die es nicht gibt.
 
-**Verify:** `claude plugin marketplace list` zeigt `ponytail`, `openai-codex`
-**und** `claude-plugins-official` (der Marketplace registriert sich als
-`openai-codex`, nicht unter dem Repo-Namen); `claude plugin list` zeigt alle fünf
+**Verify:** `claude plugin marketplace list` zeigt `ponytail`, `openai-codex`,
+`caveman` **und** `claude-plugins-official` (der Marketplace registriert sich als
+`openai-codex`, nicht unter dem Repo-Namen); `claude plugin list` zeigt alle sechs
 als enabled, Versionen gemäß Tabelle (oder Abweichung bewusst
 dokumentiert).
 

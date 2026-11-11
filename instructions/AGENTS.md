@@ -38,7 +38,8 @@ Wiederholungen weglassen. Verständlichkeit, fachliche Präzision,
 angeforderte Details, Rückfragen und Pflichtbelege dürfen nicht entfallen.
 Code, Kommentare und Dokumente behalten ihren jeweiligen Projektstil.
 „stop caveman“ deaktiviert den Stil für die Session, „caveman an“ aktiviert ihn.
-Diese gemeinsame Regel braucht kein separates Caveman-Plugin.
+In Claude Code ergänzt das Plugin `caveman@caveman` diese Regel
+(`APPLY.md` B1.2); die anderen Clients nutzen nur sie.
 
 ## Haltung
 

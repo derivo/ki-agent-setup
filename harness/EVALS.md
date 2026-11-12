@@ -47,6 +47,17 @@ Projekt. Richtwert: ein Lauf kostet 30–60 Minuten Agent-Zeit.
    ausschließlich das Feld `prompt` aus. Nie die Session bewerten, die gerade am
    Harness gearbeitet hat.
 
+   **Harness-Pfad per Hook pinnen, nicht per Env allein.** `--setting-sources
+   project` lädt den User-Hook `harness-activate.sh` nicht — ohne ihn nennt der
+   Session-Kontext keinen Harness-Pfad, und der Executor greift zum
+   Standard-Mirror `~/.agents/harness` statt zu `$AGENT_HARNESS_ROOT` (E3 am
+   2026-11-11 zweimal in Folge). Deshalb den Hook aus dem gemessenen Stand ins
+   Wegwerf-Projekt eintragen, `.claude/settings.json`:
+   `{"hooks":{"SessionStart":[{"hooks":[{"type":"command","command":"bash <Kopie von harness/hooks/harness-activate.sh>"}]}]}}`
+   — er löst `$AGENT_HARNESS_ROOT` auf und nennt den gepinnten Pfad wie im
+   echten Betrieb. Probe am 2026-11-12: mit Hook nannte die Session den Pfad
+   der gepinnten Kopie, ohne Hook keinen.
+
    **Warum die Trennung ein eigenes Feld ist:** Bis 2026-08-29 lagen Regie und
    Wortlaut in *einem* Feld. Wer die Anleitung wörtlich befolgte und die Ausgabe
    verbatim weiterreichte, verriet damit die Konstruktion — E5 lieferte „Nach

@@ -62,11 +62,10 @@ Gesprächskontext; bei kurzen Aufgaben ist er Overhead plus Qualitätsverlust,
 kein Gewinn.
 Jeder laufende Background-Agent kostet zusätzlich: Claude Code schickt sein
 Transkript periodisch ans Modell, nur für die Statuszeile — Nutzermessungen bis
-2.1.316: 16–26 % der Kosten bzw. Requests. Seit 2.1.319 enthält das Binary die
-Env-Variable `CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES` zum Abschalten — nur
-im Binary belegt, nicht in CHANGELOG oder Doku, Wirkung nicht gemessen (Stand
-10.11.2026, [anthropics/claude-code#86879](https://github.com/anthropics/claude-code/issues/86879),
-geschlossen 09.11.2026).
+2.1.316: 16–26 % der Kosten bzw. Requests. Seit 2.1.318 schaltet
+`CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES=1` diese Zusammenfassungen samt
+ihrer Requests ab (CHANGELOG 2.1.323) — Wirkung nicht gemessen (Stand
+15.11.2026, [anthropics/claude-code#86879](https://github.com/anthropics/claude-code/issues/86879)).
 Nicht mehr Background-Agents parallel als nötig.
 
 - **Der Chat ist die Queue.** Neue Aufgaben jederzeit als Nachricht reingeben,

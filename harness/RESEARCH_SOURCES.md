@@ -19,10 +19,10 @@ Quellen, die **periodisch abgefragt** werden, um Änderungen zu finden.
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [anthropic.com/engineering](https://www.anthropic.com/engineering) | `curl` + grep auf `(Mon) DD, YYYY`; nur Einträge mit Label „Engineering" bzw. nach „Grid view" zählen — die Seite trägt ein Research-Karussell mit eigenen Daten; Post-Links zeigen auf `/research/<slug>` (Stand 10.11.2026) | Methoden-Primärquelle. Hersteller mit Produktionsdaten. Posts wieder aktiv: 25.05., 13.10., 06.11.2026 (Stand 10.11.2026). Ausschluss nur zusammen mit claude.dev. |
+| [anthropic.com/engineering](https://www.anthropic.com/engineering) | `curl` + grep auf `(Mon) DD, YYYY`; nur Einträge mit Label „Engineering" bzw. nach „Grid view" zählen — die Seite trägt ein Research-Karussell mit eigenen Daten; Post-Links zeigen auf `/research/<slug>` (Stand 10.11.2026) | Methoden-Primärquelle. Hersteller mit Produktionsdaten. Posts wieder aktiv: 25.05., 13.10., 06.11., 13.11.2026 (Stand 15.11.2026; der Post vom 13.11. steht nur in „Grid view", nicht mit Label „Engineering" davor). Ausschluss nur zusammen mit claude.dev. |
 | [claude.dev](https://claude.dev/) | `curl https://claude.dev/` (`/blog/` leitet dorthin), grep auf `(Mon) DD, YYYY` + `href="/blog/<slug>/"`; je Post JSON-LD `datePublished` + `articleSection` (Engineering / Playbooks / Agents) | Anthropics Engineering-Posts erscheinen **seit mindestens 24.07.2026 hier** statt auf anthropic.com/engineering. Hersteller: Produkt-Interesse, Zahlen meist aus eigenen Tests ohne Kontrollarm. |
 | [martinfowler.com/articles/harness-engineering.html](https://martinfowler.com/articles/harness-engineering.html) | `curl` + grep auf `Significant Revisions` | Vokabular/Konzepte. Revisionsdatum im Dokument. |
-| [Claude Code CHANGELOG](https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md) | **nur die Raw-URL.** Mit `curl`+`awk` lesen, nicht per Fetch-Zusammenfassung | Plattform-Takt. Eine Plattform-Änderung kann eine Harness-Regel verbilligen oder erübrigen. |
+| [Claude Code CHANGELOG](https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md) | **nur die Raw-URL.** Mit `curl`+`awk` lesen, nicht per Fetch-Zusammenfassung. Die Datei trägt keine Daten — Release-Daten je Version über `gh api 'repos/anthropics/claude-code/releases?per_page=12' --jq '.[] \| "\(.tag_name) \(.published_at)"'` (Stand 15.11.2026) | Plattform-Takt. Eine Plattform-Änderung kann eine Harness-Regel verbilligen oder erübrigen. |
 | [simonwillison.net/tags/coding-agents/](https://simonwillison.net/tags/coding-agents/) | `curl` + grep auf `<h3>` und Datum | Der **unabhängige Prüfer** der Liste: verifiziert primär und widerspricht Hersteller-Zahlen. |
 
 Die ersten drei sind der günstigste Ausschluss: unverändertes Datum → kein Fund, ohne
@@ -33,7 +33,7 @@ publiziert wird — ein über Monate stehendes Datum ist ein Anlass, das zu prü
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [arxiv.org/list/cs.SE/recent](https://arxiv.org/list/cs.SE/recent) | `curl` auf `?skip=0&show=50`, IDs + Titel parsen. **`export.arxiv.org` scheitert in der Sandbox** (0 Byte), die API-URL per Fetch läuft in den Timeout. `recent` umfasst nur die letzten fünf Mailings — Lücke zum Vorlauf über `/list/cs.SE/YYYY-MM?skip=0&show=500` schließen (erster Abruf 429, zweiter 200; Stand 10.11.2026) | Primärforschung. Durchweg ungeprüfte Preprints → Qualitätsfilter §4 zwingend. |
+| [arxiv.org/list/cs.SE/recent](https://arxiv.org/list/cs.SE/recent) | `curl` auf `?skip=0&show=50`, IDs + Titel parsen. **`export.arxiv.org` scheitert in der Sandbox** (0 Byte), die API-URL per Fetch läuft in den Timeout. `recent` umfasst nur die letzten fünf Mailings — Lücke zum Vorlauf über `/list/cs.SE/YYYY-MM?skip=0&show=500` schließen (erster Abruf 429, zweiter 200; Stand 10.11.2026). `recent?skip=0&show=500` liefert alle fünf Mailings in einem Abruf (Stand 15.11.2026) | Primärforschung. Durchweg ungeprüfte Preprints → Qualitätsfilter §4 zwingend. |
 
 **Quartalsweise:**
 
@@ -45,9 +45,9 @@ publiziert wird — ein über Monate stehendes Datum ist ein Anlass, das zu prü
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/<owner>/<repo>/stargazers"` (ein grep auf `href="/owner/repo"` trifft auch Navigation; Stand 02.11.2026); `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. **Kadenz: wöchentlich.** |
+| [github.com/trending](https://github.com/trending?since=weekly) | `curl` + grep auf `href="/<owner>/<repo>/stargazers"` (ein grep auf `href="/owner/repo"` trifft auch Navigation; Stand 15.11.2026); `?since=weekly` bzw. `daily` | Breit und sprachunabhängig, also viel Rauschen. Taugt zum Entdecken, nicht zum Urteilen. **Kadenz: wöchentlich.** |
 | GitHub Search API | **`gh search repos` statt `curl`** — authentifiziert 30 Anfragen/min statt 10. `--sort stars`, Query mit `created:>YYYY-MM-DD` für Neues | Gezielter als Trending: sucht einen Begriff statt eines Zeitfensters. |
-| [agentskills.io/specification](https://agentskills.io/specification) | `curl` + grep auf JSON-LD `"dateModified"` (Stand 04.08.2026); `gitLastModified` ist leer | Primär-Spec des Skill-Formats, das die Repo-Skills (`skills/`) client-übergreifend tragen. Von Anthropic gestartet, offene Beiträge, kein Normungsgremium. **Kadenz: quartalsweise.** |
+| [agentskills.io/specification](https://agentskills.io/specification) | `curl` + grep auf JSON-LD `"dateModified"` (Wert 04.08.2026, geprüft 15.11.2026); `gitLastModified` ist leer | Primär-Spec des Skill-Formats, das die Repo-Skills (`skills/`) client-übergreifend tragen. Von Anthropic gestartet, offene Beiträge, kein Normungsgremium. **Kadenz: quartalsweise.** |
 
 Stars sind **Aufmerksamkeit, nicht Qualität** — ein Werkzeug mit 7k Stars und zwei Wochen
 Historie ist ein Kandidat, kein Standard. Was ein GitHub-Fund belegen muss, steht in §4.
@@ -63,8 +63,8 @@ oder Werkzeug** betrifft:
 
 | Quelle | Mechanik | Urteil |
 |---|---|---|
-| [news.ycombinator.com](https://hn.algolia.com/?query=coding%20agent&sort=byPopularity&type=story) | Algolia-API `hn.algolia.com/api/v1/search?query=…&tags=story&numericFilters=created_at_i%3E<epoch>` — `>` **URL-kodiert** als `%3E`, sonst kommt kein JSON (Stand 02.11.2026); nach `points` sortieren | Früher Indikator für Werkzeuge. Kommentare oft wertvoller als der Link. **Kadenz: wöchentlich.** |
-| [hamel.dev](https://hamel.dev/) | `curl`, grep auf `data-listing-date-sort` (Epoch-ms) + `data-listing-title-sort`; sichtbares Datum ist `M/D/YY`, ein grep auf `(Mon) DD, YYYY` findet nichts | LLM-Evals aus der Praxis — einschlägig fürs Gate-Thema. **Kadenz: monatlich.** |
+| [news.ycombinator.com](https://hn.algolia.com/?query=coding%20agent&sort=byPopularity&type=story) | Algolia-API `hn.algolia.com/api/v1/search?query=…&tags=story&numericFilters=created_at_i%3E<epoch>` — `>` **URL-kodiert** als `%3E`, sonst kommt kein JSON (Stand 15.11.2026); nach `points` sortieren | Früher Indikator für Werkzeuge. Kommentare oft wertvoller als der Link. **Kadenz: wöchentlich.** |
+| [hamel.dev](https://hamel.dev/) | `curl`, grep auf `data-listing-date-sort` (Epoch-ms) + `data-listing-title-sort`; sichtbares Datum ist `M/D/YY`, ein grep auf `(Mon) DD, YYYY` findet nichts (letzter Post 20.10.2026, Stand 15.11.2026) | LLM-Evals aus der Praxis — einschlägig fürs Gate-Thema. **Kadenz: monatlich.** |
 
 Ist eine Meldung aus `ki-news` methodisch einschlägig, wird sie **hier** geprüft (gegen
 §4), nicht dort — das Briefing berichtet, diese Routine urteilt.

@@ -1,14 +1,14 @@
 ---
-name: sandro
-description: 'Sandro-Modus: prüft Formulare und Schreib-Endpunkte gegen den dümmsten anzunehmenden Nutzer und gegen Missbrauch — Übergröße, Müll, falsche Typen, Steuerzeichen, Unicode-Tricks, Injection, Upload-Schrott, Doppel-Submit, Flut, fremde IDs — und schließt die Löcher (500er, ungebremste Speicherung, Injection, Ressourcen-Erschöpfung, kaputtes UI). Use when the user wants input abuse tested or prevented — e.g. "Sandro-Test", "sandroisieren", "ist das Formular sandro-fest", "DAU-Test", "was passiert bei Müll-Eingaben", "Formular kaputt machen", "Abuse-Test", "was passiert, wenn jemand 5 Zeilen in die PLZ schreibt". Stack-neutral, Beispiele Laravel/PHP und React/TypeScript. Default ist ein Read-only-Audit mit belegter Lückenliste; Tests, Fixes und Gates entstehen erst nach Freigabe.'
+name: roaster
+description: 'Roaster-Modus: prüft Formulare und Schreib-Endpunkte gegen den dümmsten anzunehmenden Nutzer und gegen Missbrauch — Übergröße, Müll, falsche Typen, Steuerzeichen, Unicode-Tricks, Injection, Upload-Schrott, Doppel-Submit, Flut, fremde IDs — und schließt die Löcher (500er, ungebremste Speicherung, Injection, Ressourcen-Erschöpfung, kaputtes UI). Use when the user wants input abuse tested or prevented — e.g. "Roaster-Test", "roasten", "ist das Formular roast-fest", "DAU-Test", "was passiert bei Müll-Eingaben", "Formular kaputt machen", "Abuse-Test", "was passiert, wenn jemand 5 Zeilen in die PLZ schreibt". Stack-neutral, Beispiele Laravel/PHP und React/TypeScript. Default ist ein Read-only-Audit mit belegter Lückenliste; Tests, Fixes und Gates entstehen erst nach Freigabe.'
 ---
 
-# sandro
+# roaster
 
-Sandro ist der Nutzer, der fünf Zeilen in die Postleitzahl schreibt, 70 000 Zeichen in den
+Der Roaster ist der Nutzer, der fünf Zeilen in die Postleitzahl schreibt, 70 000 Zeichen in den
 Namen kopiert, ein Array schickt, wo ein String erwartet wird, und `'; DROP TABLE` ausprobiert,
 um zu sehen, was passiert. Mal aus Versehen, mal mit Absicht. Dieser Skill fragt je Formular
-und je Schreib-Endpunkt: **Was macht das System mit Sandro?** Die richtige Antwort ist immer
+und je Schreib-Endpunkt: **Was macht das System mit dem Roaster?** Die richtige Antwort ist immer
 eine saubere Ablehnung, nie ein Absturz, nie eine stille Speicherung.
 
 Die Fehlerklassen, gegen die er arbeitet:
@@ -34,8 +34,8 @@ Die Fehlerklassen, gegen die er arbeitet:
 - **Ein Feld falsch, alle anderen gültig** — sonst weiß niemand, welches Feld die Ablehnung
   ausgelöst hat. Das ist die Edge-Case-Matrix des Hauses
   ([`harness/TESTS.md`](../../harness/TESTS.md) → Edge-Case-Matrix), hier um den
-  Sandro-Korpus erweitert.
-- **Die Grenze ist das Backend.** Frontend-Limits sind Komfort; Sandro schickt den Request
+  Roaster-Korpus erweitert.
+- **Die Grenze ist das Backend.** Frontend-Limits sind Komfort; der Roaster schickt den Request
   direkt. Ein Feld gilt erst als dicht, wenn das Backend es ablehnt.
 - **Nicht doppeln, verweisen:** Formular-Testlücken je Rolle/Seite → Skill
   `ui-test-gap-audit`; Sicherheitsniveau (ASVS) → Skill `webapp-blueprint`,
@@ -63,7 +63,7 @@ Laravel dann Elemente); Regex `/^\d{5}$/` — PCRE-`$` passt auch vor einem absc
 JSON-Spalten ohne Größen- oder Tiefengrenze.
 
 ### 3. Korpus fahren
-- Den [Sandro-Korpus](references/korpus.md) je Feld anwenden, **ein Feld falsch, Rest gültig**,
+- Den [Roaster-Korpus](references/korpus.md) je Feld anwenden, **ein Feld falsch, Rest gültig**,
   deterministisch (fester Seed, keine Zufallsdaten ohne Seed).
 - Am Backend direkt (HTTP-Client, Feature-Test) **und** einmal durchs UI: Button **und**
   Enter-Taste — der Tastatur-Submit kann die Button-Validierung umgehen.
@@ -105,20 +105,20 @@ neuen Eingang automatisch mitnehmen:
 5. **Rate-Limits als Konfiguration mit Test** — Limit je schreibender Route, ein Test
    erwartet 429.
 
-## Optional: sichtbarer Sandro-Modus (nur außerhalb Produktion)
+## Optional: sichtbarer Roaster-Modus (nur außerhalb Produktion)
 
-Für Test- und Staging-Umgebungen kann das System Sandro **erkennbar** abweisen — als
+Für Test- und Staging-Umgebungen kann das System den Roaster **erkennbar** abweisen — als
 Anreiz beim Testen, nicht als Verteidigung:
 
 - **Backend klassifiziert** nur eindeutigen Missbrauch, keine normalen Tippfehler:
   z. B. Länge > 10 × `max`, Steuerzeichen/NUL, mehrzeilig in einem einzeiligen Feld,
   Injection-Marker in einem Formatfeld (PLZ, Datum, Betrag), falscher Typ (Array statt
-  String). Eine zu kurze PLZ ist ein Tippfehler, kein Sandro.
+  String). Eine zu kurze PLZ ist ein Tippfehler, kein Roaster.
 - **422 bleibt 422.** Nur wenn die Umgebung **nicht** Produktion ist, kommt ein Merker
-  dazu, z. B. `"sandro": true` (Laravel: `! app()->isProduction()`). Kein Hinweis, welches
+  dazu, z. B. `"roaster": true` (Laravel: `! app()->isProduction()`). Kein Hinweis, welches
   Muster erkannt wurde.
-- **Frontend** zeigt dann über i18n (Schlüssel z. B. `errors.sandro`, in **allen**
-  Sprachdateien) „Nein, nein, nein, Sandro, so nicht." zusätzlich zur Feldmeldung.
+- **Frontend** zeigt dann über i18n (Schlüssel z. B. `errors.roaster`, in **allen**
+  Sprachdateien) „Nein, nein, nein, Roaster, so nicht." zusätzlich zur Feldmeldung.
 - **Logging in jeder Umgebung**, auch Produktion: eigener Kanal (z. B.
   `Log::channel('security')`), mit Route, Feld, Klasse, Konto/IP-Hash — die Eingabe selbst
   nur gekürzt und escaped (sonst wird das Log zum nächsten Injection- oder Speicherloch).
@@ -137,7 +137,7 @@ Anreiz beim Testen, nicht als Verteidigung:
 
 ## Ausgabe
 
-- **Kurzantwort zuerst** („sandro-fest: nein — 3 Felder ohne Backend-Grenze, 1 Route mit
+- **Kurzantwort zuerst** („roast-fest: nein — 3 Felder ohne Backend-Grenze, 1 Route mit
   500"), dann je Eingang die Feldtabelle (Backend / Frontend / DB / Korpus-Ergebnis), dann
   die Risikoliste mit Fix- und Gate-Vorschlag.
 - Jede Zahl mit Quelle (Befehl + Status oder Datei:Zeile).

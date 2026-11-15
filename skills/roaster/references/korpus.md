@@ -1,4 +1,4 @@
-# Sandro-Korpus
+# Roaster-Korpus
 
 Kopierbare Fälle je Kategorie. Anwendung: **ein Feld falsch, alle anderen gültig**, Soll je
 Kategorie in [SKILL.md](../SKILL.md) → „Gegen das Soll prüfen". Große Werte werden erzeugt,

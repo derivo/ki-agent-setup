@@ -210,6 +210,7 @@ ladbar**:
 | [`analyse-qs`](skills/analyse-qs/SKILL.md) | Analyse und QS eines Projekts prüfen — Requirements (IREB/req42), arc42, DDD, QS-Gates — als belegte Lückenliste |
 | [`design-md-curator`](skills/design-md-curator/SKILL.md) | eine `DESIGN.md` aus Repo-/URL-Evidenz erstellen und gegen `GUARDRAILS_UI.md` G validieren |
 | [`linklist-curator`](skills/linklist-curator/SKILL.md) | Links in `harness/linklist.md` aufnehmen, inkl. Provenance-Auflösung |
+| [`roaster`](skills/roaster/SKILL.md) | Formulare und Schreib-Endpunkte gegen Müll-Eingaben und Missbrauch prüfen — Roaster-Korpus, Soll je Kategorie, Gate-Vorschläge |
 | [`rule-intake-curator`](skills/rule-intake-curator/SKILL.md) | ein fremdes Regelwerk gegen `instructions/` + `harness/` prüfen und nur das Tragende übernehmen |
 | [`trend-scout`](skills/trend-scout/SKILL.md) | Trends, Standards, Best Practices und Werkzeuge belegt suchen und gegen den Bestand prüfen; Quellen-Roster `harness/RESEARCH_SOURCES.md` pflegen |
 | [`ui-test-gap-audit`](skills/ui-test-gap-audit/SKILL.md) | fehlende UI-Tests messen — je Rolle, Seite, Formular und Datenvariante nach Echtheitsstufe, Lücken nach Risiko |
@@ -645,8 +646,8 @@ print([k for k in d.get("skillOverrides",{}) if not os.path.exists(h("~/.claude/
 ```
 
 **Verify:** `claude mcp list` zeigt das Kern-Set verbunden; `ls -l ~/.claude/skills/`
-zeigt die Nicht-GSD-Skills und die acht Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
-`design-md-curator`, `linklist-curator`, `rule-intake-curator`, `trend-scout`,
+zeigt die Nicht-GSD-Skills und die neun Links aus A5.1 (`ki-agent-setup`, `analyse-qs`,
+`design-md-curator`, `linklist-curator`, `roaster`, `rule-intake-curator`, `trend-scout`,
 `ui-test-gap-audit`, `webapp-blueprint`) auf den Checkout;
 `head -2 ~/.claude/skills/design-md-curator/SKILL.md` ist über den Link lesbar.
 

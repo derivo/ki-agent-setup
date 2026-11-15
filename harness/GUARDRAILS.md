@@ -261,10 +261,20 @@ die nächste Session die falsche Ursache.
 synchron, JSON → Markdown, Endpunkt umbenannt), ist er erst fertig, wenn die
 Doku nach dem **alten** Begriff durchsucht ist — Klassen-, Datei- und
 Funktionsnamen, Formatendungen, Betriebsbefehle (`grep` über Doku, Skills,
-Manifest-Kommentare, Runbooks) — und jede Fundstelle im selben Diff nachgezogen
+Manifest-Kommentare, Runbooks **und Code-/Test-Kommentare außerhalb des Diffs**) —
+und jede Fundstelle im selben Diff nachgezogen
 oder als bewusst offen in der Schuldenliste des Projekts geführt ist
-(→ `AGENTS.md` „Reparatur vor Fortschritt"). Eine Code-Karte oder ein Skill, der den alten
+(→ `AGENTS.md` „Reparatur vor Fortschritt"). Gesucht wird auch nach Aussagen, die
+den alten Weg beschreiben, ohne ihn zu nennen: Anzahlen („die vier Jobs“),
+Exklusiv-Aussagen („einziger Workload, der …“), Zusagen des alten Wegs („wird
+wiederholt“). Eine Code-Karte oder ein Skill, der den alten
 Weg beschreibt, schickt die nächste Session in den falschen Pfad.
+
+### Regel — Ein Review-Befund ist eine Fehlerklasse, keine Einzelstelle
+Nennt ein Review eine Stelle, wird vor dem nächsten Push der ganze Baum nach
+derselben Art von Fehler durchsucht, nicht nur die genannte Stelle korrigiert. Die
+Antwort an den Reviewer nennt die Suche (Begriffe, Ergebnis). Sonst kostet jede
+übersehene Stelle eine eigene Review-Runde.
 
 ### Regel — Verifikation belegen: Evidence, nicht Behauptung
 Die Fertig-Meldung führt je Akzeptanzkriterium einen **prüfbaren Beleg** — Datei:Zeile,

@@ -10,7 +10,10 @@ Bereite einen Pull Request für "$ARGUMENTS" (oder den aktuellen Branch) vor.
    bleibt eines offen (Folge-PR, Post-Deploy-Prüfung, Text in einem anderen
    Issue), steht `Refs #N` und das offene Kriterium im Body — sonst schließt der
    Merge in den Default-Branch das Issue, und das Kriterium verschwindet aus dem
-   Tracking.
+   Tracking. Dasselbe gilt für die **Commit-Nachrichten** des Branches: ein Squash
+   übernimmt sie je nach Repo-Einstellung in die Merge-Nachricht, ein Merge- oder
+   Rebase-Merge sowieso. Vor dem Push prüfen:
+   `git log origin/HEAD.. --format=%B | grep -iE '\b(close[sd]?|fix(e[sd])?|resolve[sd]?):? #'`.
 5. PR erstellen (`gh pr create`). **Merge/Deploy bleibt beim Menschen** —
    nur vorbereiten, nicht mergen. Nennt der Body einen Reviewer, wird das Review
    auch angefragt: `gh pr edit <n> --add-reviewer <login>`, mehrere als `a,b`

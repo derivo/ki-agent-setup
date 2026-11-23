@@ -93,7 +93,7 @@ gemeinsamen Kern, Teil B pro Client die Ablage und die client-eigene Mechanik
 | **ponytail** | `DietrichGebert/ponytail` | Plugin (Marketplace) | Lösungs-Minimalismus, Level lite/full/ultra — **aktiv** |
 | **caveman** | `JuliusBrussee/caveman` | Plugin (Marketplace) | Knapper Antwortstil, ergänzt die Regel aus `AGENTS.md` — **aktiv** |
 | **codex** | `openai/codex-plugin-cc` | Plugin (Marketplace) | Codex-CLI aus Claude Code: Review, adversariales Review, Delegation |
-| **claude-md-management**, **frontend-design**, **playwright** | `anthropics/claude-plugins-official` | Plugins (Marketplace) | CLAUDE.md-Pflege, Frontend-Design, Browser-Automatisierung |
+| **claude-md-management**, **frontend-design** | `anthropics/claude-plugins-official` | Plugins (Marketplace) | CLAUDE.md-Pflege, Frontend-Design |
 
 Details zu Versionen, Hooks und Settings: siehe [`APPLY.md`](APPLY.md).
 

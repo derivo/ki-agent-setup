@@ -160,6 +160,8 @@ Diese Frage ist die eine gesetzte Ausnahme zu „kein Abschlusssatz mit Angebot"
 - offene technische Schulden (Schuldenliste des Projekts: Anzahl, teuerster Eintrag),
 - Doku-/State-Drift (`.planning/STATE.md` bzw. Worklog gegen `git log`),
 - letzter Review- und Kartografie-Stand (Datum, sonst `UNBEKANNT:`),
+- liegengebliebene Worktrees und Branches (`git worktree list`, lokale und
+  Remote-Branches, die schon im Default-Branch gemergt sind),
 - graphify-Voraussetzungen, je fehlende mit Befehl: CLI nicht installiert
   (`command -v graphify` leer) → `uv tool install graphifyy`; im Projekt nicht
   aktiv → `node ~/.claude/gsd-core/bin/gsd-tools.cjs config-set graphify.enabled true`.
@@ -168,7 +170,11 @@ Diese Frage ist die eine gesetzte Ausnahme zu „kein Abschlusssatz mit Angebot"
 Bei Zustimmung in dieser Reihenfolge:
 1. **Technische Schulden lösen** — nach *Reparatur vor Fortschritt*.
 2. **Doku und State** auf den belegten Stand bringen (Doc-Harness).
-3. **Stand reviewen** durch den jeweils anderen Client — nur in genau diesen
+3. **Worktrees und Branches aufräumen** — erst die Kandidatenliste vorlegen
+   (Name, gemergt ja/nein, uncommittete Änderungen, letzter Commit), gelöscht wird
+   nach Rücksprache. Nie ohne ausdrückliche Nennung: Worktrees mit uncommitteten
+   Änderungen, Branches mit ungemergten Commits, Branches anderer Personen.
+4. **Stand reviewen** durch den jeweils anderen Client — nur in genau diesen
    zwei Richtungen und nur, wenn dessen CLI installiert ist:
    - Client ist **Claude Code** und `command -v codex` trifft → Codex über das
      codex-Plugin (`/codex:rescue`).
@@ -179,7 +185,7 @@ Bei Zustimmung in dieser Reihenfolge:
    übersprungen gemeldet (mit Grund), nicht ersetzt. Auftrag: aktuelle Codebase
    analysieren, trägt das Konzept, hat der Code Bugs. Findings werden geprüft,
    nicht übernommen (→ Haltung).
-4. **Code kartografieren** mit `/gsd-graphify build`. Setzt
+5. **Code kartografieren** mit `/gsd-graphify build`. Setzt
    `graphify.enabled: true` in `.planning/config.json` voraus; fehlt das, wird der
    Schritt als übersprungen gemeldet, nicht still eingeschaltet.
 

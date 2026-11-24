@@ -110,7 +110,7 @@ Upstream heißt der Skill unter `toolchains/javascript/testing/playwright/` inzw
 abgerufen am 2026-09-20, HTTP 200. Der Rumpf war zeichengleich mit dem installierten
 Stand, das Update hätte also keine Zeile Inhalt gebracht, aber den Skill inert gemacht.
 Playwright bleibt über `e2e-testing-patterns`, `playwright-visual-testing`, `webapp-testing`
-und das Playwright-MCP-Plugin abgedeckt.
+und den gepinnten Playwright-MCP-Server (APPLY.md B1.7) abgedeckt.
 
 ## Bewertung — was davon im Kern-Setup bleiben sollte
 

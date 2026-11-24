@@ -14,7 +14,7 @@ der installierte Server-Bestand dauerhaft, diese Datei nachziehen.
 
 | Server | Quelle | Nutzen |
 |---|---|---|
-| **Playwright MCP** | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (★34k, offiziell) | Live-Browser: Tests, Screenshots, E2E-Verify — passt zu `/hx:verify`. |
+| **Playwright MCP** | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) (★34k, offiziell) | Live-Browser: Tests, Screenshots, E2E-Verify — passt zu `/hx:verify`. Gepinnt auf `@playwright/mcp@0.0.85` (Stand 2026-11-23, Registrierung: APPLY.md B1.7). |
 
 **GitHub läuft über die `gh`-CLI, nicht über einen MCP-Server.** PRs, Issues, Repos und Actions steuert der Agent per `gh` ([cli.github.com](https://cli.github.com), offiziell). Das spart den MCP-Kontext, braucht keinen Token in einer MCP-Config (Login über `gh auth login`, Credential im System-Keyring bzw. `~/.config/gh/`) und ist in Shell, Skripten und allen Clients gleich nutzbar. Lesend zuerst (`gh pr view`, `gh issue list`, `gh run view`); schreibende Aufrufe (`gh pr create/merge`, `gh issue comment`) gelten als nach außen wirksam — nur auf Freigabe.
 

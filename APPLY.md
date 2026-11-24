@@ -340,7 +340,6 @@ claude plugin install ponytail@ponytail
 claude plugin install codex@openai-codex
 claude plugin install claude-md-management@claude-plugins-official
 claude plugin install frontend-design@claude-plugins-official
-claude plugin install playwright@claude-plugins-official
 claude plugin install caveman@caveman
 ```
 `ponytail` liefert den Lösungs-Minimalismus (YAGNI-Leiter, stdlib/native vor
@@ -348,9 +347,10 @@ neuer Dependency) + Hooks (B1.5) und ist der **aktive** Modus. Ab `5.x` bringt e
 zusätzlich ein eigenes Band-Modul (`hooks/claude-band.json`, keine Hooks) — es
 ersetzt die Statusline aus B1.4 nicht. Das Band schreibt nach jedem Turn eine
 Zeile (Kosten, Turns, Tokens) nach `~/.config/ponytail/band/<projekt>.csv`
-(Plugin-Option `ledger`, Default an); ein Webhook ist optional und per Default leer. Die drei
-`@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege, Frontend-Design und
-Playwright-Browser-Automatisierung. `codex` bindet die Codex-CLI in Claude Code
+(Plugin-Option `ledger`, Default an); ein Webhook ist optional und per Default leer. Die zwei
+`@claude-plugins-official`-Plugins ergänzen CLAUDE.md-Pflege und Frontend-Design.
+Playwright-Browser-Automatisierung läuft nicht als Plugin, sondern als gepinnter
+MCP-Server (B1.7). `codex` bindet die Codex-CLI in Claude Code
 ein (Review, adversariales Review, Delegation über `/codex:*`) — es setzt eine
 installierte `codex`-CLI voraus (Teil B2).
 
@@ -408,12 +408,11 @@ Stattdessen Known-Good dokumentieren; Drift über `claude plugin list` erkennen:
 
 | Plugin | Known-Good | geprüft |
 |---|---|---|
-| `ponytail@ponytail` | `5.3.3` (Marketplace-HEAD `96608e078b2d`) | 2026-11-11 |
+| `ponytail@ponytail` | `5.3.3` (Marketplace-HEAD `96608e078b2d`) | 2026-11-23 |
 | `codex@openai-codex` | `1.0.6` (Marketplace-HEAD `db52e28f4d9d`) | 2026-11-11 |
-| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-11-11 |
-| `frontend-design@claude-plugins-official` | `1.1.1` | 2026-11-11 |
-| `playwright@claude-plugins-official` | `unknown` (siehe unten) | 2026-11-11 |
-| `caveman@caveman` | `4.1.0` (Marketplace-HEAD `3dc497a7f858`) | 2026-11-11 |
+| `claude-md-management@claude-plugins-official` | `1.0.0` | 2026-11-23 |
+| `frontend-design@claude-plugins-official` | `1.1.1` | 2026-11-23 |
+| `caveman@caveman` | `4.1.0` (Marketplace-HEAD `3dc497a7f858`) | 2026-11-23 |
 
 Bewusste Aktualisierung: `claude plugin marketplace update <name>` (ohne Namen:
 alle), dann `claude plugin update <plugin>@<marketplace>`, danach diese Tabelle
@@ -422,21 +421,19 @@ der Upstream-Marketplace vergibt keine stabilen Versionen; wo eine Semver-Angabe
 steht, stammt sie aus der `plugin.json` des Plugins, der Hash daneben ist der
 Marketplace-Stand, gegen den geprüft wurde.
 
-**`unknown` ist bei `playwright` der korrekte Eintrag, keine Drift.** Die
-`plugin.json` von `playwright` führt kein `version`-Feld (`frontend-design` und
-`claude-md-management` aus demselben Marketplace führen eins), es liegt also am
-Plugin, nicht am Bezugsweg. `claude plugin list` zeigt dafür nur eine lokale
-Cache-ID (Stand 2026-11-11: `43fd1f9db094`) — keine Upstream-Kennung und nicht
-gegen den Marketplace prüfbar: `claude-plugins-official` liegt anders als die
-übrigen Marketplaces **nicht** als git-Repo vor, sondern als Snapshot (erkennbar
-an `.gcs-sha` statt `.git`). Wer die Cache-ID als Version einträgt, dokumentiert
-eine Genauigkeit, die es nicht gibt.
+**`playwright@claude-plugins-official` ist bewusst nicht mehr Teil des Setups**
+(seit 2026-11-23). Das Plugin besteht nur aus einer `.mcp.json` mit
+`npx @playwright/mcp@latest` — ungepinnt, und die `plugin.json` führt kein
+`version`-Feld. Playwright wird stattdessen direkt als MCP-Server mit fester
+Version registriert (B1.7). Wer das Plugin noch installiert hat:
+`claude plugin uninstall playwright@claude-plugins-official`, sonst läuft der
+Server doppelt.
 
 **Verify:** `claude plugin marketplace list` zeigt `ponytail`, `openai-codex`,
 `caveman` **und** `claude-plugins-official` (der Marketplace registriert sich als
-`openai-codex`, nicht unter dem Repo-Namen); `claude plugin list` zeigt alle sechs
-als enabled, Versionen gemäß Tabelle (oder Abweichung bewusst
-dokumentiert).
+`openai-codex`, nicht unter dem Repo-Namen); `claude plugin list` zeigt alle fünf
+als enabled (`codex` nur bei installierter Codex-CLI, B0), Versionen gemäß Tabelle
+(oder Abweichung bewusst dokumentiert).
 
 **Nicht Teil dieses Setups:** Plugins aus einem lokalen Verzeichnis-Marketplace
 statt aus GitHub (auf der Ursprungsmaschine `thebrain`). Sie hängen an
@@ -584,6 +581,18 @@ zeigt eine `HARNESS AKTIV …`-Zeile.
 ### B1.7 MCP + Skills
 MCP-Kern-Set (A4) via `claude mcp add …` registrieren. Skills (A5) landen in
 `~/.claude/skills/`.
+
+```bash
+claude mcp add -s user playwright -- npx -y @playwright/mcp@0.0.85
+```
+Known-Good `0.0.85` (veröffentlicht 2026-11-09, geprüft 2026-11-23). Update
+bewusst: `npm view @playwright/mcp version`, Pin hier und in `MCP_SERVERS.md`
+nachziehen, Server neu registrieren. Drift erkennen: `claude mcp get playwright`
+zeigt den Pin im Command. GitHub kommt **nicht** als MCP dazu (A4.1); ein
+vorhandener Eintrag wird mit `claude mcp remove github -s user` entfernt.
+
+**Verify:** `claude mcp list` zeigt `playwright: npx -y @playwright/mcp@0.0.85 -
+✔ Connected` und keinen `github`-Eintrag.
 
 Repo-eigene Skills (A5.1) kommen in dasselbe Verzeichnis — **pro Skill ein Symlink
 in den Checkout**, aus dem Repo-Root heraus:
@@ -807,8 +816,8 @@ Kern (Teil A), unabhängig vom Client:
 
 Pro eingerichtetem Client zusätzlich der Verify-Block seines Abschnitts in Teil B.
 Für Claude Code speziell:
-- `claude plugin list` → ponytail, codex + die drei
-  `claude-plugins-official`-Plugins enabled — jeweils mit Status `✔ enabled`, nicht
+- `claude plugin list` → ponytail, codex (nur bei installierter Codex-CLI, B0) +
+  die zwei `claude-plugins-official`-Plugins enabled — jeweils mit Status `✔ enabled`, nicht
   nur mit einer Versionsnummer (`GUARDRAILS.md` C, „Vorhandensein ≠ Verhalten").
 - Neue Session: ponytail-Mode aktiv, vierzeilige Statusline sichtbar; in einem
   `.planning/`-Projekt zeigt ihre vierte Zeile den GSD-State.

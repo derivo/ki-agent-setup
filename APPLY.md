@@ -124,17 +124,21 @@ bei **jeder** Runtime `<config>/gsd-core/` (`~/.claude/gsd-core/`,
 liegen und ist **Altbestand**, kein zweiter Runtime-Ort. Skills, Agents und Hooks
 liegen daneben direkt im Config-Verzeichnis (`<config>/skills/gsd-*` usw.).
 
-Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-09-22:
-`1.14.0`, setzt **Node ≥ 24** voraus):
+Installer ausführen (Version bewusst pinnen; gepinnt `1.22.0` vom 2026-11-19,
+npm-`latest` Stand 2026-11-24: `1.23.0`, einen Release zurück, weil erst einen
+Tag alt; setzt **Node ≥ 24** voraus):
 ```bash
-npx @opengsd/gsd-core@1.14.0
+npx @opengsd/gsd-core@1.22.0
 ```
 Nicht-interaktiv geht es mit Flags: `--global` plus je einer Runtime-Flag
 (`--claude`, `--codex`, `--opencode`, `--antigravity`, …) — pro einzurichtendem
 Client einmal laufen lassen. Dateien **nicht** von Hand aus `agents/`/`commands/`
 kopieren; der Installer ist für die Cross-Runtime-Kompatibilität nötig. Der
-Installer überspringt eine bereits konfigurierte Statusline
-(`--force-statusline` zum Ersetzen) und registriert bei opencode selbst einen
+Installer meldet bei einer bereits konfigurierten Statusline „Skipping statusline"
+(`--force-statusline` zum Ersetzen), schreibt aber einen `statusLine`-Eintrag,
+der auf `hooks/statusline.js` zeigt, trotzdem auf `hooks/gsd-statusline.js` um
+(beobachtet 1.22.0, 2026-11-24) — danach den Eintrag aus B1.4 wiederherstellen.
+Er registriert bei opencode selbst einen
 `gsd`-MCP-Eintrag in der `opencode.json`. Findet er lokal veränderte GSD-Dateien,
 rettet er sie nach `gsd-local-patches/` im Config-Verzeichnis statt sie zu
 überschreiben — dort prüfen und per `/gsd-update --reapply` mergen oder löschen.
@@ -375,9 +379,10 @@ Hook-Dateien nicht mit: unter `~/.claude/hooks/` bleiben `caveman-activate.js`,
 Plugin-Cache `~/.claude/plugins/cache/caveman/`). Sie sind harmlos, solange `settings.json` sie
 nicht registriert — genau das macht sie aber schwer auffindbar. Gleiches Muster
 bei anderen Vorgängern: die Shell-Statusline `~/.claude/statusline-command.sh`
-(Vorgänger von B1.4) und die GSD-Verzeichnisse `get-shit-done/`, `gsd-pristine/`,
-`gsd-user-files-backup/` und `gsd-migration-journal/` aus der Zeit vor dem Rename
-auf `gsd-core`.
+(Vorgänger von B1.4) und die GSD-Verzeichnisse `get-shit-done/`, `gsd-pristine/` und
+`gsd-user-files-backup/` aus der Zeit vor dem Rename auf `gsd-core`.
+`gsd-migration-journal/` bleibt: `gsd-install-state.json` verweist auch nach dem
+Umstieg auf gsd-core 1.22.0 auf die Journale darin.
 
 Der Check dafür, aus `~/.claude/` heraus — was hier auftaucht und nicht in der
 Hook-Registrierung aus B1.5 steht, kann weg:
@@ -444,8 +449,10 @@ solange die Tabellen-Einträge vollständig sind.
 ### B1.3 GSD-Runtime
 Installer (A3) für Runtime „Claude Code" laufen lassen.
 **Verify:** `~/.claude/hooks/gsd-statusline.js` existiert (Kopfkommentar trägt
-die `gsd-hook-version`); bei Update überspringt der Installer eine bereits
-konfigurierte Statusline mit Hinweis.
+die `gsd-hook-version`); `grep -c 'hooks/statusline.js' ~/.claude/settings.json`
+liefert nach dem Installer-Lauf weiter `1` — sonst hat er den Eintrag umgebogen
+(A3), dann B1.4 erneut anwenden. Ein Umstieg vom Altbestand `get-shit-done/`
+sichert lokal veränderte GSD-Dateien nach `~/.claude/gsd-local-patches/` (A3).
 
 ### B1.4 Globale Einstellungen (`~/.claude/settings.json`)
 Top-Level-Keys setzen (mit Bestehenden mergen):
@@ -743,7 +750,7 @@ diese Runtime gelaufen ist. Erst beobachten und dokumentieren, nicht raten.
 Erster Anlauf dafür:
 
 ```bash
-npx @opengsd/gsd-core@1.14.0 --global --antigravity
+npx @opengsd/gsd-core@1.22.0 --global --antigravity
 ```
 
 ## B4. opencode
@@ -766,7 +773,9 @@ Harness-Pointer.
 Installer (A3) für Runtime „opencode" laufen lassen. Runtime-Daten unter
 `~/.config/opencode/gsd-core/` (wie bei den übrigen Clients, A3),
 Skills/Agents/Hooks direkt im Config-Verzeichnis; der Installer trägt zusätzlich
-einen `gsd`-MCP-Eintrag in die `opencode.json` ein.
+einen `gsd`-MCP-Eintrag in die `opencode.json` ein. Der Installer warnt (1.22.0):
+GSD unterstützt OpenCode 1.x nur noch mit Bugfixes bis 2026-12-31, danach nur
+OpenCode 2.x (`opencode upgrade --major`, danach Installer erneut laufen lassen).
 **Verify:** `~/.config/opencode/gsd-core/VERSION` enthält den gepinnten Stand;
 `opencode mcp list` zeigt den `gsd`-Server.
 
@@ -778,23 +787,25 @@ rsync -a --delete harness/ ~/.config/opencode/harness/   # nur ohne ~/.agents/ha
 rsync -a --delete doc-harness/ ~/.config/opencode/doc-harness/   # optional
 ```
 Command-Library: opencode liest Custom-Commands **flach** aus
-`~/.config/opencode/command/*.md` (Filename = Command-Name, **kein**
-`:`-Namespace; Verzeichnis ist der vom GSD-Installer für opencode bespielte Ort —
-die opencode-Doc nennt teils `commands/`, maßgeblich ist der installierte Pfad).
+`~/.config/opencode/commands/*.md` (Filename = Command-Name, **kein**
+`:`-Namespace; Verzeichnis ist der vom GSD-Installer für opencode bespielte Ort,
+maßgeblich ist der installierte Pfad — bis gsd-core 1.14/OpenCode 1.x war das
+`command/`, mit 1.22.0/OpenCode 2.x ist es `commands/`; ein altes `command/` mit nur
+noch `hx-*.md` kann weg).
 Wie bei Codex → `hx-<name>` mit `sed`-Rewrite der Cross-Refs.
 Das Verzeichnis ist **geteilt** (enthält GSD-Commands) — kein `rsync --delete`;
 Delete-by-Präfix:
 ```bash
-mkdir -p ~/.config/opencode/command
-rm -f ~/.config/opencode/command/hx-*.md
+mkdir -p ~/.config/opencode/commands
+rm -f ~/.config/opencode/commands/hx-*.md
 for f in harness/commands/*.md; do
   base=$(basename "$f"); [ "$base" = "README.md" ] && continue
-  sed 's#/hx:#/hx-#g' "$f" > ~/.config/opencode/command/hx-"$base"
+  sed 's#/hx:#/hx-#g' "$f" > ~/.config/opencode/commands/hx-"$base"
 done
 ```
 **Verify:** Harness via `~/.agents/harness/README.md` erreichbar (oder Kopie
-unter `~/.config/opencode/harness/`); `ls ~/.config/opencode/command/` enthält die
-Commands als `hx-*.md`; `grep -rl '/hx:' ~/.config/opencode/command/hx-*.md`
+unter `~/.config/opencode/harness/`); `ls ~/.config/opencode/commands/` enthält die
+Commands als `hx-*.md`; `grep -rl '/hx:' ~/.config/opencode/commands/hx-*.md`
 liefert **nichts**.
 
 ### B4.4 MCP + Skills

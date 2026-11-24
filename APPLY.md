@@ -124,17 +124,21 @@ bei **jeder** Runtime `<config>/gsd-core/` (`~/.claude/gsd-core/`,
 liegen und ist **Altbestand**, kein zweiter Runtime-Ort. Skills, Agents und Hooks
 liegen daneben direkt im Config-Verzeichnis (`<config>/skills/gsd-*` usw.).
 
-Installer ausführen (Version bewusst pinnen; npm-`latest` Stand 2026-09-22:
-`1.14.0`, setzt **Node ≥ 24** voraus):
+Installer ausführen (Version bewusst pinnen; gepinnt `1.22.0` vom 2026-11-19,
+npm-`latest` Stand 2026-11-24: `1.23.0`, einen Release zurück, weil erst einen
+Tag alt; setzt **Node ≥ 24** voraus):
 ```bash
-npx @opengsd/gsd-core@1.14.0
+npx @opengsd/gsd-core@1.22.0
 ```
 Nicht-interaktiv geht es mit Flags: `--global` plus je einer Runtime-Flag
 (`--claude`, `--codex`, `--opencode`, `--antigravity`, …) — pro einzurichtendem
 Client einmal laufen lassen. Dateien **nicht** von Hand aus `agents/`/`commands/`
 kopieren; der Installer ist für die Cross-Runtime-Kompatibilität nötig. Der
-Installer überspringt eine bereits konfigurierte Statusline
-(`--force-statusline` zum Ersetzen) und registriert bei opencode selbst einen
+Installer meldet bei einer bereits konfigurierten Statusline „Skipping statusline"
+(`--force-statusline` zum Ersetzen), schreibt aber einen `statusLine`-Eintrag,
+der auf `hooks/statusline.js` zeigt, trotzdem auf `hooks/gsd-statusline.js` um
+(beobachtet 1.22.0, 2026-11-24) — danach den Eintrag aus B1.4 wiederherstellen.
+Er registriert bei opencode selbst einen
 `gsd`-MCP-Eintrag in der `opencode.json`. Findet er lokal veränderte GSD-Dateien,
 rettet er sie nach `gsd-local-patches/` im Config-Verzeichnis statt sie zu
 überschreiben — dort prüfen und per `/gsd-update --reapply` mergen oder löschen.
@@ -444,8 +448,10 @@ solange die Tabellen-Einträge vollständig sind.
 ### B1.3 GSD-Runtime
 Installer (A3) für Runtime „Claude Code" laufen lassen.
 **Verify:** `~/.claude/hooks/gsd-statusline.js` existiert (Kopfkommentar trägt
-die `gsd-hook-version`); bei Update überspringt der Installer eine bereits
-konfigurierte Statusline mit Hinweis.
+die `gsd-hook-version`); `grep -c 'hooks/statusline.js' ~/.claude/settings.json`
+liefert nach dem Installer-Lauf weiter `1` — sonst hat er den Eintrag umgebogen
+(A3), dann B1.4 erneut anwenden. Ein Umstieg vom Altbestand `get-shit-done/`
+sichert lokal veränderte GSD-Dateien nach `~/.claude/gsd-local-patches/` (A3).
 
 ### B1.4 Globale Einstellungen (`~/.claude/settings.json`)
 Top-Level-Keys setzen (mit Bestehenden mergen):
@@ -743,7 +749,7 @@ diese Runtime gelaufen ist. Erst beobachten und dokumentieren, nicht raten.
 Erster Anlauf dafür:
 
 ```bash
-npx @opengsd/gsd-core@1.14.0 --global --antigravity
+npx @opengsd/gsd-core@1.22.0 --global --antigravity
 ```
 
 ## B4. opencode
@@ -766,7 +772,9 @@ Harness-Pointer.
 Installer (A3) für Runtime „opencode" laufen lassen. Runtime-Daten unter
 `~/.config/opencode/gsd-core/` (wie bei den übrigen Clients, A3),
 Skills/Agents/Hooks direkt im Config-Verzeichnis; der Installer trägt zusätzlich
-einen `gsd`-MCP-Eintrag in die `opencode.json` ein.
+einen `gsd`-MCP-Eintrag in die `opencode.json` ein. Der Installer warnt (1.22.0):
+GSD unterstützt OpenCode 1.x nur noch mit Bugfixes bis 2026-12-31, danach nur
+OpenCode 2.x (`opencode upgrade --major`, danach Installer erneut laufen lassen).
 **Verify:** `~/.config/opencode/gsd-core/VERSION` enthält den gepinnten Stand;
 `opencode mcp list` zeigt den `gsd`-Server.
 

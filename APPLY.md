@@ -379,9 +379,10 @@ Hook-Dateien nicht mit: unter `~/.claude/hooks/` bleiben `caveman-activate.js`,
 Plugin-Cache `~/.claude/plugins/cache/caveman/`). Sie sind harmlos, solange `settings.json` sie
 nicht registriert — genau das macht sie aber schwer auffindbar. Gleiches Muster
 bei anderen Vorgängern: die Shell-Statusline `~/.claude/statusline-command.sh`
-(Vorgänger von B1.4) und die GSD-Verzeichnisse `get-shit-done/`, `gsd-pristine/`,
-`gsd-user-files-backup/` und `gsd-migration-journal/` aus der Zeit vor dem Rename
-auf `gsd-core`.
+(Vorgänger von B1.4) und die GSD-Verzeichnisse `get-shit-done/`, `gsd-pristine/` und
+`gsd-user-files-backup/` aus der Zeit vor dem Rename auf `gsd-core`.
+`gsd-migration-journal/` bleibt: `gsd-install-state.json` verweist auch nach dem
+Umstieg auf gsd-core 1.22.0 auf die Journale darin.
 
 Der Check dafür, aus `~/.claude/` heraus — was hier auftaucht und nicht in der
 Hook-Registrierung aus B1.5 steht, kann weg:
@@ -786,23 +787,25 @@ rsync -a --delete harness/ ~/.config/opencode/harness/   # nur ohne ~/.agents/ha
 rsync -a --delete doc-harness/ ~/.config/opencode/doc-harness/   # optional
 ```
 Command-Library: opencode liest Custom-Commands **flach** aus
-`~/.config/opencode/command/*.md` (Filename = Command-Name, **kein**
-`:`-Namespace; Verzeichnis ist der vom GSD-Installer für opencode bespielte Ort —
-die opencode-Doc nennt teils `commands/`, maßgeblich ist der installierte Pfad).
+`~/.config/opencode/commands/*.md` (Filename = Command-Name, **kein**
+`:`-Namespace; Verzeichnis ist der vom GSD-Installer für opencode bespielte Ort,
+maßgeblich ist der installierte Pfad — bis gsd-core 1.14/OpenCode 1.x war das
+`command/`, mit 1.22.0/OpenCode 2.x ist es `commands/`; ein altes `command/` mit nur
+noch `hx-*.md` kann weg).
 Wie bei Codex → `hx-<name>` mit `sed`-Rewrite der Cross-Refs.
 Das Verzeichnis ist **geteilt** (enthält GSD-Commands) — kein `rsync --delete`;
 Delete-by-Präfix:
 ```bash
-mkdir -p ~/.config/opencode/command
-rm -f ~/.config/opencode/command/hx-*.md
+mkdir -p ~/.config/opencode/commands
+rm -f ~/.config/opencode/commands/hx-*.md
 for f in harness/commands/*.md; do
   base=$(basename "$f"); [ "$base" = "README.md" ] && continue
-  sed 's#/hx:#/hx-#g' "$f" > ~/.config/opencode/command/hx-"$base"
+  sed 's#/hx:#/hx-#g' "$f" > ~/.config/opencode/commands/hx-"$base"
 done
 ```
 **Verify:** Harness via `~/.agents/harness/README.md` erreichbar (oder Kopie
-unter `~/.config/opencode/harness/`); `ls ~/.config/opencode/command/` enthält die
-Commands als `hx-*.md`; `grep -rl '/hx:' ~/.config/opencode/command/hx-*.md`
+unter `~/.config/opencode/harness/`); `ls ~/.config/opencode/commands/` enthält die
+Commands als `hx-*.md`; `grep -rl '/hx:' ~/.config/opencode/commands/hx-*.md`
 liefert **nichts**.
 
 ### B4.4 MCP + Skills
